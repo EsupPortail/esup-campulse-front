@@ -128,7 +128,7 @@ async function onValidateCharter() {
                 message = t('notifications.positive.charter-reject')
                 break
             case 'return':
-                associationCharterStatus = 'CHARTER_DRAFT'
+                associationCharterStatus = 'CHARTER_DRAFT_PROCESSED'
                 message = t('notifications.positive.charter-return')
                 break
             default:

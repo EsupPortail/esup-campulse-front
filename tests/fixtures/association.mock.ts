@@ -248,7 +248,8 @@ export const _institutionLabels = _institutions.map(institution => ({
 
 export const _institutionComponentLabels = _institutionComponents.map(component => ({
     value: component.id,
-    label: component.name
+    label: component.name,
+    institution: component.institution
 }))
 
 export const _activityFieldLabels = _activityFields.map(field => ({

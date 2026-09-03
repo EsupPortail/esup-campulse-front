@@ -45,6 +45,7 @@ type CharterStatus = 'VALIDATED' | 'EXPIRED' | 'PROCESSING' | 'REJECTED' | 'RETU
 
 type AssociationCharterStatus =
     'CHARTER_DRAFT'
+    | 'CHARTER_DRAFT_PROCESSED'
     | 'CHARTER_REJECTED'
     | 'CHARTER_PROCESSING'
     | 'CHARTER_VALIDATED'

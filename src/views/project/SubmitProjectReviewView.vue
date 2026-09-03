@@ -256,7 +256,10 @@ async function onUploadDocuments(nextStep: number) {
                                 <QInput
                                     v-model="projectReview.outcome"
                                     :label="t('project.outcome') + ' *'"
-                                    :rules="[val => val && val.length > 0 || t('forms.required-project-outcome')]"
+                                    :rules="[
+                                        val => val && val.length > 0 || t('forms.required-project-outcome'),
+                                        val => val && val >= 0 || t('forms.greater-than-or-equal-to-zero')
+                                    ]"
                                     :shadow-text="` ${CURRENCY}`"
                                     aria-required="true"
                                     clearable
@@ -264,14 +267,16 @@ async function onUploadDocuments(nextStep: number) {
                                     filled
                                     inputmode="numeric"
                                     lazy-rules
-                                    min="0"
                                     type="number"
                                 />
 
                                 <QInput
                                     v-model="projectReview.income"
                                     :label="t('project.income') + ' *'"
-                                    :rules="[val => val && val.length > 0 || t('forms.required-project-income')]"
+                                    :rules="[
+                                        val => val && val.length > 0 || t('forms.required-project-income'),
+                                        val => val && val > 0 || t('forms.greater-than-zero')
+                                    ]"
                                     :shadow-text="` ${CURRENCY}`"
                                     aria-required="true"
                                     clearable
@@ -279,7 +284,6 @@ async function onUploadDocuments(nextStep: number) {
                                     filled
                                     inputmode="numeric"
                                     lazy-rules
-                                    min="0"
                                     type="number"
                                 />
                             </div>

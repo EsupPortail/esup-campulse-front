@@ -1,7 +1,6 @@
 import {defineStore} from 'pinia'
 import type {
     Project,
-    ProjectCategory,
     ProjectCategoryName,
     ProjectCommissionFund,
     ProjectReview,
@@ -19,7 +18,6 @@ export const useProjectStore = defineStore('projectStore', {
         project: undefined,
         selfProjects: [],
         managedProjects: [],
-        projectCategories: [],
         projectCommissionFunds: [],
         projectDocuments: [],
         projectCategoryNames: [],
@@ -65,16 +63,10 @@ export const useProjectStore = defineStore('projectStore', {
         }
     },
     actions: {
-        async getProjectCategoryNames() {
-            if (this.projectCategoryNames.length) return
+        async getProjectCategoryNames(onlyEnabled?: boolean) {
             const {axiosPublic} = useAxios()
-            this.projectCategoryNames = (await axiosPublic.get<ProjectCategoryName[]>('/projects/categories/names')).data
-        },
-
-        async getProjectCategories() {
-            const {axiosAuthenticated} = useAxios()
-            const url = `/projects/${this.project?.id}/categories`
-            this.projectCategories = (await axiosAuthenticated.get<ProjectCategory[]>(url)).data
+            const url = `/projects/categories/names${onlyEnabled ? '?is_enabled=true' : ''}`
+            this.projectCategoryNames = (await axiosPublic.get<ProjectCategoryName[]>(url)).data
         },
 
         async getProjectDetail(id: number) {

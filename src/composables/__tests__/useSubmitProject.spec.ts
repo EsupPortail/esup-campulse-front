@@ -10,8 +10,9 @@ import {
     _project,
     _projectBasicInfos,
     _projectBudget,
-    _projectCategories,
-    _projectCommissionFunds, _projectGoals, _updatedProjectCommissionFunds
+    _projectCommissionFunds,
+    _projectGoals,
+    _updatedProjectCommissionFunds
 } from '~/fixtures/project.mock'
 import {useUserStore} from '@/stores/useUserStore'
 import {_miscStudent} from '~/fixtures/user.mock'
@@ -52,7 +53,6 @@ describe('useSubmitProject', () => {
     afterEach(() => {
         vi.restoreAllMocks()
         projectStore.project = undefined
-        projectStore.projectCategories = []
         userStore.user = undefined
     })
 
@@ -62,8 +62,8 @@ describe('useSubmitProject', () => {
         projectCommissionFunds,
         updateProjectCommission,
         patchProjectBasicInfos,
-        projectCategories,
-        updateProjectCategories,
+        projectCategory,
+        updateProjectCategory,
         projectBudget,
         patchProjectBudget,
         patchProjectCommissionFunds,
@@ -149,19 +149,18 @@ describe('useSubmitProject', () => {
             })
         })
     })
-    describe('updateProjectCategories', () => {
+    describe('updateProjectCategory', () => {
         it('should post and delete project categories', async () => {
             projectStore.project = _project
-            projectStore.projectCategories = _projectCategories
-            projectCategories.value = [1, 4, 5]
-            await updateProjectCategories()
-            expect(axiosAuthenticated.post).toHaveBeenCalledTimes(2)
+            projectCategory.value = 2
+            await updateProjectCategory()
+            expect(axiosAuthenticated.post).toHaveBeenCalledTimes(1)
             expect(axiosAuthenticated.post).toHaveBeenLastCalledWith('/projects/categories', {
                 project: 1,
-                category: 5
+                category: 2
             })
-            expect(axiosAuthenticated.delete).toHaveBeenCalledTimes(2)
-            expect(axiosAuthenticated.delete).toHaveBeenLastCalledWith('/projects/1/categories/3')
+            expect(axiosAuthenticated.delete).toHaveBeenCalledTimes(1)
+            expect(axiosAuthenticated.delete).toHaveBeenLastCalledWith('/projects/1/categories/1')
         })
     })
     describe('patchProjectBudget', () => {

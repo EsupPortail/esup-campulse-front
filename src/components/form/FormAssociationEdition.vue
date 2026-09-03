@@ -332,11 +332,12 @@ async function onChangeLogo(action: string) {
                         emit-value
                         filled
                         map-options
+                        @update:model-value="association.institutionComponent = null"
                     />
                     <QSelect
                         v-model="association.institutionComponent"
                         :label="t('association.labels.institution-component')"
-                        :options="associationStore.institutionComponentLabels"
+                        :options="associationStore.institutionComponentLabels.filter(obj => obj.institution === association.institution)"
                         clearable
                         emit-value
                         filled

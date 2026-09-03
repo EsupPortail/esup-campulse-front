@@ -20,20 +20,21 @@ import InfoProcessDocuments from '@/components/infoPanel/InfoProcessDocuments.vu
 import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
 import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
 import type {UserAssociation} from '#/user'
+import type {ProjectStatus} from '#/project'
 
 const {t} = useI18n()
 const {
     projectBasicInfos,
     postNewProject,
-    projectCategories,
+    projectCategory,
     projectCommission,
     projectBudget,
     updateProjectCommission,
     projectGoals,
-    updateProjectCategories,
+    updateProjectCategory,
     initProjectBasicInfos,
     patchProjectBasicInfos,
-    initProjectCategories,
+    //initProjectCategories,
     projectCommissionFunds,
     initProjectBudget,
     patchProjectBudget,
@@ -79,7 +80,7 @@ onMounted(async () => {
     await onGetProjectDetail()
     // If project is not a draft, then push to 404
     if (projectStore.project && projectStore.project.id === projectId.value) {
-        const acceptedStatuses = ['PROJECT_DRAFT', 'PROJECT_DRAFT_PROCESSED']
+        const acceptedStatuses: ProjectStatus[] = ['PROJECT_DRAFT', 'PROJECT_DRAFT_PROCESSED']
         if (!acceptedStatuses.includes(projectStore.project.projectStatus)) {
             await router.push({name: '404'})
         }
@@ -87,8 +88,8 @@ onMounted(async () => {
     // We set the association user
     associationUser.value = userStore.userAssociations
         .find(obj => obj.association.id === associationId.value)
-    // We get project categories
-    await onGetProjectCategories()
+    // We get project category names
+    await projectStore.getProjectCategoryNames(true)
     // Get association users
     await onGetAssociationUsers()
     // Empty project commission funds to make sure we don't delete unrelated objects (security for student + commission member account)
@@ -138,7 +139,6 @@ watch(() => projectId.value, () => {
     // If the project has not been posted yet, we clean project store
     if (!projectId.value) {
         projectStore.project = undefined
-        projectStore.projectCategories = []
         reInitSubmitProjectForm()
     }
     // We set if the project is a re-edition or not
@@ -214,23 +214,6 @@ async function onGetProjectDetail() {
                     message: await catchHTTPError(error.response)
                 })
             }
-        }
-    }
-}
-
-async function onGetProjectCategories() {
-    try {
-        await projectStore.getProjectCategoryNames()
-        if ((!newProject.value || newProjectPosted.value) && projectStore.project) {
-            await projectStore.getProjectCategories()
-            initProjectCategories()
-        }
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
         }
     }
 }
@@ -324,8 +307,8 @@ async function onSubmitBasicInfos(nextStep: number) {
         } else {
             await patchProjectBasicInfos()
         }
-        await updateProjectCategories()
-        await onGetProjectCategories()
+        await updateProjectCategory()
+        await onGetProjectDetail()
         step.value = nextStep
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -528,11 +511,10 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 lazy-rules
                             />
                             <QSelect
-                                v-model="projectCategories"
-                                :hint="t('forms.multiple-choices-enabled')"
+                                v-model="projectCategory"
                                 :label="t('project.categories') + ' *'"
                                 :options="projectStore.projectCategoriesLabels"
-                                :rules="[val => val && val.length > 0 || t('forms.required-project-categories')]"
+                                :rules="[val => val || t('forms.required-project-categories')]"
                                 clearable
                                 color="commission"
                                 data-test="categories-select"
@@ -540,8 +522,6 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                 filled
                                 lazy-rules
                                 map-options
-                                multiple
-                                use-chips
                             />
                             <div v-if="applicant === 'association'">
                                 <QSelect
@@ -861,12 +841,14 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                                         .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + '-amount-asked-input'"
                                     :label="funds.find(obj => obj.id === (commissionFunds
                                         .find(obj => obj.id === commissionFund.commissionFund)?.fund))?.acronym + ' *'"
-                                    :rules="[val => val && val.length > 0 || t('forms.required-project-budget')]"
+                                    :rules="[
+                                        val => val && val.length > 0 || t('forms.required-project-budget'),
+                                        val => val && val > 0 || t('forms.greater-than-zero')
+                                    ]"
                                     :shadow-text="` ${CURRENCY}`"
                                     color="commission"
                                     filled
                                     inputmode="numeric"
-                                    min="0"
                                     type="number"
                                 />
                             </section>

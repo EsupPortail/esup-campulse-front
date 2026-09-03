@@ -50,7 +50,7 @@ watch(() => route.path, initTitle)
 
 async function loadAssociations() {
     try {
-        await associationStore.getAssociationNames(false, true)
+        await associationStore.getAssociationNames(false, true, true)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
