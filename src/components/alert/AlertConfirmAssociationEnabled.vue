@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {onMounted, ref, watch} from 'vue'
+import {computed, ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
@@ -10,17 +10,11 @@ const {notify} = useQuasar()
 
 const emit = defineEmits(['hasValidated'])
 
-const isEnabled = ref<boolean>(false)
-watch(() => associationStore.association, () => {
-    isEnabled.value = associationStore.association?.isEnabled as boolean
+const isEnabled = computed<boolean>(() => {
+    return associationStore.association?.isEnabled ?? false
 })
 
 const openAlert = ref<boolean>(false)
-
-onMounted(() => {
-    isEnabled.value = associationStore.association?.isEnabled as boolean
-})
-
 
 async function onEnableAssociation() {
     let positiveMessage = t('notifications.positive.enable-association')
@@ -30,7 +24,7 @@ async function onEnableAssociation() {
         negativeMessage = t('notifications.negative.disable-association-error')
     }
     try {
-        await associationStore.patchEnabledAssociation(!isEnabled.value as boolean, associationStore.association?.id)
+        await associationStore.patchEnabledAssociation(!isEnabled.value, associationStore.association?.id)
         emit('hasValidated')
         notify({
             type: 'positive',
