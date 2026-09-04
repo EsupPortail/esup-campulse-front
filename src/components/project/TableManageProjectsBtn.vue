@@ -23,7 +23,7 @@ const projectStore = useProjectStore()
 const {catchHTTPError} = useErrors()
 const {commissionFunds, funds} = useCommissions()
 const userStore = useUserStore()
-const {createUploadedFileLink} = useDocumentUploads()
+const {getFile} = useDocumentUploads()
 const {openDocument} = useUtility()
 
 const props = defineProps<{
@@ -205,7 +205,7 @@ async function onOptionClick(option: Option) {
         } else if (option.action === 'download-review-pdf') {
             await onGetProjectPdf(props.projectId, true)
         } else if (option.action === 'download-budget') {
-            await onGetProjectBudget(props.budgetFile, props.projectName)
+            await onGetProjectBudget(props.budgetFile)
         } else if (option.action === 'download-files') {
             await onGetProjectFiles(props.projectId)
         } else {
@@ -230,11 +230,12 @@ async function onGetProjectPdf(projectId: number, isReview: boolean) {
     loading.hide()
 }
 
-async function onGetProjectBudget(budgetFile: string | null, projectName: string) {
+async function onGetProjectBudget(budgetFile: string | null) {
     loading.show()
     if (budgetFile) {
         try {
-            await createUploadedFileLink(budgetFile as string, `${t('project.document-budget')}${projectName}`)
+            const response = await getFile(budgetFile)
+            openDocument(response)
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 notify({
