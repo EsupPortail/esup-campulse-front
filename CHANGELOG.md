@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.1 (septembre 2026)
+
+- Une composante devient liée à un établissement (chartes).
+
 ## 1.6.0 (septembre 2026)
 
 - Les montants demandés dans le cadre des demandes de financement doivent être supérieurs à zéro.
