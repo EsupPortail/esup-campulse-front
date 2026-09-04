@@ -53,6 +53,7 @@ const editedAssociation = ref<EditedAssociation>({
     country: '',
     phone: '',
     email: '',
+    institution: null,
     institutionComponent: null,
     activityField: null,
     siret: ''
@@ -71,6 +72,7 @@ const initEditedAssociation = () => {
     editedAssociation.value.country = associationStore.association?.country
     editedAssociation.value.phone = associationStore.association?.phone
     editedAssociation.value.email = associationStore.association?.email
+    editedAssociation.value.institution = associationStore.association?.institution?.id
     editedAssociation.value.institutionComponent = associationStore.association?.institutionComponent?.id
     editedAssociation.value.activityField = associationStore.association?.activityField?.id
     editedAssociation.value.siret = associationStore.association?.siret
@@ -250,7 +252,7 @@ async function onSignCharter() {
                             <QSelect
                                 v-model="editedAssociation.institutionComponent"
                                 :label="t('association.labels.institution-component')"
-                                :options="associationStore.institutionComponentLabels"
+                                :options="associationStore.institutionComponentLabels.filter(obj => obj.institution === editedAssociation.institution)"
                                 clearable
                                 color="charter"
                                 emit-value
