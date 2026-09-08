@@ -98,14 +98,9 @@ export default function () {
         const detectedExtension = type ? type.split('/')[1]?.split(';')[0] : 'bin'
         const defaultName = `document.${detectedExtension}`
         if (!disposition) return defaultName
-        const utf8Match = disposition.match(/filename\*=utf-8''([^;\n]*)/i)
-        if (utf8Match && utf8Match[1]) {
-            return decodeURIComponent(utf8Match[1])
-        }
-        const classicMatch = disposition.match(/filename=(['"]?)([^'"\n]*)\1?/)
-        if (classicMatch && classicMatch[2]) {
-            return decodeURIComponent(classicMatch[2])
-        }
+        const regex = /filename\*=(?:(?:utf|UTF)-8'')?([0-9a-zA-Z%_.-]*)/gm
+        const match = regex.exec(disposition)
+        if (match?.[1]) return decodeURIComponent(match?.[1])
         return defaultName
     }
 
