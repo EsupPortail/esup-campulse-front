@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.2 (septembre 2026)
+
+- Correction d'un bug persistant au niveau du téléchargement du budget prévisionnel.
+
 ## 1.6.1 (septembre 2026)
 
 - Une composante devient liée à un établissement (chartes).
