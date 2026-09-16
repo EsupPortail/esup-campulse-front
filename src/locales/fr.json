@@ -223,6 +223,7 @@
       "title": "Charte des associations du @:charter.site.name"
     },
     "status": {
+      "draft": "Charte en brouillon",
       "expired": "Charte à renouveler",
       "no-charter": "Charte à signer",
       "not-site": "Hors @:charter.site.name",
@@ -731,7 +732,6 @@
       "use-template": "Merci de télécharger et de remplir impérativement le document type mis à disposition. Tout document non conforme entraînera le rejet du projet.",
       "verify": "Merci de vérifier que tous les documents transmis sont conformes avant de valider."
     },
-    "document-budget": "Budget-Demande-Subvention-",
     "document-hint": "Cliquez sur le champ pour ajouter un document.",
     "document-hint-multiple": "Vous pouvez sélectionner plusieurs documents.",
     "documents": "Documents",

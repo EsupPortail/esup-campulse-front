@@ -149,7 +149,7 @@ async function onValidateCharter() {
             })
         }
     }
-    loading.hide
+    loading.hide()
 }
 </script>
 
