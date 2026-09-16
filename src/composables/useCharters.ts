@@ -237,7 +237,7 @@ export default function () {
         case 'CHARTER_REJECTED':
             return 'REJECTED'
         case 'CHARTER_DRAFT':
-            return 'RETURNED'
+            return 'DRAFT'
         case 'CHARTER_DRAFT_PROCESSED':
             return 'RETURNED'
         default:

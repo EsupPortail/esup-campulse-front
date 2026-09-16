@@ -12,10 +12,10 @@ const {createUploadedFileLink} = useDocumentUploads()
 const {createFileLink} = useDocuments()
 
 const props = defineProps<{
-    charter: ManageCharter,
-    associationId: number,
-    associationCharterStatus?: AssociationCharterStatus,
-    isSite?: boolean
+  charter: ManageCharter,
+  associationId: number,
+  associationCharterStatus?: AssociationCharterStatus,
+  isSite?: boolean
 }>()
 
 const charterRef = toRefs(props).charter
@@ -24,14 +24,14 @@ watch(() => charterRef.value, () => {
 })
 
 interface Option {
-    icon: 'bi-download' | 'bi-pen' | 'bi-eye',
-    label?: string,
-    to?: {
-        name: string,
-        params: { associationId: number }
-    },
-    action?: 'download' | 'view' | 'sign',
-    id?: number
+  icon: 'bi-download' | 'bi-pen' | 'bi-eye',
+  label?: string,
+  to?: {
+    name: string,
+    params: { associationId: number }
+  },
+  action?: 'download' | 'view' | 'sign',
+  id?: number
 }
 
 const options = ref<Option[]>([])
@@ -51,7 +51,7 @@ const initOptions = () => {
     if (props.charter.charterStatus !== 'PROCESSING') {
         const option: Option = {
             icon: 'bi-pen',
-            label: props.charter.charterStatus === 'NOT_SITE' || props.charter.charterStatus === 'NO_CHARTER' || props.charter.charterStatus === 'EXPIRED' ?
+            label: ['DRAFT', 'NOT_SITE', 'NO_CHARTER', 'EXPIRED'].includes(props.charter.charterStatus) ?
                 t('charter.options.sign') : t('charter.options.re-sign')
 
         }
@@ -67,7 +67,7 @@ const initOptions = () => {
     }
     // View charter
     if (props.charter.charterStatus === 'PROCESSING' || props.charter.charterStatus === 'VALIDATED' || props.charter.charterStatus === 'RETURNED' ||
-        props.charter.charterStatus === 'REJECTED') {
+      props.charter.charterStatus === 'REJECTED') {
         const option: Option = {
             icon: 'bi-eye',
             label: t('charter.options.view')
@@ -109,10 +109,10 @@ async function onOptionClick(option: Option) {
     <div class="q-pa-md">
         <QBtnDropdown
             v-if="options.length"
+            :data-test="`manage-${props.charter.documentAcronym}-button`"
             :label="t('manage')"
             class="text-charter"
             outline
-            :data-test="`manage-${props.charter.documentAcronym}-button`"
         >
             <QList>
                 <QItem

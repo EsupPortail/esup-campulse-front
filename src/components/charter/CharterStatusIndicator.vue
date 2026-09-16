@@ -3,12 +3,14 @@ import {useI18n} from 'vue-i18n'
 import type {CharterStatus} from '#/charters'
 import {onMounted, ref} from 'vue'
 import {useRoute} from 'vue-router'
+import useUserGroups from '@/composables/useUserGroups'
 
-const props = defineProps<{
-    charterStatus: CharterStatus
+defineProps<{
+  charterStatus: CharterStatus
 }>()
 
 const {t} = useI18n()
+const {isStaff} = useUserGroups()
 const route = useRoute()
 
 const spanClasses = ref('')
@@ -23,13 +25,13 @@ onMounted(initSpanClasses)
 
 <template>
     <span
-        v-if="props.charterStatus === 'NOT_SITE'"
+        v-if="charterStatus === 'NOT_SITE'"
         :class="spanClasses"
     >
         {{ t('charter.status.not-site') }}
     </span>
     <span
-        v-if="props.charterStatus === 'NO_CHARTER'"
+        v-else-if="charterStatus === 'NO_CHARTER' || (isStaff && charterStatus === 'DRAFT')"
         :class="spanClasses"
     >
         {{ t('charter.status.no-charter') }}
@@ -39,7 +41,17 @@ onMounted(initSpanClasses)
         ><i class="bi bi-dash"></i></span>
     </span>
     <span
-        v-if="props.charterStatus === 'VALIDATED'"
+        v-else-if="charterStatus === 'DRAFT'"
+        :class="spanClasses"
+    >
+        {{ t('charter.status.draft') }}
+        <span
+            aria-hidden="true"
+            class="form-state-icon form-state-grey"
+        ><i class="bi bi-dash"></i></span>
+    </span>
+    <span
+        v-else-if="charterStatus === 'VALIDATED'"
         :class="spanClasses"
     >
         {{ t('charter.status.validated') }}
@@ -49,7 +61,7 @@ onMounted(initSpanClasses)
         ><i class="bi bi-check"></i></span>
     </span>
     <span
-        v-if="props.charterStatus === 'REJECTED'"
+        v-else-if="charterStatus === 'REJECTED'"
         :class="spanClasses"
     >
         {{ t('charter.status.rejected') }}
@@ -59,7 +71,7 @@ onMounted(initSpanClasses)
         ><i class="bi bi-x"></i></span>
     </span>
     <span
-        v-if="props.charterStatus === 'RETURNED'"
+        v-else-if="charterStatus === 'RETURNED'"
         :class="spanClasses"
     >
         {{ t('charter.status.returned') }}
@@ -69,7 +81,7 @@ onMounted(initSpanClasses)
         ><i class="bi bi-dash"></i></span>
     </span>
     <span
-        v-if="props.charterStatus === 'EXPIRED'"
+        v-else-if="charterStatus === 'EXPIRED'"
         :class="spanClasses"
     >
         {{ t('charter.status.expired') }}
@@ -79,7 +91,7 @@ onMounted(initSpanClasses)
         ><i class="bi bi-x"></i></span>
     </span>
     <span
-        v-if="props.charterStatus === 'PROCESSING'"
+        v-else-if="charterStatus === 'PROCESSING'"
         :class="spanClasses"
     >
         {{ t('charter.status.processing') }}
