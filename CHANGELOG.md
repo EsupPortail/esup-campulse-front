@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.3 (septembre 2026)
+
+- Correction d'un défaut d'affichage du statut de la charte dans l'interface
+
 ## 1.6.2 (septembre 2026)
 
 - Correction d'un bug persistant au niveau du téléchargement du budget prévisionnel.
