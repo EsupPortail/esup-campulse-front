@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.5 (septembre 2026)
+
+- Refonte de la route des commentaires de projet
+
 ## 1.6.4 (septembre 2026)
 
 - Correction d'un bug empêchant la soumission d'un document de charte
