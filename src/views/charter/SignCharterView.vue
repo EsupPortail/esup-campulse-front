@@ -17,6 +17,7 @@ import CharterRecap from '@/components/charter/CharterRecap.vue'
 import useCharters from '@/composables/useCharters'
 import router from '@/router'
 import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
+import {useProjectStore} from '@/stores/useProjectStore'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
@@ -28,6 +29,7 @@ const {patchCharterStatus} = useCharters()
 const route = useRoute()
 const userStore = useUserStore()
 const associationStore = useAssociationStore()
+const projectStore = useProjectStore()
 
 const step = ref(1)
 
@@ -132,6 +134,8 @@ async function onPatchAssociation() {
 async function onUploadDocuments(nextStep: number) {
     loading.show()
     try {
+    // Clean project store
+        projectStore.project = undefined
         await uploadDocuments(associationId.value, null)
         step.value = nextStep
     } catch (error) {
