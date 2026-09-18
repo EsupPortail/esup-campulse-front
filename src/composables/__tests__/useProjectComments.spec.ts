@@ -69,10 +69,8 @@ describe('useProjectComments', () => {
             userStore.user = _institutionManager
             await postNewProjectComment(1, {text: 'Commentaire', isVisible: true})
             expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/projects/comments', {
-                project: 1,
+            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/projects/1/comments', {
                 text: 'Commentaire',
-                user: userStore?.user.id,
                 isVisible: true
             })
         })
