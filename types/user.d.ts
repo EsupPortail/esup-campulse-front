@@ -1,5 +1,6 @@
 import type {AssociationOptions} from '#/association'
 import type {DocumentUpload} from '#/documents'
+import type {AssociationCharterStatus} from '#/charters'
 
 export interface User {
     id: number,
@@ -50,6 +51,7 @@ export interface UserAssociationDetail {
     isSite: boolean,
     institution: number,
     canSubmitProjects?: boolean,
+    charterStatus?: AssociationCharterStatus
 }
 
 export interface UserAssociationRegister {

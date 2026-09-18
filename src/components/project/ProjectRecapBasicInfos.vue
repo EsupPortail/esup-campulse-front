@@ -3,7 +3,6 @@ import useSubmitProject from '@/composables/useSubmitProject'
 import {useI18n} from 'vue-i18n'
 import {ref} from 'vue'
 import ProjectRecapCategories from '@/components/project/ProjectRecapCategories.vue'
-import {useAssociationStore} from '@/stores/useAssociationStore'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
 import useCharters from '@/composables/useCharters'
 import {useProjectStore} from '@/stores/useProjectStore'
@@ -14,7 +13,6 @@ const {
     projectProcessingDate,
 } = useSubmitProject()
 const {t} = useI18n()
-const associationStore = useAssociationStore()
 const projectStore = useProjectStore()
 const {initAssociationCharterStatus} = useCharters()
 
@@ -51,7 +49,7 @@ const applicant = ref<'association' | 'user'>(projectBasicInfos.value.associatio
                 {{ t('charter.status.title') }}
             </h4>
             <CharterStatusIndicator
-                :charter-status="initAssociationCharterStatus(associationStore.association?.charterStatus)"
+                :charter-status="initAssociationCharterStatus(projectStore.project?.association?.charterStatus)"
             />
         </div>
 
