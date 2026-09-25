@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.6 (septembre 2026)
+
+- Correction au niveau de la soumission de projet : une association "site" peut postuler à tous les fonds
+
 ## 1.6.5 (septembre 2026)
 
 - Refonte de la route des commentaires de projet
