@@ -19,7 +19,6 @@ import ProjectComments from '@/components/project/ProjectComments.vue'
 import InfoProcessDocuments from '@/components/infoPanel/InfoProcessDocuments.vue'
 import FormDocumentUploads from '@/components/form/FormDocumentUploads.vue'
 import InfoFormRequiredFields from '@/components/infoPanel/InfoFormRequiredFields.vue'
-import type {UserAssociation} from '#/user'
 import type {ProjectStatus} from '#/project'
 
 const {t} = useI18n()
@@ -34,7 +33,6 @@ const {
     updateProjectCategory,
     initProjectBasicInfos,
     patchProjectBasicInfos,
-    //initProjectCategories,
     projectCommissionFunds,
     initProjectBudget,
     patchProjectBudget,
@@ -73,7 +71,7 @@ const route = useRoute()
 onMounted(async () => {
     loading.show()
     // We get project detail
-    projectId.value = parseInt(route.params.projectId as string)
+    projectId.value = Number.parseInt(route.params.projectId as string)
     // We set if it is a new project
     newProject.value = !projectId.value
     // We get project detail
@@ -85,9 +83,6 @@ onMounted(async () => {
             await router.push({name: '404'})
         }
     }
-    // We set the association user
-    associationUser.value = userStore.userAssociations
-        .find(obj => obj.association.id === associationId.value)
     // We get project category names
     await projectStore.getProjectCategoryNames(true)
     // Get association users
@@ -132,7 +127,7 @@ watch(() => step.value === 4, () => {
 // REFS
 const applicant = ref<'association' | 'user' | undefined>(route.name === 'SubmitProjectAssociation' ? 'association' : 'user')
 
-const associationId = ref<number>(parseInt(route.params.associationId as string))
+const associationId = ref<number>(Number.parseInt(route.params.associationId as string))
 
 const projectId = ref<number>()
 watch(() => projectId.value, () => {
@@ -142,22 +137,17 @@ watch(() => projectId.value, () => {
         reInitSubmitProjectForm()
     }
     // We set if the project is a re-edition or not
-    projectReEdition.value = !!projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)
+    projectReEdition.value = !!projectStore.projectCommissionFunds.some(obj => obj.isFirstEdition === false)
 })
 
-const associationUser = ref<UserAssociation | undefined>()
-
-watch(() => userStore.userAssociations, () => {
-    associationUser.value = userStore.userAssociations
+const associationUser = computed(() => {
+    return userStore.userAssociations
         .find(obj => obj.association.id === associationId.value)
 })
 
-watch(() => associationUser.value, () => {
-    hasPresidentStatus.value = userStore.hasPresidentStatus(associationId.value)
-    isSite.value = !!(associationUser.value && associationUser.value?.association.isSite && applicant.value === 'association')
+const hasPresidentStatus = computed<boolean>(() => {
+    return userStore.hasPresidentStatus(associationId.value)
 })
-
-const hasPresidentStatus = ref<boolean>(false)
 
 const newProject = ref<boolean>(true)
 
@@ -165,29 +155,24 @@ const newProjectPosted = ref<boolean>(false)
 
 const projectReEdition = ref<boolean>(false)
 
-const isSite = ref<boolean>(false)
+const isSite = computed<boolean>(() => {
+    return !!(associationUser.value && associationUser.value?.association.isSite && applicant.value === 'association')
+})
 
 const isLoaded = ref<boolean>(false)
 
 const canUpdateProject = async () => {
-    let canUpdateProject = false
-    // If the applicant is an association
-    if (applicant.value === 'association') {
-        if (associationUser.value?.association?.canSubmitProjects) {
-            if (hasPresidentStatus.value) {
-                canUpdateProject = true
-            } else if (projectStore.project?.associationUser?.id === associationUser.value?.id) {
-                canUpdateProject = true
-            }
+    if (applicant.value === 'user') {
+        return
+    }
+    const associationCanSubmitProjects = associationUser.value?.association?.canSubmitProjects
+    if (applicant.value === 'association' && associationCanSubmitProjects) {
+        const isReferent = projectStore.project?.associationUser?.id === associationUser.value?.id
+        if (hasPresidentStatus.value || isReferent) {
+            return
         }
     }
-    // If the applicant is a user
-    else {
-        canUpdateProject = true
-    }
-    if (!canUpdateProject) {
-        await router.push({name: '404'})
-    }
+    await router.push({name: '404'})
 }
 
 // CHECKING IF PROJECT BASIC INFOS DATES ARE LEGAL
@@ -197,7 +182,7 @@ const datesAreLegal = computed<boolean>(() => {
 
 // CHECKING IF PROJECT AUDIENCE AMOUNT NUMBERS ARE POSSIBLE
 const correctAudienceAmount = computed<boolean>(() => {
-    return parseInt(projectBudget.value.amountStudentsAudience as string) <= parseInt(projectBudget.value.amountAllAudience as string)
+    return Number.parseInt(projectBudget.value.amountStudentsAudience as string) <= Number.parseInt(projectBudget.value.amountAllAudience as string)
 })
 
 // GET DATA FOR STEP 1
@@ -250,7 +235,7 @@ async function onGetAssociationUsers() {
 async function onGetCommissionDates() {
     loading.show()
     try {
-        await getCommissionsForStudents(true, isSite.value)
+        await getCommissionsForStudents(true, isSite.value ? undefined : false)
         initCommissionLabels()
         await getFunds()
         await getCommissionFunds()
@@ -302,7 +287,7 @@ async function onSubmitBasicInfos(nextStep: number) {
     loading.show()
     try {
         if (newProject.value && !newProjectPosted.value) {
-            await postNewProject(parseInt(route.params.associationId as string))
+            await postNewProject(Number.parseInt(route.params.associationId as string))
             newProjectPosted.value = true
         } else {
             await patchProjectBasicInfos()
@@ -417,7 +402,7 @@ async function onSubmitProject() {
     loading.hide()
 }
 
-// WHEN THE USER LEAVES THE PAGE, WE CLEAR OR INPUTS
+// WHEN THE USER LEAVES THE PAGE, WE CLEAR INPUTS
 onBeforeRouteLeave(reInitSubmitProjectForm)
 
 </script>
