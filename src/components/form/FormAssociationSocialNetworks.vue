@@ -2,7 +2,7 @@
 import useAssociation from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import useUtility from '@/composables/useUtility'
-import {onMounted, watch} from 'vue'
+import {onMounted, toRaw, watch} from 'vue'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 
 const {addNetwork, removeNetwork, associationSocialNetworks} = useAssociation()
@@ -13,7 +13,7 @@ const associationStore = useAssociationStore()
 
 const initValues = () => {
     // Social networks are stored in useAssociation composable, so we can add and remove items
-    associationSocialNetworks.value = structuredClone(associationStore.association?.socialNetworks)
+    associationSocialNetworks.value = structuredClone(toRaw(associationStore.association?.socialNetworks))
 }
 watch(() => associationStore.association, initValues)
 

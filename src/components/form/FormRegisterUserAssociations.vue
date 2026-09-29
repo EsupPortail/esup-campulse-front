@@ -161,7 +161,7 @@ async function onAddAssociation() {
 
             <div class="flex-row">
                 <QBtn
-                    v-if="newAssociations?.[0].id && routeName === 'ManageAccount'"
+                    v-if="newAssociations?.[0]?.id && routeName === 'ManageAccount'"
                     :label="t('validate')"
                     class="btn-lg"
                     color="dashboard"
