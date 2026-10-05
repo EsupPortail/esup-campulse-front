@@ -98,7 +98,7 @@ async function onPatchProjectCommissionFunds(projectCommissionFund: EditProjectC
         if (!projectCommissionFund.amountEarnedIsValidatedByAdmin) {
             await postNewProjectComment(props.project, projectCommissionFund.comment)
             await patchAmountAsked(props.project, projectCommissionFund.commissionFundId,
-                parseInt(projectCommissionFund.amountEarned as string))
+                Number.parseInt(projectCommissionFund.amountEarned as string))
         }
         emit('closeDialog')
         emit('refreshProjects')

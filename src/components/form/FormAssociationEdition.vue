@@ -149,14 +149,10 @@ function onLeaveEdition() {
 }
 
 // Check is there are any changes before leaving the page
-onBeforeRouteLeave((to, from, next) => {
+onBeforeRouteLeave((_to, _from, next) => {
     if (Object.keys(checkChanges(association.value)).length > 0 && !hasValidated.value) {
         openAlert.value = true
-        if (!leaveEdition.value) {
-            next(false)
-        } else {
-            next(true)
-        }
+        next(leaveEdition.value)
     } else {
         next(true)
     }
@@ -206,7 +202,6 @@ async function onChangeLogo(action: string) {
 
             <div class="container">
                 <div class="association-name text-center">
-                    <!--<h2>{{ association?.name }}</h2>-->
                     <p
                         v-if="association?.acronym"
                         class="acronym"
@@ -413,7 +408,7 @@ async function onChangeLogo(action: string) {
                         v-if="hasPerm('change_association_all_fields')"
                         v-model="association.amountMembersAllowed"
                         :label="t('association.labels.amount-members-allowed')"
-                        :rules="[val => parseInt(val) >= membersCount || t('forms.amount-members-allowed-must-be-superior-to-members')]"
+                        :rules="[val => Number.parseInt(val) >= membersCount || t('forms.amount-members-allowed-must-be-superior-to-members')]"
                         bottom-slots
                         clearable
                         filled

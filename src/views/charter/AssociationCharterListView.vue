@@ -20,7 +20,7 @@ const {catchHTTPError} = useErrors()
 const {dynamicTitle} = useUtility()
 const {initCharters, manageCharters} = useCharters()
 
-const associationId = ref<number>(parseInt(route.params.associationId as string))
+const associationId = ref<number>(Number.parseInt(route.params.associationId as string))
 
 async function onGetAssociationDetail() {
     if (associationId.value) {

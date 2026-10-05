@@ -56,13 +56,13 @@ watch(() => props.openDialog, async (isOpen) => {
 })
 
 const initFundLabels = () => {
-    const originalCommissionFunds = projectStore.projectCommissionFunds.map(projectCommissionFund => projectCommissionFund.commissionFund)
-    const originalFunds = commissionFunds.value
-        .filter(commissionFund => originalCommissionFunds.includes(commissionFund.id))
-        .map(commissionFund => commissionFund.fund)
+    const originalCommissionFunds = new Set<number>(projectStore.projectCommissionFunds.map(projectCommissionFund => projectCommissionFund.commissionFund))
+    const originalFunds = new Set<number>(commissionFunds.value
+        .filter(commissionFund => originalCommissionFunds.has(commissionFund.id))
+        .map(commissionFund => commissionFund.fund))
 
     projectCommissionFunds.value = commissionFunds.value
-        .filter(commissionFund => commissionFund.commission === projectCommission.value && originalFunds.includes(commissionFund.fund))
+        .filter(commissionFund => commissionFund.commission === projectCommission.value && originalFunds.has(commissionFund.fund))
         .map(commissionFund => commissionFund.id)
 
     fundsLabels.value = projectCommissionFunds.value.map(projectCommissionFund => {

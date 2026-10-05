@@ -93,7 +93,7 @@ onMounted(async () => {
     loading.show()
     selectedAction.value = 'validate'
     initAction()
-    associationId.value = parseInt(route.params.associationId as string)
+    associationId.value = Number.parseInt(route.params.associationId as string)
     await onGetAssociationDetail()
     loading.hide()
 })

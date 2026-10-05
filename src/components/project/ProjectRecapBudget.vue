@@ -25,7 +25,7 @@ const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 
 const props = defineProps<{
-    loadData: boolean
+  loadData: boolean
 }>()
 
 onMounted(() => {
@@ -59,9 +59,7 @@ async function onGetProjectCommissions() {
 }
 
 const projectReEdition = () => {
-    let perm = false
-    if (projectStore.projectCommissionFunds.find(obj => obj.isFirstEdition === false)) perm = true
-    return perm
+    return projectStore.projectCommissionFunds.some(obj => obj.isFirstEdition === false)
 }
 </script>
 
@@ -171,6 +169,6 @@ const projectReEdition = () => {
 @import "@/assets/_variables.scss";
 
 .flex-row > * {
-    width: $fullSize;
+  width: $fullSize;
 }
 </style>

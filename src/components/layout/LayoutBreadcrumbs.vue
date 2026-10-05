@@ -25,29 +25,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <!--    <nav
-            id="layout-breadcrumbs"
-            :class="'variant-' + colorVariant"
-            role="navigation"
-            :aria-label="t('you-are-here')"
-        >
-            <QBreadcrumbs
-                gutter="none"
-                separator=""
-            >
-                <QBreadcrumbsEl
-                    :label="t('breadcrumbs.home')"
-                    :to="{ name: 'Home' }"
-                />
-                <QBreadcrumbsEl
-                    v-for="(element, index) in breadcrumbs"
-                    :key="index"
-                    :label="element.label"
-                    :to="element.to"
-                    :aria-current="(index === breadcrumbs.length - 1) ? 'page' : 'false'"
-                />
-            </QBreadcrumbs>
-        </nav>-->
     <nav
         id="layout-breadcrumbs"
         :aria-label="t('you-are-here')"

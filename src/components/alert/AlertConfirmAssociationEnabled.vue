@@ -30,7 +30,7 @@ async function onEnableAssociation() {
             type: 'positive',
             message: positiveMessage
         })
-    } catch (e) {
+    } catch {
         notify({
             type: 'negative',
             message: negativeMessage

@@ -20,7 +20,6 @@ const props = defineProps({
         />
     </div>
     <div class="legal-links">
-        <!--<RouterLink :to="{ name: 'LegalNotice' }">{{ t('breadcrumbs.legal-notice') }}</RouterLink><br>-->
         <RouterLink :to="{ name: 'PrivacyPolicy' }">{{ t('breadcrumbs.privacy-policy') }}</RouterLink>
     </div>
 </template>
@@ -29,7 +28,7 @@ const props = defineProps({
 @import '@/assets/_variables.scss';
 
 .legal-links a {
-    color: $dashboardColor;
-    margin-left: 4rem;
+  color: $dashboardColor;
+  margin-left: 4rem;
 }
 </style>

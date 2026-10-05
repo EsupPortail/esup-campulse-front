@@ -58,7 +58,7 @@ onMounted(initTab)
                             :name="tab"
                         >
                             <TableAssociationUserCharters
-                                :association-id="parseInt(tab)"
+                                :association-id="Number.parseInt(tab)"
                             />
                         </QTabPanel>
                     </QTabPanels>
@@ -73,11 +73,11 @@ onMounted(initTab)
 @import "@/assets/styles/dashboard.scss";
 
 .q-card {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .dashboard-section .dashboard-section-container {
-    padding: 0 0 3rem 0;
+  padding: 0 0 3rem 0;
 }
 
 </style>

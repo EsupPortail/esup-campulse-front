@@ -110,25 +110,6 @@
         border-color: $commissionColor;
       }
     }
-
-    /*@media screen and (max-width: $breakpoint-lg) {
-      flex-direction: column;
-      align-items: flex-end;
-      height: 0;
-      overflow: hidden;
-
-      & > a {
-        font-size: 1.2rem;
-        font-weight: $semibold-weight;
-        margin-bottom: 1rem;
-      }
-
-      &.visible {
-        height: auto;
-        transform: scaleY(1);
-        padding-bottom: 1rem;
-      }
-    }*/
   }
 
   // Profile button when connected

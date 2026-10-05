@@ -45,9 +45,9 @@ onMounted(() => {
 
     settings.value.name = route.query.name as string || ''
     settings.value.acronym = route.query.acronym as string || ''
-    settings.value.institution = parseInt(route.query.institution as string) || null
-    settings.value.institutionComponent = parseInt(route.query.component as string) || null
-    settings.value.activityField = parseInt(route.query.field as string) || null
+    settings.value.institution = Number.parseInt(route.query.institution as string) || null
+    settings.value.institutionComponent = Number.parseInt(route.query.component as string) || null
+    settings.value.activityField = Number.parseInt(route.query.field as string) || null
 
     if (settings.value.name || settings.value.acronym || settings.value.institution
       || settings.value.institutionComponent || settings.value.activityField) {
