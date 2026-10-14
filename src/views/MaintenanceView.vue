@@ -13,12 +13,9 @@ const {dynamicTitle} = useUtility()
 
 onMounted(async () => {
   try {
-    // Ping API 
     await axiosPublic.get('/')
-    // If status is 200, then push back to homepage
     await router.push({name: 'Home'})
   } catch (error) {
-    // If we catch an error, we stay here
     return
   }
 })
@@ -61,31 +58,31 @@ onMounted(() => {
 @import '@/assets/_variables.scss';
 
 main {
-    position: relative;
+  position: relative;
 
-    .container {
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-    }
+  .container {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
 }
 
 hgroup {
-    p {
-        font-size: 3rem;
-    }
+  p {
+    font-size: 3rem;
+  }
 }
 
 footer {
-    background-color: $associationColorBackground;
-    text-align: center;
-    padding: 3rem 0 1rem 0;
+  background-color: $associationColorBackground;
+  text-align: center;
+  padding: 3rem 0 1rem 0;
 
-    p {
-        text-transform: uppercase;
-    }
+  p {
+    text-transform: uppercase;
+  }
 }
 </style>

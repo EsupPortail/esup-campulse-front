@@ -14,7 +14,6 @@ const routesNames = ['Home', 'Login', 'CASLogin', '404', 'Maintenance', 'DesignS
   <SkipToContentLink/>
   <RouterView
     v-if="colorVariant || (route.name ? routesNames.includes(route.name?.toString()) : true)"
-    :data-page=route.name
   />
 </template>
 

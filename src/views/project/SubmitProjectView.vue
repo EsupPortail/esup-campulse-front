@@ -240,7 +240,7 @@ async function onGetCommissionDates() {
     await getFunds()
     await getCommissionFunds()
     if (!newProject.value) {
-      await projectStore.getProjectCommissionFunds(false, undefined)
+      await projectStore.getProjectCommissionFunds({filter: 'project', projectId: projectStore.project?.id})
       projectCommission.value = commissionFunds.value
         .find(obj => obj.id === projectStore.projectCommissionFunds[0].commissionFund)?.commission as number
       if (projectCommission.value) {
@@ -264,7 +264,7 @@ async function onGetCommissionDates() {
 async function onGetProjectBudget() {
   loading.show()
   try {
-    await projectStore.getProjectCommissionFunds(false, undefined)
+    await projectStore.getProjectCommissionFunds({filter: 'project', projectId: projectStore.project?.id})
     initProjectBudget()
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

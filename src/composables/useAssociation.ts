@@ -6,6 +6,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import useUserAssociations from '@/composables/useUserAssociation'
 import useDocumentUploads from '@/composables/useDocumentUpload'
 import * as associationService from '@/services/AssociationService'
+import type {AxiosResponse} from 'axios'
 
 
 // Needed to modify the social networks of an association
@@ -19,7 +20,7 @@ async function createAssociation(newAssociation: NewAssociation): Promise<void> 
   await associationService.createAssociation(newAssociation)
 }
 
-async function getAssociationPdfExport(associationId: number): Promise<ArrayBuffer> {
+async function getAssociationPdfExport(associationId: number): Promise<AxiosResponse> {
   return await associationService.getAssociationPdfExport(associationId)
 }
 

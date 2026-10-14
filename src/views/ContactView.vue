@@ -47,10 +47,6 @@ const initContent = () => {
 
 <template>
   <section class="dashboard-section">
-    <!--        <h2>
-                <i class="bi bi-envelope"></i>
-                {{ t('contact.contact') }}
-            </h2>-->
     <div class="dashboard-section-container">
       <div class="container flex-column">
         <i

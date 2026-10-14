@@ -54,7 +54,7 @@ async function onClearSearch() {
   try {
     // Reset projects
     await projectStore.getManagedProjects(commissionId.value)
-    await projectStore.getProjectCommissionFunds(true, commissionId.value)
+    await projectStore.getProjectCommissionFunds({filter: 'commission', commissionId: commissionId.value})
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({

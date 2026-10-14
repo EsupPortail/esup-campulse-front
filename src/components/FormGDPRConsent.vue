@@ -3,7 +3,7 @@ import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n()
 
-const props = defineProps({
+defineProps({
   hasConsent: Boolean
 })
 </script>
@@ -13,7 +13,7 @@ const props = defineProps({
     <QCheckbox
       :aria-label="t('forms.gdpr-consent')"
       :label="t('forms.gdpr-consent')"
-      :model-value="props.hasConsent"
+      :model-value="hasConsent"
       color="dashboard"
       @click="$emit('updateConsent')"
     />

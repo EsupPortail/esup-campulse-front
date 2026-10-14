@@ -1,25 +1,19 @@
 import {defineStore} from 'pinia'
-import type {
-  Project,
-  ProjectCategoryName,
-  ProjectCommissionFund,
-  ProjectReview,
-  ProjectStatus,
-  ProjectStore
-} from '#/project'
-import {useAxios} from '@/composables/useAxios'
+import type {ProjectCommissionFundFilter, ProjectStatus, ProjectStore} from '#/project'
 import type {SelectLabel} from '#/global'
-import type {DocumentUpload} from '#/document'
 import useCommissions from '@/composables/useCommissionFund'
+import * as projectService from '@/services/ProjectService'
+import * as documentUploadService from '@/services/DocumentUploadService'
+import type {AxiosResponse} from 'axios'
 
 
 export const useProjectStore = defineStore('projectStore', {
   state: (): ProjectStore => ({
     project: undefined,
     projects: undefined,
+    projectCategoryNames: [],
     projectCommissionFunds: [],
     projectDocuments: [],
-    projectCategoryNames: [],
     projectReview: undefined
   }),
 
@@ -62,87 +56,62 @@ export const useProjectStore = defineStore('projectStore', {
     }
   },
   actions: {
-    async getProjectCategoryNames(onlyEnabled?: boolean) {
-      const {axiosPublic} = useAxios()
-      const url = `/projects/categories/names${onlyEnabled ? '?is_enabled=true' : ''}`
-      this.projectCategoryNames = (await axiosPublic.get<ProjectCategoryName[]>(url)).data
+    async getProjects(params?: { commission?: number, association?: number }): Promise<void> {
+      this.projects = await projectService.getProjects(params)
     },
 
-    async getProjectDetail(id: number) {
-      const {axiosAuthenticated} = useAxios()
-      this.project = (await axiosAuthenticated.get<Project>(`/projects/${id}`)).data
+    async getProjectDetail(): Promise<void> {
+      this.project = await projectService.getProjectDetail(this.project?.id)
     },
 
-    async getProjectCommissionFunds(asManager: boolean, commission: number | undefined) {
-      const {axiosAuthenticated} = useAxios()
-      let url = ''
-      if (asManager) {
-        url = '/projects/commission_funds'
-        if (commission) url += `?commission_id=${commission}`
-      } else {
-        url = `/projects/${this.project?.id}/commission_funds`
-      }
-      this.projectCommissionFunds = (await axiosAuthenticated.get<ProjectCommissionFund[]>(url)).data
+    async getProjectCategoryNames(onlyEnabled?: boolean): Promise<void> {
+      this.projectCategoryNames = await projectService.getProjectCategoryNames(onlyEnabled)
     },
 
-    async getProjectDocuments() {
-      const {axiosAuthenticated} = useAxios()
-      const url = `/documents/uploads?project_id=${this.project?.id}`
-      this.projectDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
+    async getProjectCommissionFunds(filter: ProjectCommissionFundFilter): Promise<void> {
+      this.projectCommissionFunds = await projectService.getProjectCommissionFunds(filter)
     },
 
-    async getProjects(params?: { commission?: number, association?: number }) {
-      const {axiosAuthenticated} = useAxios()
-      let url = '/projects/'
-      const factory = []
-      if (params?.commission) factory.push(`commission_id=${params.commission}`)
-      if (params?.association) factory.push(`association_id=${params.association}`)
-      if (factory.length) url += '?' + factory.join('&')
-      this.projects = (await axiosAuthenticated.get<ProjectList>(url)).data
+    async getProjectReview(): Promise<void> {
+      this.projectReview = await projectService.getProjectReview(this.project?.id)
     },
 
-    async getProjectReview(projectId: number) {
-      const {axiosAuthenticated} = useAxios()
-      const url = `/projects/${projectId}/review`
-      this.projectReview = (await axiosAuthenticated.get<ProjectReview>(url)).data
+    async getProjectPdf(): Promise<AxiosResponse<ArrayBuffer>> {
+      return await projectService.getProjectPdf(this.project?.id)
     },
 
-    async getProjectPdf(id: number) {
-      const {axiosAuthenticated} = useAxios()
-      const url = `/projects/${id}/pdf_export`
-      return await axiosAuthenticated.get(url, {responseType: 'arraybuffer'})
+    async getProjectReviewPdf(): Promise<AxiosResponse<ArrayBuffer>> {
+      return await projectService.getProjectReviewPdf(this.project?.id)
     },
 
-    async getProjectReviewPdf(id: number) {
-      const {axiosAuthenticated} = useAxios()
-      const url = `/projects/${id}/review/pdf_export`
-      return await axiosAuthenticated.get(url, {responseType: 'arraybuffer'})
+    async patchProjectStatus(projectStatus: ProjectStatus): Promise<void> {
+      this.project = await projectService.patchProjectStatus(
+        this.project?.id,
+        this.project?.projectStatus,
+        projectStatus
+      )
     },
 
-    async getProjectFiles(id: number) {
-      const {axiosAuthenticated} = useAxios()
-      const url = `/documents/uploads/file?project_id=${id}`
-      return await axiosAuthenticated.get(url, {responseType: 'arraybuffer'})
+    async patchProjectCommissionFund(original: number, updated: number): Promise<void> {
+      await projectService.patchProjectCommissionFund(
+        this.project?.id,
+        original,
+        updated
+      )
     },
 
-    async patchProjectStatus(projectStatus: ProjectStatus) {
-      const {axiosAuthenticated} = useAxios()
-      if (this.project?.projectStatus === projectStatus) return
-      await axiosAuthenticated.patch(`/projects/${this.project.id}/status`, {projectStatus})
-      this.project.projectStatus = projectStatus
+    async postponeProject(newCommissionId: number): Promise<void> {
+      await projectService.postponeProject(this.project?.id, newCommissionId)
     },
 
-    async patchProjectCommissionFund(oldCommissionFund: number, newCommissionFund: number) {
-      const {axiosAuthenticated} = useAxios()
-      const url = `/projects/${this.project?.id}/commission_funds/${oldCommissionFund}`
-      await axiosAuthenticated.patch(url, {newCommissionFundId: newCommissionFund})
+    // old = getProjectDocuments
+    async getProjectDocumentUploads(): Promise<void> {
+      this.projectDocuments = await documentUploadService.getProjectDocumentUploads(this.project?.id)
     },
 
-    async postponeProject(projectId: number, newCommissionId: number) {
-      const {axiosAuthenticated} = useAxios()
-      const url = `/projects/${projectId}/postpone`
-      await axiosAuthenticated.patch(url, {newCommissionId})
-    }
+    // old = getProjectFiles
+    async getProjectFileZip(): Promise<AxiosResponse<ArrayBuffer>> {
+      return await documentUploadService.getProjectFileZip(this.project?.id)
+    },
   }
-
 })

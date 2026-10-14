@@ -107,7 +107,7 @@ async function onUpdateProjectStatus() {
 
       await getProjectComments(projectStore.project.id)
       await projectStore.getProjectDetail(projectStore.project.id)
-      await projectStore.getProjectCommissionFunds(false, undefined)
+      await projectStore.getProjectCommissionFunds({filter: 'project', projectId: projectStore.project.id})
       open.value = false
       newComment.value.text = ''
       newComment.value.isVisible = false

@@ -66,7 +66,7 @@ async function onGetCommissionDates() {
     await Promise.all([
       await projectStore.getProjectDetail(props.project),
       commissionStore.getCommissionsToPostponeProject(props.project),
-      projectStore.getProjectCommissionFunds(false, props.project),
+      projectStore.getProjectCommissionFunds({filter: 'project', projectId: props.project}),
       fundStore.getFunds(),
       commissionStore.getCommissionFunds()
     ])

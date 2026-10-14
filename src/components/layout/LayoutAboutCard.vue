@@ -3,8 +3,6 @@ import DOMPurify from 'dompurify'
 
 const props = defineProps<{
   header?: string,
-  /*label: string,
-  code: string,*/
   body?: string,
   cssClass: string
 }>()

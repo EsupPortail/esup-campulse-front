@@ -44,7 +44,7 @@ async function onGetProjectCommissions() {
       await commissionStore.getAllCommissions()
       await commissionStore.getCommissionFunds()
       await fundStore.getFunds()
-      await projectStore.getProjectCommissionFunds(false, undefined)
+      await projectStore.getProjectCommissionFunds({filter: 'project', projectId: projectStore.project?.id})
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         notify({

@@ -7,8 +7,11 @@ import {onMounted} from 'vue'
 const {t} = useI18n()
 const {dynamicTitle} = useUtility()
 
-const CASUrlLogin = `${import.meta.env.VITE_APP_CAS_URL}/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-login`
-const CASUrlRegister = `${import.meta.env.VITE_APP_CAS_URL}/login?service=${encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)}/cas-register`
+const frontUrl = encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)
+const CASUrl = import.meta.env.VITE_APP_CAS_URL
+
+const CASUrlLogin = `${CASUrl}/login?service=${frontUrl}/cas-login`
+const CASUrlRegister = `${CASUrlLogin}/login?service=${frontUrl}/cas-register`
 
 onMounted(() => {
   dynamicTitle.value = t('forms.login')

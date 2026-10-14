@@ -30,7 +30,8 @@ onMounted(async () => {
 
 async function onGetContent() {
   try {
-    await contentStore.getContentsByCode(['ABOUT_APP', 'ABOUT_FUNDING', 'ABOUT_PARTNERSHIP', 'ABOUT_ASSOCIATION', 'ABOUT_CHARTER', 'ABOUT_PROJECT'])
+    await contentStore.getContentsByCode(['ABOUT_APP', 'ABOUT_FUNDING', 'ABOUT_PARTNERSHIP',
+      'ABOUT_ASSOCIATION', 'ABOUT_CHARTER', 'ABOUT_PROJECT'])
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({

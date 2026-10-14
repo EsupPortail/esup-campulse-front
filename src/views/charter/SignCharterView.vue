@@ -10,7 +10,7 @@ import useErrors from '@/composables/useError'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import type {EditedAssociation} from '#/association'
 import useUtility from '@/composables/useUtil'
-import useAssociation from '@/composables/useAssociation'
+import {useAssociation} from '@/composables/useAssociation'
 import FormDocumentUpload from '@/components/documents/FormDocumentUpload.vue'
 import useDocumentUploads from '@/composables/useDocumentUpload'
 import CharterRecap from '@/components/charter/CharterRecap.vue'
@@ -111,8 +111,9 @@ async function onGetAssociationDetails() {
 async function onPatchAssociation() {
   loading.show()
   try {
-    if (Object.entries(checkChanges(editedAssociation.value)).length) {
-      await updateAssociation()
+    const associationHasChanges = !!Object.entries(checkChanges(editedAssociation.value)).length
+    if (associationHasChanges) {
+      await updateAssociation(editedAssociation.value)
       notify({
         type: 'positive',
         message: t('notifications.positive.association-successfully-updated')
