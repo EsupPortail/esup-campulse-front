@@ -8,15 +8,15 @@ const testMessage = import.meta.env.VITE_APP_TEST_MESSAGE
 </script>
 
 <template>
-    <QLayout
-        class="layout-page"
-        view="hhh lpr fff"
-    >
-        <LayoutTest v-if="testMessage !== ''"/>
-        <LayoutMinimalHeader/>
-        <LayoutContent/>
-        <LayoutFooter/>
-    </QLayout>
+  <QLayout
+    class="layout-page"
+    view="hhh lpr fff"
+  >
+    <LayoutTest v-if="testMessage !== ''"/>
+    <LayoutMinimalHeader/>
+    <LayoutContent/>
+    <LayoutFooter/>
+  </QLayout>
 </template>
 
 <style lang="scss" scoped>

@@ -13,29 +13,29 @@ interface UseAxiosState {
 const config = {baseURL: import.meta.env.VITE_APP_BASE_URL}
 
 const state = reactive<UseAxiosState>({
-    axios: () => axios.create(config),
-    axiosAuth: () => {
-        const _axios = axios.create(config)
-        const {axiosRequestInterceptor} = useCasAuthentication()
+  axios: () => axios.create(config),
+  axiosAuth: () => {
+    const _axios = axios.create(config)
+    const {axiosRequestInterceptor} = useCasAuthentication()
 
-        _axios.interceptors.request.use(
-            axiosRequestInterceptor({
-                axios: _axios,
-                router,
-                jwtServerUrl: import.meta.env.VITE_APP_BASE_URL + '/users/auth',
-                serverCAS: import.meta.env.VITE_APP_CAS_URL,
-                options: {
-                    appIsAllAuth: false,
-                    authCasLogoutUrl: 'Logout',
-                    hasFreeAPI: true,
-                    loginRoute: {name: 'Login'},
-                    loginRouteIsInternal: true
-                }
-            }),
-            error => Promise.reject(error)
-        )
+    _axios.interceptors.request.use(
+      axiosRequestInterceptor({
+        axios: _axios,
+        router,
+        jwtServerUrl: import.meta.env.VITE_APP_BASE_URL + '/users/auth',
+        serverCAS: import.meta.env.VITE_APP_CAS_URL,
+        options: {
+          appIsAllAuth: false,
+          authCasLogoutUrl: 'Logout',
+          hasFreeAPI: true,
+          loginRoute: {name: 'Login'},
+          loginRouteIsInternal: true
+        }
+      }),
+      error => Promise.reject(error)
+    )
 
-        /*_axios.interceptors.response.use(response => {
+    /*_axios.interceptors.response.use(response => {
             return response
         }, async function (error) {
             if (error.response?.status === 401) {
@@ -51,13 +51,13 @@ const state = reactive<UseAxiosState>({
             return Promise.reject(error)
         })*/
 
-        return _axios
-    },
+    return _axios
+  },
 })
 
 export const useAxios = () => {
-    return {
-        axiosPublic: state.axios(),
-        axiosAuthenticated: state.axiosAuth(),
-    }
+  return {
+    axiosPublic: state.axios(),
+    axiosAuthenticated: state.axiosAuth(),
+  }
 }

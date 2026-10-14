@@ -1,6 +1,70 @@
-import type {DocumentUpload} from '#/documents'
-import type {Commission} from '#/commissions'
+import type {DocumentUpload} from '#/document'
+import type {Commission} from '#/commission'
 import type {UserAssociation, UserAssociationDetail} from '#/user'
+import type {CharterStatus} from '#/charter'
+import type {PaginatedList} from '#/global'
+
+export interface ProjectListItem {
+    id: number,
+    name: string,
+    manualIdentifier: string,
+    association: {
+        id: number,
+        name: string,
+        acronym: string,
+        email: string,
+        isEnabled: boolean,
+        isPublic: boolean,
+        isSite: boolean,
+        institution: number,
+        canSubmitProjects: boolean,
+        charterStatus: CharterStatus
+    } | null,
+    user: {
+        id: number,
+        firstName: string,
+        lastName: string
+    } | null,
+    associationUser: {
+        id: number,
+        user: {
+            id: number,
+            firstName: string,
+            lastName: string
+        },
+        association: {
+            id: number,
+            name: string,
+            acronym: string,
+            email: string,
+            isEnabled: boolean,
+            isPublic: boolean,
+            isSite: boolean,
+            institution: number,
+            canSubmitProjects: boolean,
+            charterStatus: CharterStatus
+        },
+        isPresident: boolean,
+        canBePresidentFrom: string | null,
+        canBePresidentTo: string | null,
+        isValidatedByAdmin: boolean,
+        isVicePresident: boolean,
+        isSecretary: boolean,
+        isTreasurer: boolean
+    },
+    commission: {
+        id: number,
+        submissionDate: string,
+        commissionDate: string,
+        isOpenToProjects: boolean,
+        name: string
+    } | null,
+    plannedStartDate: string,
+    plannedEndDate: string,
+    editionDate: string,
+    projectStatus: ProjectStatus,
+    budgetFile: string
+}
 
 export interface Project {
     id: number,
@@ -33,22 +97,6 @@ export interface Project {
     editionDate: string,
     processingDate?: string,
     budgetFile: string,
-}
-
-export interface ProjectList {
-    id: number,
-    name: string,
-    association: string | null,
-    user: string | null,
-    associationUser: string | null,
-    editionDate: string,
-    plannedEndDate: string,
-    plannedLocation: string,
-    projectStatus: ProjectStatus,
-    commission?: Commission,
-    commissionFunds?: ProjectCommissionFund[],
-    manualIdentifier: string,
-    budgetFile: string | null
 }
 
 type ProjectStatus =
@@ -157,8 +205,7 @@ export interface ProjectComment {
 // STORE
 export interface ProjectStore {
     project: Project | undefined,
-    selfProjects: Project[],
-    managedProjects: Project[],
+    projects: PaginatedList<ProjectListItem> | undefined,
     projectCommissionFunds: ProjectCommissionFund[],
     projectDocuments: DocumentUpload[],
     projectCategoryNames: ProjectCategoryName[],

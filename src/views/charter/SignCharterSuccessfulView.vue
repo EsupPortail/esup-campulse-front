@@ -3,11 +3,11 @@ import {useRoute} from 'vue-router'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import axios from 'axios'
-import useErrors from '@/composables/useErrors'
+import useErrors from '@/composables/useError'
 import useAssociation from '@/composables/useAssociation'
 import {onMounted, ref} from 'vue'
-import {useUserStore} from '@/stores/useUserStore'
-import useUtility from '@/composables/useUtility'
+import {useProfileStore} from '@/stores/useProfileStore'
+import useUtility from '@/composables/useUtil'
 
 const {getAssociationPdfExport} = useAssociation()
 const route = useRoute()
@@ -18,68 +18,68 @@ const {openDocument} = useUtility()
 
 const associationId = ref<number>()
 const associationName = ref<string>('')
-const userStore = useUserStore()
+const profileStore = useProfileStore()
 
 
 const initAssociation = () => {
-    associationId.value = Number.parseInt(route.params.associationId as string)
-    associationName.value = userStore.userAssociations.find(obj => obj.association.id === associationId.value)?.association.name ?? ''
+  associationId.value = Number.parseInt(route.params.associationId as string)
+  associationName.value = profileStore.userAssociations.find(obj => obj.association.id === associationId.value)?.association.name ?? ''
 }
 
 onMounted(initAssociation)
 
 async function onGetAssociationPdfExport() {
-    if (associationId.value && associationName.value) {
-        loading.show()
-        try {
-            const response = await getAssociationPdfExport(associationId.value)
-            openDocument(response)
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                notify({
-                    type: 'negative',
-                    message: await catchHTTPError(error.response)
-                })
-            }
-        }
-        loading.hide()
+  if (associationId.value && associationName.value) {
+    loading.show()
+    try {
+      const response = await getAssociationPdfExport(associationId.value)
+      openDocument(response)
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        notify({
+          type: 'negative',
+          message: await catchHTTPError(error.response)
+        })
+      }
     }
+    loading.hide()
+  }
 }
 </script>
 
 <template>
-    <section class="dashboard-section">
-        <div class="form-container">
-            <div class="form">
-                <section class="recap">
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-check-circle"
-                    ></i>
-                    <h2>{{ t('charter.site.sign-form.recap.title') }}</h2>
-                    <p class="paragraph">{{ t('charter.site.sign-form.recap.description') }}</p>
-                    <div class="flex-row-center">
-                        <QBtn
-                            :label="t('project.download-recap')"
-                            class="btn-lg"
-                            color="charter"
-                            icon="bi-filetype-pdf"
-                            text-color="charter"
-                            @click="onGetAssociationPdfExport"
-                        />
-                        <QBtn
-                            :label="t('dashboard.charter-dashboard')"
-                            :to="{ name: 'ManageCharters' }"
-                            class="btn-lg"
-                            color="charter"
-                            icon="bi-chevron-compact-right"
-                            text-color="charter"
-                        />
-                    </div>
-                </section>
-            </div>
-        </div>
-    </section>
+  <section class="dashboard-section">
+    <div class="form-container">
+      <div class="form">
+        <section class="recap">
+          <i
+            aria-hidden="true"
+            class="bi bi-check-circle"
+          ></i>
+          <h2>{{ t('charter.site.sign-form.recap.title') }}</h2>
+          <p class="paragraph">{{ t('charter.site.sign-form.recap.description') }}</p>
+          <div class="flex-row-center">
+            <QBtn
+              :label="t('project.download-recap')"
+              class="btn-lg"
+              color="charter"
+              icon="bi-filetype-pdf"
+              text-color="charter"
+              @click="onGetAssociationPdfExport"
+            />
+            <QBtn
+              :label="t('dashboard.charter-dashboard')"
+              :to="{ name: 'ManageCharters' }"
+              class="btn-lg"
+              color="charter"
+              icon="bi-chevron-compact-right"
+              text-color="charter"
+            />
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>

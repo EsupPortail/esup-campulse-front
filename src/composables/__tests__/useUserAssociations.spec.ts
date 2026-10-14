@@ -3,299 +3,299 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 import {config} from '@vue/test-utils'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {createPinia, setActivePinia} from 'pinia'
+import {useProfileStore} from '@/stores/useProfileStore'
 import {useUserStore} from '@/stores/useUserStore'
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
 import {
-    _associationMembers,
-    _associationRole,
-    _generalManager,
-    _institutionStudent,
-    _userAssociations,
-    _users
+  _associationMembers,
+  _associationRole,
+  _generalManager,
+  _institutionStudent,
+  _userAssociations,
+  _users
 } from '~/fixtures/user.mock'
-import useUserAssociations from '@/composables/useUserAssociations'
+import useUserAssociations from '@/composables/useUserAssociation'
 import {useAxios} from '@/composables/useAxios'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import type {AssociationMember} from '#/user'
 
 
 vi.mock('@/composables/useAxios', () => ({
-    useAxios: () => ({
-        axiosPublic: _axiosFixtures,
-        axiosAuthenticated: _axiosFixtures
-    })
+  useAxios: () => ({
+    axiosPublic: _axiosFixtures,
+    axiosAuthenticated: _axiosFixtures
+  })
 }))
 
 vi.mock('@/composable/useUserAssociations', () => ({
-    default: () => ({
-        updateUserAssociations: vi.fn(),
-        deleteUserAssociation: vi.fn(),
-        getUserAssociations: vi.fn(),
-        patchUserAssociations: vi.fn()
-    })
+  default: () => ({
+    updateUserAssociations: vi.fn(),
+    deleteUserAssociation: vi.fn(),
+    getUserAssociations: vi.fn(),
+    patchUserAssociations: vi.fn()
+  })
 }))
 
 setActivePinia(createPinia())
 
 config.global.plugins = [
-    createTestingPinia({
-        createSpy: vi.fn()
-    })
+  createTestingPinia({
+    createSpy: vi.fn()
+  })
 ]
 
-let userManagerStore = useUserManagerStore()
 let userStore = useUserStore()
+let userStore = useProfileStore()
 let associationStore = useAssociationStore()
 
 describe('useUserAssociations', () => {
-    beforeEach(() => {
-        userStore = useUserStore()
-        userManagerStore = useUserManagerStore()
-        associationStore = useAssociationStore()
+  beforeEach(() => {
+    userStore = useProfileStore()
+    userStore = useUserStore()
+    associationStore = useAssociationStore()
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  const {
+    deleteUserAssociation,
+    patchUserAssociations,
+    userAssociations,
+    initAssociationMembers,
+    associationMembers,
+    updateUserAssociations,
+    newAssociations,
+    addAssociation,
+    associationRoleOptions,
+    removeAssociation,
+    updateRegisterRoleInAssociation,
+    newAssociationsUser,
+    getAssociationUsersNames,
+    getAssociationUserRole,
+    initUserAssociations,
+    getUnvalidatedAssociationUsers
+  } = useUserAssociations()
+  const {axiosAuthenticated} = useAxios()
+
+  const mockedAxios = vi.mocked(axiosAuthenticated, true)
+
+
+  describe('updateUserAssociations', () => {
+    describe('if editedByStaff', () => {
+      beforeEach(() => {
+        userStore.user = _institutionStudent
+        userAssociations.value = [_associationRole]
+      })
+
+      afterEach(() => {
+        userStore.user = undefined
+        userStore.userAssociations = []
+        userAssociations.value = []
+      })
+
+      it('should delete userAssociations if the deleteAssociation param is set to true', async () => {
+        userAssociations.value[0].deleteAssociation = true
+        updateUserAssociations(true)
+        expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
+        const url = `/users/${userStore.user?.id}/associations/${userAssociations.value[0].id}`
+        expect(axiosAuthenticated.delete).toHaveBeenCalledWith(url)
+      })
+
+      it('should patch userAssociations if there are changes', async () => {
+        userAssociations.value[0].deleteAssociation = false
+        userStore.userAssociations = structuredClone(_userAssociations)
+        userStore.userAssociations[0].isPresident = false
+        userStore.userAssociations[0].isSecretary = true
+        updateUserAssociations(true)
+        expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+      })
     })
 
+    describe('if not editedByStaff', () => {
+      beforeEach(() => {
+        userStore.user = _institutionStudent
+        userAssociations.value = [_associationRole]
+      })
+
+      afterEach(() => {
+        userStore.user = undefined
+        userAssociations.value = []
+      })
+
+      it('should delete userAssociations if the deleteAssociation param is set to true and splice it from composable and store', async () => {
+        userAssociations.value[0].deleteAssociation = true
+        updateUserAssociations(false)
+        expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
+        const url = `/users/${userStore.user?.id}/associations/${userAssociations.value[0].id}`
+        expect(axiosAuthenticated.delete).toHaveBeenCalledWith(url)
+        //expect(userAssociations.value.length).toEqual(0) TODO test this part
+      })
+
+      it('should patch userAssociations if there are changes', async () => {
+        userAssociations.value[0].deleteAssociation = false
+        userStore.userAssociations = structuredClone(_userAssociations)
+        userStore.userAssociations[0].isPresident = false
+        userStore.userAssociations[0].isSecretary = true
+        updateUserAssociations(false)
+        expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+      })
+    })
+  })
+
+  describe('deleteUserAssociation', () => {
+    it('should call API once on /users/userId/associations/associationId', async () => {
+      userStore.user = _institutionStudent
+      await deleteUserAssociation(userStore.user?.id, 1)
+      expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
+      expect(axiosAuthenticated.delete).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}/associations/1`)
+    })
+  })
+
+  describe('patchUserAssociations', () => {
+    it('should call API once on /users/userId/associations/associationId with data to patch as payload', async () => {
+      userManagerStore.user = _institutionStudent
+      const dataToPatch = {
+        isPresident: false,
+        canBePresidentFrom: null,
+        canBePresidentTo: null,
+        isSecretary: false,
+        isTreasurer: true,
+        isVicePresident: false
+      }
+      await patchUserAssociations(userManagerStore.user?.id, 1, dataToPatch)
+      expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+      expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}/associations/1`, dataToPatch)
+    })
+  })
+
+  describe('addAssociation', () => {
     afterEach(() => {
-        vi.restoreAllMocks()
+      newAssociations.value = []
     })
 
-    const {
-        deleteUserAssociation,
-        patchUserAssociations,
-        userAssociations,
-        initAssociationMembers,
-        associationMembers,
-        updateUserAssociations,
-        newAssociations,
-        addAssociation,
-        associationRoleOptions,
-        removeAssociation,
-        updateRegisterRoleInAssociation,
-        newAssociationsUser,
-        getAssociationUsersNames,
-        getAssociationUserRole,
-        initUserAssociations,
-        getUnvalidatedAssociationUsers
-    } = useUserAssociations()
-    const {axiosAuthenticated} = useAxios()
+    it('should push a new association object into newAssociations', () => {
+      addAssociation()
+      expect(newAssociations.value).toEqual([{
+        id: null,
+        role: 'isMember',
+        options: associationRoleOptions
+      }])
+    })
+  })
 
-    const mockedAxios = vi.mocked(axiosAuthenticated, true)
-
-
-    describe('updateUserAssociations', () => {
-        describe('if editedByStaff', () => {
-            beforeEach(() => {
-                userManagerStore.user = _institutionStudent
-                userAssociations.value = [_associationRole]
-            })
-
-            afterEach(() => {
-                userManagerStore.user = undefined
-                userManagerStore.userAssociations = []
-                userAssociations.value = []
-            })
-
-            it('should delete userAssociations if the deleteAssociation param is set to true', async () => {
-                userAssociations.value[0].deleteAssociation = true
-                updateUserAssociations(true)
-                expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
-                const url = `/users/${userManagerStore.user?.id}/associations/${userAssociations.value[0].id}`
-                expect(axiosAuthenticated.delete).toHaveBeenCalledWith(url)
-            })
-
-            it('should patch userAssociations if there are changes', async () => {
-                userAssociations.value[0].deleteAssociation = false
-                userManagerStore.userAssociations = structuredClone(_userAssociations)
-                userManagerStore.userAssociations[0].isPresident = false
-                userManagerStore.userAssociations[0].isSecretary = true
-                updateUserAssociations(true)
-                expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
-            })
-        })
-
-        describe('if not editedByStaff', () => {
-            beforeEach(() => {
-                userStore.user = _institutionStudent
-                userAssociations.value = [_associationRole]
-            })
-
-            afterEach(() => {
-                userStore.user = undefined
-                userAssociations.value = []
-            })
-
-            it('should delete userAssociations if the deleteAssociation param is set to true and splice it from composable and store', async () => {
-                userAssociations.value[0].deleteAssociation = true
-                updateUserAssociations(false)
-                expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
-                const url = `/users/${userStore.user?.id}/associations/${userAssociations.value[0].id}`
-                expect(axiosAuthenticated.delete).toHaveBeenCalledWith(url)
-                //expect(userAssociations.value.length).toEqual(0) TODO test this part
-            })
-
-            it('should patch userAssociations if there are changes', async () => {
-                userAssociations.value[0].deleteAssociation = false
-                userStore.userAssociations = structuredClone(_userAssociations)
-                userStore.userAssociations[0].isPresident = false
-                userStore.userAssociations[0].isSecretary = true
-                updateUserAssociations(false)
-                expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
-            })
-        })
+  describe('removeAssociation', () => {
+    afterEach(() => {
+      newAssociations.value = []
     })
 
-    describe('deleteUserAssociation', () => {
-        it('should call API once on /users/userId/associations/associationId', async () => {
-            userManagerStore.user = _institutionStudent
-            await deleteUserAssociation(userManagerStore.user?.id, 1)
-            expect(axiosAuthenticated.delete).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.delete).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}/associations/1`)
-        })
+    it('should remove an association from newAssociations based on association index', () => {
+      addAssociation()
+      removeAssociation(0)
+      expect(newAssociations.value).toEqual([])
+    })
+  })
+
+  describe('updateRegisterRoleInAssociation', () => {
+    afterEach(() => {
+      newAssociations.value = []
     })
 
-    describe('patchUserAssociations', () => {
-        it('should call API once on /users/userId/associations/associationId with data to patch as payload', async () => {
-            userManagerStore.user = _institutionStudent
-            const dataToPatch = {
-                isPresident: false,
-                canBePresidentFrom: null,
-                canBePresidentTo: null,
-                isSecretary: false,
-                isTreasurer: true,
-                isVicePresident: false
-            }
-            await patchUserAssociations(userManagerStore.user?.id, 1, dataToPatch)
-            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(`/users/${userManagerStore.user?.id}/associations/1`, dataToPatch)
-        })
+    it('should return an array of association users based on newAssociations', () => {
+      newAssociations.value = structuredClone([_associationRole])
+      updateRegisterRoleInAssociation()
+      expect(newAssociationsUser.value).toEqual([
+        {
+          association: 1,
+          isPresident: true,
+          canBePresidentFrom: null,
+          canBePresidentTo: null,
+          isValidatedByAdmin: false,
+          isSecretary: false,
+          isTreasurer: false,
+          isVicePresident: false
+        }
+      ])
     })
+  })
 
-    describe('addAssociation', () => {
-        afterEach(() => {
-            newAssociations.value = []
-        })
-
-        it('should push a new association object into newAssociations', () => {
-            addAssociation()
-            expect(newAssociations.value).toEqual([{
-                id: null,
-                role: 'isMember',
-                options: associationRoleOptions
-            }])
-        })
+  describe('getAssociationUserRole', () => {
+    it('should return the string code of the role', () => {
+      expect(getAssociationUserRole(_userAssociations[0])).toEqual('isPresident')
+      expect(getAssociationUserRole(_userAssociations[1])).toEqual('isSecretary')
+      expect(getAssociationUserRole(_userAssociations[2])).toEqual('isTreasurer')
+      expect(getAssociationUserRole(_userAssociations[3])).toEqual('isVicePresident')
+      expect(getAssociationUserRole(_userAssociations[4])).toEqual('isMember')
     })
+  })
 
-    describe('removeAssociation', () => {
-        afterEach(() => {
-            newAssociations.value = []
-        })
-
-        it('should remove an association from newAssociations based on association index', () => {
-            addAssociation()
-            removeAssociation(0)
-            expect(newAssociations.value).toEqual([])
-        })
+  describe('getAssociationUserNames', () => {
+    it('should get users based on association affiliation', async () => {
+      mockedAxios.get.mockResolvedValueOnce({data: _users})
+      await getAssociationUsersNames(1)
+      expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+      expect(axiosAuthenticated.get).toHaveBeenCalledWith('/users/?association_id=1')
     })
+  })
 
-    describe('updateRegisterRoleInAssociation', () => {
-        afterEach(() => {
-            newAssociations.value = []
-        })
+  describe('initAssociationMembers', () => {
+    it('should get associationUsers and init them as members', async () => {
+      const spy = vi.spyOn(associationStore, 'getAssociationUsers')
+      associationStore.associationUsers = structuredClone(_userAssociations)
+      await initAssociationMembers(1, false)
+      expect(spy).toHaveBeenCalledOnce()
+      expect(associationMembers.value).toEqual(_associationMembers)
 
-        it('should return an array of association users based on newAssociations', () => {
-            newAssociations.value = structuredClone([_associationRole])
-            updateRegisterRoleInAssociation()
-            expect(newAssociationsUser.value).toEqual([
-                {
-                    association: 1,
-                    isPresident: true,
-                    canBePresidentFrom: null,
-                    canBePresidentTo: null,
-                    isValidatedByAdmin: false,
-                    isSecretary: false,
-                    isTreasurer: false,
-                    isVicePresident: false
-                }
-            ])
-        })
     })
+  })
 
-    describe('getAssociationUserRole', () => {
-        it('should return the string code of the role', () => {
-            expect(getAssociationUserRole(_userAssociations[0])).toEqual('isPresident')
-            expect(getAssociationUserRole(_userAssociations[1])).toEqual('isSecretary')
-            expect(getAssociationUserRole(_userAssociations[2])).toEqual('isTreasurer')
-            expect(getAssociationUserRole(_userAssociations[3])).toEqual('isVicePresident')
-            expect(getAssociationUserRole(_userAssociations[4])).toEqual('isMember')
-        })
+  describe('initUserAssociations', () => {
+    describe('if edited by staff', () => {
+      it('should init a the associations of a user with his/her role and role options', () => {
+        userManagerStore.userAssociations = structuredClone(_userAssociations)
+        initUserAssociations(true)
+        expect(userAssociations.value).toEqual(_userAssociations.map(association => ({
+          id: association.association.id,
+          name: association.association.name,
+          role: getAssociationUserRole(association),
+          options: associationRoleOptions,
+          isValidatedByAdmin: association.isValidatedByAdmin,
+          canBePresidentFrom: association.canBePresidentFrom,
+          canBePresidentTo: association.canBePresidentTo,
+          deleteAssociation: false
+        })))
+      })
     })
+  })
 
-    describe('getAssociationUserNames', () => {
-        it('should get users based on association affiliation', async () => {
-            mockedAxios.get.mockResolvedValueOnce({data: _users})
-            await getAssociationUsersNames(1)
-            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/users/?association_id=1')
-        })
+  describe('getUnvalidatedAssociationUsers', () => {
+
+    it('should get unvalidated association users', async () => {
+      mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
+      const url = '/users/associations/?is_validated_by_admin=false'
+      await getUnvalidatedAssociationUsers()
+      expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+      expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
     })
-
-    describe('initAssociationMembers', () => {
-        it('should get associationUsers and init them as members', async () => {
-            const spy = vi.spyOn(associationStore, 'getAssociationUsers')
-            associationStore.associationUsers = structuredClone(_userAssociations)
-            await initAssociationMembers(1, false)
-            expect(spy).toHaveBeenCalledOnce()
-            expect(associationMembers.value).toEqual(_associationMembers)
-
+    it('should init association members with their role', async () => {
+      userStore.user = _generalManager
+      mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
+      await getUnvalidatedAssociationUsers()
+      const test: AssociationMember[] = []
+      _userAssociations.forEach((userAssociation) => {
+        test.push({
+          id: userAssociation.id,
+          firstName: userAssociation.user.firstName,
+          lastName: userAssociation.user.lastName,
+          associationId: userAssociation.association.id,
+          associationName: userAssociation.association.name,
+          role: associationRoleOptions.find(role => role.value === getAssociationUserRole(userAssociation))?.label,
+          canBePresidentFrom: userAssociation.canBePresidentFrom,
+          canBePresidentTo: userAssociation.canBePresidentTo,
+          isValidatedByAdmin: userAssociation.isValidatedByAdmin
         })
+      })
+      expect(associationMembers.value).toEqual(test)
     })
-
-    describe('initUserAssociations', () => {
-        describe('if edited by staff', () => {
-            it('should init a the associations of a user with his/her role and role options', () => {
-                userManagerStore.userAssociations = structuredClone(_userAssociations)
-                initUserAssociations(true)
-                expect(userAssociations.value).toEqual(_userAssociations.map(association => ({
-                    id: association.association.id,
-                    name: association.association.name,
-                    role: getAssociationUserRole(association),
-                    options: associationRoleOptions,
-                    isValidatedByAdmin: association.isValidatedByAdmin,
-                    canBePresidentFrom: association.canBePresidentFrom,
-                    canBePresidentTo: association.canBePresidentTo,
-                    deleteAssociation: false
-                })))
-            })
-        })
-    })
-
-    describe('getUnvalidatedAssociationUsers', () => {
-
-        it('should get unvalidated association users', async () => {
-            mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
-            const url = '/users/associations/?is_validated_by_admin=false'
-            await getUnvalidatedAssociationUsers()
-            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith(url)
-        })
-        it('should init association members with their role', async () => {
-            userStore.user = _generalManager
-            mockedAxios.get.mockResolvedValueOnce({data: _userAssociations})
-            await getUnvalidatedAssociationUsers()
-            const test: AssociationMember[] = []
-            _userAssociations.forEach((userAssociation) => {
-                test.push({
-                    id: userAssociation.id,
-                    firstName: userAssociation.user.firstName,
-                    lastName: userAssociation.user.lastName,
-                    associationId: userAssociation.association.id,
-                    associationName: userAssociation.association.name,
-                    role: associationRoleOptions.find(role => role.value === getAssociationUserRole(userAssociation))?.label,
-                    canBePresidentFrom: userAssociation.canBePresidentFrom,
-                    canBePresidentTo: userAssociation.canBePresidentTo,
-                    isValidatedByAdmin: userAssociation.isValidatedByAdmin
-                })
-            })
-            expect(associationMembers.value).toEqual(test)
-        })
-    })
+  })
 })

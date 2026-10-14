@@ -2,19 +2,19 @@
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
-import useUsers from '@/composables/useUsers'
-import useUserGroups from '@/composables/useUserGroups'
-import useUserAssociations from '@/composables/useUserAssociations'
-import useSecurity from '@/composables/useSecurity'
-import useErrors from '@/composables/useErrors'
-import useDocumentUploads from '@/composables/useDocumentUploads'
+import {useUserStore} from '@/stores/useUserStore'
+import useUsers from '@/composables/useUser'
+import useUserGroups from '@/composables/useUserGroup'
+import useUserAssociations from '@/composables/useUserAssociation'
+import useSecurity from '@/composables/useAuthentication'
+import useErrors from '@/composables/useError'
+import useDocumentUploads from '@/composables/useDocumentUpload'
 import {ref, toRefs, watch} from 'vue'
 
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const userManagerStore = useUserManagerStore()
+const userStore = useUserStore()
 const {updateUserInfos, initInfosToPatch, infosToPatch} = useUsers()
 const {updateUserGroups} = useUserGroups()
 const {updateUserAssociations} = useUserAssociations()
@@ -33,82 +33,82 @@ const props = defineProps<{
 const confirm = ref<boolean>(false)
 const confirmRef = toRefs(props).confirmation
 watch(() => confirmRef.value, () => {
-    confirm.value = confirmRef.value
+  confirm.value = confirmRef.value
 })
 watch(() => confirm.value, () => {
-    if (!confirm.value) {
-        emit('closeDialog')
-    }
+  if (!confirm.value) {
+    emit('closeDialog')
+  }
 })
 
 async function onValidateChanges() {
-    loading.show()
-    try {
-        initInfosToPatch(userManagerStore.user)
-        if (Object.entries(infosToPatch).length) {
-            await updateUserInfos(userManagerStore.user, true)
-        }
-        updateUserAssociations(true)
-        await userAssociationsRegister(userManagerStore.user?.id)
-        await updateUserGroups()
-        await uploadDocuments(null, userManagerStore.user?.id)
-        initProcessDocuments()
-        await userManagerStore.getUserDocuments()
-        initManagedUserDocumentUploads()
-
-        emit('hasValidated')
-        notify({
-            type: 'positive',
-            message: t('notifications.positive.update-user-infos')
-        })
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
+  loading.show()
+  try {
+    initInfosToPatch(userStore.user)
+    if (Object.entries(infosToPatch).length) {
+      await updateUserInfos(userStore.user, true)
     }
-    loading.hide()
+    updateUserAssociations(true)
+    await userAssociationsRegister(userStore.user?.id)
+    await updateUserGroups()
+    await uploadDocuments(null, userStore.user?.id)
+    initProcessDocuments()
+    await userStore.getUserDocuments()
+    initManagedUserDocumentUploads()
+
+    emit('hasValidated')
+    notify({
+      type: 'positive',
+      message: t('notifications.positive.update-user-infos')
+    })
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
+    }
+  }
+  loading.hide()
 }
 </script>
 
 <template>
-    <QBtn
-        :label="t('dashboard.validate-changes')"
-        class="btn-lg"
-        color="dashboard"
-        icon="bi-check-lg"
-        type="submit"
-    />
+  <QBtn
+    :label="t('dashboard.validate-changes')"
+    class="btn-lg"
+    color="dashboard"
+    icon="bi-check-lg"
+    type="submit"
+  />
 
-    <QDialog
-        v-model="confirm"
-        persistent
-    >
-        <QCard>
-            <QCardSection class="row items-center">
-                <p>{{ t('user-manager.alert-confirm-update') }}</p>
-                <div class="flex-row padding-top">
-                    <QBtn
-                        v-close-popup
-                        :label="t('cancel')"
-                        class="btn-lg"
-                        color="dashboard"
-                        icon="bi-x-lg"
-                    />
-                    <QBtn
-                        v-close-popup
-                        :label="t('dashboard.validate-changes')"
-                        class="btn-lg"
-                        color="dashboard"
-                        icon="bi-check-lg"
-                        @click="onValidateChanges"
-                    />
-                </div>
-            </QCardSection>
-        </QCard>
-    </QDialog>
+  <QDialog
+    v-model="confirm"
+    persistent
+  >
+    <QCard>
+      <QCardSection class="row items-center">
+        <p>{{ t('user-manager.alert-confirm-update') }}</p>
+        <div class="flex-row padding-top">
+          <QBtn
+            v-close-popup
+            :label="t('cancel')"
+            class="btn-lg"
+            color="dashboard"
+            icon="bi-x-lg"
+          />
+          <QBtn
+            v-close-popup
+            :label="t('dashboard.validate-changes')"
+            class="btn-lg"
+            color="dashboard"
+            icon="bi-check-lg"
+            @click="onValidateChanges"
+          />
+        </div>
+      </QCardSection>
+    </QCard>
+  </QDialog>
 </template>
 
 <style lang="scss" scoped>

@@ -1,181 +1,157 @@
 import {defineStore} from 'pinia'
-import type {CasLogin, LocalLogin, User, UserAssociation, UserStore} from '#/user'
-import useSecurity from '@/composables/useSecurity'
+import type {User, UserAssociation, UserGroupRegister, UserNames, UserStore} from '#/user'
 import {useAxios} from '@/composables/useAxios'
-import useUserGroups from '@/composables/useUserGroups'
-import type {DocumentProcessType, DocumentUpload} from '#/documents'
-import useCommissions from '@/composables/useCommissions'
+import useSecurity from '@/composables/useAuthentication'
+import useUserGroups from '@/composables/useUserGroup'
+import type {DocumentUpload} from '#/document'
 
 export const useUserStore = defineStore('userStore', {
-    state: (): UserStore => ({
-        user: undefined,
-        newUser: undefined,
-        userAssociations: [],
-        userDocuments: []
-    }),
+  state: (): UserStore => ({
+    user: undefined,
+    users: [],
+    userAssociations: [],
+    userDocuments: []
+  }),
 
-    getters: {
-        isAuth: (state: UserStore): boolean => !!state.user,
-        isCas: (state: UserStore): boolean | undefined => state.user?.isCas || state.newUser?.isCas,
-        userInstitutions: (state: UserStore): (number | null | undefined)[] | undefined => {
-            const institutionsArray: number[] = []
-            state.user?.groups?.forEach((group) => {
-                if (group.institutionId) {
-                    institutionsArray.push(group.institutionId)
-                }
-            })
-            return institutionsArray
-        },
-        userFunds: (state: UserStore): (number | null | undefined)[] | undefined => {
-            const {funds} = useCommissions()
-            const fundsArray: number[] = []
-            state.user?.groups.forEach(group => {
-                if (group.institutionId) {
-                    const foundFunds = funds.value.filter(fund => fund.institution === group.institutionId)
-                    foundFunds?.forEach((fund) => {
-                        fundsArray.push(fund.id)
-                    })
-                }
-            })
-            return fundsArray
-        },
-        isAssociationMember: (state: UserStore): boolean => {
-            return !!state.user?.associations?.length
-        }
+  getters: {
+    userNames: (state: UserStore): UserNames => {
+      return state.users
+        .map(user => ({
+          value: user.id,
+          label: user.firstName + ' ' + user.lastName
+        }))
     },
-    actions: {
-
-        async logIn(url: string, data: LocalLogin | CasLogin) {
-            const {axiosPublic} = useAxios()
-            const {newUser, setTokens} = useSecurity()
-            const response = await axiosPublic.post(url, data)
-            const {access, refresh, user} = response.data as { access: string, refresh: string, user: User }
-            const hasGroups = !!user.groups.length
-            // User account is complete
-            if (hasGroups) {
-                // If user is validated by admin
-                if (user.isValidatedByAdmin) {
-                    setTokens(access, refresh)
-                    this.user = user
-                }
-                // If user is not validated by admin
-                else {
-                    throw new Error('USER_NOT_VALIDATED_BY_ADMIN')
-                }
-            }
-            // User account is not complete
-            else {
-                setTokens(access, refresh)
-                newUser.isCas = user.isCas
-                newUser.email = user.email
-                newUser.username = user.username
-                newUser.firstName = user.firstName
-                newUser.lastName = user.lastName
-                newUser.phone = user.phone
-                throw new Error('USER_ACCOUNT_NOT_COMPLETE')
-            }
-        },
-
-        logOut() {
-            const {removeTokens} = useSecurity()
-            const {isStaff} = useUserGroups()
-            removeTokens()
-            this.unLoadUser()
-            isStaff.value = undefined
-        },
-
-        async getUser() {
-            const {axiosAuthenticated} = useAxios()
-            const user = (await axiosAuthenticated.get<User>('/users/auth/user/')).data
-            if (user.isValidatedByAdmin) {
-                this.user = user
-            } else if (user.isCas) {
-                this.newUser = {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    isCas: true,
-                    username: user.username,
-                    email: user.email,
-                    phone: user.phone as string
-                }
-            } else {
-                this.logOut()
-            }
-        },
-
-        unLoadUser() {
-            this.user = undefined
-            this.userAssociations = []
-        },
-
-        unLoadNewUser() {
-            const {removeTokens} = useSecurity()
-            removeTokens()
-            this.newUser = undefined
-        },
-
-        async loadCASUser(ticket: string) {
-            const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
-            const {axiosPublic} = useAxios()
-            const data = (await axiosPublic.post('/users/auth/cas/login/', {ticket, service})).data
-            const {access, refresh, user} = data
-            // If the user has already created an account
-            if (user.groups.length) {
-                throw new Error('USER_ACCOUNT_ALREADY_EXISTS')
-            }
-            // If the user has no account
-            else {
-                const {setTokens} = useSecurity()
-                setTokens(access, refresh)
-                this.newUser = user
-            }
-        },
-
-        async getUserAssociations() {
-            const {axiosAuthenticated} = useAxios()
-
-            const url = `/users/${this.user?.id}/associations/`
-
-            const response = await axiosAuthenticated.get<UserAssociation[]>(url)
-            this.userAssociations = response.data
-        },
-
-        hasPresidentStatus(associationId: number): boolean {
-            if (!this.userAssociations.length || !associationId) return false
-
-            const association = this.userAssociations.find(obj => obj.association.id === associationId)
-            if (!association) return false
-
-            if (association.isPresident) {
-                return true
-            } else if (association.canBePresidentFrom || association.canBePresidentTo) {
-                const today = new Date()
-                today.setHours(0, 0, 0, 0)
-                let canBePresidentFrom = today
-                if (association.canBePresidentFrom) {
-                    canBePresidentFrom = new Date(association.canBePresidentFrom)
-                    canBePresidentFrom.setHours(0, 0, 0, 0)
-                }
-                let canBePresidentTo = today
-                if (association.canBePresidentTo) {
-                    canBePresidentTo = new Date(association.canBePresidentTo)
-                    canBePresidentTo.setHours(0, 0, 0, 0)
-                }
-                if ((canBePresidentFrom <= today) && (canBePresidentTo >= today)) {
-                    return true
-                }
-            } else {
-                return false
-            }
-        },
-
-        async getUserDocuments(processTypes?: DocumentProcessType[]) {
-            const {axiosAuthenticated} = useAxios()
-            let url = `/documents/uploads?user_id=${this.user?.id}`
-            if (processTypes?.length) {
-                url += `&process_types=${processTypes.join(',')}`
-            }
-            this.userDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
+    userGroups: (state: userStore): number[] => {
+      return [...new Set(state.user?.groups?.map<number>(group => group.groupId))]
+    },
+    userFunds: (state: userStore): number[] => {
+      return state.user?.groups?.reduce((factory, group) => {
+        if (group.fundId) {
+          factory.push(group.fundId)
         }
+        return factory
+      }, [])
     }
+  },
+
+  actions: {
+    async getUsers(status: 'all' | 'validated' | 'unvalidated' | string) {
+      const {hasPerm} = useSecurity()
+      if (!hasPerm('view_user')) return
+
+      const {axiosAuthenticated} = useAxios()
+
+      const urlString = '/users/?'
+      const urlArray = []
+
+      if (status === 'validated') urlArray.push('is_validated_by_admin=true')
+      else if (status === 'unvalidated') urlArray.push('is_validated_by_admin=false')
+
+      this.users = (await axiosAuthenticated.get<User[]>(urlString + urlArray.join('&'))).data
+    },
+
+    async getUserDetail(id: number) {
+      const {axiosAuthenticated} = useAxios()
+      this.user = (await axiosAuthenticated.get<User>(`/users/${id}`)).data
+    },
+
+    async updateUserGroups(groupsToAdd: number[], fundsToUpdate: number[]) {
+      const {commissionGroup} = useUserGroups()
+      const {axiosAuthenticated} = useAxios()
+
+      // Initialize object to post
+      const data: UserGroupRegister = {
+        user: this.user?.id,
+        group: null,
+        institution: null,
+        fund: null
+      }
+
+      for (const group of groupsToAdd) {
+        data.group = group
+        // if groupsToAdd includes commissionGroup
+        if (group === commissionGroup.value?.id) {
+          for (const fund of fundsToUpdate) {
+            data.fund = fund
+            await axiosAuthenticated.post('/users/groups/', data)
+          }
+        } else {
+          data.fund = null
+          await axiosAuthenticated.post('/users/groups/', data)
+        }
+      }
+
+      const needToAddCommissionGroup = groupsToAdd.includes(commissionGroup.value?.id as number)
+      const hasFundsToUpdate = !!fundsToUpdate.length
+
+      if (!needToAddCommissionGroup && hasFundsToUpdate) {
+        data.group = commissionGroup.value?.id as number
+        for (const fund of fundsToUpdate) {
+          data.fund = fund
+          await axiosAuthenticated.post('/users/groups/', data)
+        }
+      }
+    },
+
+    async deleteUserGroups(groupsToDelete: number[], fundsToDelete: number[]) {
+      const {axiosAuthenticated} = useAxios()
+      const {commissionGroup} = useUserGroups()
+      for (const group of groupsToDelete) {
+        if (group === commissionGroup.value?.id) {
+          for (const fund of this.userFunds) {
+            const url = `/users/${this.user?.id}/groups/${commissionGroup.value?.id}/funds/${fund}`
+            await axiosAuthenticated.delete(url)
+          }
+        } else {
+          const url = `/users/${this.user?.id}/groups/${group}`
+          await axiosAuthenticated.delete(url)
+        }
+      }
+      for (const fund of fundsToDelete) {
+        const url = `/users/${this.user?.id}/groups/${commissionGroup.value?.id}/funds/${fund}`
+        await axiosAuthenticated.delete(url)
+      }
+    },
+    async validateUser() {
+      const {axiosAuthenticated} = useAxios()
+      await axiosAuthenticated.patch(`/users/${this.user?.id}`, {isValidatedByAdmin: true})
+    },
+    async deleteUser() {
+      const {axiosAuthenticated} = useAxios()
+      await axiosAuthenticated.delete(`/users/${this.user?.id}`)
+    },
+    async searchUsers(searchQuery: string, status?: 'validated' | 'unvalidated' | '') {
+      if (!searchQuery) return
+
+      const {hasPerm} = useSecurity()
+      if (!hasPerm('view_user')) return
+
+      const {axiosAuthenticated} = useAxios()
+
+      const urlString = '/users/?'
+      const urlArray = []
+
+      urlArray.push(`search=${searchQuery}`)
+
+      if (status) {
+        urlArray.push(`is_validated_by_admin=${status === 'validated'}`)
+      }
+
+      this.users = (await axiosAuthenticated.get<User[]>(urlString + urlArray.join('&'))).data
+    },
+    async getUserDocuments() {
+      const {axiosAuthenticated} = useAxios()
+      const url = `/documents/uploads?user_id=${this.user?.id}`
+      this.userDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
+    },
+
+    async getUserAssociations(userId: number | null | undefined) {
+      const {axiosAuthenticated} = useAxios()
+
+      const url = `/users/${userId}/associations/`
+
+      const response = await axiosAuthenticated.get<UserAssociation[]>(url)
+      this.userAssociations = response.data
+    }
+  }
 })

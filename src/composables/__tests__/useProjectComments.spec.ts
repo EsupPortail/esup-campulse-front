@@ -4,93 +4,93 @@ import {config} from '@vue/test-utils'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {createPinia, setActivePinia} from 'pinia'
 import {useAxios} from '@/composables/useAxios'
-import useProjectComments from '@/composables/useProjectComments'
+import useProjectComment from '@/composables/useProjectComment'
 import {_comments} from '~/fixtures/comments.mock'
-import {useUserStore} from '@/stores/useUserStore'
+import {useProfileStore} from '@/stores/useProfileStore'
 import {_institutionManager} from '~/fixtures/user.mock'
 
 vi.mock('@/composables/useAxios', () => ({
-    useAxios: () => ({
-        axiosPublic: _axiosFixtures,
-        axiosAuthenticated: _axiosFixtures
-    })
+  useAxios: () => ({
+    axiosPublic: _axiosFixtures,
+    axiosAuthenticated: _axiosFixtures
+  })
 }))
 
 vi.mock('@/composable/useUserAssociations', () => ({
-    default: () => ({
-        updateUserAssociations: vi.fn(),
-        deleteUserAssociation: vi.fn(),
-        getUserAssociations: vi.fn(),
-        patchUserAssociations: vi.fn()
-    })
+  default: () => ({
+    updateUserAssociations: vi.fn(),
+    deleteUserAssociation: vi.fn(),
+    getUserAssociations: vi.fn(),
+    patchUserAssociations: vi.fn()
+  })
 }))
 
 setActivePinia(createPinia())
 
-let userStore = useUserStore()
+let userStore = useProfileStore()
 
 config.global.plugins = [
-    createTestingPinia({
-        createSpy: vi.fn()
-    })
+  createTestingPinia({
+    createSpy: vi.fn()
+  })
 ]
 
 describe('useProjectComments', () => {
-    beforeEach(() => {
-        userStore = useUserStore()
-    })
+  beforeEach(() => {
+    userStore = useProfileStore()
+  })
 
-    afterEach(() => {
-        vi.restoreAllMocks()
-        userStore.user = undefined
-    })
+  afterEach(() => {
+    vi.restoreAllMocks()
+    userStore.user = undefined
+  })
 
-    const {
-        getProjectComments,
-        comments,
-        postNewProjectComment,
-        patchProjectComment
-    } = useProjectComments()
-    const {axiosAuthenticated} = useAxios()
-    const mockedAuthAxios = vi.mocked(axiosAuthenticated, true)
+  const {
+    getProjectComments,
+    comments,
+    postNewProjectComment,
+    patchProjectComment
+  } = useProjectComment()
+  const {axiosAuthenticated} = useAxios()
+  const mockedAuthAxios = vi.mocked(axiosAuthenticated, true)
 
-    describe('getProjectComments', () => {
-        it('should get project comments', async () => {
-            mockedAuthAxios.get.mockResolvedValueOnce({data: _comments})
-            await getProjectComments(1)
-            expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/comments')
-            expect(comments.value).toEqual(_comments)
-        })
+  describe('getProjectComments', () => {
+    it('should get project comments', async () => {
+      mockedAuthAxios.get.mockResolvedValueOnce({data: _comments})
+      await getProjectComments(1)
+      expect(axiosAuthenticated.get).toHaveBeenCalledOnce()
+      expect(axiosAuthenticated.get).toHaveBeenCalledWith('/projects/1/comments')
+      expect(comments.value).toEqual(_comments)
     })
+  })
 
-    describe('postProjectComment', () => {
-        it('should post new comment', async () => {
-            userStore.user = _institutionManager
-            await postNewProjectComment(1, {text: 'Commentaire', isVisible: true})
-            expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.post).toHaveBeenCalledWith('/projects/1/comments', {
-                text: 'Commentaire',
-                isVisible: true
-            })
-        })
+  describe('postProjectComment', () => {
+    it('should post new comment', async () => {
+      userStore.user = _institutionManager
+      await postNewProjectComment(1, {text: 'Commentaire', isVisible: true})
+      expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
+      expect(axiosAuthenticated.post).toHaveBeenCalledWith('/projects/1/comments', {
+        text: 'Commentaire',
+        isVisible: true
+      })
     })
+  })
 
-    describe('patchProjectComment', () => {
-        it('should patch comment text and visibility', async () => {
-            const projectId = 1
-            const commentData = {
-                id: 1,
-                text: 'Commentaire',
-                isVisible: true
-            }
-            const url = `/projects/${projectId}/comments/${commentData.id}`
-            await patchProjectComment(projectId, commentData)
-            expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
-            expect(axiosAuthenticated.patch).toHaveBeenCalledWith(url, {
-                text: commentData.text,
-                isVisible: commentData.isVisible
-            })
-        })
+  describe('patchProjectComment', () => {
+    it('should patch comment text and visibility', async () => {
+      const projectId = 1
+      const commentData = {
+        id: 1,
+        text: 'Commentaire',
+        isVisible: true
+      }
+      const url = `/projects/${projectId}/comments/${commentData.id}`
+      await patchProjectComment(projectId, commentData)
+      expect(axiosAuthenticated.patch).toHaveBeenCalledOnce()
+      expect(axiosAuthenticated.patch).toHaveBeenCalledWith(url, {
+        text: commentData.text,
+        isVisible: commentData.isVisible
+      })
     })
+  })
 })

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import {RouterView, useRoute} from 'vue-router'
-import AlertAbortedCasRegistration from '@/components/alert/AlertAbortedCasRegistration.vue'
-import useColorVariants from '@/composables/useColorVariants'
-import NavigateTopButton from '@/components/NavigateTopButton.vue'
+import AlertAbortedCasRegistration from '@/components/authentication/AlertAbortedCasRegistration.vue'
+import useColorVariants from '@/composables/useColorVariant'
+import NavigateTopButton from '@/components/layout/NavigateTopButton.vue'
 
 const {colorVariant} = useColorVariants()
 const route = useRoute()
@@ -11,16 +11,15 @@ const route = useRoute()
 
 
 <template>
-    <main
-        id="main"
-        :class="'variant-' + colorVariant"
-        role="main"
-    >
-        <!--<LayoutBreadcrumbs/>-->
-        <NavigateTopButton/>
-        <Suspense>
-            <RouterView/>
-        </Suspense>
-        <AlertAbortedCasRegistration v-if="route.name !== 'Registration'"/>
-    </main>
+  <main
+    id="main"
+    :class="'variant-' + colorVariant"
+    role="main"
+  >
+    <NavigateTopButton/>
+    <Suspense>
+      <RouterView/>
+    </Suspense>
+    <AlertAbortedCasRegistration v-if="route.name !== 'Registration'"/>
+  </main>
 </template>

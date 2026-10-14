@@ -6,8 +6,8 @@ import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import router from '@/router'
 import axios from 'axios'
-import useErrors from '@/composables/useErrors'
-import useUtility from '@/composables/useUtility'
+import useErrors from '@/composables/useError'
+import useUtility from '@/composables/useUtil'
 
 const projectStore = useProjectStore()
 const route = useRoute()
@@ -17,75 +17,74 @@ const {catchHTTPError} = useErrors()
 const {openDocument} = useUtility()
 
 onMounted(async () => {
-    loading.show()
-    await onGetProjectDetail()
-    loading.hide()
+  loading.show()
+  await onGetProjectDetail()
+  loading.hide()
 })
 
 async function onGetProjectDetail() {
-    try {
-        await projectStore.getProjectDetail(Number.parseInt(route.params.projectId as string))
-    } catch (error) {
-        await router.push({name: '404'})
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
+  try {
+    await projectStore.getProjectDetail(Number.parseInt(route.params.projectId as string))
+  } catch (error) {
+    await router.push({name: '404'})
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
     }
+  }
 }
 
 async function onGetProjectPdf() {
-    loading.show()
-    try {
-        const projectId = Number.parseInt(route.params.projectId as string)
-        const response = await projectStore.getProjectPdf(projectId)
-        openDocument(response)
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
+  loading.show()
+  try {
+    const projectId = Number.parseInt(route.params.projectId as string)
+    const response = await projectStore.getProjectPdf(projectId)
+    openDocument(response)
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
     }
-    loading.hide()
+  }
+  loading.hide()
 }
 </script>
 
 <template>
-    <section class="dashboard-section">
-        <div class="form-container">
-            <div class="form">
-                <section class="project-recap">
-                    <i
-                        aria-hidden="true"
-                        class="bi bi-check-circle"
-                    ></i>
-                    <h2>{{ t('project.has-been-submitted') }}</h2>
-                    <p>{{ t('project.consult-on-dashboard') }}</p>
-                    <div class="flex-btn-group">
-                        <QBtn
-                            :label="t('project.download-recap')"
-                            class="btn-lg"
-                            color="commission"
-                            data-test="download-recap-button"
-                            icon="bi-filetype-pdf"
-                            @click="onGetProjectPdf"
-                        />
-                        <QBtn
-                            :label="t('dashboard.cape-dashboard')"
-                            :to="{ name: 'ManageProjects' }"
-                            class="btn-lg"
-                            color="commission"
-                            icon="bi-chevron-compact-right"
-                        />
-                    </div>
-                </section>
-            </div>
-        </div>
-    </section>
+  <section class="dashboard-section">
+    <div class="form-container">
+      <div class="form">
+        <section class="project-recap">
+          <i
+            aria-hidden="true"
+            class="bi bi-check-circle"
+          ></i>
+          <h2>{{ t('project.has-been-submitted') }}</h2>
+          <p>{{ t('project.consult-on-dashboard') }}</p>
+          <div class="flex-btn-group">
+            <QBtn
+              :label="t('project.download-recap')"
+              class="btn-lg"
+              color="commission"
+              icon="bi-filetype-pdf"
+              @click="onGetProjectPdf"
+            />
+            <QBtn
+              :label="t('dashboard.cape-dashboard')"
+              :to="{ name: 'ManageProjects' }"
+              class="btn-lg"
+              color="commission"
+              icon="bi-chevron-compact-right"
+            />
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>

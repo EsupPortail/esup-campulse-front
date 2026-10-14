@@ -6,12 +6,12 @@ import useAssociation from '@/composables/useAssociation'
 import {useQuasar} from 'quasar'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import axios from 'axios'
-import useErrors from '@/composables/useErrors'
-import FormAssociationSearch from '@/components/form/FormAssociationSearch.vue'
+import useErrors from '@/composables/useError'
+import FormAssociationSearch from '@/components/association/FormAssociationSearch.vue'
 import {useContentStore} from '@/stores/useContentStore'
 import LayoutImageText from '@/components/layout/LayoutImageText.vue'
 import DirectoryImage from '@/assets/img/directory-image.jpg'
-import type {Content} from '#/index'
+import type {Content} from '#/global'
 
 const associationStore = useAssociationStore()
 const contentStore = useContentStore()
@@ -23,12 +23,12 @@ const {associations} = useAssociation()
 const isLoaded = ref<boolean>(false)
 
 onMounted(async function () {
-    loading.show()
-    await associationStore.getAssociations(true)
-    associations.value = associationStore.associations
-    await getContents()
-    isLoaded.value = true
-    loading.hide()
+  loading.show()
+  await associationStore.getAssociations(true)
+  associations.value = associationStore.associations
+  await getContents()
+  isLoaded.value = true
+  loading.hide()
 })
 
 const baseUrl = import.meta.env.VITE_APP_BASE_URL
@@ -38,195 +38,195 @@ const associationsPerPage = 15
 const currentPage = ref(1)
 const startIndex = ref(0)
 watch(() => currentPage.value, () => {
-    startIndex.value = associationsPerPage * (currentPage.value - 1)
+  startIndex.value = associationsPerPage * (currentPage.value - 1)
 })
 const pages = ref(Math.ceil(associations.value.length / associationsPerPage))
 watch(() => associations.value.length, () => {
-    pages.value = Math.ceil(associations.value.length / associationsPerPage)
+  pages.value = Math.ceil(associations.value.length / associationsPerPage)
 })
 const endIndex = ref(associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
-    associations.value.length : currentPage.value * associationsPerPage)
+  associations.value.length : currentPage.value * associationsPerPage)
 watch(() => currentPage.value, () => {
-    endIndex.value = associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
-        associations.value.length : currentPage.value * associationsPerPage
+  endIndex.value = associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
+    associations.value.length : currentPage.value * associationsPerPage
 })
 watch(() => associations.value.length, () => {
-    endIndex.value = associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
-        associations.value.length : currentPage.value * associationsPerPage
+  endIndex.value = associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
+    associations.value.length : currentPage.value * associationsPerPage
 })
 watch(() => pages.value, () => {
-    endIndex.value = associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
-        associations.value.length : currentPage.value * associationsPerPage
+  endIndex.value = associations.value.length % associationsPerPage != 0 && currentPage.value === pages.value ?
+    associations.value.length : currentPage.value * associationsPerPage
 })
 const associationsOnPage = ref([...associations.value.slice(startIndex.value, endIndex.value)])
 watch(() => associations.value, () => {
-    associationsOnPage.value = associations.value.slice(startIndex.value, endIndex.value)
+  associationsOnPage.value = associations.value.slice(startIndex.value, endIndex.value)
 })
 watch(() => startIndex.value, () => {
-    associationsOnPage.value = associations.value.slice(startIndex.value, endIndex.value)
+  associationsOnPage.value = associations.value.slice(startIndex.value, endIndex.value)
 })
 watch(() => endIndex.value, () => {
-    associationsOnPage.value = associations.value.slice(startIndex.value, endIndex.value)
+  associationsOnPage.value = associations.value.slice(startIndex.value, endIndex.value)
 })
 
 // Scroll back to search fields on top of associations
 function scrollToTop() {
-    const searchFields = document.querySelector('#search-form') as HTMLElement
-    searchFields.scrollIntoView()
-    const element = document.querySelector('.directory-sorting + div a:first-child')
-    if (element) (element as HTMLAnchorElement).focus()
+  const searchFields = document.querySelector('#search-form') as HTMLElement
+  searchFields.scrollIntoView()
+  const element = document.querySelector('.directory-sorting + div a:first-child')
+  if (element) (element as HTMLAnchorElement).focus()
 }
 
 // Functions
 async function getContents() {
-    try {
-        await contentStore.getContentsByCode(['ASSOCIATION_HOME_FIRST_BLOCK'])
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
+  try {
+    await contentStore.getContentsByCode(['ASSOCIATION_HOME_FIRST_BLOCK'])
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
     }
+  }
 }
 
 const contentFirstBlock = computed<Content | undefined>(() => {
-    return contentStore.contents.find(content => content.code === 'ASSOCIATION_HOME_FIRST_BLOCK')
+  return contentStore.contents.find(content => content.code === 'ASSOCIATION_HOME_FIRST_BLOCK')
 })
 
 </script>
 
 <template>
-    <section class="dashboard-section">
-        <div class="introduction-section">
-            <div class="content">
-                <LayoutImageText
-                    :img="DirectoryImage"
-                    :text="contentFirstBlock?.body"
-                    :title="contentFirstBlock?.header"
+  <section class="dashboard-section">
+    <div class="introduction-section">
+      <div class="content">
+        <LayoutImageText
+          :img="DirectoryImage"
+          :text="contentFirstBlock?.body"
+          :title="contentFirstBlock?.header"
+        />
+      </div>
+    </div>
+
+    <div class="association-search">
+      <FormAssociationSearch
+        v-if="isLoaded"
+        @update-page="currentPage = 1"
+      />
+    </div>
+
+    <div class="directory-list">
+      <div class="dashboard-section-container">
+        <div class="container">
+          <div class="directory-sorting">
+            <h2>{{ t('directory.list') }}</h2>
+            <div>
+              <p v-if="associations.length > 0">
+                <span>{{ associations.length }}</span>
+                {{
+                  associations.length > 1 ? t('directory.found-associations-plural') :
+                  t('directory.found-associations-singular')
+                }}{{ t('colon') }}
+              </p>
+              <p v-else>{{ t('directory.no-match') }}</p>
+              <p>
+                <span>{{ associationsOnPage.length }}</span>
+                {{
+                  associationsOnPage.length > 1 ? t('directory.associations-on-page-plural') :
+                  t('directory.associations-on-page-singular')
+                }}{{ t('colon') }}
+              </p>
+            </div>
+          </div>
+
+          <QCard
+            v-for="association in associationsOnPage"
+            :key="association.id"
+            class="my-card"
+          >
+            <div class="card-background"></div>
+            <i
+              aria-hidden="true"
+              class="card-chevron bi bi-chevron-compact-right"
+            ></i>
+            <!-- <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}"> -->
+            <QCardSection>
+              <div class="list-logo">
+                <QImg
+                  :src="association.pathLogo ?
+                    (Object.keys(association.pathLogo).length !== 0 ?
+                      (!association.pathLogo.list?.startsWith('http') ?
+                        baseUrl + association.pathLogo.list : association.pathLogo.list) :
+                      noLogoSquare.default) : noLogoSquare.default"
+                  aria-hidden="true"
                 />
-            </div>
-        </div>
-
-        <div class="association-search">
-            <FormAssociationSearch
-                v-if="isLoaded"
-                @update-page="currentPage = 1"
+              </div>
+              <div class="list-details">
+                <h3>
+                  <RouterLink :to="{ name: 'AssociationDetail', params: { id: association.id } }">
+                    {{ association.name }}
+                  </RouterLink>
+                </h3>
+                <ul>
+                  <li v-if="association.acronym">
+                    <span class="label">
+                      <i
+                        aria-hidden="true"
+                        class="bi bi-tag"
+                      ></i>
+                      {{ t('directory.labels.association-acronym') + ' : ' }}
+                    </span>
+                    <span class="value">{{ association.acronym }}</span>
+                  </li>
+                  <li v-if="association.institution">
+                    <span class="label">
+                      <i
+                        aria-hidden="true"
+                        class="bi bi-bank2"
+                      ></i>
+                      {{ t('directory.labels.association-institution') + ' : ' }}
+                    </span>
+                    <span class="value">{{ association.institution.name }}</span>
+                  </li>
+                  <li v-if="association.activityField">
+                    <span class="label">
+                      <i
+                        aria-hidden="true"
+                        class="bi bi-globe"
+                      ></i>
+                      {{ t('directory.labels.association-activity-field') + ' : ' }}
+                    </span>
+                    <span class="value">{{ association.activityField.name }}</span>
+                  </li>
+                  <li v-if="association.institutionComponent">
+                    <span class="label">
+                      <i
+                        aria-hidden="true"
+                        class="bi bi-mortarboard"
+                      ></i>
+                      {{ t('directory.labels.association-institution-component') + ' : ' }}
+                    </span>
+                    <span class="value">{{ association.institutionComponent.name }}</span>
+                  </li>
+                </ul>
+              </div>
+            </QCardSection>
+            <!-- </RouterLink> -->
+          </QCard>
+          <div class="flex-row-center">
+            <QPagination
+              v-if="associationsOnPage && pages && pages > 1"
+              v-model="currentPage"
+              :aria-label="t('pagination')"
+              :max="pages"
+              @update:model-value="scrollToTop"
             />
+          </div>
         </div>
-
-        <div class="directory-list">
-            <div class="dashboard-section-container">
-                <div class="container">
-                    <div class="directory-sorting">
-                        <h2>{{ t('directory.list') }}</h2>
-                        <div>
-                            <p v-if="associations.length > 0">
-                                <span>{{ associations.length }}</span>
-                                {{
-                                    associations.length > 1 ? t('directory.found-associations-plural') :
-                                    t('directory.found-associations-singular')
-                                }}{{ t('colon') }}
-                            </p>
-                            <p v-else>{{ t('directory.no-match') }}</p>
-                            <p>
-                                <span>{{ associationsOnPage.length }}</span>
-                                {{
-                                    associationsOnPage.length > 1 ? t('directory.associations-on-page-plural') :
-                                    t('directory.associations-on-page-singular')
-                                }}{{ t('colon') }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <QCard
-                        v-for="association in associationsOnPage"
-                        :key="association.id"
-                        class="my-card"
-                    >
-                        <div class="card-background"></div>
-                        <i
-                            aria-hidden="true"
-                            class="card-chevron bi bi-chevron-compact-right"
-                        ></i>
-                        <!-- <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}"> -->
-                        <QCardSection>
-                            <div class="list-logo">
-                                <QImg
-                                    :src="association.pathLogo ?
-                                        (Object.keys(association.pathLogo).length !== 0 ?
-                                            (!association.pathLogo.list?.startsWith('http') ?
-                                                baseUrl + association.pathLogo.list : association.pathLogo.list) :
-                                            noLogoSquare.default) : noLogoSquare.default"
-                                    aria-hidden="true"
-                                />
-                            </div>
-                            <div class="list-details">
-                                <h3>
-                                    <RouterLink :to="{ name: 'AssociationDetail', params: { id: association.id } }">
-                                        {{ association.name }}
-                                    </RouterLink>
-                                </h3>
-                                <ul>
-                                    <li v-if="association.acronym">
-                                        <span class="label">
-                                            <i
-                                                aria-hidden="true"
-                                                class="bi bi-tag"
-                                            ></i>
-                                            {{ t('directory.labels.association-acronym') + ' : ' }}
-                                        </span>
-                                        <span class="value">{{ association.acronym }}</span>
-                                    </li>
-                                    <li v-if="association.institution">
-                                        <span class="label">
-                                            <i
-                                                aria-hidden="true"
-                                                class="bi bi-bank2"
-                                            ></i>
-                                            {{ t('directory.labels.association-institution') + ' : ' }}
-                                        </span>
-                                        <span class="value">{{ association.institution.name }}</span>
-                                    </li>
-                                    <li v-if="association.activityField">
-                                        <span class="label">
-                                            <i
-                                                aria-hidden="true"
-                                                class="bi bi-globe"
-                                            ></i>
-                                            {{ t('directory.labels.association-activity-field') + ' : ' }}
-                                        </span>
-                                        <span class="value">{{ association.activityField.name }}</span>
-                                    </li>
-                                    <li v-if="association.institutionComponent">
-                                        <span class="label">
-                                            <i
-                                                aria-hidden="true"
-                                                class="bi bi-mortarboard"
-                                            ></i>
-                                            {{ t('directory.labels.association-institution-component') + ' : ' }}
-                                        </span>
-                                        <span class="value">{{ association.institutionComponent.name }}</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </QCardSection>
-                        <!-- </RouterLink> -->
-                    </QCard>
-                    <div class="flex-row-center">
-                        <QPagination
-                            v-if="associationsOnPage && pages && pages > 1"
-                            v-model="currentPage"
-                            :aria-label="t('pagination')"
-                            :max="pages"
-                            @update:model-value="scrollToTop"
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>

@@ -1,0 +1,149 @@
+<script lang="ts" setup>
+import useUserGroups from '@/composables/useUserGroup'
+import {useI18n} from 'vue-i18n'
+import {onMounted, onUnmounted, watch} from 'vue'
+import {useQuasar} from 'quasar'
+import {useRoute} from 'vue-router'
+import useCommissions from '@/composables/useCommissionFund'
+import axios from 'axios'
+import useErrors from '@/composables/useError'
+import {useUserStore} from '@/stores/useUserStore'
+
+
+const {t} = useI18n()
+const userStore = useUserStore()
+const {
+  groupChoiceIsValid,
+  newGroups,
+  getGroups,
+  groupLabels,
+  groups,
+  initGroupLabels,
+  preSelectGroup,
+  initGroupPermToJoinAssociation,
+  commissionMemberIsSelected,
+  initStudentGroupSelection
+} = useUserGroups()
+const {notify, loading} = useQuasar()
+const route = useRoute()
+const {
+  getFunds,
+  fundsLabels,
+  initFundsLabels,
+  userFunds,
+  initUserFunds
+} = useCommissions()
+const {catchHTTPError} = useErrors()
+
+onMounted(async () => {
+  loading.show()
+  await onGetGroups()
+  await onInitGroupLabels()
+  initStudentGroupSelection()
+  if (commissionMemberIsSelected.value) {
+    await onGetFunds()
+  }
+  loading.hide()
+})
+
+watch(() => userStore.user, initUserFunds)
+
+// Get funds only if commissionMemberIsSelected
+watch(() => commissionMemberIsSelected.value, async () => {
+  loading.show()
+  await onGetFunds()
+  loading.hide()
+})
+
+// Used to clean newGroups value
+onUnmounted(() => {
+  newGroups.value = []
+})
+
+async function onGetGroups() {
+  try {
+    await getGroups()
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
+    }
+  }
+}
+
+async function onGetFunds() {
+  try {
+    await getFunds()
+    initFundsLabels()
+    initUserFunds()
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
+    }
+  }
+}
+
+async function onInitGroupLabels() {
+  try {
+    // Init group labels
+    let privacy = false
+    if ((route.name === 'Registration') || (route.name === 'AddUser') || (route.name === 'CASRegistration')) privacy = true
+    await initGroupLabels(privacy)
+
+    // Preselect group
+    if ((route.name === 'Registration') || (route.name === 'AddUser') || (route.name === 'CASRegistration')) preSelectGroup('STUDENT_INSTITUTION')
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
+    }
+  }
+}
+
+</script>
+
+<template>
+  <QField
+    v-if="groups"
+    :error="!groupChoiceIsValid"
+    :error-message="t('forms.required-status')"
+    borderless
+    color="base"
+  >
+    <QOptionGroup
+      v-model="newGroups"
+      :aria-label="t('forms.group-role')"
+      :options="groupLabels"
+      color="dashboard"
+
+      type="checkbox"
+      @update:model-value="initGroupPermToJoinAssociation(newGroups)"
+    />
+  </QField>
+  <QSelect
+    v-if="commissionMemberIsSelected"
+    v-model="userFunds"
+    :label="t('commission.commission', 2)"
+    :options="fundsLabels"
+    :rules="[val => val.length >= 1 || t('forms.required-commission')]"
+    color="dashboard"
+
+    emit-value
+    filled
+    map-options
+    multiple
+    style="width: 250px"
+    use-chips
+  />
+</template>
+
+<style lang="scss" scoped>
+@import 'variables';
+</style>

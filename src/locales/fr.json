@@ -680,6 +680,7 @@
   "optional": "facultatif",
   "page-top": "Haut de page",
   "pagination": "Pagination",
+  "pagination-range": "{start}-{end} sur {count}",
   "password": {
     "edit-password": "Modifier mon mot de passe",
     "policy": {

@@ -3,7 +3,7 @@ const testMessage = import.meta.env.VITE_APP_HOME_TEST_MESSAGE
 </script>
 
 <template>
-    <p v-if="testMessage !== ''">{{ testMessage }}</p>
+  <p v-if="testMessage !== ''">{{ testMessage }}</p>
 </template>
 
 <style lang="scss" scoped>

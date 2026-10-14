@@ -1,6 +1,6 @@
 import type {UserAssociation} from '#/user'
-import type {DocumentUpload} from '#/documents'
-import type {AssociationCharterStatus} from '#/charters'
+import type {DocumentUpload} from '#/document'
+import type {AssociationCharterStatus} from '#/charter'
 
 export interface Association {
     id: number,

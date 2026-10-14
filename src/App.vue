@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {RouterView, useRoute} from 'vue-router'
-import useColorVariants from '@/composables/useColorVariants'
+import useColorVariants from '@/composables/useColorVariant'
 import SkipToContentLink from '@/components/layout/SkipToContentLink.vue'
 
 const {colorVariant} = useColorVariants()
@@ -11,11 +11,11 @@ const routesNames = ['Home', 'Login', 'CASLogin', '404', 'Maintenance', 'DesignS
 </script>
 
 <template>
-    <SkipToContentLink/>
-    <RouterView
-        v-if="colorVariant || (route.name ? routesNames.includes(route.name?.toString()) : true)"
-        :data-page=route.name
-    />
+  <SkipToContentLink/>
+  <RouterView
+    v-if="colorVariant || (route.name ? routesNames.includes(route.name?.toString()) : true)"
+    :data-page=route.name
+  />
 </template>
 
 <style lang="scss">

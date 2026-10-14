@@ -21,51 +21,51 @@ const app = createApp(App)
 
 // Sentry init
 if (import.meta.env.PROD) {
-    Sentry.init({
-        app,
-        dsn: import.meta.env.VITE_APP_SENTRY_DSN,
-        integrations: [
-            Sentry.browserTracingIntegration({router}),
-            Sentry.replayIntegration(),
-        ],
-        tracesSampleRate: 1.0,
-        tracePropagationTargets: ['localhost', import.meta.env.VITE_APP_SENTRY_API_REGEX, /^\//]
-    })
+  Sentry.init({
+    app,
+    dsn: import.meta.env.VITE_APP_SENTRY_DSN,
+    integrations: [
+      Sentry.browserTracingIntegration({router}),
+      Sentry.replayIntegration(),
+    ],
+    tracesSampleRate: 1.0,
+    tracePropagationTargets: ['localhost', import.meta.env.VITE_APP_SENTRY_API_REGEX, /^\//]
+  })
 }
 
 if (import.meta.env.VITE_APP_MATOMO_SERVER && import.meta.env.VITE_APP_MATOMO_SITE_ID) {
-    app.use(
-        VueMatomo,
-        {
-            router,
-            host: import.meta.env.VITE_APP_MATOMO_SERVER,
-            siteId: import.meta.env.VITE_APP_MATOMO_SITE_ID,
-            debug: import.meta.env.VITE_APP_MATOMO_DEBUG || false,
-        },
-    )
+  app.use(
+    VueMatomo,
+    {
+      router,
+      host: import.meta.env.VITE_APP_MATOMO_SERVER,
+      siteId: import.meta.env.VITE_APP_MATOMO_SITE_ID,
+      debug: import.meta.env.VITE_APP_MATOMO_DEBUG || false,
+    },
+  )
 }
 
 app.use(i18n)
 app.use(pinia)
 app.use(router)
 app.use(Quasar, {
-    plugins: {
-        Notify,
-        Loading
+  plugins: {
+    Notify,
+    Loading
+  },
+  config: {
+    notify: {
+      timeout: 0,
+      actions: [
+        {
+          color: 'white',
+          label: i18n.global.t('alerts.close')
+        }
+      ]
     },
-    config: {
-        notify: {
-            timeout: 0,
-            actions: [
-                {
-                    color: 'white',
-                    label: i18n.global.t('alerts.close')
-                }
-            ]
-        },
-    },
-    lang: quasarLang,
-    iconSet: quasarIconSet
+  },
+  lang: quasarLang,
+  iconSet: quasarIconSet
 } as Partial<QuasarPluginOptions>)
 
 // Configure Quasar positive color for accessibility

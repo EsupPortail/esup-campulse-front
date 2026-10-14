@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import FormRegister from '@/components/form/FormRegister.vue'</script>
+import FormRegister from '@/components/authentication/FormRegister.vue'</script>
 
 <template>
-    <FormRegister/>
+  <FormRegister/>
 </template>

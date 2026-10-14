@@ -1,28 +1,28 @@
 <script lang="ts" setup>
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
-import useUtility from '@/composables/useUtility'
+import useUtility from '@/composables/useUtil'
 
 const {openMenu} = useUtility()
 </script>
 
 <template>
-    <div class="mobile-menu">
-        <div
-            :class="`flex-row-right mobile-nav-bar ${openMenu ? '' : 'box-shadow'}`"
-        >
-            <QBtn
-                :icon-right="openMenu ? 'bi-x' : 'bi-list'"
-                label="Menu"
-                outline
-                @click="openMenu = !openMenu"
-            />
-        </div>
-        <div
-            :class="openMenu ? 'open-menu box-shadow' : 'close-menu'"
-        >
-            <LayoutHeaderNav device="mobile"/>
-        </div>
+  <div class="mobile-menu">
+    <div
+      :class="`flex-row-right mobile-nav-bar ${openMenu ? '' : 'box-shadow'}`"
+    >
+      <QBtn
+        :icon-right="openMenu ? 'bi-x' : 'bi-list'"
+        label="Menu"
+        outline
+        @click="openMenu = !openMenu"
+      />
     </div>
+    <div
+      :class="openMenu ? 'open-menu box-shadow' : 'close-menu'"
+    >
+      <LayoutHeaderNav device="mobile"/>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

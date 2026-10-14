@@ -14,56 +14,56 @@ const props = defineProps<{
 }>()
 
 const sanitizedInfoContent = computed(() => {
-    return DOMPurify.sanitize(props.infoContent)
+  return DOMPurify.sanitize(props.infoContent)
 })
 
 const sanitizedDescription = computed(() => {
-    return DOMPurify.sanitize(props.description)
+  return DOMPurify.sanitize(props.description)
 })
 </script>
 
 <template>
-    <section :class="['home-section', cssClass]">
-        <div class="section-card">
-            <div class="section-background">
-                <span></span>
-            </div>
+  <section :class="['home-section', cssClass]">
+    <div class="section-card">
+      <div class="section-background">
+        <span></span>
+      </div>
 
-            <div class="section-title">
-                <h2 :aria-label="titleLine1 + ' ' + titleLine2">
-                    <span>
-                        {{ titleLine1 }}
-                        <span
-                            aria-hidden="true"
-                            class="section-icon"
-                        >
-                            <span><i :class="[ iconClass ]"></i></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </span>
-                    </span>
-                    <span>{{ titleLine2 }}</span>
-                </h2>
+      <div class="section-title">
+        <h2 :aria-label="titleLine1 + ' ' + titleLine2">
+          <span>
+            {{ titleLine1 }}
+            <span
+              aria-hidden="true"
+              class="section-icon"
+            >
+              <span><i :class="[ iconClass ]"></i></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </span>
+          <span>{{ titleLine2 }}</span>
+        </h2>
 
-                <div class="section-info">
-                    <p v-html="sanitizedInfoContent"></p>
-                </div>
-            </div>
-
-            <div class="section-content">
-                <p v-html="sanitizedDescription"></p>
-                <div class="section-buttons">
-                    <RouterLink :to="link">
-                        {{ buttonLabel }} <i
-                            aria-hidden="true"
-                            class="bi bi-chevron-compact-right"
-                        ></i>
-                    </RouterLink>
-                </div>
-            </div>
+        <div class="section-info">
+          <p v-html="sanitizedInfoContent"></p>
         </div>
-    </section>
+      </div>
+
+      <div class="section-content">
+        <p v-html="sanitizedDescription"></p>
+        <div class="section-buttons">
+          <RouterLink :to="link">
+            {{ buttonLabel }} <i
+              aria-hidden="true"
+              class="bi bi-chevron-compact-right"
+            ></i>
+          </RouterLink>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>

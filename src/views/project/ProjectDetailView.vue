@@ -3,11 +3,11 @@ import ProjectComments from '@/components/project/ProjectComments.vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
-import useErrors from '@/composables/useErrors'
+import useErrors from '@/composables/useError'
 import router from '@/router'
 import {onMounted, ref} from 'vue'
 import {useProjectStore} from '@/stores/useProjectStore'
-import useSubmitProject from '@/composables/useSubmitProject'
+import useProject from '@/composables/useProject'
 import {useRoute} from 'vue-router'
 import ProjectRecapBasicInfos from '@/components/project/ProjectRecapBasicInfos.vue'
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
@@ -16,9 +16,9 @@ import ProjectRecapGoals from '@/components/project/ProjectRecapGoals.vue'
 import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
 import ProjectValidation from '@/components/project/ProjectValidation.vue'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
-import useSecurity from '@/composables/useSecurity'
+import useSecurity from '@/composables/useAuthentication'
 import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
-import useUtility from '@/composables/useUtility'
+import useUtility from '@/composables/useUtil'
 
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
@@ -27,217 +27,217 @@ const {hasPerm} = useSecurity()
 const {openDocument} = useUtility()
 const projectStore = useProjectStore()
 const {
-    initProjectBasicInfos,
-    initProjectGoals,
-    initProjectBudget
-} = useSubmitProject()
+  initProjectBasicInfos,
+  initProjectGoals,
+  initProjectBudget
+} = useProject()
 const route = useRoute()
 
 const isLoaded = ref<boolean>(false)
 
 onMounted(async () => {
-    loading.show()
-    await onGetProjectDetail()
-    isLoaded.value = true
-    loading.hide()
+  loading.show()
+  await onGetProjectDetail()
+  isLoaded.value = true
+  loading.hide()
 })
 
 async function onGetProjectDetail() {
-    try {
-        await projectStore.getProjectDetail(Number.parseInt(route.params.projectId as string))
-        initProjectBasicInfos()
-        initProjectBudget()
-        initProjectGoals()
-    } catch (error) {
-        await router.push({name: '404'})
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
+  try {
+    await projectStore.getProjectDetail(Number.parseInt(route.params.projectId as string))
+    initProjectBasicInfos()
+    initProjectBudget()
+    initProjectGoals()
+  } catch (error) {
+    await router.push({name: '404'})
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
     }
+  }
 }
 
 async function onGetProjectPdf() {
-    loading.show()
-    try {
-        const projectId = Number.parseInt(route.params.projectId as string)
-        const response = await projectStore.getProjectPdf(projectId)
-        openDocument(response)
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
+  loading.show()
+  try {
+    const projectId = Number.parseInt(route.params.projectId as string)
+    const response = await projectStore.getProjectPdf(projectId)
+    openDocument(response)
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
     }
-    loading.hide()
+  }
+  loading.hide()
 }
 </script>
 
 <template>
-    <!-- General Section -->
-    <div class="dashboard-section">
-        <h2>
-            <i
-                aria-hidden="true"
-                class="bi bi-info-circle"
-            ></i>
-            {{ t('project.general-infos') }}
-        </h2>
-        <div class="dashboard-section-container">
-            <div class="container">
-                <ProjectRecapBasicInfos v-if="isLoaded"/>
-            </div>
-        </div>
+  <!-- General Section -->
+  <div class="dashboard-section">
+    <h2>
+      <i
+        aria-hidden="true"
+        class="bi bi-info-circle"
+      ></i>
+      {{ t('project.general-infos') }}
+    </h2>
+    <div class="dashboard-section-container">
+      <div class="container">
+        <ProjectRecapBasicInfos v-if="isLoaded"/>
+      </div>
     </div>
+  </div>
 
-    <!-- Commission Section -->
-    <div class="dashboard-section">
-        <h2>
-            <i
-                aria-hidden="true"
-                class="bi bi-calendar"
-            ></i>
-            {{ t('commission.commission', 1) }}
-        </h2>
-        <div class="dashboard-section-container">
-            <div class="container">
-                <ProjectRecapCommissions view="projectRecap"/>
-            </div>
-        </div>
+  <!-- Commission Section -->
+  <div class="dashboard-section">
+    <h2>
+      <i
+        aria-hidden="true"
+        class="bi bi-calendar"
+      ></i>
+      {{ t('commission.commission', 1) }}
+    </h2>
+    <div class="dashboard-section-container">
+      <div class="container">
+        <ProjectRecapCommissions view="projectRecap"/>
+      </div>
     </div>
+  </div>
 
-    <!-- Budget Section -->
-    <div class="dashboard-section">
-        <h2>
-            <i
-                aria-hidden="true"
-                class="bi bi-piggy-bank"
-            ></i>
-            {{ t('project.budget') }}
-        </h2>
-        <div class="dashboard-section-container">
-            <div class="container">
-                <ProjectRecapBudget :load-data="false"/>
-            </div>
-        </div>
+  <!-- Budget Section -->
+  <div class="dashboard-section">
+    <h2>
+      <i
+        aria-hidden="true"
+        class="bi bi-piggy-bank"
+      ></i>
+      {{ t('project.budget') }}
+    </h2>
+    <div class="dashboard-section-container">
+      <div class="container">
+        <ProjectRecapBudget :load-data="false"/>
+      </div>
     </div>
+  </div>
 
-    <!-- Goals Section -->
-    <div class="dashboard-section">
-        <h2>
-            <i
-                aria-hidden="true"
-                class="bi bi-flag"
-            ></i>
-            {{ t('project.goals') }}
-        </h2>
-        <div class="dashboard-section-container">
-            <div class="container">
-                <ProjectRecapGoals/>
-            </div>
-        </div>
+  <!-- Goals Section -->
+  <div class="dashboard-section">
+    <h2>
+      <i
+        aria-hidden="true"
+        class="bi bi-flag"
+      ></i>
+      {{ t('project.goals') }}
+    </h2>
+    <div class="dashboard-section-container">
+      <div class="container">
+        <ProjectRecapGoals/>
+      </div>
     </div>
+  </div>
 
-    <!-- Documents Section -->
-    <div class="dashboard-section">
-        <h2>
-            <i
-                aria-hidden="true"
-                class="bi bi-file-earmark"
-            ></i>
-            {{ t('project.documents') }}
-        </h2>
-        <div class="dashboard-section-container">
-            <div class="container">
-                <ProjectRecapDocuments
-                    v-if="isLoaded"
-                    :association-id="null"
-                    process="project"
-                />
-            </div>
-        </div>
-    </div>
-
-    <!-- Fund validation section -->
-    <div class="dashboard-section">
-        <h2>
-            <i
-                aria-hidden="true"
-                class="bi bi-bank"
-            ></i>
-            {{ t('commission.funds-validation-status') }}
-        </h2>
-        <div class="dashboard-section-container">
-            <div class="container">
-                <div class="display-row">
-                    <ProjectFundValidationIndicator :project-commission-funds="projectStore.projectCommissionFunds"/>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Status Section -->
-    <div class="dashboard-section">
-        <h2>
-            <i
-                aria-hidden="true"
-                class="bi bi-check-lg"
-            ></i>
-            {{ t('project.status.title') }}
-        </h2>
-        <div class="dashboard-section-container">
-            <div class="container">
-                <div class="display-row">
-                    <p class="row-title">{{ t('status') }}</p>
-                    <ProjectStatusIndicator
-                        :project-status="projectStore.project?.projectStatus"
-                        :show-draft="true"
-                    />
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Comment Section -->
-    <div class="dashboard-section">
-        <h2>
-            <i
-                aria-hidden="true"
-                class="bi bi-chat"
-            ></i>
-            {{ t('project.comments.title') }}
-        </h2>
-        <div class="dashboard-section-container">
-            <div class="container">
-                <ProjectComments
-                    v-if="isLoaded"
-                    :project="projectStore.project?.id"
-                />
-            </div>
-        </div>
-        <ProjectValidation
-            v-if="projectStore.project?.projectStatus === 'PROJECT_PROCESSING'
-                && hasPerm('change_project_as_validator')
-                && route.name === 'ManageProject'"
+  <!-- Documents Section -->
+  <div class="dashboard-section">
+    <h2>
+      <i
+        aria-hidden="true"
+        class="bi bi-file-earmark"
+      ></i>
+      {{ t('project.documents') }}
+    </h2>
+    <div class="dashboard-section-container">
+      <div class="container">
+        <ProjectRecapDocuments
+          v-if="isLoaded"
+          :association-id="null"
+          process="project"
         />
-        <section
-            v-else
-            class="flex-row-center padding-top padding-bottom"
-        >
-            <QBtn
-                :label="t('project.download-recap')"
-                class="btn-lg"
-                color="commission"
-                data-test="download-recap-button"
-                icon="bi-filetype-pdf"
-                @click="onGetProjectPdf"
-            />
-        </section>
+      </div>
     </div>
+  </div>
+
+  <!-- Fund validation section -->
+  <div class="dashboard-section">
+    <h2>
+      <i
+        aria-hidden="true"
+        class="bi bi-bank"
+      ></i>
+      {{ t('commission.funds-validation-status') }}
+    </h2>
+    <div class="dashboard-section-container">
+      <div class="container">
+        <div class="display-row">
+          <ProjectFundValidationIndicator :project-commission-funds="projectStore.projectCommissionFunds"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Section -->
+  <div class="dashboard-section">
+    <h2>
+      <i
+        aria-hidden="true"
+        class="bi bi-check-lg"
+      ></i>
+      {{ t('project.status.title') }}
+    </h2>
+    <div class="dashboard-section-container">
+      <div class="container">
+        <div class="display-row">
+          <p class="row-title">{{ t('status') }}</p>
+          <ProjectStatusIndicator
+            :project-status="projectStore.project?.projectStatus"
+            :show-draft="true"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comment Section -->
+  <div class="dashboard-section">
+    <h2>
+      <i
+        aria-hidden="true"
+        class="bi bi-chat"
+      ></i>
+      {{ t('project.comments.title') }}
+    </h2>
+    <div class="dashboard-section-container">
+      <div class="container">
+        <ProjectComments
+          v-if="isLoaded"
+          :project="projectStore.project?.id"
+        />
+      </div>
+    </div>
+    <ProjectValidation
+      v-if="projectStore.project?.projectStatus === 'PROJECT_PROCESSING'
+        && hasPerm('change_project_as_validator')
+        && route.name === 'ManageProject'"
+    />
+    <section
+      v-else
+      class="flex-row-center padding-top padding-bottom"
+    >
+      <QBtn
+        :label="t('project.download-recap')"
+        class="btn-lg"
+        color="commission"
+
+        icon="bi-filetype-pdf"
+        @click="onGetProjectPdf"
+      />
+    </section>
+  </div>
 </template>
 
 <style lang="scss" scoped>

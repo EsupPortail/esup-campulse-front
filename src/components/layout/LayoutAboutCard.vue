@@ -12,22 +12,22 @@ const props = defineProps<{
 
 
 <template>
-    <section :class="['home-section', 'form-container', props.cssClass]">
-        <div class="section-card">
-            <div class="section-background">
-                <span></span>
-            </div>
+  <section :class="['home-section', 'form-container', props.cssClass]">
+    <div class="section-card">
+      <div class="section-background">
+        <span></span>
+      </div>
 
-            <div class="section-title">
-                <div class="section-info">
-                    <h3 v-html="DOMPurify.sanitize(props.header)"></h3>
-                </div>
-            </div>
-            <div class="section-content">
-                <p v-html="DOMPurify.sanitize(props.body)"></p>
-            </div>
+      <div class="section-title">
+        <div class="section-info">
+          <h3 v-html="DOMPurify.sanitize(props.header)"></h3>
         </div>
-    </section>
+      </div>
+      <div class="section-content">
+        <p v-html="DOMPurify.sanitize(props.body)"></p>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>

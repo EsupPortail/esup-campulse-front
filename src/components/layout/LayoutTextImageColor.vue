@@ -11,23 +11,23 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div
-        :class="`image-text-section bg-${props.color}-light`"
-    >
-        <div class="container">
-            <div>
-                <h2 v-html="DOMPurify.sanitize(props?.title)"></h2>
-                <p v-html="DOMPurify.sanitize(props?.text)"></p>
-            </div>
-            <figure>
-                <img
-                    :src="props?.img"
-                    alt=""
-                />
-                <figcaption v-if="props.copyright">{{ props.copyright }}</figcaption>
-            </figure>
-        </div>
+  <div
+    :class="`image-text-section bg-${props.color}-light`"
+  >
+    <div class="container">
+      <div>
+        <h2 v-html="DOMPurify.sanitize(props?.title)"></h2>
+        <p v-html="DOMPurify.sanitize(props?.text)"></p>
+      </div>
+      <figure>
+        <img
+          :src="props?.img"
+          alt=""
+        />
+        <figcaption v-if="props.copyright">{{ props.copyright }}</figcaption>
+      </figure>
     </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

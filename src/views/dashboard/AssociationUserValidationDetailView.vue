@@ -1,188 +1,188 @@
 <script lang="ts" setup>
-import {useUserManagerStore} from '@/stores/useUserManagerStore'
+import {useUserStore} from '@/stores/useUserStore'
 import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
 import router from '@/router'
-import useUserAssociations from '@/composables/useUserAssociations'
+import useUserAssociations from '@/composables/useUserAssociation'
 import type {UserAssociation} from '#/user'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import useErrors from '@/composables/useErrors'
+import useErrors from '@/composables/useError'
 import axios from 'axios'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {
-    associationRoleOptions,
-    getAssociationUserRole,
-    patchUserAssociations,
-    deleteUserAssociation
+  associationRoleOptions,
+  getAssociationUserRole,
+  patchUserAssociations,
+  deleteUserAssociation
 } = useUserAssociations()
 const {catchHTTPError} = useErrors()
 const associationStore = useAssociationStore()
-const userManagerStore = useUserManagerStore()
+const userManagerStore = useUserStore()
 const route = useRoute()
 
 onMounted(async () => {
-    loading.show()
-    await onGetUserAssociations()
-    await associationStore.getInstitutions()
-    initAssociationMember()
-    loading.hide()
+  loading.show()
+  await onGetUserAssociations()
+  await associationStore.getInstitutions()
+  initAssociationMember()
+  loading.hide()
 })
 
 const associationUser = ref<UserAssociation | undefined>()
 
 const initAssociationMember = () => {
-    associationUser.value = userManagerStore.userAssociations.find(obj => obj.association.id === Number.parseInt(route.params.associationId as string))
+  associationUser.value = userManagerStore.userAssociations.find(obj => obj.association.id === Number.parseInt(route.params.associationId as string))
 }
 watch(() => userManagerStore.userAssociations.length, initAssociationMember)
 
 // Get user associations
 async function onGetUserAssociations() {
-    try {
-        await userManagerStore.getUserAssociations(Number.parseInt(route.params.userId as string))
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
+  try {
+    await userManagerStore.getUserAssociations(Number.parseInt(route.params.userId as string))
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
     }
+  }
 }
 
 async function onValidateAssociationUser() {
-    try {
-        const userId = associationUser.value?.user.id
-        const associationId = associationUser.value?.association.id
-        await patchUserAssociations(userId, associationId as number, {isValidatedByAdmin: true})
-        await router.push({name: 'ValidateAssociationUsers'})
-        notify({
-            type: 'positive',
-            message: t('notifications.positive.validate-user-association')
-        })
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
+  try {
+    const userId = associationUser.value?.user.id
+    const associationId = associationUser.value?.association.id
+    await patchUserAssociations(userId, associationId as number, {isValidatedByAdmin: true})
+    await router.push({name: 'ValidateAssociationUsers'})
+    notify({
+      type: 'positive',
+      message: t('notifications.positive.validate-user-association')
+    })
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
     }
+  }
 }
 
 async function onDeleteAssociationUser() {
-    try {
-        const userId = associationUser.value?.user.id
-        const associationId = associationUser.value?.association.id
-        await deleteUserAssociation(userId, associationId as number)
-        await router.push({name: 'ValidateAssociationUsers'})
-        notify({
-            type: 'positive',
-            message: t('notifications.positive.validate-delete-user-association')
-        })
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
+  try {
+    const userId = associationUser.value?.user.id
+    const associationId = associationUser.value?.association.id
+    await deleteUserAssociation(userId, associationId as number)
+    await router.push({name: 'ValidateAssociationUsers'})
+    notify({
+      type: 'positive',
+      message: t('notifications.positive.validate-delete-user-association')
+    })
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
     }
+  }
 }
 </script>
 
 <template>
-    <QForm @submit.prevent="onValidateAssociationUser">
-        <div class="dashboard-section">
-            <h2>
-                <QIcon name="bi-person"/>
-                {{ t('user.infos') }}
-            </h2>
-            <div class="dashboard-section-container">
-                <div class="container">
-                    <div class="flex-column">
-                        <div class="display-row">
-                            <h3>{{ t('user.first-name') }}</h3>
-                            <p>{{ associationUser?.user.firstName }}</p>
-                        </div>
-                        <div class="display-row">
-                            <h3>{{ t('user.last-name') }}</h3>
-                            <p>{{ associationUser?.user.lastName }}</p>
-                        </div>
-                        <div class="display-row">
-                            <h3>{{ t('user.email') }}</h3>
-                            <p>TODO</p>
-                        </div>
-                    </div>
-                </div>
+  <QForm @submit.prevent="onValidateAssociationUser">
+    <div class="dashboard-section">
+      <h2>
+        <QIcon name="bi-person"/>
+        {{ t('user.infos') }}
+      </h2>
+      <div class="dashboard-section-container">
+        <div class="container">
+          <div class="flex-column">
+            <div class="display-row">
+              <h3>{{ t('user.first-name') }}</h3>
+              <p>{{ associationUser?.user.firstName }}</p>
             </div>
-        </div>
-
-        <div class="dashboard-section">
-            <h2>
-                <QIcon name="bi-person-lines-fill"/>
-                {{ t('dashboard.association-user.association') }}
-            </h2>
-
-            <div class="dashboard-section-container">
-                <div class="container">
-                    <div class="flex-column">
-                        <div class="display-row">
-                            <h3>{{ t('directory.labels.association-name') }}</h3>
-                            <p>
-                                {{ associationUser?.association.name }}
-                            </p>
-                        </div>
-                        <div class="display-row">
-                            <h3>{{ t('directory.labels.association-institution') }}</h3>
-                            <p>
-                                {{
-                                    associationStore.institutions.find(obj => obj.id ===
-                                        associationUser?.association.institution)?.name
-                                }}
-                            </p>
-                        </div>
-                        <div class="display-row">
-                            <h3>{{ t('dashboard.association-user.role') }}</h3>
-                            <p v-if="associationUser">
-                                {{
-                                    associationRoleOptions.find(obj => obj.value === (associationUser ?
-                                        getAssociationUserRole(associationUser) : undefined))?.label
-                                }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div class="display-row">
+              <h3>{{ t('user.last-name') }}</h3>
+              <p>{{ associationUser?.user.lastName }}</p>
             </div>
+            <div class="display-row">
+              <h3>{{ t('user.email') }}</h3>
+              <p>TODO</p>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <div class="flex-row-center padding-top padding-bottom">
-            <QBtn
-                :label="t('back')"
-                :to="{ name: 'ValidateAssociationUsers' }"
-                class="btn-lg"
-                color="dashboard"
-                icon="bi-chevron-compact-left"
-            />
-            <QBtn
-                :label="t('user-manager.delete-association-user')"
-                class="btn-lg"
-                color="custom-red"
-                icon="bi-file-earmark-x"
-                @click="onDeleteAssociationUser"
-            />
-            <QBtn
-                :label="t('user-manager.validate-association-user')"
-                class="btn-lg"
-                color="dashboard"
-                icon="bi-check2"
-                type="submit"
-            />
+    <div class="dashboard-section">
+      <h2>
+        <QIcon name="bi-person-lines-fill"/>
+        {{ t('dashboard.association-user.association') }}
+      </h2>
+
+      <div class="dashboard-section-container">
+        <div class="container">
+          <div class="flex-column">
+            <div class="display-row">
+              <h3>{{ t('directory.labels.association-name') }}</h3>
+              <p>
+                {{ associationUser?.association.name }}
+              </p>
+            </div>
+            <div class="display-row">
+              <h3>{{ t('directory.labels.association-institution') }}</h3>
+              <p>
+                {{
+                  associationStore.institutions.find(obj => obj.id ===
+                    associationUser?.association.institution)?.name
+                }}
+              </p>
+            </div>
+            <div class="display-row">
+              <h3>{{ t('dashboard.association-user.role') }}</h3>
+              <p v-if="associationUser">
+                {{
+                  associationRoleOptions.find(obj => obj.value === (associationUser ?
+                    getAssociationUserRole(associationUser) : undefined))?.label
+                }}
+              </p>
+            </div>
+          </div>
         </div>
-    </QForm>
+      </div>
+    </div>
+
+    <div class="flex-row-center padding-top padding-bottom">
+      <QBtn
+        :label="t('back')"
+        :to="{ name: 'ValidateAssociationUsers' }"
+        class="btn-lg"
+        color="dashboard"
+        icon="bi-chevron-compact-left"
+      />
+      <QBtn
+        :label="t('user-manager.delete-association-user')"
+        class="btn-lg"
+        color="custom-red"
+        icon="bi-file-earmark-x"
+        @click="onDeleteAssociationUser"
+      />
+      <QBtn
+        :label="t('user-manager.validate-association-user')"
+        class="btn-lg"
+        color="dashboard"
+        icon="bi-check2"
+        type="submit"
+      />
+    </div>
+  </QForm>
 </template>
 
 <style lang="scss" scoped>

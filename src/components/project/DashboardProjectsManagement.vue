@@ -1,226 +1,72 @@
 <script lang="ts" setup>
-import TableManagedProjects from '@/components/project/TableManagedProjects.vue'
-import useCommissions from '@/composables/useCommissions'
-import {useI18n} from 'vue-i18n'
-import {onMounted, ref, watch} from 'vue'
+import AtomicTab from '@/components/global/GlobalTab.vue'
+import type {Tab} from '#/global'
+import ProjectListTable from '@/components/project/projectList/ProjectListTable.vue'
+import CommissionListCard from '@/components/commission/CommissionListCard.vue'
+import useManageProjects from '@/composables/useManageProject'
+import {watch} from 'vue'
 import {useQuasar} from 'quasar'
-import useErrors from '@/composables/useErrors'
-import axios from 'axios'
-import FormProjectSearch from '@/components/form/FormProjectSearch.vue'
-import {useProjectStore} from '@/stores/useProjectStore'
+import {useCommissionStore} from '@/stores/useCommissionStore'
 
-const {catchHTTPError} = useErrors()
-const {
-    getFunds,
-    getCommissionFunds,
-    getCommissionsForManagers,
-    commissions,
-} = useCommissions()
-const {t} = useI18n()
-const {loading, notify} = useQuasar()
-const projectStore = useProjectStore()
+const {dashboardTab} = useManageProjects()
+const {loading} = useQuasar()
+const commissionStore = useCommissionStore()
 
+const tabs: Tab[] = [
+  {
+    label: 'Gestion par projet',
+    slotName: 'projects'
+  },
+  {
+    label: 'Gestion par commission',
+    slotName: 'commissions'
+  }
+]
 
-const tab = ref('')
-watch(() => tab.value, () => {
-    innerTab.value = 'allProjects'
+async function getCommissions() {
+  loading.show()
+  await commissionStore.getCommissionsForManagers(
+    undefined,
+    undefined,
+    true,
+    undefined,
+    true
+  )
+  loading.hide()
+}
+
+watch(() => dashboardTab.value, () => {
+  if (dashboardTab.value === 1) {
+    getCommissions()
+  }
 })
-
-const innerTab = ref('allProjects')
-const splitterModel = ref(10)
-
-interface Tab {
-    name: string,
-    commission: number
-}
-
-const tabs = ref<Tab[]>([])
-
-const initTabs = () => {
-    tabs.value = []
-    tabs.value = commissions.value.reverse().map(obj => ({
-        name: obj.name,
-        commission: obj.id
-    }))
-    if (tabs.value.length) tab.value = tabs.value[0].name
-}
-
-onMounted(async () => {
-    loading.show()
-    await onGetCommissions()
-    initTabs()
-    loading.hide()
-})
-
-async function onGetCommissions() {
-    try {
-        await getCommissionsForManagers(
-            true,
-            undefined,
-            undefined,
-            undefined,
-            true)
-        await getFunds()
-        await getCommissionFunds()
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
-    }
-}
-
-async function onClearSearch() {
-    loading.show()
-    try {
-        // Reset projects
-        const commissionId = tabs.value.find(obj => obj.name === tab.value)?.commission
-        await projectStore.getManagedProjects(commissionId)
-        await projectStore.getProjectCommissionFunds(true, commissionId)
-    } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            notify({
-                type: 'negative',
-                message: await catchHTTPError(error.response)
-            })
-        }
-    }
-    loading.hide()
-}
-
 </script>
 
 <template>
-    <div class="dashboard-section">
-        <h2>
-            <i
-                aria-hidden="true"
-                class="bi bi-folder"
-            ></i>
-            {{ t('commission.on-going') }}
-        </h2>
-        <div class="dashboard-section-container flex-column">
-            <div class="container margin-bottom">
-                <h3>{{ t('commission.search-project') }}</h3>
-                <FormProjectSearch @on-clear-search="onClearSearch"/>
-            </div>
-            <QCard v-if="tabs.length">
-                <QTabs
-                    v-model="tab"
-                    active-color="cape-color"
-                    align="justify"
-                    class="text-grey"
-                    dense
-                    indicator-color="cape-color"
-                >
-                    <QTab
-                        v-for="(tab, index) in tabs"
-                        :key="index"
-                        :label="tab.name"
-                        :name="tab.name"
-                    />
-                </QTabs>
-
-                <QSeparator aria-hidden="true"/>
-
-                <QTabPanels
-                    v-model="tab"
-                    animated
-                >
-                    <QTabPanel
-                        v-for="(tab, index) in tabs"
-                        :key="index"
-                        :name="tab.name"
-                        class="q-pa-none"
-                    >
-                        <QSplitter
-                            v-model="splitterModel"
-                            :limits="[10, 100]"
-                            unit="%"
-                        >
-                            <template v-slot:before>
-                                <QTabs
-                                    v-model="innerTab"
-                                    class="cape-color"
-                                    vertical
-                                >
-                                    <QTab
-                                        :label="t('project.all-projects')"
-                                        icon="bi-folder"
-                                        name="allProjects"
-                                    />
-                                    <QTab
-                                        :label="t('project.validated-projects')"
-                                        icon="bi-folder-check"
-                                        name="validatedProjects"
-                                    />
-                                    <QTab
-                                        :label="t('project.archived-projects')"
-                                        icon="bi-archive"
-                                        name="archivedProjects"
-                                    />
-                                </QTabs>
-                            </template>
-
-                            <template v-slot:separator>
-                                <QAvatar
-                                    color="commission"
-                                    icon="bi-arrows"
-                                    size="40px"
-                                    text-color="white"
-                                />
-                            </template>
-
-                            <template v-slot:after>
-                                <QTabPanels
-                                    v-model="innerTab"
-                                    animated
-                                    transition-next="slide-up"
-                                    transition-prev="slide-down"
-                                >
-                                    <QTabPanel name="allProjects">
-                                        <TableManagedProjects
-                                            :commission-id="tab.commission"
-                                            :commission-name="tab.name"
-                                            :flat="true"
-                                            :title="t('project.all-projects')"
-                                            project-status="all"
-                                        />
-                                    </QTabPanel>
-                                    <QTabPanel name="validatedProjects">
-                                        <TableManagedProjects
-                                            :commission-id="tab.commission"
-                                            :commission-name="tab.name"
-                                            :flat="true"
-                                            :title="t('project.validated-projects')"
-                                            project-status="validated"
-                                        />
-                                    </QTabPanel>
-                                    <QTabPanel name="archivedProjects">
-                                        <TableManagedProjects
-                                            :commission-id="tab.commission"
-                                            :commission-name="tab.name"
-                                            :flat="true"
-                                            :title="t('project.archived-projects')"
-                                            project-status="archived"
-                                        />
-                                    </QTabPanel>
-                                </QTabPanels>
-                            </template>
-                        </QSplitter>
-                    </QTabPanel>
-                </QTabPanels>
-            </QCard>
-            <p
-                v-else
-                class="paragraph"
-            >
-                {{ t('project.no-project-to-show') }}
-            </p>
-        </div>
+  <div class="section">
+    <div class="container-lg">
+      <AtomicTab
+        v-model:current-tab="dashboardTab"
+        :tab-list="tabs"
+      >
+        <template #projects>
+          <section>
+            <ProjectListTable/>
+          </section>
+        </template>
+        <template #commissions>
+          <section class="flex-column">
+            <CommissionListCard
+              v-for="commission in commissionStore.commissions?.results"
+              :key="`commission-${commission.id}`"
+              :commission="commission"
+              :heading-level="2"
+            />
+          </section>
+        </template>
+      </AtomicTab>
     </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -228,31 +74,11 @@ async function onClearSearch() {
 @import '@/assets/styles/dashboard.scss';
 @import '@/assets/styles/forms.scss';
 
-.text-cape-color {
-    color: $commissionColor;
+.section {
+  background-color: #f5f5f5;
 }
 
-.bg-cape-color {
-    background: $commissionColorBackground;
-}
-
-.cape-color {
-    color: $commissionColor;
-}
-
-.q-tab-panel {
-    padding: 0 1rem;
-}
-
-.info-panel {
-    margin: 0.5rem;
-}
-
-h3 {
-    padding: 1rem
-}
-
-.q-card {
-    width: 100%;
+.container-lg {
+  padding: 1rem;
 }
 </style>
