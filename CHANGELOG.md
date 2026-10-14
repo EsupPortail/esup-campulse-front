@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.7 (octobre 2026)
+
+- Les contenus des pages de garde "Commission" et "Charte" sont désormais désactivables à l'affichage
+
 ## 1.6.6 (septembre 2026)
 
 - Correction au niveau de la soumission de projet : une association "site" peut postuler à tous les fonds
