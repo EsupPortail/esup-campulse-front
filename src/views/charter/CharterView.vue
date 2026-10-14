@@ -105,8 +105,8 @@ async function onGetContent() {
 }
 
 const showTextBlock = (content: Content): boolean => {
-    const header = content?.header.replaceAll('<br>', '')
-    const body = content?.body.replaceAll('<br>', '')
+    const header = content?.header.replace(/<br>/g, '')
+    const body = content?.body.replace(/<br>/g, '')
     return !!header && !!body
 }
 
