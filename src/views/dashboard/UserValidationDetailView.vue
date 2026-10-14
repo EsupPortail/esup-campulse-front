@@ -35,7 +35,7 @@ onMounted(async () => {
 // Get user
 async function onGetUser() {
     try {
-        await userManagerStore.getUserDetail(parseInt(route.params.id as string))
+        await userManagerStore.getUserDetail(Number.parseInt(route.params.id as string))
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
@@ -49,7 +49,7 @@ async function onGetUser() {
 // Get user associations
 async function onGetUserAssociations() {
     try {
-        await userManagerStore.getUserAssociations(parseInt(route.params.id as string))
+        await userManagerStore.getUserAssociations(Number.parseInt(route.params.id as string))
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

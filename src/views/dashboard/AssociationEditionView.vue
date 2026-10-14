@@ -25,13 +25,13 @@ const isLoaded = ref(false)
 // Check if user has president status
 const isAuthorized = () => {
     if (isStaff) return true
-    else return userStore.hasPresidentStatus(parseInt(route.params.id as string))
+    else return userStore.hasPresidentStatus(Number.parseInt(route.params.id as string))
 }
 
 // Get all infos on mounted
 async function onGetAssociationDetail() {
     try {
-        await associationStore.getAssociationDetail(parseInt(route.params.id as string), false)
+        await associationStore.getAssociationDetail(Number.parseInt(route.params.id as string), false)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({

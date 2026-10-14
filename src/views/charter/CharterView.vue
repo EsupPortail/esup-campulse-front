@@ -31,7 +31,6 @@ const manageDocuments = ref<Content>()
 const signCharters = ref<Content>()
 const downloadDocuments = ref<Content>()
 
-
 const pageCards = ref<PageCard[]>([])
 
 function findContentObject(code: ContentCode) {
@@ -105,6 +104,12 @@ async function onGetContent() {
     }
 }
 
+const showTextBlock = (content: Content): boolean => {
+    const header = content?.header.replace(/<br>/g, '')
+    const body = content?.body.replace(/<br>/g, '')
+    return !!header && !!body
+}
+
 onMounted(async () => {
     loading.show()
     await onGetContent()
@@ -118,20 +123,20 @@ onMounted(async () => {
 <template>
     <section>
         <LayoutImageText
-            v-if="firstBlock"
+            v-if="showTextBlock(firstBlock)"
             :img="CharterImage1"
             :text="firstBlock?.body"
             :title="firstBlock?.header"
         />
         <LayoutTextImageColor
-            v-if="secondBlock"
+            v-if="showTextBlock(secondBlock)"
             :img="CharterImage2"
             :text="secondBlock?.body"
             :title="secondBlock?.header"
             color="charter"
         />
         <LayoutImageText
-            v-if="thirdBlock"
+            v-if="showTextBlock(thirdBlock)"
             :img="CharterImage3"
             :text="thirdBlock?.body"
             :title="thirdBlock?.header"

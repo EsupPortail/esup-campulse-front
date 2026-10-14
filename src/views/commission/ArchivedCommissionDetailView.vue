@@ -20,7 +20,7 @@ const {dynamicTitle} = useUtility()
 const route = useRoute()
 const projectStore = useProjectStore()
 
-const commissionId = ref<number>(parseInt(route.params.id as string))
+const commissionId = ref<number>(Number.parseInt(route.params.id as string))
 const commissionName = ref<string>('')
 
 onMounted(async () => {
@@ -52,7 +52,7 @@ watch(() => commission.value, initCommissionName)
 async function onClearSearch() {
     loading.show()
     try {
-        // Reset projects
+    // Reset projects
         await projectStore.getManagedProjects(commissionId.value)
         await projectStore.getProjectCommissionFunds(true, commissionId.value)
     } catch (error) {
@@ -84,11 +84,11 @@ async function onClearSearch() {
                     project-status="all"
                 />
                 <!--
-                <CommissionExport
-                    :commission-id="commissionId"
-                    :commission-name="commissionName"
-                />
-                -->
+        <CommissionExport
+            :commission-id="commissionId"
+            :commission-name="commissionName"
+        />
+        -->
             </div>
         </div>
     </section>
@@ -99,6 +99,6 @@ async function onClearSearch() {
 @import '@/assets/styles/forms.scss';
 
 .form {
-    width: 80% !important;
+  width: 80% !important;
 }
 </style>

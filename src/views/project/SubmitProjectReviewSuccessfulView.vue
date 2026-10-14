@@ -24,7 +24,7 @@ onMounted(async () => {
 
 async function onGetProjectReview() {
     try {
-        await projectStore.getProjectReview(parseInt(route.params.projectId as string))
+        await projectStore.getProjectReview(Number.parseInt(route.params.projectId as string))
     } catch (error) {
         await router.push({name: '404'})
         if (axios.isAxiosError(error) && error.response) {
@@ -39,7 +39,7 @@ async function onGetProjectReview() {
 async function onGetProjectReviewPdf() {
     loading.show()
     try {
-        const projectId = parseInt(route.params.projectId as string)
+        const projectId = Number.parseInt(route.params.projectId as string)
         const response = await projectStore.getProjectReviewPdf(projectId)
         openDocument(response)
     } catch (error) {

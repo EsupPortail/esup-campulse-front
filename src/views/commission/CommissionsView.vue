@@ -105,6 +105,12 @@ async function onGetContent() {
     }
 }
 
+const showTextBlock = (content: Content): boolean => {
+    const header = content?.header.replace(/<br>/g, '')
+    const body = content?.body.replace(/<br>/g, '')
+    return !!header && !!body
+}
+
 onMounted(async () => {
     loading.show()
     await onGetContent()
@@ -118,13 +124,13 @@ onMounted(async () => {
 <template>
     <section>
         <LayoutImageText
-            v-if="firstBlock"
+            v-if="showTextBlock(firstBlock)"
             :img="CommissionImage1"
             :text="firstBlock?.body"
             :title="firstBlock?.header"
         />
         <LayoutTextImageColor
-            v-if="secondBlock"
+            v-if="showTextBlock(secondBlock)"
             :img="CommissionImage2"
             :text="secondBlock?.body"
             :title="secondBlock?.header"

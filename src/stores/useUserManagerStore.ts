@@ -98,14 +98,14 @@ export const useUserManagerStore = defineStore('userManagerStore', {
             const {commissionGroup} = useUserGroups()
             const {userFunds} = useCommissions()
             for (const group of groupsToDelete) {
-                if (group !== commissionGroup.value?.id) {
-                    const url = `/users/${this.user?.id}/groups/${group}`
-                    await axiosAuthenticated.delete(url)
-                } else {
+                if (group === commissionGroup.value?.id) {
                     for (const fund of userFunds.value) {
                         const url = `/users/${this.user?.id}/groups/${commissionGroup.value?.id}/funds/${fund}`
                         await axiosAuthenticated.delete(url)
                     }
+                } else {
+                    const url = `/users/${this.user?.id}/groups/${group}`
+                    await axiosAuthenticated.delete(url)
                 }
             }
             for (const fund of fundsToDelete) {

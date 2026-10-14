@@ -62,7 +62,7 @@ watch(() => userStore.userAssociations.length, initValues)
 const associationUser = ref<UserAssociation>()
 
 const initAssociationUser = () => {
-    associationUser.value = userStore.userAssociations.find(obj => obj.association.id === parseInt(route.params.id as string))
+    associationUser.value = userStore.userAssociations.find(obj => obj.association.id === Number.parseInt(route.params.id as string))
 }
 watch(() => userStore.userAssociations.length, initAssociationUser)
 
@@ -83,7 +83,7 @@ watch(() => associationUser.value, initAssociationUserRole)
 
 async function onGetAssociationDetail() {
     try {
-        await associationStore.getAssociationDetail(parseInt(route.params.id as string), false)
+        await associationStore.getAssociationDetail(Number.parseInt(route.params.id as string), false)
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             notify({
