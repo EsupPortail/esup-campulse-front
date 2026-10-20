@@ -1,6 +1,8 @@
 import {defineStore} from 'pinia'
-import type {Content, ContentCode, ContentStore, EditableContent, Logo, Stats} from '#/global'
+import type {ContentFilters, ContentStore, EditableContent} from '#/content'
 import {useAxios} from '@/composables/useAxios'
+import * as contentService from '@/services/ContentService'
+import * as statService from '@/services/StatService'
 
 export const useContentStore = defineStore('contentStore', {
   state: (): ContentStore => ({
@@ -12,36 +14,19 @@ export const useContentStore = defineStore('contentStore', {
   }),
 
   actions: {
-    /**
-         * It gets the content data from the server
-         * Available for the public
-         */
-    async getContents(isEditable: boolean) {
-      const {axiosPublic} = useAxios()
-      let url = '/contents/'
-      if (isEditable) {
-        url += '?is_editable=true'
-      }
-      this.contents = (await axiosPublic.get<Content[]>(url)).data
+    async getContents(filters?: ContentFilters): Promise<void> {
+      const newItems = await contentService.getContents(filters)
+      const combined = [...this.contents, ...newItems]
+      this.contents = Array.from(
+        new Map(combined.map(item => [item.id, item])).values()
+      )
     },
-    async getContent(id: number) {
-      const {axiosPublic} = useAxios()
-      const url = `/contents/${id}`
-      this.content = (await axiosPublic.get<Content>(url)).data
+
+    async getContent(contentId: number) {
+      this.content = await contentService.getContent(contentId)
     },
-    async getContentsByCode(codes: ContentCode[]) {
-      const {axiosPublic} = useAxios()
-      const url = `/contents/?codes=${codes.join(',')}`
-      const newContents = (await axiosPublic.get<Content[]>(url)).data
-      newContents.forEach(newItem => {
-        const index = this.contents.findIndex(c => c.code === newItem.code)
-        if (index === -1) {
-          this.contents.push(newItem)
-        } else {
-          this.contents[index] = newItem
-        }
-      })
-    },
+
+    // todo refactor with service
     async patchContent(content: EditableContent) {
       const {axiosAuthenticated} = useAxios()
       let dataToPatch = {}
@@ -62,17 +47,13 @@ export const useContentStore = defineStore('contentStore', {
         this.content = (await axiosAuthenticated.patch(`/contents/${this.content?.id}`, dataToPatch)).data
       }
     },
+
     async getLogos() {
-      if (this.logos.length) return
-      const {axiosPublic} = useAxios()
-      const url = '/contents/logos'
-      this.logos = (await axiosPublic.get<Logo[]>(url)).data
+      this.logos = await contentService.getLogos()
     },
 
     async getStats() {
-      const {axiosPublic} = useAxios()
-      const url = '/stats/'
-      this.stats = (await axiosPublic.get<Stats>(url)).data
+      this.stats = await statService.getStats()
     }
   }
 })

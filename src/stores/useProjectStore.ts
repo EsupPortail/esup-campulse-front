@@ -1,7 +1,6 @@
 import {defineStore} from 'pinia'
 import type {ProjectCommissionFundFilter, ProjectStatus, ProjectStore} from '#/project'
 import type {SelectLabel} from '#/global'
-import useCommissions from '@/composables/useCommissionFund'
 import * as projectService from '@/services/ProjectService'
 import * as documentUploadService from '@/services/DocumentUploadService'
 import type {AxiosResponse} from 'axios'
@@ -24,35 +23,13 @@ export const useProjectStore = defineStore('projectStore', {
         label: category.name
       }))
     },
-    projectCommission: (state: ProjectStore): number | undefined => {
-      const {commissionFunds, commissions} = useCommissions()
-      return commissions.value
-        .find(commission => commission.id === (commissionFunds.value
-          .find(commissionFund => commissionFund.id === (state.projectCommissionFunds[0]?.commissionFund))?.commission))?.id
+    // todo vérifier
+    projectCommission: (state: ProjectStore): number | null => {
+      return state.project?.commissions[0].id
     },
+    // todo ajout de projectCommissionFunds dans project
     projectFunds: (state: ProjectStore): number[] => {
-      const {commissionFunds} = useCommissions()
-      const projectFunds: number[] = []
-      state.projectCommissionFunds.forEach(projectCommissionFund => {
-        const commissionFund = commissionFunds.value.find(commissionFund => commissionFund.id === projectCommissionFund.commissionFund)
-        if (commissionFund) {
-          projectFunds.push(commissionFund.fund)
-        }
-      })
-      return projectFunds
-    },
-    projectStatuses: (): ProjectStatus[] => {
-      return [
-        'PROJECT_DRAFT',
-        'PROJECT_DRAFT_PROCESSED',
-        'PROJECT_PROCESSING',
-        'PROJECT_REJECTED',
-        'PROJECT_VALIDATED',
-        'PROJECT_REVIEW_DRAFT',
-        'PROJECT_REVIEW_PROCESSING',
-        'PROJECT_REVIEW_VALIDATED',
-        'PROJECT_CANCELED'
-      ]
+      return []
     }
   },
   actions: {

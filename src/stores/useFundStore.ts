@@ -1,8 +1,7 @@
 import {defineStore} from 'pinia'
-import type {Fund} from '#/commission'
 import type {FundStore} from '#/fund'
-import {useAxios} from '@/composables/useAxios'
 import type {SelectLabel} from '#/global'
+import * as commissionService from '@/services/CommissionService'
 
 export const useFundStore = defineStore('fundStore', {
   state: (): FundStore => ({
@@ -17,11 +16,10 @@ export const useFundStore = defineStore('fundStore', {
       }))
     }
   },
+
   actions: {
     async getFunds() {
-      if (this.funds.length) return
-      const {axiosPublic} = useAxios()
-      this.funds = (await axiosPublic.get<Fund[]>('/commissions/funds/names')).data
+      this.funds = await commissionService.getFunds()
     }
   }
 })

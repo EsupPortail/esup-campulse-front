@@ -2,7 +2,7 @@
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {computed, onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
-import useAssociation from '@/composables/useAssociation'
+import {useAssociation} from '@/composables/useAssociation'
 import {useQuasar} from 'quasar'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import axios from 'axios'
@@ -11,7 +11,7 @@ import FormAssociationSearch from '@/components/association/FormAssociationSearc
 import {useContentStore} from '@/stores/useContentStore'
 import LayoutImageText from '@/components/layout/LayoutImageText.vue'
 import DirectoryImage from '@/assets/img/directory-image.jpg'
-import type {Content} from '#/global'
+import type {Content} from '#/content'
 
 const associationStore = useAssociationStore()
 const contentStore = useContentStore()
@@ -24,7 +24,7 @@ const isLoaded = ref<boolean>(false)
 
 onMounted(async function () {
   loading.show()
-  await associationStore.getAssociations(true)
+  await associationStore.getAssociations({isPublic: true})
   associations.value = associationStore.associations
   await getContents()
   isLoaded.value = true
@@ -80,7 +80,7 @@ function scrollToTop() {
 // Functions
 async function getContents() {
   try {
-    await contentStore.getContentsByCode(['ASSOCIATION_HOME_FIRST_BLOCK'])
+    await contentStore.getContents({codes: ['ASSOCIATION_HOME_FIRST_BLOCK']})
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -150,7 +150,6 @@ const contentFirstBlock = computed<Content | undefined>(() => {
               aria-hidden="true"
               class="card-chevron bi bi-chevron-compact-right"
             ></i>
-            <!-- <RouterLink :to="{name: 'AssociationDetail', params: {id: association.id}}"> -->
             <QCardSection>
               <div class="list-logo">
                 <QImg
@@ -212,7 +211,6 @@ const contentFirstBlock = computed<Content | undefined>(() => {
                 </ul>
               </div>
             </QCardSection>
-            <!-- </RouterLink> -->
           </QCard>
           <div class="flex-row-center">
             <QPagination

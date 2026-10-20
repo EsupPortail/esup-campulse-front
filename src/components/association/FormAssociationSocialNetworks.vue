@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import useAssociation from '@/composables/useAssociation'
+import {useAssociation} from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import useUtility from '@/composables/useUtil'
 import {onMounted, toRaw, watch} from 'vue'

@@ -4,7 +4,7 @@ import useColorVariants from '@/composables/useColorVariant'
 import router from '@/router'
 import {useContentStore} from '@/stores/useContentStore'
 import {onMounted, ref} from 'vue'
-import type {Content, ContentCode} from '#/global'
+import type {Content, ContentCode} from '#/content'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
@@ -28,7 +28,7 @@ const initContent = () => {
 
 async function onGetContent() {
   try {
-    await contentStore.getContentsByCode(['SITE_FOOTER'])
+    await contentStore.getContents({codes: ['SITE_FOOTER']})
     await contentStore.getLogos()
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

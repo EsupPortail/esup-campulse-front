@@ -3,9 +3,9 @@ import type {
   AssociationRole,
   CASUser,
   LocalLogin,
+  RegisterUser,
   UserAssociationRegister,
-  UserGroupRegister,
-  UserRegister
+  UserGroupRegister
 } from '#/user'
 import useUserGroups from '@/composables/useUserGroup'
 import {useProfileStore} from '@/stores/useProfileStore'
@@ -24,7 +24,7 @@ const user = ref<LocalLogin>({
 
 const emailVerification = ref<string | undefined>('')
 
-const newUser = reactive<UserRegister>({
+const newUser = reactive<RegisterUser>({
   isCas: false,
   firstName: '',
   lastName: '',

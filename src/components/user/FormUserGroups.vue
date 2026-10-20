@@ -145,5 +145,5 @@ async function onInitGroupLabels() {
 </template>
 
 <style lang="scss" scoped>
-@import 'variables';
+@import '@/assets/_variables';
 </style>

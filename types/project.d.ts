@@ -1,95 +1,8 @@
 import type {DocumentUpload} from '#/document'
 import type {Commission} from '#/commission'
-import type {UserAssociation, UserAssociationDetail, UserObjectBase} from '#/user'
-import type {CharterStatus} from '#/charter'
+import type {UserBase} from '#/user'
 import type {PaginatedList} from '#/global'
-
-export interface ProjectListItem {
-  id: number,
-  name: string,
-  manualIdentifier: string,
-  association: {
-    id: number,
-    name: string,
-    acronym: string,
-    email: string,
-    isEnabled: boolean,
-    isPublic: boolean,
-    isSite: boolean,
-    institution: number,
-    canSubmitProjects: boolean,
-    charterStatus: CharterStatus
-  } | null,
-  user: UserObjectBase | null,
-  associationUser: {
-    id: number,
-    user: UserObjectBase,
-    association: {
-      id: number,
-      name: string,
-      acronym: string,
-      email: string,
-      isEnabled: boolean,
-      isPublic: boolean,
-      isSite: boolean,
-      institution: number,
-      canSubmitProjects: boolean,
-      charterStatus: CharterStatus
-    },
-    isPresident: boolean,
-    canBePresidentFrom: string | null,
-    canBePresidentTo: string | null,
-    isValidatedByAdmin: boolean,
-    isVicePresident: boolean,
-    isSecretary: boolean,
-    isTreasurer: boolean
-  },
-  commission: {
-    id: number,
-    submissionDate: string,
-    commissionDate: string,
-    isOpenToProjects: boolean,
-    name: string
-  } | null,
-  plannedStartDate: string,
-  plannedEndDate: string,
-  editionDate: string,
-  projectStatus: ProjectStatus,
-  budgetFile: string
-}
-
-export interface Project {
-  id: number,
-  name: string,
-  manualIdentifier: string,
-  plannedStartDate: string,
-  plannedEndDate: string,
-  plannedLocation: string,
-  user: UserObjectBase,
-  association: UserAssociationDetail,
-  associationUser: UserAssociation,
-  partnerAssociation: string,
-  categories: ProjectCategoryName[],
-  commissions: Commission[],
-  budgetPreviousEdition: number,
-  targetAudience: string,
-  amountStudentsAudience: number,
-  amountAllAudience: number,
-  ticketPrice: number,
-  studentTicketPrice: number,
-  individualCost: number,
-  goals: string,
-  summary: string,
-  plannedActivities: string,
-  preventionSafety: string,
-  marketingCampaign: string,
-  sustainableDevelopment: string,
-  projectStatus: ProjectStatus,
-  creationDate: string,
-  editionDate: string,
-  processingDate?: string,
-  budgetFile: string,
-}
+import type {AssociationUser, AssociationUserAssociation} from '#/association'
 
 type ProjectStatus =
   'PROJECT_DRAFT'
@@ -102,108 +15,125 @@ type ProjectStatus =
   | 'PROJECT_REVIEW_VALIDATED'
   | 'PROJECT_CANCELED'
 
-interface ProjectCategory {
-  id: number,
-  project: number,
-  category: number
-}
-
 export interface ProjectCategoryName {
-  id: number,
-  name: string
+  id: number;
+  name: string;
 }
 
-export interface ProjectBasicInfos {
-  name: string,
-  plannedStartDate: string,
-  plannedEndDate: string,
-  plannedLocation: string,
-  user: number | null,
-  association: number | null,
-  associationUser: number | null,
-  partnerAssociation: string,
+export interface ProjectBase {
+  id: number;
+  name: string;
+  manualIdentifier: string;
+  association: AssociationUserAssociation | null;
+  user: UserBase | null;
+  associationUser: AssociationUser | null;
+  plannedStartDate: string;
+  plannedEndDate: string;
+  editionDate: string;
+  projectStatus: ProjectStatus;
+  budgetFile: string;
 }
 
-export interface ProjectBudget {
-  budgetPreviousEdition: number | string,
-  targetAudience: string,
-  amountStudentsAudience: number | string,
-  amountAllAudience: number | string,
-  ticketPrice: number | string,
-  studentTicketPrice: number | string,
-  individualCost: number | string
+export interface ProjectListItem extends ProjectBase {
+  commission: Commission | null;
 }
 
-export interface ProjectGoals {
-  goals: string,
-  summary: string,
-  plannedActivities: string,
-  preventionSafety: string,
-  marketingCampaign: string,
-  sustainableDevelopment: string
+export interface Project extends ProjectBase {
+  plannedLocation: string;
+  partnerAssociation: string;
+  categories: ProjectCategoryName[];
+  commissions: Commission[];
+  budgetPreviousEdition: number;
+  targetAudience: string;
+  amountStudentsAudience: number;
+  amountAllAudience: number;
+  ticketPrice: number;
+  studentTicketPrice: number;
+  individualCost: number;
+  goals: string;
+  summary: string;
+  plannedActivities: string;
+  preventionSafety: string;
+  marketingCampaign: string;
+  sustainableDevelopment: string;
+  creationDate: string;
+  processingDate: string;
 }
+
+// old = ProjectBasicInfos
+export type ProjectInfos = Pick<Project, 'name' | 'plannedStartDate' | 'plannedEndDate' | 'plannedLocation' |
+  'partnerAssociation'> & {
+  user: Project['user']['id'] | null;
+  association: Project['association']['id'] | null;
+  associationUser: Project['associationUser']['id'] | null;
+}
+
+export type ProjectBudget = Pick<Project, 'budgetPreviousEdition' | 'targetAudience' | 'amountStudentsAudience' |
+  'amountAllAudience' | 'ticketPrice' | 'studentTicketPrice' | 'individualCost'>
+
+export type ProjectGoals = Pick<Project, 'goals' | 'summary' | 'plannedActivities' | 'preventionSafety' |
+  'marketingCampaign' | 'sustainableDevelopment'>
 
 export interface ProjectCommissionFund {
-  id?: number,
-  project?: number,
-  commissionFund: number,
-  isFirstEdition?: boolean,
-  amountAskedPreviousEdition?: number | string,
-  amountEarnedPreviousEdition?: number | string,
-  amountAsked?: number | string,
-  amountEarned?: number | string | null,
-  isValidatedByAdmin: boolean | null
+  id: number;
+  project: number;
+  commissionFund: number;
+  isFirstEdition: boolean;
+  amountAskedPreviousEdition: number;
+  amountEarnedPreviousEdition: number;
+  amountAsked: number;
+  amountEarned: number;
+  isValidatedByAdmin: boolean;
 }
 
 export interface ProjectReview {
-  id: number | null,
-  name: string,
-  user: number | null,
-  association: number | null,
-  outcome: number | string,
-  income: number | string,
-  realStartDate: string,
-  realEndDate: string,
-  realLocation: string,
-  review: string,
-  impactStudents: string,
-  description: string,
-  difficulties: string,
-  improvements: string,
-  plannedStartDate?: string,
-  plannedEndDate?: string,
-  plannedLocation?: string,
-  associationUser: number | null,
-  commissions?: Commission[],
-  creationDate?: string,
-  editionDate?: string,
-  processingDate?: string
+  id: number;
+  name: string;
+  user: number | null;
+  association: number | null;
+  associationUser: number | null;
+  outcome: number;
+  income: number;
+  realStartDate: string;
+  realEndDate: string;
+  realLocation: string;
+  review: string;
+  impactStudents: string;
+  description: string;
+  difficulties: string;
+  improvements: string;
+  plannedStartDate: string;
+  plannedEndDate: string;
+  plannedLocation: string;
+  commissions: Commission[];
+  creationDate: string;
+  editionDate: string;
+  processingDate: string;
 }
 
 export interface ProjectComment {
-  id: number,
-  project: number,
-  user: UserObjectBase,
-  text: string,
-  creationDate: string,
-  editionDate: string,
-  isVisible: boolean
+  id: number;
+  project: number;
+  user: UserBase;
+  text: string;
+  creationDate: string;
+  editionDate: string;
+  isVisible: boolean;
 }
 
-
 export interface ProjectStore {
-  project: Project | undefined,
-  projects: PaginatedList<ProjectListItem> | undefined,
-  projectCommissionFunds: ProjectCommissionFund[],
-  projectDocuments: DocumentUpload[],
-  projectCategoryNames: ProjectCategoryName[],
-  projectReview: ProjectReview | undefined
+  project: Project | undefined;
+  projects: PaginatedList<ProjectListItem> | undefined;
+  projectCommissionFunds: ProjectCommissionFund[];
+  projectDocuments: DocumentUpload[];
+  projectCategoryNames: ProjectCategoryName[];
+  projectReview: ProjectReview | undefined;
 }
 
 // REFACTO
 
 interface ProjectCommissionFundFilterAll {
-  filter: 'all'
+  filter: 'all';
 }
 
 interface ProjectCommissionFundFilterCommission {

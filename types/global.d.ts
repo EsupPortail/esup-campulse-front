@@ -18,30 +18,30 @@ export interface PasswordChecker {
 }
 
 export interface PageCard {
-  to: { name: string },
-  btnLabel?: string,
-  icon: string,
-  text?: string
+  to: { name: string };
+  btnLabel?: string;
+  icon: string;
+  text?: string;
 }
 
 export interface Tab {
-  label: string,
-  slotName: string,
-  icon?: string,
-  permission?: string,
-  disable?: boolean,
-  hasUnsavedData?: boolean
+  label: string;
+  slotName: string;
+  icon?: string;
+  permission?: string;
+  disable?: boolean;
+  hasUnsavedData?: boolean;
 }
 
 export interface PaginatedList<T> {
-  count: number,
-  totalPages: number,
-  currentPage: number,
+  count: number;
+  totalPages: number;
+  currentPage: number;
   range:
-    { start: number, end: number },
-  next: string | null,
-  previous: string | null,
-  results: T[]
+    { start: number; end: number };
+  next: string | null;
+  previous: string | null;
+  results: T[];
 }
 
-export type TargetPage = 'first' | 'last' | 'previous' | 'next'
+export type TargetPage = 'first' | 'last' | 'previous' | 'next';

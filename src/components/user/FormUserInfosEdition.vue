@@ -170,7 +170,7 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-@import 'variables';
+@import '@/assets/_variables';
 @import '@/assets/styles/forms';
 
 q-input:focus {

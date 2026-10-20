@@ -93,7 +93,7 @@ async function onGetUserAssociations() {
 </template>
 
 <style lang="scss" scoped>
-@import 'variables';
+@import '@/assets/_variables';
 @import '@/assets/styles/forms';
-@import 'associations';
+@import '@/assets/styles/associations';
 </style>

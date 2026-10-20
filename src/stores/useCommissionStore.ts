@@ -1,8 +1,9 @@
 import {defineStore} from 'pinia'
-import type {PaginatedList, SelectLabel} from '#/global'
+import type {SelectLabel} from '#/global'
 import {useAxios} from '@/composables/useAxios'
 import useUtility from '@/composables/useUtil'
-import type {Commission, CommissionFund, CommissionStore, NewCommission, UpdateCommission} from '#/commission'
+import type {Commission, CommissionFilters, CommissionStore, NewCommission, UpdateCommission} from '#/commission'
+import * as commissionService from '@/services/CommissionService'
 
 export const useCommissionStore = defineStore('commissionStore', {
   state: (): CommissionStore => ({
@@ -16,59 +17,21 @@ export const useCommissionStore = defineStore('commissionStore', {
       return state.commissions?.results.map(commission => ({
         value: commission.id,
         label: commission.name + ' ('
-                    + commission.commissionDate.split('-').reverse().join('/') + ')'
+          + commission.commissionDate.split('-').reverse().join('/') + ')'
       }))
     }
   },
 
   actions: {
-    async getCommissionsForManagers(
-      withActiveProjects: boolean | undefined,
-      onlyWithActiveProjects: boolean | undefined,
-      isOpenToProjects: boolean | undefined,
-      isSite: boolean | undefined,
-      managedProjects: boolean | undefined,
-      funds?: number[]) {
-
-      let urlString = '/commissions/'
-      const urlArray = []
-
-      if (withActiveProjects !== undefined) urlArray.push(`with_active_projects=${withActiveProjects}`)
-      if (onlyWithActiveProjects !== undefined) urlArray.push(`only_with_active_projects=${onlyWithActiveProjects}`)
-      if (isOpenToProjects !== undefined) urlArray.push(`is_open_to_projects=${isOpenToProjects}`)
-      if (isSite !== undefined) urlArray.push(`is_site=${isSite}`)
-      if (managedProjects !== undefined) urlArray.push(`managed_projects=${managedProjects}`)
-      if (funds?.length) urlArray.push(`funds=${funds.join(',')}`)
-
-      if (urlArray.length) urlString += `?${urlArray.join('&')}`
-      const {axiosPublic} = useAxios()
-      this.commissions = (await axiosPublic.get<PaginatedList<Commission>>(urlString)).data
+    async getCommissions(filters?: CommissionFilters) {
+      this.commissions = await commissionService.getCommissions(filters)
     },
 
-    async getCommissionsToPostponeProject(projectId: number) {
-      const {axiosPublic} = useAxios()
-      const url = `/commissions/?to_postpone_project=${projectId}`
-      this.commissions = (await axiosPublic.get<PaginatedList<Commission>>(url)).data
+    async getCommission(commissionId: number) {
+      this.commission = await commissionService.getCommission(commissionId)
     },
 
-    async getCommissionsForStudents(isOpenToProjects: boolean | undefined, isSite: boolean | undefined) {
-      let urlString = '/commissions/'
-      const urlArray = []
-
-      if (isOpenToProjects !== undefined) urlArray.push(`is_open_to_projects=${isOpenToProjects}`)
-      if (isSite !== undefined) urlArray.push(`is_site=${isSite}`)
-
-      if (urlArray.length) urlString += `?${urlArray.join('&')}`
-
-      const {axiosPublic} = useAxios()
-      this.commissions = (await axiosPublic.get<PaginatedList<Commission>>(urlString)).data
-    },
-
-    async getCommission(id: number) {
-      const {axiosPublic} = useAxios()
-      this.commission = (await axiosPublic.get<Commission>(`/commissions/${id}`)).data
-    },
-
+    // todo refactor with default function
     async getNextCommission() {
       const {axiosPublic} = useAxios()
       const url = '/commissions/?is_open_to_projects=true'
@@ -76,18 +39,11 @@ export const useCommissionStore = defineStore('commissionStore', {
       this.commission = openCommissions[0]
     },
 
-    async getAllCommissions() {
-      const {axiosPublic} = useAxios()
-      this.commissions = (await axiosPublic.get<PaginatedList<Commission>>('/commissions/')).data
+    async getCommissionFunds() {
+      this.commissionFunds = await commissionService.getCommissionFunds()
     },
 
-    async getCommissionFunds(forceRefresh?: boolean) {
-      if (!this.commissionFunds.length || forceRefresh) {
-        const {axiosPublic} = useAxios()
-        this.commissionFunds = (await axiosPublic.get<CommissionFund[]>('/commissions/funds')).data
-      }
-    },
-
+    // todo refactor
     async postNewCommission(commission: NewCommission) {
       const {axiosAuthenticated} = useAxios()
       const newCommission: Commission = (await axiosAuthenticated.post('/commissions/', {
@@ -104,6 +60,7 @@ export const useCommissionStore = defineStore('commissionStore', {
       }
     },
 
+    // todo refactor
     async updateCommission(commission: UpdateCommission) {
       const {axiosAuthenticated} = useAxios()
       let dataToPatch = {}
@@ -133,16 +90,5 @@ export const useCommissionStore = defineStore('commissionStore', {
         await axiosAuthenticated.delete(`/commissions/${commission.id}/funds/${fund}`)
       }
     },
-
-    async deleteCommission(id: number) {
-      const {axiosAuthenticated} = useAxios()
-      await axiosAuthenticated.delete(`/commissions/${id}`)
-    },
-
-    async getCommissionExport(id: number, mode: 'csv' | 'pdf' | 'xlsx', projects: number[] | undefined) {
-      const {axiosAuthenticated} = useAxios()
-      const url = `/commissions/${id}/export?mode=${mode}&project_ids=${projects?.join(',')}`
-      return await axiosAuthenticated.get(url, {responseType: 'arraybuffer'})
-    }
   }
 })

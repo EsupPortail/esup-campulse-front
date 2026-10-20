@@ -34,39 +34,44 @@ type ContentCode =
   ''
 
 export interface Content {
-  id: number,
-  code: ContentCode,
-  label: string,
-  header: string,
-  body: string,
-  footer: string,
-  aside: string,
-  isEditable: boolean
+  id: number;
+  code: ContentCode;
+  label: string;
+  header: string;
+  body: string;
+  footer: string;
+  aside: string;
+  isEditable: boolean;
 }
 
 export type EditableContent = Omit<Content, 'id' | 'code' | 'isEditable'>;
 
 export interface Logo {
-  id: number,
-  acronym: string,
-  title: string,
-  url: string,
-  pathLogo: string,
-  row: number,
-  column: number,
-  visible: boolean
+  id: number;
+  acronym: string;
+  title: string;
+  url: string;
+  pathLogo: string;
+  row: number;
+  column: number;
+  visible: boolean;
 }
 
 export interface Stats {
-  associationCount: number,
-  nextCommissionDate: string,
-  lastCharterUpdate: string
+  associationCount: number;
+  nextCommissionDate: string;
+  lastCharterUpdate: string;
 }
 
 interface ContentStore {
-  content: Content | undefined,
-  contents: Content[],
-  logos: Logo[],
-  CSSClasses: string[],
-  stats: Stats | undefined
+  content: Content | undefined;
+  contents: Content[];
+  logos: Logo[];
+  CSSClasses: string[];
+  stats: Stats | undefined;
+}
+
+export interface ContentFilters {
+  isEditable?: boolean;
+  codes?: ContentCode[];
 }

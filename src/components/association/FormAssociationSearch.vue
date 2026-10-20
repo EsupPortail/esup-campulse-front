@@ -1,19 +1,21 @@
 <script lang="ts" setup>
-import type {AssociationSearch} from '#/association'
+import type {SearchAssociation} from '#/association'
 import {onMounted, ref, watch} from 'vue'
 import useDirectory from '@/composables/useDirectory'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useI18n} from 'vue-i18n'
-import useAssociation from '@/composables/useAssociation'
+import {useAssociation} from '@/composables/useAssociation'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import {useRoute} from 'vue-router'
 import useErrors from '@/composables/useError'
 import router from '@/router'
+import {useInstitutionStore} from '@/stores/useInstitutionStore'
 
 const {advancedSearch, simpleAssociationSearch} = useDirectory()
 const {t} = useI18n()
 const associationStore = useAssociationStore()
+const institutionStore = useInstitutionStore()
 const {associations} = useAssociation()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
@@ -27,7 +29,7 @@ watch(() => associationStore.associations, () => {
 
 const expanded = ref<boolean>(false)
 
-const settings = ref<AssociationSearch>({
+const settings = ref<SearchAssociation>({
   search: '',
   name: '',
   acronym: '',
@@ -59,9 +61,9 @@ onMounted(() => {
 async function getLabels() {
   loading.show()
   try {
-    await associationStore.getInstitutions()
-    await associationStore.getInstitutionComponents()
-    await associationStore.getActivityFields()
+    await institutionStore.getInstitutions()
+    await institutionStore.getInstitutionComponents()
+    await associationStore.getAssociationActivityFields()
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -132,10 +134,11 @@ async function clearSearch() {
   updateQueries()
   try {
     if (route.name === 'Associations') {
-      await associationStore.getAssociations(true)
+      await associationStore.getAssociations({isPublic: true})
       emit('updatePage')
     } else if (route.name === 'ManageAssociations') {
-      await associationStore.getManagedAssociations()
+      // TODO récupérer uniquement les associations managées
+      await associationStore.getAssociations()
     }
     associations.value = associationStore.associations
   } catch (error) {
@@ -226,7 +229,7 @@ async function clearSearch() {
             <QSelect
               v-model="settings.institution"
               :label="t('directory.labels.association-institution')"
-              :options="associationStore.institutionLabels"
+              :options="institutionStore.institutionLabels"
               clearable
               color="association"
               emit-value
@@ -236,7 +239,7 @@ async function clearSearch() {
             <QSelect
               v-model="settings.institutionComponent"
               :label="t('directory.labels.association-institution-component')"
-              :options="associationStore.institutionComponentLabels"
+              :options="institutionStore.institutionComponentLabels"
               clearable
               color="association"
               emit-value

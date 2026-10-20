@@ -1,10 +1,11 @@
 import {defineStore} from 'pinia'
-import type {CasLogin, LocalLogin, ProfileStore, User, UserAssociation} from '#/user'
+import type {CasLogin, LocalLogin, ProfileStore, User} from '#/user'
 import useSecurity from '@/composables/useAuthentication'
 import {useAxios} from '@/composables/useAxios'
-import useUserGroups from '@/composables/useUserGroup'
-import type {DocumentProcessType, DocumentUpload} from '#/document'
-import useCommissions from '@/composables/useCommissionFund'
+import type {DocumentProcessType} from '#/document'
+import * as profileService from '@/services/ProfileService'
+import * as userService from '@/services/UserService'
+import * as documentUploadService from '@/services/DocumentUploadService'
 
 export const useProfileStore = defineStore('profileStore', {
   state: (): ProfileStore => ({
@@ -16,55 +17,30 @@ export const useProfileStore = defineStore('profileStore', {
 
   getters: {
     isAuth: (state: ProfileStore): boolean => !!state.user,
-    isCas: (state: ProfileStore): boolean | undefined => state.user?.isCas || state.newUser?.isCas,
-    userInstitutions: (state: ProfileStore): (number | null | undefined)[] | undefined => {
-      const institutionsArray: number[] = []
-      state.user?.groups?.forEach((group) => {
-        if (group.institutionId) {
-          institutionsArray.push(group.institutionId)
-        }
-      })
-      return institutionsArray
-    },
-    userFunds: (state: ProfileStore): (number | null | undefined)[] | undefined => {
-      const {funds} = useCommissions()
-      const fundsArray: number[] = []
-      state.user?.groups.forEach(group => {
-        if (group.institutionId) {
-          const foundFunds = funds.value.filter(fund => fund.institution === group.institutionId)
-          foundFunds?.forEach((fund) => {
-            fundsArray.push(fund.id)
-          })
-        }
-      })
-      return fundsArray
-    },
+    isCas: (state: ProfileStore): boolean => state.user?.isCas || state.newUser?.isCas || false,
     isAssociationMember: (state: ProfileStore): boolean => {
       return !!state.user?.associations?.length
-    }
+    },
+    userGroups: (state: ProfileStore): number[] => {
+      return [...new Set(state.user?.groups?.map<number>(group => group.groupId))]
+    },
   },
-  actions: {
 
+  actions: {
     async logIn(url: string, data: LocalLogin | CasLogin) {
       const {axiosPublic} = useAxios()
       const {newUser, setTokens} = useSecurity()
       const response = await axiosPublic.post(url, data)
       const {access, refresh, user} = response.data as { access: string, refresh: string, user: User }
       const hasGroups = !!user.groups.length
-      // User account is complete
       if (hasGroups) {
-        // If user is validated by admin
         if (user.isValidatedByAdmin) {
           setTokens(access, refresh)
           this.user = user
-        }
-        // If user is not validated by admin
-        else {
+        } else {
           throw new Error('USER_NOT_VALIDATED_BY_ADMIN')
         }
-      }
-      // User account is not complete
-      else {
+      } else {
         setTokens(access, refresh)
         newUser.isCas = user.isCas
         newUser.email = user.email
@@ -75,18 +51,14 @@ export const useProfileStore = defineStore('profileStore', {
         throw new Error('USER_ACCOUNT_NOT_COMPLETE')
       }
     },
-
     logOut() {
       const {removeTokens} = useSecurity()
-      const {isStaff} = useUserGroups()
       removeTokens()
-      this.unLoadUser()
-      isStaff.value = undefined
+      this.unloadProfile()
     },
-
-    async getUser() {
-      const {axiosAuthenticated} = useAxios()
-      const user = (await axiosAuthenticated.get<User>('/users/auth/user/')).data
+    // old = getUser
+    async getProfile() {
+      const user = await profileService.getProfile()
       if (user.isValidatedByAdmin) {
         this.user = user
       } else if (user.isCas) {
@@ -102,50 +74,39 @@ export const useProfileStore = defineStore('profileStore', {
         this.logOut()
       }
     },
-
-    unLoadUser() {
+    // old = unLoadUser
+    unloadProfile() {
       this.user = undefined
       this.userAssociations = []
     },
-
-    unLoadNewUser() {
+    // old = unLoadNewUser
+    unloadNewProfile() {
       const {removeTokens} = useSecurity()
       removeTokens()
       this.newUser = undefined
     },
-
-    async loadCASUser(ticket: string) {
+    // old = loadCASUser
+    async loadCASProfile(ticket: string) {
       const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
-      const {axiosPublic} = useAxios()
-      const data = (await axiosPublic.post('/users/auth/cas/login/', {ticket, service})).data
+      const data = await profileService.loadCASProfile(ticket, service)
       const {access, refresh, user} = data
-      // If the user has already created an account
-      if (user.groups.length) {
+      const hasGroups = !!user.groups.length
+      if (hasGroups) {
         throw new Error('USER_ACCOUNT_ALREADY_EXISTS')
-      }
-      // If the user has no account
-      else {
+      } else {
         const {setTokens} = useSecurity()
         setTokens(access, refresh)
         this.newUser = user
       }
     },
-
     async getUserAssociations() {
-      const {axiosAuthenticated} = useAxios()
-
-      const url = `/users/${this.user?.id}/associations/`
-
-      const response = await axiosAuthenticated.get<UserAssociation[]>(url)
-      this.userAssociations = response.data
+      this.userAssociations = await userService.getUserAssociations(this.user.id)
     },
-
     hasPresidentStatus(associationId: number): boolean {
       if (!this.userAssociations.length || !associationId) return false
-
-      const association = this.userAssociations.find(obj => obj.association.id === associationId)
+      const association = this.userAssociations
+        .find(item => item.association.id === associationId)
       if (!association) return false
-
       if (association.isPresident) {
         return true
       } else if (association.canBePresidentFrom || association.canBePresidentTo) {
@@ -168,14 +129,8 @@ export const useProfileStore = defineStore('profileStore', {
         return false
       }
     },
-
     async getUserDocuments(processTypes?: DocumentProcessType[]) {
-      const {axiosAuthenticated} = useAxios()
-      let url = `/documents/uploads?user_id=${this.user?.id}`
-      if (processTypes?.length) {
-        url += `&process_types=${processTypes.join(',')}`
-      }
-      this.userDocuments = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
+      this.userDocuments = await documentUploadService.getUserDocumentUploads(this.user.id, processTypes)
     }
   }
 })

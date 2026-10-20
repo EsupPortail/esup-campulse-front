@@ -1,202 +1,107 @@
-import type {AssociationOptions} from '#/association'
+import type {Association, AssociationUser, Institution} from '#/association'
 import type {DocumentUpload} from '#/document'
-import type {AssociationCharterStatus} from '#/charter'
+import type {Group} from '#/group'
+import type {Fund} from '#/fund'
 
-export interface User {
-  id: number,
-  username: string,
-  email: string,
-  address?: string,
-  zipcode?: string,
-  city?: string,
-  country?: string,
-  firstName: string,
-  lastName: string,
-  phone: string,
-  isValidatedByAdmin: boolean,
-  associations: UserAssociationDetail[],
-  groups: UserGroup[],
-  isCas: boolean,
-  hasValidatedEmail: boolean
-  permissions: string[]
+export interface UserBase {
+  id: number;
+  firstName: string;
+  lastName: string;
 }
 
-export type UserObjectBase = Pick<User, 'id' | 'firstName' | 'lastName'>
+export type UserAssociation = Pick<Association, 'id' | 'name' | 'acronym' | 'email' | 'isEnabled' | 'isPublic' |
+  'isSite' | 'canSubmitProjects' | 'charterStatus'> & { institution: Association['institution']['id']; }
 
-
-// STORES
-
-// User's role in the association
-export interface UserAssociation {
-  id: number,
-  user: {
-    id: number,
-    firstName: string,
-    lastName: string
-  },
-  association: UserAssociationDetail,
-  isPresident: boolean,
-  canBePresidentFrom: string,
-  canBePresidentTo: string,
-  isValidatedByAdmin: boolean,
-  isVicePresident: boolean,
-  isSecretary: boolean,
-  isTreasurer: boolean
-}
-
-export interface UserAssociationDetail {
-  id: number,
-  name: string,
-  acronym: string,
-  email: string,
-  isEnabled: boolean,
-  isPublic: boolean,
-  isSite: boolean,
-  institution: number,
-  canSubmitProjects?: boolean,
-  charterStatus?: AssociationCharterStatus
-}
-
-export interface UserAssociationRegister {
-  user?: number,
-  association: number,
-  isPresident: boolean,
-  isSecretary: boolean,
-  isTreasurer: boolean,
-  isVicePresident: boolean
-}
-
-export interface AssociationUser {
-  id?: number,
-  user?: number,
-  association?: number,
-  isPresident?: boolean,
-  canBePresidentFrom?: string,
-  canBePresidentTo?: string,
-  isValidatedByAdmin?: boolean,
-  isVicePresident?: boolean,
-  isSecretary?: boolean,
-  isTreasurer?: boolean,
-
-  [key: number]: string | boolean | number | null;
-}
-
-export interface AssociationMember {
-  id: number,
-  firstName?: string,
-  lastName?: string,
-  associationId?: number,
-  associationName?: string,
-  role: string,
-  canBePresidentFrom?: string | null,
-  canBePresidentTo?: string | null,
-  isValidatedByAdmin: boolean
-}
-
-export interface AssociationRole {
-  id: number | null,
-  name?: string,
-  role: string,
-  options?: AssociationOptions[],
-  canBePresidentFrom?: string | null,
-  canBePresidentTo?: string | null,
-  deleteAssociation?: boolean,
-  isValidatedByAdmin?: boolean
-}
-
-// Login
-interface CasLogin {
-  ticket: string,
-  service: string
-}
-
-interface LocalLogin {
-  username: string,
-  password: string
-}
-
-// Password reset
-export interface PasswordReset {
-  newPassword1: string | null,
-  newPassword2: string | null
-}
-
-// Profile password edition
-export interface PasswordEdit {
-  oldPassword: string,
-  newPassword1: string,
-  newPassword2: string
-}
-
-// User group
-export interface UserGroup {
-  id?: number,
-  userId: number,
-  groupId: number
-  institutionId?: number | null,
-  fundId?: number | null
-}
-
-export interface UserGroupRegister {
-  user?: number | null,
-  group: number | null,
-  institution: number | null,
-  fund: number | null
-}
-
-// User manager store
-export interface UserManagerStore {
-  user: User | undefined,
-  users: User[],
-  userAssociations: UserAssociation[],
-  userDocuments: DocumentUpload[]
-}
-
-// Register
-export interface UserRegister {
-  isCas: boolean,
-  username: string,
-  firstName: string,
-  lastName: string,
-  email: string,
-  phone: string
+export interface User extends UserBase {
+  username: string;
+  email: string;
+  address: string;
+  zipcode: string;
+  city: string;
+  country: string;
+  phone: string;
+  isValidatedByAdmin: boolean;
+  isCas: boolean;
+  hasValidatedEmail: boolean;
+  isStudent: boolean;
+  canSubmitProjects: boolean;
+  associations: UserAssociation[];
+  groups: UserGroup[];
+  permissions: string[];
 }
 
 export interface CASUser {
-  username: string,
-  firstName: string,
-  lastName: string,
-  mail: string
+  username: User['username'];
+  firstName: User['firstName'];
+  lastName: User['lastName'];
+  mail: User['email'];
 }
 
-// User store
+interface CasLogin {
+  ticket: string;
+  service: string;
+}
+
+interface LocalLogin {
+  username: User['username'];
+  password: string;
+}
+
+export interface PasswordReset {
+  newPassword1: string;
+  newPassword2: string;
+}
+
+export interface PasswordEdit extends PasswordReset {
+  oldPassword: string;
+}
+
+// old = UserRegister
+export type RegisterUser = Pick<User, 'isCas' | 'username' | 'firstName' | 'lastName' | 'email' | 'phone'>;
+
+// old = UserToUpdate
+export type UpdateUser = Pick<User, 'firstName' | 'lastName' | 'username' | 'email' | 'phone' | 'address' |
+  'zipcode' | 'city' | 'country'> & {
+  newEmail: User['email'];
+  newEmailVerification: User['email'];
+}
+
+// old = UserSearch
+export type SearchUser = Pick<User, 'firstName' | 'lastName' | 'email'> & {
+  search: string;
+  association: number | null;
+}
+
+export interface UserGroup {
+  id: number;
+  userId: User['id'];
+  groupId: Group['id'];
+  institutionId: Institution['id'] | null;
+  fundId: Fund['id'] | null;
+}
+
+export interface UserGroupUpdate {
+  user: UserGroup['userId'];
+  group: UserGroup['groupId'];
+  institution: UserGroup['institutionId'];
+  fund: UserGroup['fundId'];
+}
+
+export interface ProfileStore {
+  user: User | undefined;
+  newUser: RegisterUser | undefined;
+  userAssociations: AssociationUser[];
+  userDocuments: DocumentUpload[];
+}
+
 export interface UserStore {
-  user: User | undefined,
-  newUser: UserRegister | undefined,
-  userAssociations: UserAssociation[],
-  userDocuments: DocumentUpload[]
+  user: User | undefined;
+  users: User[];
+  userAssociations: AssociationUser[];
+  userDocuments: DocumentUpload[];
 }
 
-export interface UserToUpdate {
-  firstName: string,
-  lastName: string,
-  username: string,
-  email: string,
-  newEmail: string,
-  newEmailVerification: string,
-  phone: string,
-  address?: string,
-  zipcode?: string,
-  city?: string,
-  country?: string,
-}
-
-export type UserNames = { value: number, label: string }[]
-
-export interface UserSearch {
-  search: string,
-  firstName: string,
-  lastName: string,
-  email: string,
-  association: number | null
+export interface UserFilters {
+  search?: string;
+  status: 'validated' | 'unvalidated';
 }

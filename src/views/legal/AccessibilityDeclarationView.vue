@@ -58,9 +58,9 @@ const initContent = () => {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms';
-@import 'contact';
+@import '@/assets/styles/contact;
 @import '@/assets/styles/dashboard';
-@import 'variables';
+@import '@/assets/_variables';
 
 .dashboard-section h2 {
   padding: 1.5rem 0 1.5rem 0;

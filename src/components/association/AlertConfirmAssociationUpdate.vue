@@ -3,7 +3,7 @@ import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
-import useAssociation from '@/composables/useAssociation'
+import {useAssociation} from '@/composables/useAssociation'
 //import useUserGroups from '@/composables/useUserGroups'
 import useErrors from '@/composables/useError'
 

@@ -1,114 +1,78 @@
-import {computed, ref, watch} from 'vue'
-import useUtility from '@/composables/useUtil'
-import {useUserStore} from '@/stores/useUserStore'
-import {useAxios} from '@/composables/useAxios'
-import type {Group, GroupCodeLiteralName, SelectGroupLabel} from '#/group'
+import {computed, ref} from 'vue'
+import type {Group, GroupName, SelectLabelGroup} from '#/group'
 import i18n from '@/plugins/i18n'
 import {useProfileStore} from '@/stores/useProfileStore'
-import useCommissions from '@/composables/useCommissionFund'
 import useSecurity from '@/composables/useAuthentication'
+import {useGroupStore} from '@/stores/useGroupStore'
+import type {User, UserGroupUpdate} from '#/user'
+import * as userGroupService from '@/services/UserGroupService'
+import * as userService from '@/services/UserService'
+import useUser from '@/composables/useUser'
+import {useUserStore} from '@/stores/useUserStore'
+import useUtil from '@/composables/useUtil'
 
 
-// Used to store groups
-const groups = ref<Group[]>([])
-
-// Used to choose or update groups
+// Global state
 const newGroups = ref<number[]>([])
+const groupLabels = ref<SelectLabelGroup[]>([])
 
-// Used to limit the number of groups a user can choose
-const groupChoiceLimit = 2
-const groupChoiceIsValid = computed(() => {
-  return newGroups.value.length > 0 && newGroups.value.length <= groupChoiceLimit
+// Helpers
+const groupChoiceLimit: number = 2
+const hasSelectedGroups = computed<boolean>(() => newGroups.value.length > 0)
+const isUnderLimit = computed<boolean>(() => newGroups.value.length <= groupChoiceLimit)
+const groupChoiceIsValid = computed<boolean>(() => {
+  return hasSelectedGroups.value && isUnderLimit.value
 })
+// old = canJoinAssociationGroups
+const associationMemberGroups = new Set(['STUDENT_INSTITUTION'])
+const studentGroups = new Set(['STUDENT_INSTITUTION', 'STUDENT_MISC'])
+const commissionMemberGroups = new Set(['MANAGER_MISC'])
 
-// Used to dynamically show or hide FormRegisterUserAssociations
-const groupCanJoinAssociation = ref<boolean>(true)
+export default function useUserGroup() {
 
-// Helper to know if a user in userStore is a staff member
-const isStaff = ref<boolean | undefined>(undefined)
+  const profileStore = useProfileStore()
+  const groupStore = useGroupStore()
 
-// Helper to know if a user in userStore is a fund member
-const MEMBER_FUND = 'MEMBER_FUND'
-const isMemberFund = ref<boolean | undefined>(undefined)
-
-// Used to display or not the select for commissions
-const commissionMemberIsSelected = ref<boolean>(false)
-
-// Used to display or not the document needed for registration (only for students)
-const studentGroupIsSelected = ref<boolean>(false)
-
-export default function () {
-  const userStore = useProfileStore()
-  const userManagerStore = useUserStore()
-  const {userFunds} = useCommissions()
-  // const {axiosPublic} = useAxios()
-
-
-  const groupNames: GroupCodeLiteralName[] = [
-    {
-      codeName: 'MANAGER_GENERAL',
-      literalName: i18n.global.t('user-groups.manager-general'),
-    },
-    {
-      codeName: 'MANAGER_INSTITUTION',
-      literalName: i18n.global.t('user-groups.manager-institution')
-    },
-    {
-      codeName: 'MANAGER_MISC',
-      literalName: i18n.global.t('user-groups.manager-misc')
-    },
-    {
-      codeName: 'MEMBER_FUND',
-      literalName: i18n.global.t('user-groups.member-fund')
-    },
-    {
-      codeName: 'STUDENT_INSTITUTION',
-      literalName: i18n.global.t('user-groups.student-institution')
-    },
-    {
-      codeName: 'STUDENT_MISC',
-      literalName: i18n.global.t('user-groups.student-misc')
-    },
-  ]
-
-  /* A list of groups that can join associations */
-  const canJoinAssociationGroups = ['STUDENT_INSTITUTION']
-
-  async function getGroups() {
-    if (groups.value.length) return
-    const {axiosPublic} = useAxios()
-    groups.value = (await axiosPublic.get<Group[]>('/groups/')).data
-  }
-
-  function getGroupLiteral(groupId: number): string | undefined {
-    const group = (groups.value?.find(obj => obj.id === groupId))
-    const groupName = groupNames.find(obj => obj.codeName === group?.name)
-    if (!groupName) return undefined
-    return groupName.literalName
-  }
-
-  const groupLabels = ref<SelectGroupLabel[]>([])
-
-  // To re test
-  async function initGroupLabels(onlyPublicGroups: boolean) {
-    const {hasPerm} = useSecurity()
-    const labels: SelectGroupLabel[] = []
-    groups.value?.map(function (group) {
-      if (onlyPublicGroups && group.isPublic || !onlyPublicGroups) {
-        const label: string | undefined = getGroupLiteral(group.id)
-        if (!label) return
-        let disable = !group.isPublic
-        if (hasPerm('add_groupinstitutioncommissionuser_any_group') && group.name !== 'MANAGER_GENERAL') {
-          disable = false
-        }
-        labels.push({
-          value: group.id,
-          label,
-          disable
-        })
-      }
+  const isStaff = computed<boolean>(() => {
+    if (!profileStore.user?.groups) return false
+    return profileStore.user.groups.some(userGroup => {
+      const group = groupStore.groups
+        .find(obj => obj.id === userGroup.groupId)
+      return !group?.isPublic
     })
-    // Sort by alphabetical order
+  })
+
+  const isInGroup = (groupName: GroupName): boolean => {
+    if (!profileStore.user?.groups) return false
+    const group = groupStore.groups.find(g => g.name === groupName)
+    return profileStore.user.groups.some(g => g.id === group.id)
+  }
+
+  // old = getGroupLiteral
+  const groupFriendlyName = (groupId: number): string => {
+    const group = groupStore.groups.find(obj => obj.id === groupId)
+    return i18n.global.t(`user-groups.${group.name.replace(/_/g, '-').toLowerCase()}`) ?? ''
+  }
+
+  function initGroupLabels(onlyPublic?: boolean): void {
+    const {hasPerm} = useSecurity()
+    const labels = groupStore.groups.reduce<SelectLabelGroup[]>((factory, group) => {
+      if (!onlyPublic || group.isPublic) {
+        const label = groupFriendlyName(group.id)
+        if (label) {
+          let disable = !group.isPublic
+          if (hasPerm('add_groupinstitutioncommissionuser_any_group') && group.name !== 'MANAGER_GENERAL') {
+            disable = false
+          }
+          factory.push({
+            value: group.id,
+            label,
+            disable
+          })
+        }
+      }
+      return factory
+    }, []) ?? []
     labels.sort(function (a, b) {
       const labelA = a.label.toLowerCase().normalize('NFD'), labelB = b.label.toLowerCase().normalize('NFD')
       if (labelA < labelB)
@@ -117,161 +81,168 @@ export default function () {
         return 1
       return 0
     })
-    // Assign values to ref groupLabels
     groupLabels.value = labels
   }
 
-  // To test
-  const initUserGroups = () => {
-    newGroups.value = [...userManagerStore.userGroups]
-  }
-  watch(() => userManagerStore.userGroups, initUserGroups)
-
-  function preSelectGroup(groupCodeName: string) {
-    if (!groups.value?.length) return
-    const groupToPreSelect = groups.value?.find(group => group.name === groupCodeName)
-    if (!groupToPreSelect) return
-    newGroups.value.push(groupToPreSelect.id)
+  // old = preSelectGroup
+  function selectGroup(groupName: GroupName): void {
+    if (!groupStore.groups.length) return
+    const groupToSelect = groupStore.groups
+      .find(group => group.name === groupName)
+    newGroups.value.push(groupToSelect!.id)
   }
 
-  const initGroupPermToJoinAssociation = (groupArray: number[]) => {
+  // old = groupCanJoinAssociation
+  const canJoinAssociation = computed<boolean>(() => {
+    if (!groupStore.groups.length) return
     let perm = false
-    if (!groups.value?.length) return
-    for (const group of groupArray) {
-      const groupDetail = groups.value?.find(obj => obj.id === group)
-      const canJoinAssociation = canJoinAssociationGroups.includes(groupDetail?.name)
+    for (const group of newGroups.value) {
+      const groupDetail = groupStore.groups
+        .find(obj => obj.id === group)
+      const canJoinAssociation = associationMemberGroups.has(groupDetail?.name)
       if (canJoinAssociation) {
         perm = true
         break
       }
     }
-    groupCanJoinAssociation.value = perm
-  }
-  watch(() => newGroups.value.length, () => {
-    initGroupPermToJoinAssociation(newGroups.value)
+    return perm
   })
 
-  const initStaffStatus = () => {
-    let perm = false
+  // old = commissionMemberIsSelected
+  const commissionMemberGroupIsSelected = computed<boolean>(() => {
+    const targetGroups = new Set(groupStore.groups
+      .filter(g => commissionMemberGroups.has(g.name))
+      .map(g => g.id))
+    return newGroups.value.some(g => targetGroups.has(g))
+  })
 
-    if (!userStore.user) return
+  const studentGroupIsSelected = computed<boolean>(() => {
+    const targetGroups = new Set(groupStore.groups
+      .filter(g => studentGroups.has(g.name))
+      .map(g => g.id))
+    return newGroups.value.some(g => targetGroups.has(g))
+  })
 
-    for (const userGroup of userStore.user.groups) {
-      const group = groups.value?.find(obj => obj.id === userGroup.groupId)
-      if (!group?.isPublic) {
-        perm = true
-        break
+  const groupByName = (name: GroupName): Group => {
+    return groupStore.groups.find(g => g.name === name)
+  }
+
+  async function patchUserGroups(user: number, groupsToPost: number[], fundsToUpdate: number[]) {
+    const commissionMemberGroup = groupByName('MEMBER_FUND')
+
+    const postFactory: UserGroupUpdate[] = []
+
+    for (const group of groupsToPost) {
+      const isCommissionMemberGroup = group === commissionMemberGroup.id
+      if (isCommissionMemberGroup) {
+        for (const fund of fundsToUpdate) {
+          postFactory.push({
+            user,
+            group,
+            institution: null,
+            fund
+          })
+        }
+      } else {
+        postFactory.push({
+          user,
+          group,
+          institution: null,
+          fund: null
+        })
       }
     }
-    isStaff.value = perm
-  }
 
-  watch(() => userStore.user?.groups.length, initStaffStatus)
+    const needsToPostCommissionGroup = groupsToPost.includes(commissionMemberGroup.id)
+    const hasFundsToUpdate = !!fundsToUpdate.length
 
-  const initIsMemberFund = () => {
-    const userGroups = userStore.user?.groups
-    const memberFundGroup = groups.value.find(g => g.name === MEMBER_FUND)?.id
+    if (!needsToPostCommissionGroup && hasFundsToUpdate) {
+      for (const fund of fundsToUpdate) {
+        const group = commissionMemberGroup.id
+        postFactory.push({
+          user,
+          group,
+          institution: null,
+          fund,
+        })
+      }
+    }
 
-    isMemberFund.value = !!userGroups?.find(userGroup => userGroup.groupId === memberFundGroup)
-  }
-
-  watch(() => userStore.user?.groups.length, initIsMemberFund)
-
-  const isManagerMisc = () => {
-    const managerMiscGroup = groups.value.find(group => group.name === 'MANAGER_MISC')
-    return !!userStore.user?.groups.find(group => group.groupId === managerMiscGroup?.id)
-  }
-
-  function groupsToDelete(newGroups: number[], oldGroups: number[]) {
-    return oldGroups.filter(x => newGroups.indexOf(x) === -1)
-  }
-
-  // To re test
-  function groupsToAdd(newGroups: number[], oldGroups: number[]) {
-    let temp = newGroups.filter(x => oldGroups.indexOf(x) === -1)
-    temp = temp.filter((element, index) => {
-      return temp.indexOf(element) === index
+    const promises = postFactory.map(async (data) => {
+      return await userGroupService.postUserGroup(data)
     })
-    return temp
+    await Promise.all(promises)
   }
 
-  // To test
-  function commissionsToUpdate(newCommissions: number[], oldCommissions: number[]) {
-    return newCommissions.filter(x => oldCommissions.indexOf(x) === -1)
-  }
+  async function deleteUserGroups(user: User, groupsToDelete: number[], fundsToDelete: number[]) {
+    const {userFunds} = useUser()
+    const funds = userFunds(user)
+    const userId = user.id
+    const commissionMemberGroup = groupByName('MEMBER_FUND')
 
-  // To test
-  function commissionsToDelete(newCommissions: number[], oldCommissions: number[]) {
-    return oldCommissions.filter(x => newCommissions.indexOf(x) === -1)
-  }
-
-  async function updateUserGroups() {
-    const userManagerStore = useUserStore()
-    const oldGroups = userManagerStore.userGroups
-    const {arraysAreEqual} = useUtility()
-
-    if (!arraysAreEqual(newGroups.value, oldGroups) || !arraysAreEqual(userFunds.value, userManagerStore.userCommissionFunds)) {
-      await userManagerStore.updateUserGroups(groupsToAdd(newGroups.value, oldGroups),
-        commissionsToUpdate(userFunds.value, userManagerStore.userCommissionFunds))
-      await userManagerStore.deleteUserGroups(groupsToDelete(newGroups.value, oldGroups),
-        commissionsToDelete(userFunds.value, userManagerStore.userCommissionFunds))
+    for (const group of groupsToDelete) {
+      const isCommissionMemberGroup = group === commissionMemberGroup.id
+      if (isCommissionMemberGroup) {
+        for (const fund of funds) {
+          await userService.deleteUserGroup(userId, group, fund)
+        }
+      } else {
+        await userService.deleteUserGroup(userId, group)
+      }
+    }
+    for (const fund of fundsToDelete) {
+      await userService.deleteUserGroup(userId, commissionMemberGroup.id, fund)
     }
   }
 
-  const commissionGroup = ref<Group | undefined>(groups.value.find(obj => obj.name === MEMBER_FUND))
-  watch(() => groups.value, () => {
-    commissionGroup.value = groups.value.find(obj => obj.name === MEMBER_FUND)
-  })
+  async function updateUserGroups(user: User) {
+    const userStore = useUserStore()
+    const originalGroups = userStore.userGroups
+    const {arraysAreEqual} = useUtil()
+    const {userFunds} = useUser()
+    const funds = userFunds(user)
 
-  // To test
-  const initCommissionMemberSelection = () => {
-    if (!commissionGroup.value) return
-    commissionMemberIsSelected.value = newGroups.value.includes(commissionGroup.value?.id)
+    const groupsToPost = () => {
+      let temp = newGroups.value.filter(group => originalGroups.indexOf(group) === -1)
+      temp = temp.filter((element, index) => {
+        return temp.indexOf(element) === index
+      })
+      return temp
+    }
+
+    const groupsToDelete = () => {
+      return originalGroups.filter(group => newGroups.value.indexOf(group) === -1)
+    }
+
+    const fundsToUpdate = (newCommissions: number[], oldCommissions: number[]) => {
+      return funds.filter(x => oldCommissions.indexOf(x) === -1)
+    }
+
+    const commissionsToDelete = (newCommissions: number[], oldCommissions: number[]) => {
+      return oldCommissions.filter(x => newCommissions.indexOf(x) === -1)
+    }
+
+    if (!arraysAreEqual(newGroups.value, oldGroups) || !arraysAreEqual(userFunds.value, userStore.userCommissionFunds)) {
+      await patchUserGroups(groupsToPost(),
+        commissionsToUpdate(userFunds.value, userStore.userCommissionFunds))
+      await deleteUserGroups(groupsToDelete(),
+        commissionsToDelete(userFunds.value, userStore.userCommissionFunds))
+    }
   }
-  watch(() => newGroups.value, initCommissionMemberSelection)
-
-  const studentGroups = ref<Group[] | undefined>(groups.value
-    .filter(obj => obj.name === 'STUDENT_INSTITUTION' || obj.name === 'STUDENT_MISC'))
-  watch(() => groups.value, () => {
-    studentGroups.value = groups.value
-      .filter(obj => obj.name === 'STUDENT_INSTITUTION' || obj.name === 'STUDENT_MISC')
-  })
-
-  // To test
-  const initStudentGroupSelection = () => {
-    studentGroupIsSelected.value = false
-    if (!studentGroups.value?.length) return
-    studentGroups.value?.forEach(group => {
-      if (newGroups.value.includes(group.id)) studentGroupIsSelected.value = true
-    })
-  }
-  watch(() => newGroups.value, initStudentGroupSelection)
-
 
   return {
-    groups,
-    getGroups,
     groupLabels,
-    groupsToDelete,
-    groupsToAdd,
     groupChoiceIsValid,
     newGroups,
-    updateUserGroups,
-    getGroupLiteral,
-    initGroupLabels,
-    preSelectGroup,
-    groupCanJoinAssociation,
     isStaff,
-    initStaffStatus,
-    initGroupPermToJoinAssociation,
-    groupNames,
-    commissionMemberIsSelected,
-    initCommissionMemberSelection,
-    commissionGroup,
-    isMemberFund,
-    initIsMemberFund,
-    isManagerMisc,
     studentGroupIsSelected,
-    initStudentGroupSelection
+    commissionMemberGroupIsSelected,
+    canJoinAssociation,
+    selectGroup,
+    initGroupLabels,
+    isInGroup,
+    commissionMemberGroups,
+    groupByName,
+    updateUserGroups
   }
 }

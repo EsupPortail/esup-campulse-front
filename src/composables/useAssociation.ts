@@ -1,5 +1,5 @@
 import {ref} from 'vue'
-import type {Association, AssociationSocialNetwork, EditedAssociation, NewAssociation} from '#/association'
+import type {Association, AssociationSocialNetwork, CreateAssociation, UpdateAssociation} from '#/association'
 import type {AssociationRole} from '#/user'
 import useUtility from '@/composables/useUtil'
 import {useAssociationStore} from '@/stores/useAssociationStore'
@@ -16,7 +16,7 @@ const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
 const associations = ref<Association[]>([])
 
 // Functions
-async function createAssociation(newAssociation: NewAssociation): Promise<void> {
+async function createAssociation(newAssociation: CreateAssociation): Promise<void> {
   await associationService.createAssociation(newAssociation)
 }
 
@@ -24,7 +24,7 @@ async function getAssociationPdfExport(associationId: number): Promise<AxiosResp
   return await associationService.getAssociationPdfExport(associationId)
 }
 
-export const useAssociation = () => {
+export function useAssociation() {
 
   const associationStore = useAssociationStore()
   const {newAssociations} = useUserAssociations()
@@ -70,7 +70,7 @@ export const useAssociation = () => {
     associationSocialNetworks.value?.splice(index, 1)
   }
 
-  function checkChanges(association: EditedAssociation) {
+  function checkChanges(association: UpdateAssociation) {
     const {formatDate} = useUtility()
 
     const original = associationStore.association
@@ -82,21 +82,21 @@ export const useAssociation = () => {
     const numericFields = new Set(['amountMembersAllowed', 'studentCount'])
     const relationFields = new Set(['institution', 'institutionComponent', 'activityField'])
 
-    const changedData: Partial<Association | EditedAssociation> = {}
+    const changedData: UpdateAssociation = {}
 
-    const compareAndAssign = <K extends keyof EditedAssociation>(key: K, newValue: EditedAssociation[K]) => {
+    const compareAndAssign = <K extends keyof UpdateAssociation>(key: K, newValue: UpdateAssociation[K]) => {
       if (newValue !== original?.[key]) {
         changedData[key] = newValue
       }
     }
 
     for (const [key, value] of Object.entries(association)) {
-      const typedKey = key as keyof EditedAssociation
+      const typedKey = key as keyof UpdateAssociation
 
       if (directFields.has(key)) {
         compareAndAssign(typedKey, value)
       } else if (numericFields.has(key)) {
-        compareAndAssign(typedKey, Number.parseInt(value))
+        compareAndAssign(typedKey, Number.parseInt(value as string))
       } else if (relationFields.has(key)) {
         const relationKey = relationFields[key]
         const originalId = (original?.[relationKey])?.id
@@ -106,7 +106,7 @@ export const useAssociation = () => {
       } else if (key === 'lastGoaDate' && value !== null) {
         const formattedOriginal = formatDate(original?.lastGoaDate)
         if (value !== formattedOriginal) {
-          changedData.lastGoaDate = value
+          changedData.lastGoaDate = value as string
         }
       }
     }
@@ -130,7 +130,7 @@ export const useAssociation = () => {
     return hasChanged ? edited : undefined
   }
 
-  async function updateAssociation(editedAssociation: EditedAssociation) {
+  async function updateAssociation(editedAssociation: UpdateAssociation) {
     const associationId = associationStore.association?.id
     if (!associationId) return
     const data = checkChanges(editedAssociation)

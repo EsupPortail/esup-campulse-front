@@ -5,6 +5,7 @@ import useUserGroups from '@/composables/useUserGroup'
 import {ref, watch} from 'vue'
 import useSecurity from '@/composables/useAuthentication'
 import useUtility from '@/composables/useUtil'
+import {useGroupStore} from '@/stores/useGroupStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,7 +20,8 @@ router.beforeEach(async (to) => {
   }
 
   const profileStore = useProfileStore()
-  const {initStaffStatus, isStaff, getGroups, initIsMemberFund} = useUserGroups()
+  const groupStore = useGroupStore()
+  const {isStaff} = useUserGroups()
   const {hasPerm} = useSecurity()
   const {dynamicTitle, openMenu} = useUtility()
 
@@ -45,17 +47,14 @@ router.beforeEach(async (to) => {
   const accessToken = localStorage.getItem('JWT__access__token')
   if (!profileStore.user && accessToken) {
     try {
-      await profileStore.getUser()
+      await profileStore.getProfile()
     } catch (error) {
       return {name: 'Logout'}
     }
   }
 
-  // Get isStaff status if user is auth
   if (profileStore.isAuth) {
-    await getGroups()
-    initStaffStatus()
-    initIsMemberFund()
+    await groupStore.getGroups()
   }
 
   // Authenticated views
@@ -103,7 +102,7 @@ router.beforeEach(async (to) => {
   // if (to.name == 'RegistrationSuccessful' && !newUser.firstName) return {name: '404'}
 
   // If user is authenticated
-  if (userStore.isAuth) {
+  if (profileStore.isAuth) {
     if (to.name == 'Registration' || to.name == 'Login') return {name: 'Dashboard'}
     else if (to.name == 'PasswordReset') return {name: 'ProfilePasswordEdit'}
   }

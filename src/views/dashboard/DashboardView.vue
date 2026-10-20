@@ -16,7 +16,7 @@ import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.
 const profileStore = useProfileStore()
 const {t} = useI18n()
 const {hasPerm} = useSecurity()
-const {isStaff, isMemberFund} = useUserGroups()
+const {isStaff, isInGroup} = useUserGroups()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
@@ -49,7 +49,7 @@ async function onGetUserDocuments() {
 async function onGetProjects() {
   if (hasPerm('add_project_user')) {
     try {
-      await projectStore.getAllProjects()
+      await projectStore.getProjects()
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         notify({
@@ -206,7 +206,7 @@ onMounted(async () => {
 
   <!-- Commission management, for staff only -->
   <section
-    v-if="(isStaff || isMemberFund) && (hasPerm('view_project'))"
+    v-if="(isStaff || isInGroup('MANAGER_MISC')) && (hasPerm('view_project'))"
     class="dashboard-section"
   >
     <h2>
@@ -217,7 +217,7 @@ onMounted(async () => {
       <div class="container">
         <div class="dashboard-btn-group">
           <QBtn
-            :label="isMemberFund ? t('dashboard.view-projects') : t('dashboard.manage-projects')"
+            :label="isStaff ? t('dashboard.manage-projects') : t('dashboard.view-projects')"
             :to="{ name: 'ManageProjects' }"
             class="btn-lg"
             color="dashboard"
@@ -317,7 +317,7 @@ onMounted(async () => {
     <div class="dashboard-section-container">
       <div class="dashboard-btn-group">
         <div
-          v-for="association in userStore.userAssociations"
+          v-for="association in profileStore.userAssociations"
           :key="association.association.id"
         >
           <QBtn
@@ -345,8 +345,8 @@ onMounted(async () => {
       <div class="container">
         <InfoDocumentLibrary color="dashboard"/>
         <ListDocumentDashboard
-          v-if="userStore.userDocuments?.length"
-          :documents="userStore.userDocuments"
+          v-if="profileStore.userDocuments?.length"
+          :documents="profileStore.userDocuments"
         />
         <div v-else>
           <p>{{ t('documents.no-document-to-show') }}</p>
@@ -376,9 +376,9 @@ onMounted(async () => {
               color="dashboard"
             />
           </div>
-          <section v-if="projectStore.selfProjects.length">
+          <section v-if="projectStore.projects?.results.length">
             <div
-              v-for="project in projectStore.selfProjects.slice(0, 3)"
+              v-for="project in projectStore.projects.results.slice(0, 3)"
               :key="project.id"
               class="document-input variant-space-1"
             >

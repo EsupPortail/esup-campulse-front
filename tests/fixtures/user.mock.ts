@@ -2,11 +2,11 @@ import type {
   AssociationMember,
   AssociationRole,
   AssociationUser,
+  RegisterUser,
   User,
   UserAssociation,
   UserAssociationDetail,
-  UserGroup,
-  UserRegister
+  UserGroup
 } from '#/user'
 import {_groups} from '~/fixtures/group.mock'
 import i18n from '@/plugins/i18n'
@@ -167,7 +167,7 @@ export const _miscStudent: User = {
   permissions: getUserGroupsPermissions([_userGroups[4]])
 }
 
-export const _newUser: UserRegister = {
+export const _newUser: RegisterUser = {
   isCas: false,
   username: 'john.lennon@bbc.com',
   firstName: 'John',

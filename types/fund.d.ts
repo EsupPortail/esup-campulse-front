@@ -1,11 +1,11 @@
 import type {BaseSelectLabel} from '#/global'
 
 export interface Fund {
-  id: number,
-  name: string,
-  acronym: string,
-  isSite: boolean,
-  institution: number
+  id: number;
+  name: string;
+  acronym: string;
+  isSite: boolean;
+  institution: number;
 }
 
 export interface SelectLabelFund extends BaseSelectLabel<number> {

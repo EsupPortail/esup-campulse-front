@@ -3,23 +3,25 @@ import {useI18n} from 'vue-i18n'
 import {QForm, useQuasar} from 'quasar'
 import {onMounted, reactive, ref, watch} from 'vue'
 import axios from 'axios'
-import useAssociation from '@/composables/useAssociation'
-import {useAssociationStore} from '@/stores/useAssociationStore'
+import {useAssociation} from '@/composables/useAssociation'
 import {useProfileStore} from '@/stores/useProfileStore'
-import type {NewAssociation} from '#/association'
+import type {CreateAssociation} from '#/association'
 import useSecurity from '@/composables/useAuthentication'
 import useErrors from '@/composables/useError'
+import useUser from '@/composables/useUser'
+import {useInstitutionStore} from '@/stores/useInstitutionStore'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
 const {createAssociation} = useAssociation()
-const associationStore = useAssociationStore()
-const userStore = useProfileStore()
+const institutionStore = useInstitutionStore()
+const profileStore = useProfileStore()
 const {hasPerm} = useSecurity()
 const {catchHTTPError} = useErrors()
+const {userInstitutions} = useUser()
 
 
-const newAssociation = reactive<NewAssociation>({
+const newAssociation = reactive<CreateAssociation>({
   name: '',
   acronym: '',
   email: '',
@@ -33,9 +35,10 @@ const newAssociationForm = ref(QForm)
 
 const initValues = () => {
   institutions.value = []
-  if (userStore.userInstitutions && userStore.userInstitutions?.length !== 0) {
-    associationStore.institutions.forEach(function (institution) {
-      if (userStore.userInstitutions?.includes(institution.id)) {
+  const userInstitutionList = userInstitutions(profileStore.user)
+  if (userInstitutionList.length) {
+    institutionStore.institutions.forEach(function (institution) {
+      if (userInstitutionList.includes(institution.id)) {
         institutions.value.push(
           {
             value: institution.id,
@@ -46,11 +49,11 @@ const initValues = () => {
     })
   }
 }
-watch(() => associationStore.institutions, initValues)
-watch(() => userStore.userInstitutions, initValues)
+watch(() => institutionStore.institutions, initValues)
+watch(() => userInstitutions(profileStore.user), initValues)
 
 onMounted(async () => {
-  await associationStore.getInstitutions()
+  await institutionStore.getInstitutions()
   initValues()
 })
 

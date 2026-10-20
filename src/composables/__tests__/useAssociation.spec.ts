@@ -8,7 +8,7 @@ import {
   _editedAssociation,
   _nonEditedAssociation
 } from '~/fixtures/association.mock'
-import useAssociation from '@/composables/useAssociation'
+import {useAssociation} from '@/composables/useAssociation'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {useAxios} from '@/composables/useAxios'

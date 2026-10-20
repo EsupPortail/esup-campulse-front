@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import useAssociation from '@/composables/useAssociation'
+import {useAssociation} from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {onMounted, ref, watch} from 'vue'
@@ -188,6 +188,6 @@ async function onAddAssociation() {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms';
-@import 'associations';
-@import 'variables';
+@import '@/assets/styles/associations';
+@import '@/assets/_variables';
 </style>

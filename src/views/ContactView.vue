@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useContentStore} from '@/stores/useContentStore'
 import {onMounted, ref} from 'vue'
-import type {Content} from '#/global'
+import type {Content} from '#/content'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import axios from 'axios'
@@ -23,7 +23,7 @@ onMounted(async function () {
 
 async function onGetContent() {
   try {
-    await contentStore.getContentsByCode(['CONTACT_INFO', 'CONTACT_LIST'])
+    await contentStore.getContents({codes: ['CONTACT_INFO', 'CONTACT_LIST']})
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({

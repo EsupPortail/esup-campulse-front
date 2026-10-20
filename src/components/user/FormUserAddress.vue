@@ -73,7 +73,7 @@ onMounted(initUserInfos)
 </template>
 
 <style lang="scss" scoped>
-@import "variables";
+@import "@/assets/_variables";
 
 .full-width > * {
   width: $fullSize;

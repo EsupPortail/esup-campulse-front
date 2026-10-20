@@ -3,7 +3,7 @@ import AboutCard from '@/components/layout/LayoutAboutCard.vue'
 import ServiceCard from '@/components/layout/LayoutAboutServiceCard.vue'
 import {useContentStore} from '@/stores/useContentStore'
 import {onMounted, ref} from 'vue'
-import type {Content} from '#/global'
+import type {Content} from '#/content'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useError'
@@ -30,8 +30,10 @@ onMounted(async () => {
 
 async function onGetContent() {
   try {
-    await contentStore.getContentsByCode(['ABOUT_APP', 'ABOUT_FUNDING', 'ABOUT_PARTNERSHIP',
-      'ABOUT_ASSOCIATION', 'ABOUT_CHARTER', 'ABOUT_PROJECT'])
+    await contentStore.getContents({
+      codes: ['ABOUT_APP', 'ABOUT_FUNDING', 'ABOUT_PARTNERSHIP',
+        'ABOUT_ASSOCIATION', 'ABOUT_CHARTER', 'ABOUT_PROJECT']
+    })
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({

@@ -2,13 +2,16 @@
   "extends": "./tsconfig.app.json",
   "include": [
     "src/locales/*.json",
-    "src/**/__tests__/**/*.spec.ts",
-    "src/**/*.ts",
-    "tests/**/*.spec.ts",
-    "tests/**/*.fixture.ts",
-    "tests/**/*.mock.ts"
+    //"src/**/__tests__/**/*.spec.ts",
+    "src/**/*.ts"
+    //"tests/**/*.spec.ts",
+    //"tests/**/*.fixture.ts",
+    //"tests/**/*.mock.ts"
   ],
-  "exclude": [],
+  "exclude": [
+    "src/**/__tests__/*",
+    "tests/**/*"
+  ],
   "compilerOptions": {
     "composite": true,
     "lib": [],

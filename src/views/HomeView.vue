@@ -15,7 +15,7 @@ const {catchHTTPError} = useErrors()
 
 async function onGetContents() {
   try {
-    await contentStore.getContentsByCode(['HOME_ASSOCIATION', 'HOME_CHARTER', 'HOME_PROJECT', 'HOME_INFO'])
+    await contentStore.getContents({codes: ['HOME_ASSOCIATION', 'HOME_CHARTER', 'HOME_PROJECT', 'HOME_INFO']})
     await contentStore.getStats()
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

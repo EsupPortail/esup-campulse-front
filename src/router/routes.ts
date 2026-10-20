@@ -465,7 +465,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: 'add-user',
                 name: 'AddUser',
-                component: () => import('@/views/dashboard/UserAddView.vue'),
+                component: () => import('@/views/dashboard/UserCreationView.vue'),
                 meta: {
                   breadcrumb: i18n.global.t('breadcrumbs.add-user'),
                   title: i18n.global.t('breadcrumbs.add-user'),
@@ -504,7 +504,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: 'create-new',
                 name: 'CreateAssociation',
-                component: () => import('@/views/dashboard/AssociationCreateView.vue'),
+                component: () => import('@/views/dashboard/AssociationCreationView.vue'),
                 meta: {
                   breadcrumb: i18n.global.t('breadcrumbs.create-association'),
                   title: i18n.global.t('breadcrumbs.create-association'),

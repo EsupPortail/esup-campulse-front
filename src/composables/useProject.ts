@@ -1,5 +1,5 @@
 import {ref, watch} from 'vue'
-import type {ProjectBasicInfos, ProjectBudget, ProjectCommissionFund, ProjectGoals} from '#/project'
+import type {ProjectBudget, ProjectCommissionFund, ProjectGoals, ProjectInfos, ProjectStatus} from '#/project'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtil'
 import {useAxios} from '@/composables/useAxios'
@@ -10,11 +10,23 @@ import type {SelectLabel} from '#/global'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 
+export const projectStatuses: ProjectStatus[] = [
+  'PROJECT_DRAFT',
+  'PROJECT_DRAFT_PROCESSED',
+  'PROJECT_PROCESSING',
+  'PROJECT_REJECTED',
+  'PROJECT_VALIDATED',
+  'PROJECT_REVIEW_DRAFT',
+  'PROJECT_REVIEW_PROCESSING',
+  'PROJECT_REVIEW_VALIDATED',
+  'PROJECT_CANCELED'
+]
+
 const projectId = ref<string | undefined>()
 
 const projectProcessingDate = ref<string | undefined>()
 
-const projectBasicInfos = ref<ProjectBasicInfos>(
+const projectBasicInfos = ref<ProjectInfos>(
   {
     name: '',
     plannedStartDate: '',
@@ -376,6 +388,7 @@ export default function useProject() {
     initProjectFunds,
     projectId,
     projectProcessingDate,
-    initProjectCommissionFunds
+    initProjectCommissionFunds,
+    projectStatuses
   }
 }

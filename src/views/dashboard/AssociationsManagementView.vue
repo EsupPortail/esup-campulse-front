@@ -9,7 +9,7 @@ import useSecurity from '@/composables/useAuthentication'
 import useErrors from '@/composables/useError'
 import axios from 'axios'
 import FormAssociationSearch from '@/components/association/FormAssociationSearch.vue'
-import useAssociation from '@/composables/useAssociation'
+import {useAssociation} from '@/composables/useAssociation'
 import {useRoute} from 'vue-router'
 
 const associationStore = useAssociationStore()

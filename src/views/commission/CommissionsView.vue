@@ -2,7 +2,8 @@
 import LayoutImageText from '@/components/layout/LayoutImageText.vue'
 import LayoutTextImageColor from '@/components/layout/LayoutTextImageColor.vue'
 import LayoutPageCards from '@/components/layout/LayoutPageCards.vue'
-import type {Content, ContentCode, PageCard} from '#/global'
+import type {PageCard} from '#/global'
+import type {Content, ContentCode} from '#/content'
 import useUserGroups from '@/composables/useUserGroup'
 import {onMounted, ref} from 'vue'
 import useSecurity from '@/composables/useAuthentication'
@@ -13,7 +14,7 @@ import useErrors from '@/composables/useError'
 import CommissionImage1 from '@/assets/img/commission-image-1.jpg'
 import CommissionImage2 from '@/assets/img/commission-image-2.jpg'
 
-const {isStaff, isMemberFund} = useUserGroups()
+const {isStaff, isInGroup} = useUserGroups()
 const {hasPerm} = useSecurity()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
@@ -45,7 +46,7 @@ const initContents = () => {
 
 const initPageCards = () => {
   pageCards.value = []
-  if (isStaff.value || isMemberFund.value) {
+  if (isStaff.value || isInGroup('MANAGER_MISC')) {
     pageCards.value.push({
       to: {name: 'ManageProjects'},
       btnLabel: manageProjects.value?.header,
@@ -85,15 +86,17 @@ const initPageCards = () => {
 
 async function onGetContent() {
   try {
-    await contentStore.getContentsByCode([
-      'COMMISSION_HOME_FIRST_BLOCK',
-      'COMMISSION_HOME_SECOND_BLOCK',
-      'COMMISSION_HOME_ACTION_MANAGE_PROJECTS',
-      'COMMISSION_HOME_ACTION_MANAGE_ARCHIVE',
-      'COMMISSION_HOME_ACTION_MANAGE_COMMISSIONS',
-      'COMMISSION_HOME_ACTION_SUBMIT_PROJECT',
-      'COMMISSION_HOME_ACTION_DOWNLOAD_DOCUMENTS'
-    ])
+    await contentStore.getContents({
+      codes: [
+        'COMMISSION_HOME_FIRST_BLOCK',
+        'COMMISSION_HOME_SECOND_BLOCK',
+        'COMMISSION_HOME_ACTION_MANAGE_PROJECTS',
+        'COMMISSION_HOME_ACTION_MANAGE_ARCHIVE',
+        'COMMISSION_HOME_ACTION_MANAGE_COMMISSIONS',
+        'COMMISSION_HOME_ACTION_SUBMIT_PROJECT',
+        'COMMISSION_HOME_ACTION_DOWNLOAD_DOCUMENTS'
+      ]
+    })
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({

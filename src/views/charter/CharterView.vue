@@ -2,7 +2,8 @@
 import LayoutImageText from '@/components/layout/LayoutImageText.vue'
 import LayoutTextImageColor from '@/components/layout/LayoutTextImageColor.vue'
 import LayoutPageCards from '@/components/layout/LayoutPageCards.vue'
-import type {Content, ContentCode, PageCard} from '#/global'
+import type {PageCard} from '#/global'
+import type {Content, ContentCode} from '#/content'
 import useUserGroups from '@/composables/useUserGroup'
 import {onMounted, ref} from 'vue'
 import useSecurity from '@/composables/useAuthentication'
@@ -85,15 +86,17 @@ const initPageCards = () => {
 
 async function onGetContent() {
   try {
-    await contentStore.getContentsByCode([
-      'CHARTER_HOME_FIRST_BLOCK',
-      'CHARTER_HOME_SECOND_BLOCK',
-      'CHARTER_HOME_THIRD_BLOCK',
-      'CHARTER_HOME_ACTION_VALIDATE_CHARTERS',
-      'CHARTER_HOME_ACTION_MANAGE_DOCUMENTS',
-      'CHARTER_HOME_ACTION_SIGN_CHARTERS',
-      'CHARTER_HOME_ACTION_DOWNLOAD_DOCUMENTS'
-    ])
+    await contentStore.getContents({
+      codes: [
+        'CHARTER_HOME_FIRST_BLOCK',
+        'CHARTER_HOME_SECOND_BLOCK',
+        'CHARTER_HOME_THIRD_BLOCK',
+        'CHARTER_HOME_ACTION_VALIDATE_CHARTERS',
+        'CHARTER_HOME_ACTION_MANAGE_DOCUMENTS',
+        'CHARTER_HOME_ACTION_SIGN_CHARTERS',
+        'CHARTER_HOME_ACTION_DOWNLOAD_DOCUMENTS'
+      ]
+    })
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
