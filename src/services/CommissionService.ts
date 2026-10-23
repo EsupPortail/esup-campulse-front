@@ -1,6 +1,14 @@
 import {useAxios} from '@/composables/useAxios'
 import type {PaginatedList} from '#/global'
-import type {Commission, CommissionFilters, CommissionFund, Fund} from '#/commission'
+import type {
+  Commission,
+  CommissionBase,
+  CommissionFilters,
+  CommissionFund,
+  CreateCommissionFund,
+  Fund,
+  PostCommission
+} from '#/commission'
 import type {AxiosResponse} from 'axios'
 
 const modelBaseUrl = '/commissions'
@@ -40,8 +48,31 @@ export async function deleteCommission(commissionId: number): Promise<void> {
   await axiosAuthenticated.delete(`${modelBaseUrl}/${commissionId}`)
 }
 
-export async function getCommissionExport(commissionId: number, mode: 'csv' | 'pdf' | 'xlsx', projects: number[]): Promise<AxiosResponse<ArrayBuffer>> {
+export async function getCommissionExport(
+  commissionId: number, mode: 'csv' | 'pdf' | 'xlsx',
+  projects: number[]
+): Promise<AxiosResponse<ArrayBuffer>> {
   const {axiosAuthenticated} = useAxios()
   const url = `${modelBaseUrl}/${commissionId}/export?mode=${mode}&project_ids=${projects.join(',')}`
   return await axiosAuthenticated.get(url, {responseType: 'arraybuffer'})
+}
+
+export async function postCommission(commission: PostCommission): Promise<Commission> {
+  const {axiosAuthenticated} = useAxios()
+  return (await axiosAuthenticated.post<Commission>(`${modelBaseUrl}/`, commission)).data
+}
+
+export async function patchCommission(commissionId: number, payload: Partial<CommissionBase>): Promise<void> {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.patch(`${modelBaseUrl}/${commissionId}`, payload)
+}
+
+export async function postCommissionFund(commissionFund: CreateCommissionFund): Promise<void> {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.post(`${modelBaseUrl}/funds`, commissionFund)
+}
+
+export async function deleteCommissionFund(commissionId: number, fundId: number): Promise<void> {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.delete(`${modelBaseUrl}/${commissionId}/funds/${fundId}`)
 }

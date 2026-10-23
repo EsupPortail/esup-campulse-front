@@ -2,7 +2,6 @@ import type {RouteLocationMatched, RouteParams} from 'vue-router'
 import {ref} from 'vue'
 import type {AxiosResponse} from 'axios'
 
-// Used to display dynamic title on certain pages like association detail
 const dynamicTitle = ref<string | undefined>(undefined)
 
 const CURRENCY = '€'
@@ -27,7 +26,7 @@ function reverseDate(date: string): string {
   return date.split('-').reverse().join('/')
 }
 
-export default function () {
+export default function useUtil() {
   const kebabize = (str: string) => str.replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? '-' : '') + $.toLowerCase())
 
   // To test
@@ -64,7 +63,7 @@ export default function () {
       if (!route.meta.breadcrumb) continue
       let path = ''
       if (route.path.includes(':id') || route.path.includes(':associationId') ||
-                route.path.includes(':projectId')) {
+        route.path.includes(':projectId')) {
         const id = routeParams.id as string
         const associationId = routeParams.associationId as string
         const projectId = routeParams.projectId as string

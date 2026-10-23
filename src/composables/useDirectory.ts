@@ -1,16 +1,16 @@
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import type {Association, AssociationSearch} from '#/association'
+import type {Association, SearchAssociation} from '#/association'
 import {useAxios} from '@/composables/useAxios'
 import {useProfileStore} from '@/stores/useProfileStore'
 import useUtility from '@/composables/useUtil'
 
-export default function () {
+export default function useDirectory() {
 
   const associationStore = useAssociationStore()
   const userStore = useProfileStore()
   const {filterizeSearch} = useUtility()
 
-  function advancedSearch(settings: AssociationSearch): Association[] {
+  function advancedSearch(settings: SearchAssociation): Association[] {
     const hasSettings: boolean = !!(settings.name || settings.acronym || settings.institution || settings.institutionComponent || settings.activityField)
     if (!associationStore.associations.length || !hasSettings) return []
     let matches: Association[] = []

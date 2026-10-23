@@ -3,6 +3,7 @@ import type {AssociationFilters, AssociationStore,} from '#/association'
 import type {DocumentProcessType} from '#/document'
 import * as associationService from '@/services/AssociationService'
 import * as documentUploadService from '@/services/DocumentUploadService'
+import type {SelectLabel} from '#/global'
 
 
 export const useAssociationStore = defineStore('associationStore', {
@@ -26,7 +27,7 @@ export const useAssociationStore = defineStore('associationStore', {
           disable: false
         }))
     },
-    activityFieldLabels: (state: AssociationStore) => {
+    activityFieldLabels: (state: AssociationStore): SelectLabel[] => {
       const activityFields = state.activityFields.length ?
         state.activityFields : [state.association?.activityField]
       return activityFields.map((
@@ -34,6 +35,12 @@ export const useAssociationStore = defineStore('associationStore', {
           value: activityField?.id,
           label: activityField?.name
         })))
+    },
+    associationUserLabels: (state: AssociationStore): SelectLabel[] => {
+      return state.associationUsers.map(item => ({
+        value: item.id,
+        label: item.user.firstName + ' ' + item.user.lastName
+      }))
     }
   },
 
@@ -83,10 +90,10 @@ export const useAssociationStore = defineStore('associationStore', {
     },
 
     async getAssociationDocuments(processTypes?: DocumentProcessType[]) {
-      this.associationDocuments = await documentUploadService.getAssociationDocumentUploads(
-        this.association.id,
+      this.associationDocuments = await documentUploadService.getDocumentUploads({
+        associationId: this.association!.id,
         processTypes
-      )
+      })
     },
   }
 })

@@ -1,8 +1,7 @@
 import {useAxios} from '@/composables/useAxios'
-import type {Content, ContentFilters, Logo} from '#/content'
+import type {Content, ContentFilters, Logo, UpdateContent} from '#/content'
 
 const modelBaseUrl = '/contents'
-
 
 export async function getContents(filters?: ContentFilters): Promise<Content[]> {
   const {axiosPublic} = useAxios()
@@ -22,4 +21,9 @@ export async function getContent(contentId: number): Promise<Content> {
 export async function getLogos(): Promise<Logo[]> {
   const {axiosPublic} = useAxios()
   return (await axiosPublic.get<Logo[]>(`${modelBaseUrl}/logos`)).data
+}
+
+export async function updateContent(contentId: number, payload: Partial<UpdateContent>): Promise<Content> {
+  const {axiosAuthenticated} = useAxios()
+  return (await axiosAuthenticated.patch(`${modelBaseUrl}/${contentId}`, payload)).data
 }

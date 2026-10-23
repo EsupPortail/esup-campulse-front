@@ -116,7 +116,7 @@ const pathLogo = ref<AssociationLogo | null | undefined>(associationStore.associ
 watch(() => associationStore.association?.pathLogo, () => {
   pathLogo.value = associationStore.association?.pathLogo
 })
-const MAX_FILE_SIZE = 8388608
+const maxFileSize = 8388608
 
 // FILE TOO LARGE OR NOT IN THE RIGHT FORMAT
 async function onLogoRejected(rejectedEntries: { failedPropValidation: string, file: File }[]) {
@@ -214,7 +214,7 @@ async function onChangeLogo(action: string) {
         <QFile
           v-model="newLogo"
           :label="t('association.logo.pickup')"
-          :max-file-size="MAX_FILE_SIZE"
+          :max-file-size="maxFileSize"
           accept="image/png, image/jpeg"
           bottom-slots
           clearable

@@ -33,18 +33,21 @@ type ContentCode =
   'MULTIANNUAL_ACCESSIBILITY_PLAN' |
   ''
 
-export interface Content {
+export interface ContentBase {
   id: number;
-  code: ContentCode;
-  label: string;
   header: string;
   body: string;
   footer: string;
   aside: string;
+}
+
+export interface Content extends ContentBase {
+  code: ContentCode;
+  label: string;
   isEditable: boolean;
 }
 
-export type EditableContent = Omit<Content, 'id' | 'code' | 'isEditable'>;
+export type UpdateContent = ContentBase;
 
 export interface Logo {
   id: number;

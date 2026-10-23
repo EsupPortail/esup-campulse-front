@@ -27,7 +27,7 @@ export const useProjectStore = defineStore('projectStore', {
     projectCommission: (state: ProjectStore): number | null => {
       return state.project?.commissions[0].id
     },
-    // todo ajout de projectCommissionFunds dans project
+    // todo ajout de projectCommissionFunds dans project à faire en back
     projectFunds: (state: ProjectStore): number[] => {
       return []
     }
@@ -83,7 +83,7 @@ export const useProjectStore = defineStore('projectStore', {
 
     // old = getProjectDocuments
     async getProjectDocumentUploads(): Promise<void> {
-      this.projectDocuments = await documentUploadService.getProjectDocumentUploads(this.project?.id)
+      this.projectDocuments = await documentUploadService.getDocumentUploads({projectId: this.project!.id})
     },
 
     // old = getProjectFiles

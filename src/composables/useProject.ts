@@ -2,15 +2,12 @@ import {ref, watch} from 'vue'
 import type {ProjectBudget, ProjectCommissionFund, ProjectGoals, ProjectInfos, ProjectStatus} from '#/project'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useUtility from '@/composables/useUtil'
-import {useAxios} from '@/composables/useAxios'
 import {useProfileStore} from '@/stores/useProfileStore'
 import useDocumentUploads from '@/composables/useDocumentUpload'
 import useCommissions from '@/composables/useCommissionFund'
-import type {SelectLabel} from '#/global'
-import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 
-export const projectStatuses: ProjectStatus[] = [
+const projectStatuses: ProjectStatus[] = [
   'PROJECT_DRAFT',
   'PROJECT_DRAFT_PROCESSED',
   'PROJECT_PROCESSING',
@@ -26,7 +23,7 @@ const projectId = ref<string | undefined>()
 
 const projectProcessingDate = ref<string | undefined>()
 
-const projectBasicInfos = ref<ProjectInfos>(
+const projectInfos = ref<ProjectInfos>(
   {
     name: '',
     plannedStartDate: '',
@@ -38,8 +35,6 @@ const projectBasicInfos = ref<ProjectInfos>(
     partnerAssociation: '',
   }
 )
-
-const projectAssociationUsersLabels = ref<SelectLabel[]>([])
 
 const projectCategory = ref<number | null>(null)
 
@@ -55,17 +50,12 @@ const projectBudget = ref<ProjectBudget>(
   }
 )
 
-// Used to store the chosen commission (v-model in SubmitProjectView)
 const projectCommission = ref<number | null>(null)
 
-// Used to store the chosen commission funds (v-model in SubmitProjectView)
 const projectCommissionFunds = ref<number[]>([])
-
-// Used to store the funds linked to the project
-const projectFunds = ref<number[]>([])
-
-// Used to copy projectCommissionFunds from the store and check changes
 const projectCommissionFundsDetail = ref<ProjectCommissionFund[]>([])
+
+const projectFunds = ref<number[]>([])
 
 const projectGoals = ref<ProjectGoals>(
   {
@@ -79,43 +69,33 @@ const projectGoals = ref<ProjectGoals>(
 )
 
 export default function useProject() {
+
   const projectStore = useProjectStore()
-  const userStore = useProfileStore()
+  const profileStore = useProfileStore()
   const commissionStore = useCommissionStore()
-  const associationStore = useAssociationStore()
-  const {axiosAuthenticated} = useAxios()
-  const {arraysAreEqual} = useUtility()
+  const {arraysAreEqual, formatDate, reverseDate} = useUtility()
   const {processDocuments} = useDocumentUploads()
-  const {initChosenCommissionFundsLabels} = useCommissions()
+  const {selectedCommissionFundLabels} = useCommissions()
 
-  // INIT DATA
+
   const initProjectBasicInfos = () => {
-    const {formatDate} = useUtility()
     projectId.value = projectStore.project?.manualIdentifier
-    projectProcessingDate.value = formatDate(projectStore.project?.processingDate as string).split('-').reverse().join('/')
-    projectBasicInfos.value.name = projectStore.project?.name as string
-    projectBasicInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate as string)
-    projectBasicInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate as string)
-    projectBasicInfos.value.plannedLocation = projectStore.project?.plannedLocation as string
-    projectBasicInfos.value.user = projectStore.project?.user?.id as number | null
-    projectBasicInfos.value.association = projectStore.project?.association?.id as number | null
-    projectBasicInfos.value.associationUser = projectStore.project?.associationUser?.id as number | null
-    projectBasicInfos.value.partnerAssociation = projectStore.project?.partnerAssociation as string
-    projectCategory.value = projectStore.project?.categories[0]?.id ?? null
-  }
-
-  const initProjectAssociationUsersLabels = async (associationId: number) => {
-    await associationStore.getAssociationUsers(associationId)
-    projectAssociationUsersLabels.value = associationStore.associationUsers.map(associationUser => ({
-      value: associationUser.id,
-      label: associationUser.user.firstName + ' ' + associationUser.user.lastName
-    }))
+    projectProcessingDate.value = reverseDate(formatDate(projectStore.project?.processingDate ?? ''))
+    projectInfos.value.name = projectStore.project?.name ?? ''
+    projectInfos.value.plannedStartDate = formatDate(projectStore.project?.plannedStartDate ?? '')
+    projectInfos.value.plannedEndDate = formatDate(projectStore.project?.plannedEndDate ?? '')
+    projectInfos.value.plannedLocation = projectStore.project?.plannedLocation ?? ''
+    projectInfos.value.user = projectStore.project?.user?.id
+    projectInfos.value.association = projectStore.project?.association?.id
+    projectInfos.value.associationUser = projectStore.project?.associationUser?.id
+    projectInfos.value.partnerAssociation = projectStore.project?.partnerAssociation ?? ''
+    projectCategory.value = projectStore.project?.categories[0]?.id
   }
 
   const reInitProjectCommissionFunds = (isSite: boolean) => {
     if (projectCommission.value) {
       projectCommissionFunds.value = []
-      initChosenCommissionFundsLabels(projectCommission.value, isSite)
+      selectedCommissionFundLabels(projectCommission.value, isSite)
     }
   }
 
@@ -150,14 +130,14 @@ export default function useProject() {
 
   // REINITIALIZE FORM
   const reInitSubmitProjectForm = () => {
-    projectBasicInfos.value.name = ''
-    projectBasicInfos.value.plannedStartDate = ''
-    projectBasicInfos.value.plannedEndDate = ''
-    projectBasicInfos.value.plannedLocation = ''
-    projectBasicInfos.value.user = null
-    projectBasicInfos.value.association = null
-    projectBasicInfos.value.associationUser = null
-    projectBasicInfos.value.partnerAssociation = ''
+    projectInfos.value.name = ''
+    projectInfos.value.plannedStartDate = ''
+    projectInfos.value.plannedEndDate = ''
+    projectInfos.value.plannedLocation = ''
+    projectInfos.value.user = null
+    projectInfos.value.association = null
+    projectInfos.value.associationUser = null
+    projectInfos.value.partnerAssociation = ''
     projectCategory.value = null
     projectCommission.value = null
     projectCommissionFunds.value = []
@@ -189,10 +169,10 @@ export default function useProject() {
 
   // POSTS
   async function postNewProject(associationId: number | undefined) {
-    if (associationId) projectBasicInfos.value.association = associationId
-    else projectBasicInfos.value.user = userStore.user?.id as number
+    if (associationId) projectInfos.value.association = associationId
+    else projectInfos.value.user = profileStore.user?.id as number
     let dataToPost = {}
-    for (const [key, value] of Object.entries(projectBasicInfos.value)) {
+    for (const [key, value] of Object.entries(projectInfos.value)) {
       if (!value) continue
       dataToPost = Object.assign(dataToPost, {[key]: value + (key.includes('Date') ? 'T00:00:00.000Z' : '')})
     }
@@ -240,20 +220,20 @@ export default function useProject() {
   // PATCHES
   async function patchProjectBasicInfos() {
     let dataToPatch = {}
-    if (projectBasicInfos.value.name !== projectStore.project?.name) {
-      dataToPatch = Object.assign(dataToPatch, {['name']: projectBasicInfos.value.name})
+    if (projectInfos.value.name !== projectStore.project?.name) {
+      dataToPatch = Object.assign(dataToPatch, {['name']: projectInfos.value.name})
     }
-    if (projectBasicInfos.value.plannedStartDate !== projectStore.project?.plannedStartDate.slice(0, 10)) {
-      dataToPatch = Object.assign(dataToPatch, {['plannedStartDate']: projectBasicInfos.value.plannedStartDate + 'T00:00:00.000Z'})
+    if (projectInfos.value.plannedStartDate !== projectStore.project?.plannedStartDate.slice(0, 10)) {
+      dataToPatch = Object.assign(dataToPatch, {['plannedStartDate']: projectInfos.value.plannedStartDate + 'T00:00:00.000Z'})
     }
-    if (projectBasicInfos.value.plannedEndDate !== projectStore.project?.plannedEndDate.slice(0, 10)) {
-      dataToPatch = Object.assign(dataToPatch, {['plannedEndDate']: projectBasicInfos.value.plannedEndDate + 'T00:00:00.000Z'})
+    if (projectInfos.value.plannedEndDate !== projectStore.project?.plannedEndDate.slice(0, 10)) {
+      dataToPatch = Object.assign(dataToPatch, {['plannedEndDate']: projectInfos.value.plannedEndDate + 'T00:00:00.000Z'})
     }
-    if (projectBasicInfos.value.plannedLocation !== projectStore.project?.plannedLocation) {
-      dataToPatch = Object.assign(dataToPatch, {['plannedLocation']: projectBasicInfos.value.plannedLocation})
+    if (projectInfos.value.plannedLocation !== projectStore.project?.plannedLocation) {
+      dataToPatch = Object.assign(dataToPatch, {['plannedLocation']: projectInfos.value.plannedLocation})
     }
-    if (projectBasicInfos.value.associationUser !== projectStore.project?.associationUser?.id) {
-      dataToPatch = Object.assign(dataToPatch, {['associationUser']: projectBasicInfos.value.associationUser})
+    if (projectInfos.value.associationUser !== projectStore.project?.associationUser?.id) {
+      dataToPatch = Object.assign(dataToPatch, {['associationUser']: projectInfos.value.associationUser})
     }
     if (Object.entries(dataToPatch).length) {
       projectStore.project = (await axiosAuthenticated.patch(`/projects/${projectStore.project?.id}`, dataToPatch)).data
@@ -360,7 +340,7 @@ export default function useProject() {
 
 
   return {
-    projectBasicInfos,
+    projectInfos,
     projectBudget,
     projectCommission,
     initProjectBasicInfos,
@@ -380,8 +360,8 @@ export default function useProject() {
     projectCommissionFunds,
     projectCommissionFundsDetail,
     reInitProjectCommissionFunds,
-    initProjectAssociationUsersLabels,
-    projectAssociationUsersLabels,
+    //initProjectAssociationUsersLabels,
+    //projectAssociationUsersLabels,
     initProjectCommissionFundsDetail,
     deleteProject,
     projectFunds,

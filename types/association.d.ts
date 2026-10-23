@@ -1,4 +1,4 @@
-import type {User, UserAssociation, UserBase} from '#/user'
+import type {UserAssociation, UserBase} from '#/user'
 import type {DocumentUpload} from '#/document'
 import type {AssociationCharterStatus} from '#/charter'
 import type {Institution, InstitutionComponent} from '#/institution'
@@ -115,11 +115,13 @@ export interface AssociationUser {
   isTreasurer: boolean
 }
 
-export type AssociationUserRegister = Pick<AssociationUser, 'isPresident' | 'isSecretary' | 'isTreasurer' |
+export type CreateAssociationUser = Pick<AssociationUser, 'isPresident' | 'isSecretary' | 'isTreasurer' |
   'isVicePresident'> & {
-  user: User['id'];
   association: Association['id'];
-}
+  user: AssociationUser['id'];
+};
+
+export type RegisterAssociationUser = Omit<CreateAssociationUser, 'user'>;
 
 // todo
 export interface AssociationMember {
@@ -143,7 +145,7 @@ export interface AssociationRole {
   canBePresidentFrom?: string | null;
   canBePresidentTo?: string | null;
   deleteAssociation?: boolean;
-  isValidatedByAdmin?: boolean
+  isValidatedByAdmin?: boolean;
 }
 
 export interface AssociationStore {

@@ -1,6 +1,11 @@
 import {ref} from 'vue'
-import type {Association, AssociationSocialNetwork, CreateAssociation, UpdateAssociation} from '#/association'
-import type {AssociationRole} from '#/user'
+import type {
+  Association,
+  AssociationRole,
+  AssociationSocialNetwork,
+  CreateAssociation,
+  UpdateAssociation
+} from '#/association'
 import useUtility from '@/composables/useUtil'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useUserAssociations from '@/composables/useUserAssociation'
@@ -33,7 +38,8 @@ export function useAssociation() {
   function checkHasPresident(association: AssociationRole) {
     if (!association.options) return
     association.options[0].disable = false
-    const associationDetail = associationStore.associationNames.find(obj => obj.id === association.id)
+    const associationDetail = associationStore.associationNames
+      .find(obj => obj.id === association.id)
     if (!associationDetail?.hasPresident) return
     association.options[0].disable = true
     if (association.role === 'isPresident') {

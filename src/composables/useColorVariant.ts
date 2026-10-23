@@ -1,17 +1,16 @@
 import {useRoute} from 'vue-router'
-import {ref, watch} from 'vue'
-
-const colorVariant = ref<string>('')
+import {computed} from 'vue'
 
 
-export default function() {
+export default function useColorVariant() {
+
   const route = useRoute()
 
-  const initColorVariant = () => {
-    colorVariant.value = route.meta.colorVariant as string
+  const colorVariant = computed<string>(() => {
+    return route.meta.colorVariant as string
+  })
+
+  return {
+    colorVariant
   }
-  watch(() => route.meta.colorVariant, initColorVariant)
-
-
-  return {colorVariant}
 }

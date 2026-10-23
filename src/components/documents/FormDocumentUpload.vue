@@ -24,8 +24,8 @@ const {
   getStudentCertificate,
   initManagedUserDocumentUploads,
   initUserDocumentUploads,
-  MAX_FILE_SIZE,
-  MAX_TITLE_LENGTH
+  maxFileSize,
+  maxTitleLength
 } = useDocumentUploads()
 const {acceptedFormats} = useDocuments()
 const {t} = useI18n()
@@ -203,18 +203,18 @@ const documentIsSelected = (document: ProcessDocument, val: File | File[]): bool
   }
 }
 
-// Title length must be lower than MAX_TITLE_LENGTH
+// Title length must be lower than maxTitleLength
 const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): boolean => {
   // If there is a file (or a group of file)
   // We must control each file's name length
   const hasValue: boolean = document.maxUploads > 1 ? !!(val as File[])?.length : !!val
   if (hasValue) {
     if (document.maxUploads > 1) {
-      // Throw error if any file's name length is greater than MAX_TITLE_LENGTH
-      return !((val as File[]).some(obj => obj.name.length >= MAX_TITLE_LENGTH))
+      // Throw error if any file's name length is greater than maxTitleLength
+      return !((val as File[]).some(obj => obj.name.length >= maxTitleLength))
     } else {
-      // Throw error if file's name length is greater than MAX_TITLE_LENGTH
-      return (val as File).name.length <= MAX_TITLE_LENGTH
+      // Throw error if file's name length is greater than maxTitleLength
+      return (val as File).name.length <= maxTitleLength
     }
   }
   // If field is empty, we don't need to control it
@@ -257,9 +257,9 @@ const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): 
         :aria-required="document.isRequiredInProcess && !documentUploads.filter(obj => obj.document === document.document).length"
         :color="fieldColor"
         :label="(document.description + (document.isRequiredInProcess ? ' *' : ''))"
-        :max-file-size="MAX_FILE_SIZE"
+        :max-file-size="maxFileSize"
         :max-files="document.maxUploads - documentUploads.filter(obj => obj.document === document.document).length"
-        :max-total-size="MAX_FILE_SIZE * 10"
+        :max-total-size="maxFileSize * 10"
         :multiple="document.maxUploads > 1"
         :readonly="documentUploads.filter(obj => obj.document === document.document).length >= document.maxUploads"
         :rules="[

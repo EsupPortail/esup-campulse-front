@@ -3,8 +3,9 @@ import type {Group, GroupName, SelectLabelGroup} from '#/group'
 import i18n from '@/plugins/i18n'
 import {useProfileStore} from '@/stores/useProfileStore'
 import useSecurity from '@/composables/useAuthentication'
+import useAuthentication from '@/composables/useAuthentication'
 import {useGroupStore} from '@/stores/useGroupStore'
-import type {User, UserGroupUpdate} from '#/user'
+import type {CreateUserGroup, UpdateUserGroup, User, UserGroupUpdate} from '#/user'
 import * as userGroupService from '@/services/UserGroupService'
 import * as userService from '@/services/UserService'
 import useUser from '@/composables/useUser'
@@ -230,6 +231,30 @@ export default function useUserGroup() {
     }
   }
 
+  const userGroupsToRegister = (userId?: number): CreateUserGroup[] | UpdateUserGroup[] => {
+    const commissionGroup = groupByName('MEMBER_FUND')
+    if (!commissionGroup) return []
+
+    const {newUserFunds} = useAuthentication()
+
+    const nonCommissionGroups: CreateUserGroup[] = newGroups.value
+      .filter(group => group !== commissionGroup.id)
+      .map(group => ({
+        group,
+        institution: null,
+        fund: null
+      }))
+    const commissionGroups: CreateUserGroup[] = newUserFunds.value
+      .map(fund => ({
+        group: commissionGroup.id,
+        institution: null,
+        fund
+      }))
+    const groups = [...nonCommissionGroups, ...commissionGroups]
+    if (userId) (groups as UpdateUserGroup[]).forEach(group => group.user == userId)
+    return groups
+  }
+
   return {
     groupLabels,
     groupChoiceIsValid,
@@ -243,6 +268,7 @@ export default function useUserGroup() {
     isInGroup,
     commissionMemberGroups,
     groupByName,
-    updateUserGroups
+    updateUserGroups,
+    userGroupsToRegister
   }
 }

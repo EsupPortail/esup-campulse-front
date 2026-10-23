@@ -1,6 +1,6 @@
 import {useAxios} from '@/composables/useAxios'
-import type {AssociationUser} from '#/association'
-import type {User, UserFilters} from '#/user'
+import type {AssociationUser, CreateAssociationUser} from '#/association'
+import type {LDAPUser, RegisterUser, UpdateUser, User, UserFilters} from '#/user'
 
 const modelBaseUrl = '/users'
 
@@ -39,4 +39,24 @@ export async function deleteUserGroup(userId: number, groupId: number, fundId?: 
   let url = `${modelBaseUrl}/${userId}/groups/${groupId}`
   if (fundId) url += `/funds/${fundId}`
   await axiosAuthenticated.delete(url)
+}
+
+export async function updateUser(userId: number, payload: Partial<UpdateUser>): Promise<User> {
+  const {axiosAuthenticated} = useAxios()
+  return (await axiosAuthenticated.patch(`${modelBaseUrl}/${userId}`, payload)).data
+}
+
+export async function registerUserAssociation(payload: CreateAssociationUser): Promise<void> {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.post(`${modelBaseUrl}/associations/`, payload)
+}
+
+export async function createUser(user: RegisterUser): Promise<void> {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.post(`${modelBaseUrl}/`, user)
+}
+
+export async function getUsersFromLDAP(lastName: string): Promise<LDAPUser[]> {
+  const {axiosAuthenticated} = useAxios()
+  return (await axiosAuthenticated.get<LDAPUser[]>(`${modelBaseUrl}/external/?last_name=${lastName}`)).data
 }

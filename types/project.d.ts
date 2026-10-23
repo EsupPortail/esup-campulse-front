@@ -121,6 +121,10 @@ export interface ProjectComment {
   isVisible: boolean;
 }
 
+export type UpdateProjectComment = Pick<ProjectComment, 'id' | 'text' | 'isVisible'>
+
+export type CreateProjectComment = Omit<UpdateProjectComment, 'id'>
+
 export interface ProjectStore {
   project: Project | undefined;
   projects: PaginatedList<ProjectListItem> | undefined;

@@ -13,7 +13,7 @@ const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {uploadCharter, initCharters} = useCharters()
 const {catchHTTPError} = useErrors()
-const {MAX_FILE_SIZE} = useDocumentUploads()
+const {maxFileSize} = useDocumentUploads()
 const {acceptedFormats} = useDocuments()
 
 const props = defineProps<{
@@ -92,7 +92,7 @@ async function onDocumentRejected(rejectedEntries: { failedPropValidation: strin
             v-model="signedCharter"
             :accept="props.charter.mimeTypes?.join(', ')"
             :label="t('charter.signed-charter') + ' *'"
-            :max-file-size="MAX_FILE_SIZE"
+            :max-file-size="maxFileSize"
             aria-required="true"
             bottom-slots
             clearable

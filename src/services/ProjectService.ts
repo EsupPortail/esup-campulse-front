@@ -1,12 +1,15 @@
 import {useAxios} from '@/composables/useAxios'
 import type {
+  CreateProjectComment,
   Project,
   ProjectCategoryName,
+  ProjectComment,
   ProjectCommissionFund,
   ProjectCommissionFundFilter,
   ProjectListItem,
   ProjectReview,
-  ProjectStatus
+  ProjectStatus,
+  UpdateProjectComment
 } from '#/project'
 import type {PaginatedList} from '#/global'
 import type {AxiosResponse} from 'axios'
@@ -92,4 +95,19 @@ export async function postponeProject(projectId: number, newCommissionId: number
   const {axiosAuthenticated} = useAxios()
   const url = `${modelBaseUrl}/${projectId}/postpone`
   await axiosAuthenticated.patch(url, {newCommissionId})
+}
+
+export async function getProjectComments(projectId: number): Promise<ProjectComment[]> {
+  const {axiosAuthenticated} = useAxios()
+  return (await axiosAuthenticated.get<ProjectComment[]>(`${modelBaseUrl}/${projectId}/comments`)).data
+}
+
+export async function createProjectComment(projectId: number, comment: CreateProjectComment): Promise<void> {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.post(`${modelBaseUrl}/${projectId}/comments`, comment)
+}
+
+export async function updateProjectComment(projectId: number, comment: UpdateProjectComment) {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.patch(`${modelBaseUrl}/${projectId}/comments/${comment.id}`, comment)
 }

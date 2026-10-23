@@ -1,6 +1,5 @@
 import {defineStore} from 'pinia'
-import type {ContentFilters, ContentStore, EditableContent} from '#/content'
-import {useAxios} from '@/composables/useAxios'
+import type {ContentFilters, ContentStore, UpdateContent} from '#/content'
 import * as contentService from '@/services/ContentService'
 import * as statService from '@/services/StatService'
 
@@ -26,25 +25,17 @@ export const useContentStore = defineStore('contentStore', {
       this.content = await contentService.getContent(contentId)
     },
 
-    // todo refactor with service
-    async patchContent(content: EditableContent) {
-      const {axiosAuthenticated} = useAxios()
-      let dataToPatch = {}
-      if (content.header !== this.content?.header) {
-        dataToPatch = Object.assign(dataToPatch, {['header']: content.header})
-      }
-      if (content.body !== this.content?.body) {
-        dataToPatch = Object.assign(dataToPatch, {['body']: content.body})
-      }
-      if (content.footer !== this.content?.footer) {
-        dataToPatch = Object.assign(dataToPatch, {['footer']: content.footer})
-      }
-      if (content.aside !== this.content?.aside) {
-        dataToPatch = Object.assign(dataToPatch, {['aside']: content.aside})
-      }
+    // old = patchContent
+    async updateContent(content: UpdateContent) {
+      const contentId = this.content!.id
+      const dataToPatch: Partial<UpdateContent> = {}
+      if (content.header !== this.content?.header) dataToPatch['header'] = content.header
+      if (content.body !== this.content?.body) dataToPatch['body'] = content.body
+      if (content.footer !== this.content?.footer) dataToPatch['footer'] = content.footer
+      if (content.aside !== this.content?.aside) dataToPatch['aside'] = content.aside
 
       if (Object.entries(dataToPatch).length) {
-        this.content = (await axiosAuthenticated.patch(`/contents/${this.content?.id}`, dataToPatch)).data
+        this.content = await contentService.updateContent(contentId, dataToPatch)
       }
     },
 

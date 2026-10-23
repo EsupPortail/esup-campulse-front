@@ -58,19 +58,37 @@ export interface DocumentUpload {
 }
 
 export interface ProcessDocument {
-  id: number;
+  //id: number;
   acronym: string;
-  uploadDate: string;
+  //uploadDate: string;
   pathFile: File | File[] | [] | undefined;
   document: number;
   description: string;
   maxUploads: number;
   isRequiredInProcess: boolean;
   mimeTypes: MimeType[];
-  name: string;
+  //name: string;
   pathTemplate: string | undefined;
   processType: DocumentProcessType;
 }
+
+// original
+/*
+export interface ProcessDocument {
+  id?: number,
+  acronym?: string,
+  uploadDate?: string,
+  pathFile: File | File[] | undefined | [],
+  document?: number,
+  description?: string,
+  maxUploads?: number,
+  isRequiredInProcess?: boolean,
+  mimeTypes?: MimeType[],
+  name?: string,
+  pathTemplate?: string | undefined,
+  processType?: DocumentProcessType
+}
+*/
 
 export interface UploadedProcessDocument {
   id: number;
@@ -97,4 +115,20 @@ export interface NewDocument {
   name: string;
   acronym: string;
   file: undefined | File
+}
+
+export interface DocumentFilters {
+  processTypes: DocumentProcessType[];
+  acronym: string;
+}
+
+export interface DocumentUploadFilters {
+  processTypes: DocumentProcessType[];
+  associationId: number;
+  userId: number;
+  projectId: number;
+}
+
+export interface DocumentStore {
+  documents: Document[];
 }

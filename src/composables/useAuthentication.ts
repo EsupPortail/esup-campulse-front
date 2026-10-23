@@ -1,30 +1,25 @@
 import {reactive, ref, watch} from 'vue'
 import type {
-  AssociationRole,
-  CASUser,
+  CreateUserGroup,
   LocalLogin,
-  RegisterUser,
-  UserAssociationRegister,
-  UserGroupRegister
+  PasswordResetConfirmPayload,
+  RegisterCASUserPayload,
+  RegisterLocalUserPayload,
+  RegisterUserBase,
 } from '#/user'
 import useUserGroups from '@/composables/useUserGroup'
 import {useProfileStore} from '@/stores/useProfileStore'
-import {useAxios} from '@/composables/useAxios'
-import {useRoute} from 'vue-router'
 import useUserAssociations from '@/composables/useUserAssociation'
-import useCommissions from '@/composables/useCommissionFund'
 import zxcvbn from 'zxcvbn'
-import type {SelectLabel} from '#/global'
+import * as profileService from '@/services/ProfileService'
+import type {RegisterAssociationUser} from '#/association'
 
-// Used for local login
 const user = ref<LocalLogin>({
   username: '',
   password: ''
 })
 
-const emailVerification = ref<string | undefined>('')
-
-const newUser = reactive<RegisterUser>({
+const newUser = reactive<RegisterUserBase>({
   isCas: false,
   firstName: '',
   lastName: '',
@@ -37,75 +32,92 @@ watch(() => newUser.email, () => {
   if (!newUser.isCas) newUser.username = newUser.email
 })
 
-// Used in register form to avoid users with emails linked to the CAS institution to local register
-const CAS_INSTITUTION_DOMAIN = import.meta.env.VITE_APP_CAS_INSTITUTION_DOMAIN as string
+const newUserFunds = ref<number[]>([])
 
-export default function () {
-  const userStore = useProfileStore()
-  const {axiosAuthenticated, axiosPublic} = useAxios()
+const emailVerification = ref<string | undefined>('')
+const casInstitutionDomain = import.meta.env.VITE_APP_CAS_INSTITUTION_DOMAIN as string
 
-  function setTokens(access: string, refresh: string) {
-    localStorage.setItem('JWT__access__token', access)
-    localStorage.setItem('JWT__refresh__token', refresh)
+function setTokens(access: string, refresh: string) {
+  localStorage.setItem('JWT__access__token', access)
+  localStorage.setItem('JWT__refresh__token', refresh)
+}
+
+function removeTokens() {
+  localStorage.removeItem('JWT__access__token')
+  localStorage.removeItem('JWT__refresh__token')
+}
+
+const tokenExpired = (token: string): boolean => {
+  if (!token) return true
+  return JSON.parse(window.atob(token.split('.')[1])).exp < Math.trunc(Date.now() / 1000)
+}
+
+function checkPasswordStrength(password: string) {
+  const passwordChecker = {
+    valid: true,
+    score: zxcvbn(password).score,
   }
+  if (passwordChecker.score < 4) passwordChecker.valid = false
+  return passwordChecker
+}
 
-  function removeTokens() {
-    localStorage.removeItem('JWT__access__token')
-    localStorage.removeItem('JWT__refresh__token')
-  }
+async function verifyEmail(key: string) {
+  await profileService.verifyEmail(key)
+}
 
-  async function logIn() {
-    await userStore.logIn('/users/auth/login/', {
-      username: user.value.username,
-      password: user.value.password as string
-    })
-  }
+async function resendEmail(email: string) {
+  await profileService.resendEmail(email)
+}
 
-  const tokenExpired = (token: string): boolean => {
-    if (!token) return true
-    return JSON.parse(window.atob(token.split('.')[1])).exp < Math.trunc(Date.now() / 1000)
-  }
+async function passwordReset(email: string) {
+  await profileService.passwordReset(email)
+}
+
+async function passwordResetConfirm(payload: PasswordResetConfirmPayload) {
+  await profileService.passwordResetConfirm(payload)
+}
+
+export default function useAuthentication() {
+
+  const profileStore = useProfileStore()
 
   async function cancelAbortedCasRegistration() {
-    // Delete user in DB
-    await axiosAuthenticated.delete('/users/auth/user/')
-    // Clean newUser data
+    await profileService.deleteProfile()
     newUser.isCas = false
     newUser.firstName = ''
     newUser.lastName = ''
     newUser.email = ''
     newUser.username = ''
     newUser.phone = ''
-    // Clean userStore
-    userStore.newUser = undefined
-    // Clean local storage
+    profileStore.newUser = undefined
     removeTokens()
   }
 
-  function hasPerm(permission: string): boolean | undefined {
-    return userStore.user?.permissions.includes(permission)
+  function hasPerm(permission: string): boolean {
+    return profileStore.user?.permissions.includes(permission) ?? false
   }
 
   const initNewUserData = () => {
-    newUser.isCas = userStore.newUser?.isCas ?? false as boolean
-    newUser.firstName = userStore.newUser?.firstName as string
-    newUser.lastName = userStore.newUser?.lastName as string
-    newUser.email = userStore.newUser?.email as string
-    emailVerification.value = userStore.newUser?.email
-    newUser.username = userStore.newUser?.username as string
-    newUser.phone = userStore.newUser?.phone as string
+    newUser.isCas = profileStore.newUser?.isCas ?? false
+    newUser.firstName = profileStore.newUser?.firstName ?? ''
+    newUser.lastName = profileStore.newUser?.lastName ?? ''
+    newUser.email = profileStore.newUser?.email ?? ''
+    emailVerification.value = profileStore.newUser?.email ?? ''
+    newUser.username = profileStore.newUser?.username ?? ''
+    newUser.phone = profileStore.newUser?.phone ?? ''
   }
 
-  watch(() => userStore.newUser, initNewUserData)
+  watch(() => profileStore.newUser, initNewUserData)
 
-  async function userLocalRegister() {
-    const {newAssociations} = useUserAssociations()
-    const {userFunds} = useCommissions()
+  // old = userLocalRegister
+  async function registerLocalUser() {
+    const {newAssociations, userAssociationsToRegister} = useUserAssociations()
+    const {userGroupsToRegister} = useUserGroups()
 
-    const gifus: UserGroupRegister[] = groupsToRegister(null)
-    const associations = associationsToRegister(newAssociations.value, null)
+    const gifus: CreateUserGroup[] = userGroupsToRegister()
+    const associations = userAssociationsToRegister(newAssociations.value) as RegisterAssociationUser[]
 
-    const user = {
+    const user: RegisterLocalUserPayload = {
       email: newUser.email,
       firstName: newUser.firstName,
       lastName: newUser.lastName,
@@ -114,182 +126,55 @@ export default function () {
       associations
     }
 
-    await axiosPublic.post('/users/auth/registration/', user)
-    userFunds.value = []
+    await profileService.registerLocalUser(user)
+    newUserFunds.value = []
   }
 
-  async function userCASRegister() {
-    const {newAssociations} = useUserAssociations()
-    const {userFunds} = useCommissions()
+  // old = userCASRegister
+  async function registerCASUser() {
+    const {newAssociations, userAssociationsToRegister} = useUserAssociations()
+    const {userGroupsToRegister} = useUserGroups()
 
-    const gifus: UserGroupRegister[] = groupsToRegister(null)
-    const associations = associationsToRegister(newAssociations.value, null)
+    const gifus: CreateUserGroup[] = userGroupsToRegister()
+    const associations = userAssociationsToRegister(newAssociations.value) as RegisterAssociationUser[]
 
-    const user = {
+    const user: RegisterCASUserPayload = {
       phone: newUser.phone,
       gifus,
       associations
     }
 
-    await axiosAuthenticated.patch('/users/auth/registration/cas/', user)
-    userFunds.value = []
-  }
-
-  const associationsToRegister = (associations: AssociationRole[], user: number | null): UserAssociationRegister[] => {
-    const factory: UserAssociationRegister[] = associations.map(association => ({
-      association: association.id,
-      isPresident: association.role === 'isPresident',
-      isSecretary: association.role === 'isSecretary',
-      isTreasurer: association.role === 'isTreasurer',
-      isVicePresident: association.role === 'isVicePresident'
-    }))
-    if (user) factory.forEach(association => association.user = user)
-    return factory
-  }
-
-  async function userAssociationsRegister(user: number | null) {
-    if (!user) return
-    const idsAssociations = []
-    const {newAssociations} = useUserAssociations()
-    for (const association of newAssociations.value) {
-      if (!association.id) {
-        continue
-      }
-      const isNew = !idsAssociations.includes(association.id)
-      if (isNew) {
-        await axiosAuthenticated.post('/users/associations/', associationsToRegister([association], user)[0])
-        idsAssociations.push(association.id)
-      }
-    }
-  }
-
-  const groupsToRegister = (user: number | null): UserGroupRegister[] => {
-    const {newGroups, commissionGroup} = useUserGroups()
-    const {userFunds} = useCommissions()
-
-    const nonCommissionGroups: UserGroupRegister[] = newGroups.value
-      .filter(group => group !== commissionGroup.value?.id)
-      .map(group => ({
-        group,
-        institution: null,
-        fund: null
-      }))
-    const commissionGroups: UserGroupRegister[] = userFunds.value
-      .map(fund => ({
-        group: commissionGroup.value?.id,
-        institution: null,
-        fund
-      }))
-
-    const groups = [...nonCommissionGroups, ...commissionGroups]
-    if (user) groups.forEach(group => group.user = user)
-    return groups
+    await profileService.registerCASUser(user)
+    newUserFunds.value = []
   }
 
   async function register() {
-    if (userStore.isCas) {
-      await userCASRegister()
+    if (profileStore.isCas) {
+      await registerCASUser()
     } else {
-      await userLocalRegister()
+      await registerLocalUser()
     }
-  }
-
-  async function addUserAsManager() {
-    const {newAssociations} = useUserAssociations()
-
-    const gifus: UserGroupRegister[] = groupsToRegister(null)
-    const associations = associationsToRegister(newAssociations.value, null)
-
-    const user = {
-      isCas: newUser.isCas,
-      username: newUser.username,
-      email: newUser.email,
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
-      phone: newUser.phone,
-      gifus,
-      associations
-    }
-
-    await axiosAuthenticated.post('/users/', user)
-  }
-
-  const CASUsers = ref<CASUser[]>([])
-
-  async function getUsersFromCAS(lastName: string) {
-    const url = `/users/external/?last_name=${lastName}`
-    CASUsers.value = (await axiosAuthenticated.get<CASUser[]>(url)).data
-  }
-
-  const CASUserOptions = ref<SelectLabel[]>([])
-
-  const initCASUserOptions = () => {
-    CASUserOptions.value = CASUsers.value.map(user => ({
-      value: user.username,
-      label: `${user.firstName} ${user.lastName} (${user.mail})`
-    }))
-  }
-  watch(() => CASUsers.value.length, initCASUserOptions)
-
-  async function loadCASUser() {
-    const route = useRoute()
-    // For aborted CAS registration or regular CAS registration
-    if (route.query.ticket) { // FIX 05/26: delete other condition || (userStore.newUser && userStore.isCas)
-      await userStore.loadCASUser(route.query.ticket as string)
-    }
-  }
-
-  async function verifyEmail(key: string) {
-    await axiosPublic.post('/users/auth/registration/verify-email/', {key: key})
-  }
-
-  async function resendEmail(email: string) {
-    await axiosPublic.post('/users/auth/registration/resend-email/', {email})
-  }
-
-  async function passwordReset(email: string) {
-    await axiosPublic.post('/users/auth/password/reset/', {email})
-  }
-
-  async function passwordResetConfirm(uid: string, token: string, newPassword1: string, newPassword2: string) {
-    await axiosPublic.post('/users/auth/password/reset/confirm/', {uid, token, newPassword1, newPassword2})
-  }
-
-  function checkPasswordStrength(password: string) {
-    const passwordChecker = {
-      valid: true,
-      score: zxcvbn(password).score,
-    }
-    if (passwordChecker.score < 4) passwordChecker.valid = false
-    return passwordChecker
   }
 
   return {
-    logIn,
     user,
     register,
     newUser,
-    loadCASUser,
     emailVerification,
-    addUserAsManager,
-    userCASRegister,
+    registerCASUser,
     setTokens,
     removeTokens,
-    userLocalRegister,
+    registerLocalUser,
     verifyEmail,
     resendEmail,
     passwordReset,
     passwordResetConfirm,
     hasPerm,
-    userAssociationsRegister,
     initNewUserData,
-    getUsersFromCAS,
-    CASUsers,
-    CASUserOptions,
     checkPasswordStrength,
-    initCASUserOptions,
     cancelAbortedCasRegistration,
-    CAS_INSTITUTION_DOMAIN,
-    tokenExpired
+    casInstitutionDomain,
+    tokenExpired,
+    newUserFunds
   }
 }

@@ -1,6 +1,6 @@
 import {ref} from 'vue'
-import type {ProjectComment} from '#/project'
-import {useAxios} from '@/composables/useAxios'
+import type {CreateProjectComment, ProjectComment, UpdateProjectComment} from '#/project'
+import * as projectService from '@/services/ProjectService'
 
 const comments = ref<ProjectComment[]>([])
 const newComment = ref<{ text: string, isVisible: boolean }>({
@@ -8,37 +8,28 @@ const newComment = ref<{ text: string, isVisible: boolean }>({
   isVisible: false
 })
 
+// old = postNewProjectComment
+async function createProjectComment(projectId: number, comment: CreateProjectComment): Promise<void> {
+  if (!comment.text) return
+  await projectService.createProjectComment(projectId, comment)
+}
+
+// old = patchProjectComment
+async function updateProjectComment(projectId: number, comment: UpdateProjectComment): Promise<void> {
+  await projectService.updateProjectComment(projectId, comment)
+}
+
 export default function useProjectComment() {
-  const {axiosAuthenticated} = useAxios()
 
-
-  async function getProjectComments(projectId: number) {
-    comments.value = (await axiosAuthenticated.get<ProjectComment[]>(`/projects/${projectId}/comments`)).data
-  }
-
-  async function postNewProjectComment(projectId: number, comment: { text: string, isVisible: boolean }) {
-    if (!comment.text) return
-    const url = `/projects/${projectId}/comments`
-    const data = {
-      text: comment.text,
-      isVisible: comment.isVisible
-    }
-    await axiosAuthenticated.post(url, data)
-  }
-
-  async function patchProjectComment(projectId: number, comment: { id: number, text: string, isVisible: boolean }) {
-    const url = `/projects/${projectId}/comments/${comment.id}`
-    await axiosAuthenticated.patch(url, {
-      text: comment.text,
-      isVisible: comment.isVisible
-    })
+  async function getProjectComments(projectId: number): Promise<void> {
+    comments.value = await projectService.getProjectComments(projectId)
   }
 
   return {
     getProjectComments,
-    postNewProjectComment,
+    createProjectComment,
     newComment,
     comments,
-    patchProjectComment
+    updateProjectComment
   }
 }

@@ -1,11 +1,11 @@
 import {defineStore} from 'pinia'
-import type {CasLogin, LocalLogin, ProfileStore, User} from '#/user'
+import type {CasLogin, LocalLogin, ProfileStore} from '#/user'
 import useSecurity from '@/composables/useAuthentication'
-import {useAxios} from '@/composables/useAxios'
 import type {DocumentProcessType} from '#/document'
 import * as profileService from '@/services/ProfileService'
 import * as userService from '@/services/UserService'
 import * as documentUploadService from '@/services/DocumentUploadService'
+import useUser from '@/composables/useUser'
 
 export const useProfileStore = defineStore('profileStore', {
   state: (): ProfileStore => ({
@@ -24,14 +24,21 @@ export const useProfileStore = defineStore('profileStore', {
     userGroups: (state: ProfileStore): number[] => {
       return [...new Set(state.user?.groups?.map<number>(group => group.groupId))]
     },
+    userInstitutions: (state: ProfileStore): number[] => {
+      const {setUserInstitutions} = useUser()
+      return setUserInstitutions(state.user)
+    },
+    userFunds: (state: ProfileStore): number[] => {
+      const {setUserFunds} = useUser()
+      return setUserFunds(state.user)
+    },
   },
 
   actions: {
-    async logIn(url: string, data: LocalLogin | CasLogin) {
-      const {axiosPublic} = useAxios()
+    async login(payload: LocalLogin | CasLogin) {
       const {newUser, setTokens} = useSecurity()
-      const response = await axiosPublic.post(url, data)
-      const {access, refresh, user} = response.data as { access: string, refresh: string, user: User }
+      const data = await profileService.login(payload)
+      const {access, refresh, user} = data
       const hasGroups = !!user.groups.length
       if (hasGroups) {
         if (user.isValidatedByAdmin) {
@@ -51,7 +58,7 @@ export const useProfileStore = defineStore('profileStore', {
         throw new Error('USER_ACCOUNT_NOT_COMPLETE')
       }
     },
-    logOut() {
+    logout() {
       const {removeTokens} = useSecurity()
       removeTokens()
       this.unloadProfile()
@@ -71,7 +78,7 @@ export const useProfileStore = defineStore('profileStore', {
           phone: user.phone as string
         }
       } else {
-        this.logOut()
+        this.logout()
       }
     },
     // old = unLoadUser
@@ -130,7 +137,13 @@ export const useProfileStore = defineStore('profileStore', {
       }
     },
     async getUserDocuments(processTypes?: DocumentProcessType[]) {
-      this.userDocuments = await documentUploadService.getUserDocumentUploads(this.user.id, processTypes)
+      this.userDocuments = await documentUploadService.getDocumentUploads({userId: this.user!.id, processTypes})
+    },
+    async updateProfile() {
+      const {userDataToUpdate} = useUser()
+      const payload = userDataToUpdate(this.user)
+      if (!Object.entries(payload).length) return
+      this.user = await profileService.updateProfile(payload)
     }
   }
 })

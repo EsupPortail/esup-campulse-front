@@ -15,11 +15,6 @@ export interface Group {
   isPublic: boolean;
 }
 
-export interface GroupCodeLiteralName {
-  codeName: GroupName;
-  literalName: string;
-}
-
 export interface SelectLabelGroup extends SelectLabel {
   disable?: boolean;
   fund?: number;

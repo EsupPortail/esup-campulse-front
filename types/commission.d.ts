@@ -14,12 +14,25 @@ export interface CommissionFund {
   fund: number;
 }
 
-export interface Commission {
-  id: number;
+export type CreateCommissionFund = Omit<CommissionFund, 'id'>;
+
+export interface CommissionBase {
   submissionDate: string;
   commissionDate: string;
   isOpenToProjects: boolean;
   name: string;
+}
+
+export interface Commission extends CommissionBase {
+  id: number;
+}
+
+export type PostCommission = CommissionBase;
+
+export interface CreateCommission extends CommissionBase {
+  datesAreLegal: boolean;
+  commission: number | null;
+  funds: number[];
 }
 
 export interface UpdateCommission {
@@ -36,16 +49,6 @@ export interface UpdateCommission {
   oldIsOpenToProjects: boolean;
   newIsOpenToProjects: boolean;
   open: boolean;
-}
-
-export interface NewCommission {
-  commissionDate: string;
-  submissionDate: string;
-  datesAreLegal: boolean;
-  commission: number | null;
-  funds: number[];
-  isOpenToProjects: boolean;
-  name: string;
 }
 
 interface SelectLabelFund {

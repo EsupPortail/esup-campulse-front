@@ -4,6 +4,7 @@ import useSecurity from '@/composables/useAuthentication'
 import type {SelectLabel} from '#/global'
 import * as userService from '@/services/UserService'
 import * as documentUploadService from '@/services/DocumentUploadService'
+import useUser from '@/composables/useUser'
 
 export const useUserStore = defineStore('userStore', {
   state: (): UserStore => ({
@@ -21,9 +22,16 @@ export const useUserStore = defineStore('userStore', {
           label: user.firstName + ' ' + user.lastName
         }))
     },
-
     userGroups: (state: UserStore): number[] => {
       return [...new Set(state.user?.groups?.map<number>(group => group.groupId))]
+    },
+    userInstitutions: (state: UserStore): number[] => {
+      const {setUserInstitutions} = useUser()
+      return setUserInstitutions(state.user)
+    },
+    userFunds: (state: UserStore): number[] => {
+      const {setUserFunds} = useUser()
+      return setUserFunds(state.user)
     },
   },
 
@@ -47,11 +55,19 @@ export const useUserStore = defineStore('userStore', {
     },
 
     async getUserDocumentUploads() {
-      this.userDocuments = await documentUploadService.getUserDocumentUploads(this.user.id)
+      this.userDocuments = await documentUploadService.getDocumentUploads({userId: this.user!.id})
     },
 
     async getUserAssociations(userId: number) {
       this.userAssociations = await userService.getUserAssociations(userId)
     },
+
+    async updateUser() {
+      const {userDataToUpdate} = useUser()
+      const payload = userDataToUpdate(this.user)
+      if (!Object.entries(payload).length) return
+      const userId = this.user!.id
+      this.user = await userService.updateUser(userId, payload)
+    }
   }
 })

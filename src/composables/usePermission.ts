@@ -1,15 +1,15 @@
 import type {UserGroup} from '#/user'
-import useUserGroups from '@/composables/useUserGroup'
+import {useGroupStore} from '@/stores/useGroupStore'
 
 
 function canEditUser(userGroups: UserGroup[]): boolean {
-  const {groups} = useUserGroups()
+  const groupStore = useGroupStore()
 
   let perm = false
-  if (userGroups.length && groups.value.length) {
+  if (userGroups.length && groupStore.groups.length) {
     perm = true
     for (const userGroup of userGroups) {
-      const group = groups.value.find(obj => obj.id === userGroup.groupId)
+      const group = groupStore.groups.find(obj => obj.id === userGroup.groupId)
       if (!group?.isPublic) {
         perm = false
         break
