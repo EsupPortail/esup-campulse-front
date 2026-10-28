@@ -1,5 +1,11 @@
 import {defineStore} from 'pinia'
-import type {ProjectCommissionFundFilter, ProjectStatus, ProjectStore} from '#/project'
+import type {
+  ProjectCommissionFundFilter,
+  ProjectStatus,
+  ProjectStore,
+  UpdateProjectCommissionFund,
+  UpdateProjectReview
+} from '#/project'
 import type {SelectLabel} from '#/global'
 import * as projectService from '@/services/ProjectService'
 import * as documentUploadService from '@/services/DocumentUploadService'
@@ -53,6 +59,10 @@ export const useProjectStore = defineStore('projectStore', {
       this.projectReview = await projectService.getProjectReview(this.project?.id)
     },
 
+    async updateProjectReview(payload: Partial<UpdateProjectReview>) {
+      this.projectReview = await projectService.updateProjectReview(this.project?.id, payload)
+    },
+
     async getProjectPdf(): Promise<AxiosResponse<ArrayBuffer>> {
       return await projectService.getProjectPdf(this.project?.id)
     },
@@ -61,19 +71,18 @@ export const useProjectStore = defineStore('projectStore', {
       return await projectService.getProjectReviewPdf(this.project?.id)
     },
 
-    async patchProjectStatus(projectStatus: ProjectStatus): Promise<void> {
-      this.project = await projectService.patchProjectStatus(
+    async updateProjectStatus(projectStatus: ProjectStatus): Promise<void> {
+      this.project = await projectService.updateProjectStatus(
         this.project?.id,
-        this.project?.projectStatus,
         projectStatus
       )
     },
 
-    async patchProjectCommissionFund(original: number, updated: number): Promise<void> {
-      await projectService.patchProjectCommissionFund(
+    async updateProjectCommissionFund(commissionFundId: number, payload: Partial<UpdateProjectCommissionFund>): Promise<void> {
+      await projectService.updateProjectCommissionFund(
         this.project?.id,
-        original,
-        updated
+        commissionFundId,
+        payload
       )
     },
 

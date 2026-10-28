@@ -7,7 +7,7 @@ import useErrors from '@/composables/useError'
 import ProjectReviewRecapReview from '@/components/project/ProjectReviewRecapReview.vue'
 import InfoVerifyDocuments from '@/components/documents/InfoVerifyDocuments.vue'
 import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
-import useSubmitReview from '@/composables/useSubmitReview'
+import useSubmitReview from '@/composables/useProjectReview'
 import router from '@/router'
 
 const {t} = useI18n()

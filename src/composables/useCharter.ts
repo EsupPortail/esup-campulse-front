@@ -1,60 +1,74 @@
 import {ref} from 'vue'
-import {useAxios} from '@/composables/useAxios'
-import type {Document, DocumentProcessType, DocumentUpload} from '#/document'
-import useDocumentUploads from '@/composables/useDocumentUpload'
 import type {
-  AssociationCharter,
-  AssociationCharterStatus,
-  CharterStatus,
-  ManageCharter,
-  ProcessingCharter
-} from '#/charter'
+  Document,
+  DocumentProcessType,
+  DocumentUpload,
+  DocumentUploadFilters,
+  UpdateDocumentUpload
+} from '#/document'
+import type {AssociationCharter, AssociationCharterStatus, Charter, CharterStatus, ProcessingCharter} from '#/charter'
 import useUtility from '@/composables/useUtil'
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import * as documentUploadService from '@/services/DocumentUploadService'
+import * as associationService from '@/services/AssociationService'
+import {useDocumentStore} from '@/stores/useDocumentStore'
 
-const charterDocuments = ref<DocumentUpload[]>([])
-const manageCharters = ref<ManageCharter[]>([])
+const charterDocumentUploads = ref<DocumentUpload[]>([])
+const charterList = ref<Charter[]>([])
 const associationCharters = ref<AssociationCharter[]>([])
 const processingCharters = ref<ProcessingCharter[]>([])
 
-export default function () {
-  const {formatDate} = useUtility()
+async function patchCharterStatus(associationId: number, charterStatus: AssociationCharterStatus) {
+  await associationService.updateAssociationCharterStatus(associationId, charterStatus)
+}
+
+async function uploadCharter(documentUploadId: number | undefined | null, associationId: number, documentId: number, charter: File) {
+  if (documentUploadId) {
+    await documentUploadService.deleteDocumentUpload(documentUploadId)
+  }
+  const charterData = new FormData()
+  charterData.append('pathFile', charter)
+  charterData.append('document', documentId.toString())
+  charterData.append('association', associationId.toString())
+  await documentUploadService.uploadDocument(charterData)
+}
+
+// old = getCharterDocuments
+async function getCharterProcessDocumentUploads(associationId?: number) {
+  const filters: Partial<DocumentUploadFilters> = {
+    processTypes: ['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION'],
+    associationId
+  }
+  charterDocumentUploads.value = await documentUploadService.getDocumentUploads(filters)
+}
+
+export default function useCharter() {
+
+  const {formatDate, reverseDate} = useUtility()
   const associationStore = useAssociationStore()
-  const {axiosAuthenticated} = useAxios()
+  const documentStore = useDocumentStore()
 
   const ASSOCIATION_CHARTER = 'CHARTE_SITE'
 
   const charterProcesses: DocumentProcessType[] = ['CHARTER_ASSOCIATION', 'CHARTER_PROJECT_FUND']
 
-  // Get all documents uploads needed to sign the association charter
-  async function getCharterDocuments(associationId?: number) {
-    const params = []
-    if (associationId) params.push(`association_id=${associationId}`)
-    params.push('process_types=CHARTER_ASSOCIATION,DOCUMENT_ASSOCIATION')
-    const url = `/documents/uploads?${params.join('&')}`
-    charterDocuments.value = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
-  }
-
-  // Get all document uploads linked to charters
-  async function getCharters(associationId?: number) {
-    const processes: string = charterProcesses.join(',')
-    const params = []
-    if (associationId) params.push(`association_id=${associationId}`)
-    params.push(`process_types=${processes}`)
-    const url = `/documents/uploads?${params.join('&')}`
-    charterDocuments.value = (await axiosAuthenticated.get<DocumentUpload[]>(url)).data
+  // old = getCharters
+  async function getCharterDocumentUploads(associationId?: number) {
+    const filters: Partial<DocumentUploadFilters> = {
+      processTypes: charterProcesses,
+      associationId
+    }
+    charterDocumentUploads.value = await documentUploadService.getDocumentUploads(filters)
   }
 
   const initCharters = async (associationId: number, isSite: boolean, associationCharterStatus: AssociationCharterStatus | undefined) => {
-    const {getDocuments, documents} = useDocumentUploads()
-    await getDocuments(charterProcesses)
-    await getCharters(associationId)
-    manageCharters.value = []
-    documents.value.forEach(document => {
+    charterList.value = []
+    const documents = documentStore.documents
+    documents.forEach(document => {
       if (document.processType === 'CHARTER_ASSOCIATION') return
-      const uploadedCharter = charterDocuments.value.find(x => x.document === document.id)
+      const uploadedCharter = charterDocumentUploads.value.find(x => x.document === document.id)
       const charterStatus = initCharterStatus(isSite, associationCharterStatus, document, uploadedCharter)
-      manageCharters.value.push({
+      charterList.value.push({
         associationId: uploadedCharter?.association,
         documentId: document.id,
         documentAcronym: document.acronym,
@@ -73,10 +87,10 @@ export default function () {
         mimeTypes: document.mimeTypes
       })
     })
-    const associationCharterDocuments = documents.value.filter(document => document.processType === 'CHARTER_ASSOCIATION')
+    const associationCharterDocuments = documents.filter(document => document.processType === 'CHARTER_ASSOCIATION')
     const associationCharter = associationCharterDocuments.find(document => document.acronym === ASSOCIATION_CHARTER)
     if (!associationCharterDocuments.length || !associationCharter) return
-    const uploadedCharter = charterDocuments.value
+    const uploadedCharter = charterDocumentUploads.value
       .find(x => x.document === associationCharter.id)
     const charterStatus = initCharterStatus(isSite, associationCharterStatus, associationCharter, uploadedCharter)
     const pathTemplates = associationCharterDocuments.map(document => ({
@@ -84,24 +98,24 @@ export default function () {
       path: document.pathTemplate ?? '',
       documentId: document.id
     }))
-    manageCharters.value.splice(0, 0, {
+    charterList.value.splice(0, 0, {
       associationId: uploadedCharter?.association,
       documentId: associationCharter.id,
       documentAcronym: associationCharter.acronym,
       documentProcessType: associationCharter.processType,
-      documentUploadId: uploadedCharter?.id ?? 0,
+      documentUploadId: uploadedCharter?.id || null,
       documentName: associationCharterDocuments.map(document => document.name).join(' + '),
       pathTemplate: pathTemplates,
       pathFile: uploadedCharter?.pathFile ?? '',
-      validatedDate: formatDate(charterStatus.validatedDate).split('-').reverse().join('/'),
-      expirationDate: formatDate(charterStatus.expirationDate).split('-').reverse().join('/'),
+      validatedDate: reverseDate(formatDate(charterStatus.validatedDate)),
+      expirationDate: reverseDate(formatDate(charterStatus.expirationDate)),
       charterStatus: charterStatus.charterStatus
     })
   }
 
   const initAssociationCharters = async (charterType: 'CHARTER_ASSOCIATION' | 'CHARTER_PROJECT_FUND') => {
-    const {documents} = useDocumentUploads()
     associationCharters.value = []
+    const documents = documentStore.documents
     associationStore.associations.forEach(association => {
       const data: AssociationCharter = {
         associationId: association.id,
@@ -110,11 +124,11 @@ export default function () {
         isSite: association.isSite,
         charters: []
       }
-      const charters = documents.value.filter(obj => obj.processType === charterType)
+      const charters = documents.filter(obj => obj.processType === charterType)
       if (charterType === 'CHARTER_ASSOCIATION') {
         const associationCharter = charters.find(obj => obj.acronym === ASSOCIATION_CHARTER)
         if (!associationCharter) return
-        const uploadedCharter = charterDocuments.value
+        const uploadedCharter = charterDocumentUploads.value
           .find(obj => obj.document === associationCharter.id && obj.association === association.id)
         const charterStatus = initCharterStatus(association.isSite, association.charterStatus, associationCharter, uploadedCharter)
         data.charters.push({
@@ -125,7 +139,7 @@ export default function () {
       } else {
         charters.forEach(charter => {
           if (charter.processType === 'CHARTER_ASSOCIATION') return
-          const uploadedCharter = charterDocuments.value
+          const uploadedCharter = charterDocumentUploads.value
             .find(obj => obj.document === charter.id && obj.association === association.id)
           const charterStatus = initCharterStatus(association.isSite, association.charterStatus, charter, uploadedCharter)
           data.charters.push({
@@ -140,13 +154,13 @@ export default function () {
   }
 
   const initProcessingCharters = async (charterType: 'CHARTER_ASSOCIATION' | 'CHARTER_PROJECT_FUND') => {
-    const {documents} = useDocumentUploads()
     processingCharters.value = []
+    const documents = documentStore.documents
     let charterAssociationStatus: CharterStatus | undefined = undefined
-    const charterAssociationName = documents.value.filter(doc => doc.processType === 'CHARTER_ASSOCIATION').map(doc => doc.name).join(' + ')
-    charterDocuments.value.forEach(uploadedCharter => {
+    const charterAssociationName = documents.filter(doc => doc.processType === 'CHARTER_ASSOCIATION').map(doc => doc.name).join(' + ')
+    charterDocumentUploads.value.forEach(uploadedCharter => {
       const association = associationStore.associations.find(association => association.id === uploadedCharter.association)
-      const document = documents.value.find(doc => doc.id === uploadedCharter.document)
+      const document = documents.find(doc => doc.id === uploadedCharter.document)
       if (!association || !document) return
       if (document.processType !== charterType || uploadedCharter.association !== association.id) return
       if (document.processType === 'CHARTER_ASSOCIATION') {
@@ -245,19 +259,8 @@ export default function () {
     }
   }
 
-  async function uploadCharter(documentUploadId: number | undefined | null, associationId: number, documentId: number, charter: File) {
-    if (documentUploadId) {
-      await axiosAuthenticated.delete(`/documents/uploads/${documentUploadId}`)
-    }
-    const charterData = new FormData()
-    charterData.append('pathFile', charter)
-    charterData.append('document', documentId.toString())
-    charterData.append('association', associationId.toString())
-    await axiosAuthenticated.post('/documents/uploads', charterData)
-  }
-
-  async function patchCharterDocument(action: 'validate' | 'reject' | 'return', id: number, comment: string) {
-    let dataToPatch = {}
+  async function patchCharterDocument(action: 'validate' | 'reject' | 'return', documentUploadId: number, comment?: string) {
+    let dataToPatch: Partial<UpdateDocumentUpload> = {}
     if (comment) {
       dataToPatch = Object.assign(dataToPatch, {comment})
     }
@@ -265,22 +268,18 @@ export default function () {
       const todayDate = new Date().toJSON().slice(0, 10)
       dataToPatch = Object.assign(dataToPatch, {validatedDate: formatDate(todayDate)})
     }
-    await axiosAuthenticated.patch(`/documents/uploads/${id}`, dataToPatch)
-  }
-
-  async function patchCharterStatus(charterStatus: AssociationCharterStatus, associationId: number) {
-    await axiosAuthenticated.patch(`/associations/${associationId}/status`, {charterStatus})
+    await documentUploadService.updateDocumentUpload(documentUploadId, dataToPatch)
   }
 
   return {
-    getCharterDocuments,
-    charterDocuments,
+    getCharterDocumentUploads,
+    charterDocumentUploads,
     initCharters,
-    manageCharters,
+    charterList,
     uploadCharter,
     associationCharters,
     charterProcesses,
-    getCharters,
+    getCharterProcessDocumentUploads,
     initAssociationCharters,
     processingCharters,
     initProcessingCharters,

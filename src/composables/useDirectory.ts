@@ -1,13 +1,13 @@
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import type {Association, SearchAssociation} from '#/association'
-import {useAxios} from '@/composables/useAxios'
+import type {Association, AssociationFilters, SearchAssociation} from '#/association'
 import {useProfileStore} from '@/stores/useProfileStore'
 import useUtility from '@/composables/useUtil'
+import * as associationService from '@/services/AssociationService'
 
 export default function useDirectory() {
 
   const associationStore = useAssociationStore()
-  const userStore = useProfileStore()
+  const profileStore = useProfileStore()
   const {filterizeSearch} = useUtility()
 
   function advancedSearch(settings: SearchAssociation): Association[] {
@@ -43,22 +43,16 @@ export default function useDirectory() {
     return matches
   }
 
-  async function simpleAssociationSearch(query: string, forDirectory: boolean): Promise<Association[]> {
-    const {axiosPublic, axiosAuthenticated} = useAxios()
-    let instance = axiosAuthenticated
-    if (forDirectory) instance = axiosPublic
-
-    let stringUrl = '/associations/?'
-    const arrayUrl = []
-
-    if (forDirectory) arrayUrl.push('is_public=true')
-    else arrayUrl.push(`institutions=${userStore.userInstitutions?.join(',')}`)
-
-    arrayUrl.push(`search=${query}`)
-
-    stringUrl += arrayUrl.join('&')
-
-    return (await instance.get<Association[]>(stringUrl)).data
+  async function simpleAssociationSearch(search: string, forDirectory: boolean): Promise<Association[]> {
+    const filters: Partial<AssociationFilters> = {
+      search,
+    }
+    if (forDirectory) {
+      filters.isPublic = true
+    } else {
+      filters.institutions = profileStore.userInstitutions
+    }
+    return await associationService.getAssociations(filters)
   }
 
   return {

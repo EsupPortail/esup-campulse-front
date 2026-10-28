@@ -18,7 +18,7 @@ type AssociationCharterStatus =
   | 'CHARTER_VALIDATED'
   | 'CHARTER_EXPIRED'
 
-export interface ManageCharter {
+export interface Charter {
   associationId: number | null;
   documentId: number;
   documentAcronym: string;
@@ -34,7 +34,7 @@ export interface ManageCharter {
   validatedDate: string;
   expirationDate: string;
   charterStatus: CharterStatus;
-  mimeTypes: MimeType[];
+  mimeTypes?: MimeType[];
 }
 
 export interface AssociationCharter {

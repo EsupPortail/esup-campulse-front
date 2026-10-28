@@ -114,8 +114,8 @@ export default function useDocumentUpload() {
   }
 
   function initCharterDocumentUploads() {
-    const {charterDocuments} = useCharters()
-    initDocumentUploads(charterDocuments.value)
+    const {charterDocumentUploads} = useCharters()
+    initDocumentUploads(charterDocumentUploads.value)
   }
 
   function initUserDocumentUploads() {

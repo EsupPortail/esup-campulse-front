@@ -48,8 +48,8 @@ async function updateCommission(commission: UpdateCommission) {
   const {arraysAreEqual} = useUtil()
   if (arraysAreEqual(commission.oldFunds, commission.newFunds)) return
 
-  const newFundsToPost = commission.newFunds.filter(x => commission.oldFunds.indexOf(x) === -1)
-  const oldFundsToDelete = commission.oldFunds.filter(x => commission.newFunds.indexOf(x) === -1)
+  const newFundsToPost = commission.newFunds.filter(x => !commission.oldFunds.includes(x))
+  const oldFundsToDelete = commission.oldFunds.filter(x => !commission.newFunds.includes(x))
 
   await Promise.all(newFundsToPost.map((fund) =>
     commissionService.postCommissionFund({

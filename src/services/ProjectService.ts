@@ -1,15 +1,21 @@
 import {useAxios} from '@/composables/useAxios'
 import type {
+  CreateProjectCategory,
   CreateProjectComment,
+  CreateProjectCommissionFund,
   Project,
   ProjectCategoryName,
   ProjectComment,
   ProjectCommissionFund,
   ProjectCommissionFundFilter,
+  ProjectInfos,
   ProjectListItem,
   ProjectReview,
   ProjectStatus,
-  UpdateProjectComment
+  UpdateProject,
+  UpdateProjectComment,
+  UpdateProjectCommissionFund,
+  UpdateProjectReview
 } from '#/project'
 import type {PaginatedList} from '#/global'
 import type {AxiosResponse} from 'axios'
@@ -58,43 +64,27 @@ export async function getProjectCommissionFunds(filter: ProjectCommissionFundFil
 
 export async function getProjectReview(projectId: number): Promise<ProjectReview> {
   const {axiosAuthenticated} = useAxios()
-  const url = `${modelBaseUrl}/${projectId}/review`
-  return (await axiosAuthenticated.get<ProjectReview>(url)).data
+  return (await axiosAuthenticated.get<ProjectReview>(`${modelBaseUrl}/${projectId}/review`)).data
 }
 
 export async function getProjectPdf(projectId: number): Promise<AxiosResponse<ArrayBuffer>> {
   const {axiosAuthenticated} = useAxios()
-  const url = `${modelBaseUrl}/${projectId}/pdf_export`
-  return await axiosAuthenticated.get<ArrayBuffer>(url, {responseType: 'arraybuffer'})
+  return await axiosAuthenticated.get<ArrayBuffer>(`${modelBaseUrl}/${projectId}/pdf_export`, {responseType: 'arraybuffer'})
+}
+
+export async function updateProjectReview(projectId: number, payload: Partial<UpdateProjectReview>): Promise<ProjectReview> {
+  const {axiosAuthenticated} = useAxios()
+  return (await axiosAuthenticated.patch(`${modelBaseUrl}/${projectId}/review`, payload)).data
 }
 
 export async function getProjectReviewPdf(projectId: number): Promise<AxiosResponse<ArrayBuffer>> {
   const {axiosAuthenticated} = useAxios()
-  const url = `${modelBaseUrl}/${projectId}/review/pdf_export`
-  return await axiosAuthenticated.get<ArrayBuffer>(url, {responseType: 'arraybuffer'})
+  return await axiosAuthenticated.get<ArrayBuffer>(`${modelBaseUrl}/${projectId}/review/pdf_export`, {responseType: 'arraybuffer'})
 }
 
-export async function patchProjectStatus(
-  projectId: number,
-  original: ProjectStatus,
-  updated: ProjectStatus
-): Promise<Project> {
-  if (original === updated) return
+export async function postponeProject(projectId: number, newCommissionId: number): Promise<void> {
   const {axiosAuthenticated} = useAxios()
-  return (await axiosAuthenticated.patch(`${modelBaseUrl}/${projectId}/status`, {projectStatus: updated})).data
-}
-
-export async function patchProjectCommissionFund(projectId: number, original: number, updated: number) {
-  if (original === updated) return
-  const {axiosAuthenticated} = useAxios()
-  const url = `${modelBaseUrl}/${projectId}/commission_funds/${original}`
-  await axiosAuthenticated.patch(url, {newCommissionFundId: updated})
-}
-
-export async function postponeProject(projectId: number, newCommissionId: number) {
-  const {axiosAuthenticated} = useAxios()
-  const url = `${modelBaseUrl}/${projectId}/postpone`
-  await axiosAuthenticated.patch(url, {newCommissionId})
+  await axiosAuthenticated.patch(`${modelBaseUrl}/${projectId}/postpone`, {newCommissionId})
 }
 
 export async function getProjectComments(projectId: number): Promise<ProjectComment[]> {
@@ -107,7 +97,52 @@ export async function createProjectComment(projectId: number, comment: CreatePro
   await axiosAuthenticated.post(`${modelBaseUrl}/${projectId}/comments`, comment)
 }
 
-export async function updateProjectComment(projectId: number, comment: UpdateProjectComment) {
+export async function updateProjectComment(projectId: number, comment: UpdateProjectComment): Promise<void> {
   const {axiosAuthenticated} = useAxios()
   await axiosAuthenticated.patch(`${modelBaseUrl}/${projectId}/comments/${comment.id}`, comment)
+}
+
+export async function createProject(payload: Partial<ProjectInfos>): Promise<Project> {
+  const {axiosAuthenticated} = useAxios()
+  return (await axiosAuthenticated.post(`${modelBaseUrl}/`, payload)).data
+}
+
+export async function updateProject(projectId: number, payload: Partial<UpdateProject>): Promise<Project> {
+  const {axiosAuthenticated} = useAxios()
+  return (await axiosAuthenticated.patch(`${modelBaseUrl}/${projectId}`, payload)).data
+}
+
+export async function updateProjectStatus(projectId: number, projectStatus: ProjectStatus): Promise<Project> {
+  const {axiosAuthenticated} = useAxios()
+  return (await axiosAuthenticated.patch(`${modelBaseUrl}/${projectId}/status`, {projectStatus})).data
+}
+
+export async function deleteProject(projectId: number) {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.delete(`${modelBaseUrl}/${projectId}`)
+}
+
+export async function createProjectCommissionFund(payload: CreateProjectCommissionFund): Promise<void> {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.post(`${modelBaseUrl}/commission_funds`, payload)
+}
+
+export async function updateProjectCommissionFund(projectId: number, commissionFundId: number, payload: Partial<UpdateProjectCommissionFund>) {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.patch(`${modelBaseUrl}/${projectId}/commission_funds/${commissionFundId}`, payload)
+}
+
+export async function deleteProjectCommissionFund(projectId: number, commissionFundId: number): Promise<void> {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.delete(`${modelBaseUrl}/${projectId}/commission_funds/${commissionFundId}`)
+}
+
+export async function createProjectCategory(payload: CreateProjectCategory): Promise<void> {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.post(`${modelBaseUrl}/categories`, payload)
+}
+
+export async function deleteProjectCategory(projectId: number, categoryId: number): Promise<void> {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.delete(`${modelBaseUrl}/${projectId}/categories/${categoryId}`)
 }

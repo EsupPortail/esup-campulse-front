@@ -10,20 +10,22 @@ import type {
 } from '#/association'
 import {useAxios} from '@/composables/useAxios'
 import type {AxiosResponse} from 'axios'
+import type {AssociationCharterStatus} from '#/charter'
 
 const modelBaseUrl = '/associations'
 
-export async function getAssociations(filters?: AssociationFilters): Promise<Association[]> {
+export async function getAssociations(filters?: Partial<AssociationFilters>): Promise<Association[]> {
   const {axiosPublic, axiosAuthenticated} = useAxios()
   const instance = filters?.isPublic ? axiosPublic : axiosAuthenticated
   const filterArray: string[] = []
   if (filters?.isPublic) filterArray.push('is_public=true')
   if (filters?.institutions) filterArray.push(`institutions=${filters.institutions.join(',')}`)
+  if (filters?.search) filterArray.push(`search=${filters.search}`)
   const filterString: string = filterArray.length ? `?${filterArray.join('&')}` : ''
   return (await instance.get<Association[]>(`${modelBaseUrl}/${filterString}`)).data
 }
 
-export async function getAssociationNames(filters?: AssociationNameFilters): Promise<AssociationName[]> {
+export async function getAssociationNames(filters?: Partial<AssociationNameFilters>): Promise<AssociationName[]> {
   const {axiosPublic} = useAxios()
   const filterArray: string[] = []
   if (filters?.isPublic) filterArray.push('is_public=true')
@@ -48,6 +50,11 @@ export async function createAssociation(newAssociation: CreateAssociation): Prom
 export async function updateAssociation(associationId: number, data: Partial<Association | UpdateAssociation>): Promise<void> {
   const {axiosAuthenticated} = useAxios()
   await axiosAuthenticated.patch(`${modelBaseUrl}/${associationId}`, data)
+}
+
+export async function updateAssociationCharterStatus(associationId: number, charterStatus: AssociationCharterStatus): Promise<void> {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.patch(`${modelBaseUrl}/${associationId}/status`, {charterStatus})
 }
 
 export async function deleteAssociation(associationId: number): Promise<void> {

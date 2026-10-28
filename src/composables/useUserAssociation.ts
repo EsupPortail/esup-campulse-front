@@ -1,14 +1,15 @@
 import {ref} from 'vue'
-import type {UserAssociation} from '#/user'
+import type {User} from '#/user'
 import type {
   AssociationMember,
   AssociationOptions,
   AssociationRole,
   AssociationUser,
+  AssociationUserRole,
   CreateAssociationUser,
-  RegisterAssociationUser
+  RegisterAssociationUser,
+  UpdateAssociationUser
 } from '#/association'
-import {useAxios} from '@/composables/useAxios'
 import {useProfileStore} from '@/stores/useProfileStore'
 import {useUserStore} from '@/stores/useUserStore'
 import i18n from '@/plugins/i18n'
@@ -16,16 +17,27 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import * as userService from '@/services/UserService'
 
 const userAssociations = ref<AssociationRole[]>([])
-
-const newAssociations = ref<AssociationRole[]>([])
-
-const newAssociationsUser = ref<AssociationUser[]>([])
+const newUserAssociations = ref<AssociationRole[]>([])
 
 const associationMembers = ref<AssociationMember[]>([])
+//const newAssociationMembers = ref<AssociationUser[]>([])
 
-function getAssociationUserRole(user: AssociationUser) {
-  return user.isPresident ? 'isPresident' : user.isSecretary ? 'isSecretary' : user.isTreasurer ? 'isTreasurer' :
-    user.isVicePresident ? 'isVicePresident' : 'isMember'
+
+const associationUserRole = (associationUser: AssociationUser): AssociationUserRole => {
+  if (associationUser.isPresident) return 'isPresident'
+  if (associationUser.isSecretary) return 'isSecretary'
+  if (associationUser.isTreasurer) return 'isTreasurer'
+  if (associationUser.isVicePresident) return 'isVicePresident'
+  return 'isMember'
+}
+
+// old = getAssociationUserNames
+async function getAssociationUsers(associationId: number): Promise<User[]> {
+  return userService.getUsers({associationId})
+}
+
+function removeAssociation(index: number) {
+  newUserAssociations.value.splice(index, 1)
 }
 
 export default function useUserAssociation() {
@@ -62,76 +74,59 @@ export default function useUserAssociation() {
     }
   ]
 
-  function updateUserAssociations(editedByStaff: boolean) {
+  async function updateUserAssociations(editedByStaff: boolean) {
     const instance = editedByStaff ? userManagerStore : userStore
     const userId = instance.user?.id
 
-    userAssociations.value.forEach(async function (association) {
-      // If we need to delete the association
-      if (association.deleteAssociation) {
-        await deleteUserAssociation(userId, association.id)
-        // Reactively remove the deleted item from interface
-        if (!editedByStaff) {
-          userAssociations.value.splice(userAssociations.value.findIndex(obj => obj.id === association.id), 1)
-          userStore.user?.associations.splice(userAssociations.value.findIndex(obj => obj.id === association.id), 1)
-        }
-      }
-      // If we need to update the association
-      else {
-        // We search for the corresponding association in store
-        const storeAssociation = instance.userAssociations.find(obj => obj.association?.id === association.id)
-        // Has role helper
-        const hasRole = storeAssociation?.isPresident || storeAssociation?.isSecretary || storeAssociation?.isTreasurer || storeAssociation?.isVicePresident
-        // We set a boolean to track changes
-        const hasChanges: boolean = (storeAssociation?.canBePresidentFrom !== association.canBePresidentFrom)
-          || (storeAssociation?.canBePresidentTo !== association.canBePresidentTo)
-          || (storeAssociation?.isPresident && association.role !== 'isPresident')
-          || (storeAssociation?.isSecretary && association.role !== 'isSecretary')
-          || (storeAssociation?.isTreasurer && association.role !== 'isTreasurer')
-          || (storeAssociation?.isVicePresident && association.role !== 'isVicePresident')
-          || (!hasRole && association.role !== 'isMember')
+    const associationToDelete = userAssociations.value.filter(obj => obj.deleteAssociation)
+    const associationToUpdate = userAssociations.value.filter(obj => !obj.deleteAssociation)
 
-        if (hasChanges) {
-          const infosToPatch = {
-            isPresident: association.role === 'isPresident',
-            canBePresidentFrom: association.canBePresidentFrom ? association.canBePresidentFrom : null,
-            canBePresidentTo: association.canBePresidentTo ? association.canBePresidentTo : null,
-            isSecretary: association.role === 'isSecretary',
-            isTreasurer: association.role === 'isTreasurer',
-            isVicePresident: association.role === 'isVicePresident'
-          }
-          await patchUserAssociations(userId, association.id, infosToPatch)
-        }
-      }
+    const deletePromises = associationToDelete.map(obj => {
+      return userService.deleteUserAssociation(userId, obj.id)
     })
-  }
+    await Promise.all(deletePromises)
 
-  async function deleteUserAssociation(userId: number, associationId: number) {
-    const {axiosAuthenticated} = useAxios()
-    await axiosAuthenticated.delete(`/users/${userId}/associations/${associationId}`)
-  }
+    const updatePromises = associationToUpdate.reduce((acc, association) => {
+      const original = instance.userAssociations.find(obj => obj.association?.id === association.id)
+      const roles = ['isPresident', 'isSecretary', 'isTreasurer', 'isVicePresident']
+      const hasRole = roles.some(role => original?.[role])
+      const hasChanges: boolean = (original?.canBePresidentFrom !== association.canBePresidentFrom)
+        || (original?.canBePresidentTo !== association.canBePresidentTo)
+        || (original?.isPresident && association.role !== 'isPresident')
+        || (original?.isSecretary && association.role !== 'isSecretary')
+        || (original?.isTreasurer && association.role !== 'isTreasurer')
+        || (original?.isVicePresident && association.role !== 'isVicePresident')
+        || (!hasRole && association.role !== 'isMember')
+      if (hasChanges) {
+        const infosToPatch: Partial<UpdateAssociationUser> = {
+          isPresident: association.role === 'isPresident',
+          canBePresidentFrom: association.canBePresidentFrom ? association.canBePresidentFrom : null,
+          canBePresidentTo: association.canBePresidentTo ? association.canBePresidentTo : null,
+          isSecretary: association.role === 'isSecretary',
+          isTreasurer: association.role === 'isTreasurer',
+          isVicePresident: association.role === 'isVicePresident'
+        }
+        acc.push(userService.updateUserAssociations(userId, association.id, infosToPatch))
+      }
+      return acc
+    }, [])
 
-  async function patchUserAssociations(userId: number, associationId: number, payload: AssociationUser) {
-    const {axiosAuthenticated} = useAxios()
-    await axiosAuthenticated.patch(`/users/${userId}/associations/${associationId}`, payload)
+    await Promise.all(updatePromises)
   }
 
   function addAssociation() {
-    newAssociations.value.push({
+    newUserAssociations.value.push({
       id: null,
       role: 'isMember',
       options: associationRoleOptions
     })
   }
 
-  function removeAssociation(index: number) {
-    newAssociations.value.splice(index, 1)
-  }
-
-  function updateRegisterRoleInAssociation(): AssociationUser[] {
-    newAssociationsUser.value = []
-    newAssociations.value.forEach(association => {
-      newAssociationsUser.value.push({
+  // todo : vérifier ça (j'ai l'impression qu'on se complique la vie)
+  /*function updateRegisterRoleInAssociation(): AssociationUser[] {
+    newAssociationUsers.value = []
+    newUserAssociations.value.forEach(association => {
+      newAssociationUsers.value.push({
         association: association.id,
         isPresident: association.role === 'isPresident',
         canBePresidentFrom: null,
@@ -142,13 +137,8 @@ export default function useUserAssociation() {
         isTreasurer: association.role === 'isTreasurer'
       })
     })
-    return newAssociationsUser.value
-  }
-
-  async function getAssociationUserNames(associationId: number) {
-    const {axiosAuthenticated} = useAxios()
-    return (await axiosAuthenticated.get(`/users/?association_id=${associationId}`)).data
-  }
+    return newAssociationUsers.value
+  }*/
 
   const initAssociationMembers = async (associationId: number, withPresident: boolean) => {
     associationMembers.value = []
@@ -159,7 +149,7 @@ export default function useUserAssociation() {
         id: associationUser.user.id,
         firstName: associationUser.user.firstName,
         lastName: associationUser.user.lastName,
-        role: getAssociationUserRole(associationUser),
+        role: associationUserRole(associationUser),
         canBePresidentFrom: associationUser.canBePresidentFrom,
         canBePresidentTo: associationUser.canBePresidentTo,
         isValidatedByAdmin: associationUser.isValidatedByAdmin
@@ -167,12 +157,11 @@ export default function useUserAssociation() {
   }
 
   const initUserAssociations = (editedByStaff: boolean) => {
-    const associations: UserAssociation[] = editedByStaff ? userManagerStore.userAssociations : userStore.userAssociations
-
+    const associations: AssociationUser[] = editedByStaff ? userManagerStore.userAssociations : userStore.userAssociations
     userAssociations.value = associations.map(association => ({
       id: association.association.id,
       name: association.association.name,
-      role: getAssociationUserRole(association),
+      role: associationUserRole(association),
       options: associationRoleOptions,
       isValidatedByAdmin: association.isValidatedByAdmin,
       canBePresidentFrom: association.canBePresidentFrom,
@@ -182,20 +171,16 @@ export default function useUserAssociation() {
   }
 
   async function getUnvalidatedAssociationUsers() {
-
-    const {axiosAuthenticated} = useAxios()
-
-    const url = '/users/associations/?is_validated_by_admin=false'
-
-    const response = await axiosAuthenticated.get<UserAssociation[]>(url)
-    associationMembers.value = response.data.map((userAssociation) => {
+    const associationUsers = await userService.getAssociationUsers({isValidatedByAdmin: false})
+    associationMembers.value = associationUsers.map((userAssociation) => {
       return {
         id: userAssociation.user.id,
         firstName: userAssociation.user.firstName,
         lastName: userAssociation.user.lastName,
         associationId: userAssociation.association.id,
         associationName: userAssociation.association.name,
-        role: associationRoleOptions.find(role => role.value === getAssociationUserRole(userAssociation))?.label,
+        role: associationRoleOptions
+          .find(role => role.value === associationUserRole(userAssociation))?.label,
         canBePresidentFrom: userAssociation.canBePresidentFrom,
         canBePresidentTo: userAssociation.canBePresidentTo,
         isValidatedByAdmin: userAssociation.isValidatedByAdmin
@@ -221,7 +206,7 @@ export default function useUserAssociation() {
 
   async function registerUserAssociations(user?: number) {
     const userAssociations = userAssociationsToRegister(
-      newAssociations.value,
+      newUserAssociations.value,
       user
     ) as (typeof user extends number ? CreateAssociationUser[] : RegisterAssociationUser[])
     const promises = userAssociations.map(item =>
@@ -233,20 +218,18 @@ export default function useUserAssociation() {
   return {
     userAssociations,
     updateUserAssociations,
-    patchUserAssociations,
     addAssociation,
     removeAssociation,
-    updateRegisterRoleInAssociation,
-    newAssociationsUser,
+    //updateRegisterRoleInAssociation,
+    //newAssociationUsers,
     associationRoleOptions,
-    newAssociations,
-    deleteUserAssociation,
+    newUserAssociations,
     getUnvalidatedAssociationUsers,
     associationMembers,
-    getAssociationUserRole,
+    associationUserRole,
     initUserAssociations,
     initAssociationMembers,
-    getAssociationUsersNames,
+    getAssociationUsers,
     userAssociationsToRegister,
     registerUserAssociations
   }

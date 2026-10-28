@@ -1,4 +1,3 @@
-import {useUserStore} from '@/stores/useUserStore'
 import type {CreateUserGroup, LDAPUser, RegisterUser, RegisterUserBase, UpdateUser, User} from '#/user'
 import {computed, reactive, ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroup'
@@ -51,9 +50,9 @@ const CASUserOptions = computed<SelectLabel[]>(() => {
 
 export default function useUser() {
 
-  const userStore = useUserStore()
   const fundStore = useFundStore()
-  const {updateUserGroups} = useUserGroups()
+  const {newUserAssociations, userAssociationsToRegister} = useUserAssociation()
+  const {userGroupsToRegister} = useUserGroups()
 
   function setUserFunds(user: User): number[] {
     const institutionIds = new Set(setUserInstitutions(user))
@@ -61,12 +60,6 @@ export default function useUser() {
       .filter(fund => fund.institution && institutionIds.has(fund.institution))
       .map(fund => fund.id)
     return Array.from(new Set(fundIds))
-  }
-
-  async function validateUser() {
-    const user = userStore.user
-    await updateUserGroups(user)
-    await userStore.validateUser()
   }
 
   const userDataToUpdate = (originalUser: User): Partial<UpdateUser> => {
@@ -117,11 +110,8 @@ export default function useUser() {
 
   // old = addUserAsManager
   async function createUser() {
-    const {newAssociations, userAssociationsToRegister} = useUserAssociation()
-    const {userGroupsToRegister} = useUserGroups()
-
     const gifus: CreateUserGroup[] = userGroupsToRegister()
-    const associations = userAssociationsToRegister(newAssociations.value) as RegisterAssociationUser[]
+    const associations = userAssociationsToRegister(newUserAssociations.value) as RegisterAssociationUser[]
 
     const user: RegisterUser = {
       isCas: newUser.isCas,
@@ -142,7 +132,6 @@ export default function useUser() {
   }
 
   return {
-    validateUser,
     userToUpdate,
     setUserFunds,
     setUserInstitutions,

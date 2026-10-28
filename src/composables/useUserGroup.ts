@@ -2,10 +2,9 @@ import {computed, ref} from 'vue'
 import type {Group, GroupName, SelectLabelGroup} from '#/group'
 import i18n from '@/plugins/i18n'
 import {useProfileStore} from '@/stores/useProfileStore'
-import useSecurity from '@/composables/useAuthentication'
 import useAuthentication from '@/composables/useAuthentication'
 import {useGroupStore} from '@/stores/useGroupStore'
-import type {CreateUserGroup, UpdateUserGroup, User, UserGroupUpdate} from '#/user'
+import type {CreateUserGroup, UpdateUserGroup, User} from '#/user'
 import * as userGroupService from '@/services/UserGroupService'
 import * as userService from '@/services/UserService'
 import useUser from '@/composables/useUser'
@@ -16,6 +15,7 @@ import useUtil from '@/composables/useUtil'
 // Global state
 const newGroups = ref<number[]>([])
 const groupLabels = ref<SelectLabelGroup[]>([])
+const userFunds = ref<number[]>([])
 
 // Helpers
 const groupChoiceLimit: number = 2
@@ -33,6 +33,10 @@ export default function useUserGroup() {
 
   const profileStore = useProfileStore()
   const groupStore = useGroupStore()
+  const userStore = useUserStore()
+  const {arraysAreEqual} = useUtil()
+  const {setUserFunds} = useUser()
+
 
   const isStaff = computed<boolean>(() => {
     if (!profileStore.user?.groups) return false
@@ -56,7 +60,7 @@ export default function useUserGroup() {
   }
 
   function initGroupLabels(onlyPublic?: boolean): void {
-    const {hasPerm} = useSecurity()
+    const {hasPerm} = useAuthentication()
     const labels = groupStore.groups.reduce<SelectLabelGroup[]>((factory, group) => {
       if (!onlyPublic || group.isPublic) {
         const label = groupFriendlyName(group.id)
@@ -131,7 +135,7 @@ export default function useUserGroup() {
   async function patchUserGroups(user: number, groupsToPost: number[], fundsToUpdate: number[]) {
     const commissionMemberGroup = groupByName('MEMBER_FUND')
 
-    const postFactory: UserGroupUpdate[] = []
+    const postFactory: UpdateUserGroup[] = []
 
     for (const group of groupsToPost) {
       const isCommissionMemberGroup = group === commissionMemberGroup.id
@@ -176,59 +180,56 @@ export default function useUserGroup() {
   }
 
   async function deleteUserGroups(user: User, groupsToDelete: number[], fundsToDelete: number[]) {
-    const {userFunds} = useUser()
-    const funds = userFunds(user)
+    const funds = setUserFunds(user)
     const userId = user.id
     const commissionMemberGroup = groupByName('MEMBER_FUND')
+
+    let promises: Promise<void>[] = []
 
     for (const group of groupsToDelete) {
       const isCommissionMemberGroup = group === commissionMemberGroup.id
       if (isCommissionMemberGroup) {
-        for (const fund of funds) {
-          await userService.deleteUserGroup(userId, group, fund)
-        }
+        promises = funds.map(fund => {
+          return userService.deleteUserGroup(userId, group, fund)
+        })
       } else {
-        await userService.deleteUserGroup(userId, group)
+        promises.push(userService.deleteUserGroup(userId, group))
       }
     }
-    for (const fund of fundsToDelete) {
-      await userService.deleteUserGroup(userId, commissionMemberGroup.id, fund)
-    }
+    promises = [...promises, ...fundsToDelete.map(fund => {
+      return userService.deleteUserGroup(userId, commissionMemberGroup.id, fund)
+    })]
+
+    await Promise.all(promises)
   }
 
   async function updateUserGroups(user: User) {
-    const userStore = useUserStore()
     const originalGroups = userStore.userGroups
-    const {arraysAreEqual} = useUtil()
-    const {userFunds} = useUser()
-    const funds = userFunds(user)
+    const updatedGroups = newGroups.value
+    const originalFunds = setUserFunds(user)
+    const updatedFunds = userFunds.value
 
     const groupsToPost = () => {
-      let temp = newGroups.value.filter(group => originalGroups.indexOf(group) === -1)
+      let temp = updatedGroups.filter(group => !originalGroups.includes(group))
       temp = temp.filter((element, index) => {
         return temp.indexOf(element) === index
       })
       return temp
     }
-
     const groupsToDelete = () => {
-      return originalGroups.filter(group => newGroups.value.indexOf(group) === -1)
+      return originalGroups.filter(group => !updatedGroups.includes(group))
+    }
+    const fundsToUpdate = () => {
+      return userFunds.value.filter(x => !originalFunds.includes(x))
+    }
+    const fundsToDelete = () => {
+      return originalFunds.filter(x => !updatedGroups.includes(x))
     }
 
-    const fundsToUpdate = (newCommissions: number[], oldCommissions: number[]) => {
-      return funds.filter(x => oldCommissions.indexOf(x) === -1)
-    }
+    if (arraysAreEqual(updatedGroups, originalGroups) && arraysAreEqual(updatedFunds, originalFunds)) return
 
-    const commissionsToDelete = (newCommissions: number[], oldCommissions: number[]) => {
-      return oldCommissions.filter(x => newCommissions.indexOf(x) === -1)
-    }
-
-    if (!arraysAreEqual(newGroups.value, oldGroups) || !arraysAreEqual(userFunds.value, userStore.userCommissionFunds)) {
-      await patchUserGroups(groupsToPost(),
-        commissionsToUpdate(userFunds.value, userStore.userCommissionFunds))
-      await deleteUserGroups(groupsToDelete(),
-        commissionsToDelete(userFunds.value, userStore.userCommissionFunds))
-    }
+    await patchUserGroups(user.id, groupsToPost(), fundsToUpdate())
+    await deleteUserGroups(user, groupsToDelete(), fundsToDelete())
   }
 
   const userGroupsToRegister = (userId?: number): CreateUserGroup[] | UpdateUserGroup[] => {

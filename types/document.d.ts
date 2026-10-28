@@ -129,6 +129,11 @@ export interface DocumentUploadFilters {
   projectId: number;
 }
 
+export interface UpdateDocumentUpload {
+  comment: string;
+  validatedDate: string;
+}
+
 export interface DocumentStore {
   documents: Document[];
 }

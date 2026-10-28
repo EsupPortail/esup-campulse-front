@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import useSubmitReview from '@/composables/useSubmitReview'
+import useSubmitReview from '@/composables/useProjectReview'
 import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n()

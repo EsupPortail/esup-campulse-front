@@ -121,8 +121,9 @@ export interface UserStore {
 }
 
 export interface UserFilters {
-  search?: string;
+  search: string;
   status: 'validated' | 'unvalidated';
+  associationId: number;
 }
 
 export interface PasswordResetConfirmPayload {

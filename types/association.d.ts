@@ -100,28 +100,36 @@ export type SearchAssociation = Pick<Association, 'name' | 'acronym'> &
     institution: Association['institution']['id'] | null;
     institutionComponent: Association['institutionComponent']['id'] | null;
     activityField: Association['activityField']['id'] | null;
-  }
+  };
 
-export interface AssociationUser {
+export interface AssociationUserBase {
+  isPresident: boolean;
+  isVicePresident: boolean;
+  isSecretary: boolean;
+  isTreasurer: boolean;
+}
+
+export interface AssociationUser extends AssociationUserBase {
   id: number;
   user: UserBase;
   association: UserAssociation;
-  isPresident: boolean;
   canBePresidentFrom: string;
   canBePresidentTo: string;
   isValidatedByAdmin: boolean;
-  isVicePresident: boolean;
-  isSecretary: boolean;
-  isTreasurer: boolean
 }
 
-export type CreateAssociationUser = Pick<AssociationUser, 'isPresident' | 'isSecretary' | 'isTreasurer' |
-  'isVicePresident'> & {
+export type RegisterAssociationUser = Omit<CreateAssociationUser, 'user'>;
+
+export interface CreateAssociationUser extends AssociationUserBase {
   association: Association['id'];
   user: AssociationUser['id'];
-};
+}
 
-export type RegisterAssociationUser = Omit<CreateAssociationUser, 'user'>;
+export interface UpdateAssociationUser extends AssociationUserBase {
+  canBePresidentFrom: AssociationUser['canBePresidentFrom'];
+  canBePresidentTo: AssociationUser['canBePresidentTo'];
+  isValidatedByAdmin: AssociationUser['isValidatedByAdmin'];
+}
 
 // todo
 export interface AssociationMember {
@@ -158,13 +166,16 @@ export interface AssociationStore {
 }
 
 export interface AssociationFilters {
-  isPublic?: boolean;
-  institutions?: number[];
+  isPublic: boolean;
+  institutions: number[];
+  search: string;
 }
 
 export interface AssociationNameFilters {
-  isPublic?: boolean;
-  allowNewUsers?: boolean;
-  isEnabled?: boolean;
-  institutions?: number[];
+  isPublic: boolean;
+  allowNewUsers: boolean;
+  isEnabled: boolean;
+  institutions: number[];
 }
+
+export type AssociationUserRole = 'isPresident' | 'isSecretary' | 'isTreasurer' | 'isVicePresident' | 'isMember';

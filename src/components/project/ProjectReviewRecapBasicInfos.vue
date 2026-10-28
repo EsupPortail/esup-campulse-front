@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import useUtility from '@/composables/useUtil'
-import useSubmitReview from '@/composables/useSubmitReview'
+import useSubmitReview from '@/composables/useProjectReview'
 import {useI18n} from 'vue-i18n'
 import useUsers from '@/composables/useUser'
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'

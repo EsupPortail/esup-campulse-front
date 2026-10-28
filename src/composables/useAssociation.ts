@@ -32,7 +32,7 @@ async function getAssociationPdfExport(associationId: number): Promise<AxiosResp
 export function useAssociation() {
 
   const associationStore = useAssociationStore()
-  const {newAssociations} = useUserAssociations()
+  const {newUserAssociations} = useUserAssociations()
   const {processDocuments} = useDocumentUploads()
 
   function checkHasPresident(association: AssociationRole) {
@@ -43,7 +43,7 @@ export function useAssociation() {
     if (!associationDetail?.hasPresident) return
     association.options[0].disable = true
     if (association.role === 'isPresident') {
-      const model = newAssociations.value.find(obj => obj.id === association.id)
+      const model = newUserAssociations.value.find(obj => obj.id === association.id)
       if (model) model.role = 'isMember'
     }
   }

@@ -111,11 +111,11 @@ export default function useAuthentication() {
 
   // old = userLocalRegister
   async function registerLocalUser() {
-    const {newAssociations, userAssociationsToRegister} = useUserAssociations()
+    const {newUserAssociations, userAssociationsToRegister} = useUserAssociations()
     const {userGroupsToRegister} = useUserGroups()
 
     const gifus: CreateUserGroup[] = userGroupsToRegister()
-    const associations = userAssociationsToRegister(newAssociations.value) as RegisterAssociationUser[]
+    const associations = userAssociationsToRegister(newUserAssociations.value) as RegisterAssociationUser[]
 
     const user: RegisterLocalUserPayload = {
       email: newUser.email,
@@ -132,11 +132,11 @@ export default function useAuthentication() {
 
   // old = userCASRegister
   async function registerCASUser() {
-    const {newAssociations, userAssociationsToRegister} = useUserAssociations()
+    const {newUserAssociations, userAssociationsToRegister} = useUserAssociations()
     const {userGroupsToRegister} = useUserGroups()
 
     const gifus: CreateUserGroup[] = userGroupsToRegister()
-    const associations = userAssociationsToRegister(newAssociations.value) as RegisterAssociationUser[]
+    const associations = userAssociationsToRegister(newUserAssociations.value) as RegisterAssociationUser[]
 
     const user: RegisterCASUserPayload = {
       phone: newUser.phone,

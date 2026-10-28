@@ -20,6 +20,11 @@ export interface ProjectCategoryName {
   name: string;
 }
 
+export interface CreateProjectCategory {
+  project: number;
+  category: number;
+}
+
 export interface ProjectBase {
   id: number;
   name: string;
@@ -60,6 +65,14 @@ export interface Project extends ProjectBase {
   processingDate: string;
 }
 
+export type UpdateProject = Pick<Project,
+  'name' | 'manualIdentifier' | 'plannedStartDate' | 'plannedEndDate' | 'plannedLocation' | 'partnerAssociation' |
+  'budgetPreviousEdition' | 'targetAudience' | 'amountStudentsAudience' | 'amountAllAudience' | 'ticketPrice' |
+  'studentTicketPrice' | 'individualCost' | 'goals' | 'summary' | 'plannedActivities' | 'preventionSafety' |
+  'marketingCampaign' | 'sustainableDevelopment' | 'projectStatus'> & {
+  associationUser: Project['associationUser']['id'];
+};
+
 // old = ProjectBasicInfos
 export type ProjectInfos = Pick<Project, 'name' | 'plannedStartDate' | 'plannedEndDate' | 'plannedLocation' |
   'partnerAssociation'> & {
@@ -86,14 +99,13 @@ export interface ProjectCommissionFund {
   isValidatedByAdmin: boolean;
 }
 
-export interface ProjectReview {
-  id: number;
-  name: string;
-  user: number | null;
-  association: number | null;
+export type UpdateProjectCommissionFund = Pick<ProjectCommissionFund, 'isFirstEdition' | 'amountAskedPreviousEdition' |
+  'amountEarnedPreviousEdition' | 'amountAsked' | 'amountEarned' | 'isValidatedByAdmin'>
+
+export interface ProjectReviewBase {
   associationUser: number | null;
-  outcome: number;
-  income: number;
+  outcome: number | null;
+  income: number | null;
   realStartDate: string;
   realEndDate: string;
   realLocation: string;
@@ -102,6 +114,13 @@ export interface ProjectReview {
   description: string;
   difficulties: string;
   improvements: string;
+}
+
+export interface ProjectReview extends ProjectReviewBase {
+  id: number;
+  name: string;
+  user: number | null;
+  association: number | null;
   plannedStartDate: string;
   plannedEndDate: string;
   plannedLocation: string;
@@ -110,6 +129,8 @@ export interface ProjectReview {
   editionDate: string;
   processingDate: string;
 }
+
+export type UpdateProjectReview = ProjectReviewBase;
 
 export interface ProjectComment {
   id: number;
@@ -154,3 +175,8 @@ export type ProjectCommissionFundFilter =
   ProjectCommissionFundFilterAll
   | ProjectCommissionFundFilterCommission
   | ProjectCommissionFundFilterProject
+
+export interface CreateProjectCommissionFund {
+  project: number;
+  commissionFund: number;
+}

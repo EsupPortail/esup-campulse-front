@@ -1,4 +1,4 @@
-import type {DocumentUpload, DocumentUploadFilters} from '#/document'
+import type {DocumentUpload, DocumentUploadFilters, UpdateDocumentUpload} from '#/document'
 import {useAxios} from '@/composables/useAxios'
 import type {AxiosResponse} from 'axios'
 
@@ -40,4 +40,9 @@ export async function deleteDocumentUpload(documentId: number): Promise<void> {
 export async function getFile(pathFile: string): Promise<AxiosResponse<ArrayBuffer>> {
   const {axiosAuthenticated} = useAxios()
   return await axiosAuthenticated.get(pathFile, {responseType: 'arraybuffer'})
+}
+
+export async function updateDocumentUpload(documentUploadId: number, payload: Partial<UpdateDocumentUpload>): Promise<void> {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.patch(`${modelBaseUrl}/${documentUploadId}`, payload)
 }
