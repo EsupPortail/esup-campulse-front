@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import DashboardCharterManagement from '@/components/charter/DashboardCharterManagement.vue'
-import DashboardStudentCharterManagement from '@/components/charter/DashboardStudentCharterManagement.vue'
+import ManagerCharterDashboard from '@/components/charter/ManagerCharterDashboard.vue'
+import StudentCharterDashboard from '@/components/charter/StudentCharterDashboard.vue'
 import useUserGroups from '@/composables/useUserGroup'
 
 const {isStaff} = useUserGroups()
 </script>
 
 <template>
-  <DashboardCharterManagement v-if="isStaff"/>
-  <DashboardStudentCharterManagement v-else/>
+  <ManagerCharterDashboard v-if="isStaff"/>
+  <StudentCharterDashboard v-else/>
 </template>
 
 <style lang="scss" scoped>

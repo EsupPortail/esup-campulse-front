@@ -17,13 +17,6 @@ export interface PasswordChecker {
   score: number;
 }
 
-export interface PageCard {
-  to: { name: string };
-  btnLabel?: string;
-  icon: string;
-  text?: string;
-}
-
 export interface Tab {
   label: string;
   slotName: string;
