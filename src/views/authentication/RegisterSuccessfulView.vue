@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import useSecurity from '@/composables/useAuthentication'
-import {onBeforeUnmount} from 'vue'
+import {onUnmounted} from 'vue'
 import {useProfileStore} from '@/stores/useProfileStore'
 
 const {t} = useI18n()
@@ -9,9 +9,8 @@ const {t} = useI18n()
 const {newUser} = useSecurity()
 const profileStore = useProfileStore()
 
-onBeforeUnmount(() => {
-  // We must clear newUser to avoid persistence of session
-  profileStore.unLoadNewUser()
+onUnmounted(() => {
+  profileStore.unloadNewProfile()
   newUser.isCas = false
   newUser.firstName = ''
   newUser.lastName = ''

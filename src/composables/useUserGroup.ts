@@ -36,6 +36,7 @@ export default function useUserGroup() {
   const userStore = useUserStore()
   const {arraysAreEqual} = useUtil()
   const {setUserFunds} = useUser()
+  const {hasPerm} = useAuthentication()
 
 
   const isStaff = computed<boolean>(() => {
@@ -60,7 +61,6 @@ export default function useUserGroup() {
   }
 
   function initGroupLabels(onlyPublic?: boolean): void {
-    const {hasPerm} = useAuthentication()
     const labels = groupStore.groups.reduce<SelectLabelGroup[]>((factory, group) => {
       if (!onlyPublic || group.isPublic) {
         const label = groupFriendlyName(group.id)
@@ -270,6 +270,7 @@ export default function useUserGroup() {
     commissionMemberGroups,
     groupByName,
     updateUserGroups,
-    userGroupsToRegister
+    userGroupsToRegister,
+    userFunds
   }
 }

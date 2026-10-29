@@ -8,6 +8,7 @@ import type {
   AssociationUserRole,
   CreateAssociationUser,
   RegisterAssociationUser,
+  RegisterUserAssociation,
   UpdateAssociationUser
 } from '#/association'
 import {useProfileStore} from '@/stores/useProfileStore'
@@ -17,7 +18,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import * as userService from '@/services/UserService'
 
 const userAssociations = ref<AssociationRole[]>([])
-const newUserAssociations = ref<AssociationRole[]>([])
+const newUserAssociations = ref<RegisterUserAssociation[]>([])
 
 const associationMembers = ref<AssociationMember[]>([])
 //const newAssociationMembers = ref<AssociationUser[]>([])
@@ -116,7 +117,7 @@ export default function useUserAssociation() {
 
   function addAssociation() {
     newUserAssociations.value.push({
-      id: null,
+      associationId: null,
       role: 'isMember',
       options: associationRoleOptions
     })
@@ -128,13 +129,13 @@ export default function useUserAssociation() {
     newUserAssociations.value.forEach(association => {
       newAssociationUsers.value.push({
         association: association.id,
-        isPresident: association.role === 'isPresident',
+        isPresident: item.role === 'isPresident',
         canBePresidentFrom: null,
         canBePresidentTo: null,
         isValidatedByAdmin: false,
-        isVicePresident: association.role === 'isVicePresident',
-        isSecretary: association.role === 'isSecretary',
-        isTreasurer: association.role === 'isTreasurer'
+        isVicePresident: item.role === 'isVicePresident',
+        isSecretary: item.role === 'isSecretary',
+        isTreasurer: item.role === 'isTreasurer'
       })
     })
     return newAssociationUsers.value
@@ -189,14 +190,14 @@ export default function useUserAssociation() {
   }
 
   const userAssociationsToRegister = (
-    associations: AssociationRole[], user?: number
+    userAssociations: RegisterUserAssociation[], user?: number
   ): CreateAssociationUser[] | RegisterAssociationUser[] => {
-    const result = associations.map(association => ({
-      association: association.id,
-      isPresident: association.role === 'isPresident',
-      isSecretary: association.role === 'isSecretary',
-      isTreasurer: association.role === 'isTreasurer',
-      isVicePresident: association.role === 'isVicePresident'
+    const result = userAssociations.map(item => ({
+      association: item.associationId,
+      isPresident: item.role === 'isPresident',
+      isSecretary: item.role === 'isSecretary',
+      isTreasurer: item.role === 'isTreasurer',
+      isVicePresident: item.role === 'isVicePresident'
     }))
     if (user) (result as Partial<CreateAssociationUser[]>).forEach(item => {
       item.user = user

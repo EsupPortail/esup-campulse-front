@@ -4,65 +4,35 @@ import {useI18n} from 'vue-i18n'
 import {onMounted, onUnmounted, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
-import useCommissions from '@/composables/useCommissionFund'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
+import {useProfileStore} from '@/stores/useProfileStore'
 import {useUserStore} from '@/stores/useUserStore'
+import {useFundStore} from '@/stores/useFundStore'
+import {useGroupStore} from '@/stores/useGroupStore'
 
 
 const {t} = useI18n()
+const profileStore = useProfileStore()
 const userStore = useUserStore()
+const fundStore = useFundStore()
+const groupStore = useGroupStore()
 const {
   groupChoiceIsValid,
   newGroups,
-  getGroups,
-  groupLabels,
-  groups,
+  selectGroup,
+  commissionMemberGroupIsSelected,
+  userFunds,
   initGroupLabels,
-  preSelectGroup,
-  initGroupPermToJoinAssociation,
-  commissionMemberIsSelected,
-  initStudentGroupSelection
+  groupLabels
 } = useUserGroups()
 const {notify, loading} = useQuasar()
 const route = useRoute()
-const {
-  getFunds,
-  fundsLabels,
-  initFundsLabels,
-  userFunds,
-  initUserFunds
-} = useCommissions()
 const {catchHTTPError} = useErrors()
-
-onMounted(async () => {
-  loading.show()
-  await onGetGroups()
-  await onInitGroupLabels()
-  initStudentGroupSelection()
-  if (commissionMemberIsSelected.value) {
-    await onGetFunds()
-  }
-  loading.hide()
-})
-
-watch(() => userStore.user, initUserFunds)
-
-// Get funds only if commissionMemberIsSelected
-watch(() => commissionMemberIsSelected.value, async () => {
-  loading.show()
-  await onGetFunds()
-  loading.hide()
-})
-
-// Used to clean newGroups value
-onUnmounted(() => {
-  newGroups.value = []
-})
 
 async function onGetGroups() {
   try {
-    await getGroups()
+    await groupStore.getGroups()
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -75,9 +45,9 @@ async function onGetGroups() {
 
 async function onGetFunds() {
   try {
-    await getFunds()
-    initFundsLabels()
-    initUserFunds()
+    await fundStore.getFunds()
+    const editedByStaff: boolean = route.name === 'AddUser'
+    userFunds.value = editedByStaff ? [...userStore.userFunds] : [...profileStore.userFunds]
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -88,30 +58,37 @@ async function onGetFunds() {
   }
 }
 
-async function onInitGroupLabels() {
-  try {
-    // Init group labels
-    let privacy = false
-    if ((route.name === 'Registration') || (route.name === 'AddUser') || (route.name === 'CASRegistration')) privacy = true
-    await initGroupLabels(privacy)
+watch(() => commissionMemberGroupIsSelected.value, async () => {
+  loading.show()
+  await onGetFunds()
+  loading.hide()
+})
 
-    // Preselect group
-    if ((route.name === 'Registration') || (route.name === 'AddUser') || (route.name === 'CASRegistration')) preSelectGroup('STUDENT_INSTITUTION')
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      notify({
-        type: 'negative',
-        message: await catchHTTPError(error.response)
-      })
-    }
-  }
+function onInitGroupLabels() {
+  const isRegistration: boolean = (route.name === 'Registration') || (route.name === 'AddUser') || (route.name === 'CASRegistration')
+  initGroupLabels(isRegistration)
+  if (isRegistration) selectGroup('STUDENT_INSTITUTION')
 }
+
+onMounted(async () => {
+  loading.show()
+  await onGetGroups()
+  onInitGroupLabels()
+  if (commissionMemberGroupIsSelected.value) {
+    await onGetFunds()
+  }
+  loading.hide()
+})
+
+onUnmounted(() => {
+  newGroups.value = []
+})
 
 </script>
 
 <template>
   <QField
-    v-if="groups"
+    v-if="groupStore.groups"
     :error="!groupChoiceIsValid"
     :error-message="t('forms.required-status')"
     borderless
@@ -122,19 +99,16 @@ async function onInitGroupLabels() {
       :aria-label="t('forms.group-role')"
       :options="groupLabels"
       color="dashboard"
-
       type="checkbox"
-      @update:model-value="initGroupPermToJoinAssociation(newGroups)"
     />
   </QField>
   <QSelect
-    v-if="commissionMemberIsSelected"
+    v-if="commissionMemberGroupIsSelected"
     v-model="userFunds"
     :label="t('commission.commission', 2)"
-    :options="fundsLabels"
+    :options="fundStore.fundLabels"
     :rules="[val => val.length >= 1 || t('forms.required-commission')]"
     color="dashboard"
-
     emit-value
     filled
     map-options

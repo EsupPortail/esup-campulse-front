@@ -1,13 +1,90 @@
 <script lang="ts" setup>
-import FormResendEmail from '@/components/authentication/FormResendEmail.vue'
+import {ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+import {useQuasar} from 'quasar'
+import useSecurity from '@/composables/useAuthentication'
+import axios from 'axios'
+import useErrors from '@/composables/useError'
+
+const {t} = useI18n()
+const {notify} = useQuasar()
+const {resendEmail} = useSecurity()
+const email = ref<string>()
+const isResend = ref<boolean>(false)
+const {catchHTTPError} = useErrors()
+
+async function resend() {
+  try {
+    await resendEmail(email.value as string)
+    isResend.value = true
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
+    }
+  }
+}
 </script>
 
 <template>
   <section class="dashboard-section">
     <div class="dashboard-section-container">
       <div class="container">
-        <FormResendEmail/>
+        <QForm
+          v-if="!isResend"
+          class="q-gutter-md"
+          @submit="resend"
+        >
+          <div class="dashboard-section">
+            <h2>{{ t('forms.resend-email-confirmation') }}</h2>
+            <div class="flex-column">
+              <div>
+                <QBanner
+                  v-if="!isResend"
+                  class="bg-grey-3"
+                >
+                  <template v-slot:avatar>
+                    <QIcon
+                      color="dashboard"
+                      name="bi-info-circle"
+                      size="md"
+                    />
+                  </template>
+                  <strong>{{ t('forms.resend-email-cas') }}</strong>
+                </QBanner>
+                <p v-if="isResend">{{ t('forms.resend-email-ok') }}</p>
+              </div>
+              <QInput
+                v-model="email"
+                :label="t('forms.email')"
+                :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
+                autocomplete="email"
+                filled
+                lazy-rules
+              />
+            </div>
+            <div class="flex-row-center padding-bottom">
+              <QBtn
+                :label="t('forms.send')"
+                class="btn-lg"
+                color="dashboard"
+                type="submit"
+              />
+            </div>
+          </div>
+        </QForm>
       </div>
     </div>
   </section>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/styles/dashboard';
+@import '@/assets/styles/forms';
+
+strong {
+  font-size: 1.2rem;
+}
+</style>

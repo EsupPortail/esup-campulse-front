@@ -1,15 +1,17 @@
 <script lang="ts" setup>
-import useSecurity from '@/composables/useAuthentication'
+import useAuthentication from '@/composables/useAuthentication'
 import {ref} from 'vue'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
+import useUser from '@/composables/useUser'
 
-const {getUsersFromCAS, CASUsers, CASUserOptions, newUser, emailVerification} = useSecurity()
+const {newUser, emailVerification} = useAuthentication()
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
+const {getUsersFromLDAP, LDAPUsers, LDAPUserOptions} = useUser()
 
 const lastName = ref<string>('')
 
@@ -25,8 +27,8 @@ async function onGetUsersFromCAS() {
   if (lastName.value) {
     try {
       loading.show()
-      await getUsersFromCAS(lastName.value)
-      matches.value = !!CASUsers.value.length
+      await getUsersFromLDAP(lastName.value)
+      matches.value = !!LDAPUsers.value.length
       loading.hide()
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -40,7 +42,7 @@ async function onGetUsersFromCAS() {
 }
 
 function onImportUser() {
-  const extendedCASUser = CASUsers.value.find(obj => obj.username === selectedUser.value)
+  const extendedCASUser = LDAPUsers.value.find(obj => obj.username === selectedUser.value)
   if (selectedUser.value && extendedCASUser) {
     loading.show()
     newUser.isCas = true
@@ -50,7 +52,7 @@ function onImportUser() {
     newUser.email = extendedCASUser.mail
     emailVerification.value = extendedCASUser.mail
     open.value = false
-    CASUsers.value = []
+    LDAPUsers.value = []
     displayResetButton.value = true
     lastName.value = ''
     loading.hide()
@@ -71,7 +73,7 @@ function onReset() {
   newUser.lastName = ''
   newUser.email = ''
   emailVerification.value = ''
-  CASUsers.value = []
+  LDAPUsers.value = []
   displayResetButton.value = false
   lastName.value = ''
   matches.value = true
@@ -104,7 +106,7 @@ function onReset() {
     <QCard>
       <QCardSection>
         <QForm
-          v-if="!CASUsers.length"
+          v-if="!LDAPUsers.length"
           class="q-gutter-md"
           @submit.prevent="onGetUsersFromCAS"
         >
@@ -145,7 +147,7 @@ function onReset() {
           <QOptionGroup
             v-model="selectedUser"
             :aria-label="t('forms.user-to-add')"
-            :options="CASUserOptions"
+            :options="LDAPUserOptions"
             color="dashboard"
             emit-value
             map-options

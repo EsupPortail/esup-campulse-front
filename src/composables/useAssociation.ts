@@ -4,11 +4,11 @@ import type {
   AssociationRole,
   AssociationSocialNetwork,
   CreateAssociation,
+  RegisterUserAssociation,
   UpdateAssociation
 } from '#/association'
 import useUtility from '@/composables/useUtil'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import useUserAssociations from '@/composables/useUserAssociation'
 import useDocumentUploads from '@/composables/useDocumentUpload'
 import * as associationService from '@/services/AssociationService'
 import type {AxiosResponse} from 'axios'
@@ -32,19 +32,16 @@ async function getAssociationPdfExport(associationId: number): Promise<AxiosResp
 export function useAssociation() {
 
   const associationStore = useAssociationStore()
-  const {newUserAssociations} = useUserAssociations()
   const {processDocuments} = useDocumentUploads()
 
-  function checkHasPresident(association: AssociationRole) {
-    if (!association.options) return
-    association.options[0].disable = false
+  function verifyAssociationRole(userAssociation: RegisterUserAssociation) {
+    userAssociation.options[0].disable = false
     const associationDetail = associationStore.associationNames
-      .find(obj => obj.id === association.id)
-    if (!associationDetail?.hasPresident) return
-    association.options[0].disable = true
-    if (association.role === 'isPresident') {
-      const model = newUserAssociations.value.find(obj => obj.id === association.id)
-      if (model) model.role = 'isMember'
+      .find(obj => obj.id === userAssociation.associationId)
+    if (!associationDetail!.hasPresident) return
+    userAssociation.options[0].disable = true
+    if (userAssociation.role === 'isPresident') {
+      userAssociation.role = 'isMember'
     }
   }
 
@@ -163,7 +160,7 @@ export function useAssociation() {
     checkChanges,
     updateAssociation,
     checkSocialNetworks,
-    checkHasPresident,
+    verifyAssociationRole,
     changeAssociationLogo,
     associations,
     getAssociationPdfExport,

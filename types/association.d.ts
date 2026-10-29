@@ -179,3 +179,9 @@ export interface AssociationNameFilters {
 }
 
 export type AssociationUserRole = 'isPresident' | 'isSecretary' | 'isTreasurer' | 'isVicePresident' | 'isMember';
+
+export interface RegisterUserAssociation {
+  associationId: number | null;
+  role: AssociationUserRole;
+  options: AssociationOptions[];
+}

@@ -11,7 +11,7 @@ const profileStore = useProfileStore()
 
 onMounted(async () => {
   loading.show()
-  profileStore.logOut()
+  profileStore.logout()
   await router.push({name: 'Login'})
   notify({
     type: 'negative',

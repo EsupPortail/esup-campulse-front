@@ -37,7 +37,11 @@ export const useProfileStore = defineStore('profileStore', {
   actions: {
     async login(payload: LocalLogin | CasLogin) {
       const {newUser, setTokens} = useSecurity()
-      const data = await profileService.login(payload)
+      const isLocalLogin = (payload: LocalLogin | CasLogin): payload is LocalLogin => {
+        return 'username' in payload
+      }
+      const data = isLocalLogin(payload) ? await profileService.login(payload) :
+        await profileService.loadCASProfile(payload)
       const {access, refresh, user} = data
       const hasGroups = !!user.groups.length
       if (hasGroups) {
@@ -95,7 +99,7 @@ export const useProfileStore = defineStore('profileStore', {
     // old = loadCASUser
     async loadCASProfile(ticket: string) {
       const service = import.meta.env.VITE_APP_FRONT_URL + '/cas-register'
-      const data = await profileService.loadCASProfile(ticket, service)
+      const data = await profileService.loadCASProfile({ticket, service})
       const {access, refresh, user} = data
       const hasGroups = !!user.groups.length
       if (hasGroups) {
@@ -136,7 +140,7 @@ export const useProfileStore = defineStore('profileStore', {
         return false
       }
     },
-    async getUserDocuments(processTypes?: DocumentProcessType[]) {
+    async getUserDocumentUploads(processTypes?: DocumentProcessType[]) {
       this.userDocuments = await documentUploadService.getDocumentUploads({userId: this.user!.id, processTypes})
     },
     async updateProfile() {

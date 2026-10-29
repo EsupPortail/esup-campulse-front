@@ -41,7 +41,7 @@ function setUserInstitutions(user: User): number[] {
 
 const LDAPUsers = ref<LDAPUser[]>([])
 
-const CASUserOptions = computed<SelectLabel[]>(() => {
+const LDAPUserOptions = computed<SelectLabel[]>(() => {
   return LDAPUsers.value.map(user => ({
     value: user.username,
     label: `${user.firstName} ${user.lastName} (${user.mail})`
@@ -136,7 +136,7 @@ export default function useUser() {
     setUserFunds,
     setUserInstitutions,
     userDataToUpdate,
-    CASUserOptions,
+    LDAPUserOptions,
     LDAPUsers,
     getUsersFromLDAP,
     createUser,

@@ -17,7 +17,7 @@ const {catchHTTPError} = useErrors()
 onMounted(async () => {
   try {
     if (route.query.ticket) {
-      await profileStore.logIn('/users/auth/cas/login/', {
+      await profileStore.login({
         ticket: route.query.ticket as string,
         service: import.meta.env.VITE_APP_FRONT_URL + '/cas-login'
       })

@@ -5,7 +5,7 @@ import {QInput, useQuasar} from 'quasar'
 import {useProfileStore} from '@/stores/useProfileStore'
 import router from '@/router'
 import LayoutGDPRConsent from '@/components/FormGDPRConsent.vue'
-import useSecurity from '@/composables/useAuthentication'
+import useAuthentication from '@/composables/useAuthentication'
 import axios from 'axios'
 import FormUserGroups from '@/components/user/FormUserGroups.vue'
 import FormRegisterUserAssociations from '@/components/user/FormRegisterUserAssociations.vue'
@@ -16,7 +16,8 @@ import useErrors from '@/composables/useError'
 import InfoFormRequiredFields from '@/components/global/InfoFormRequiredFields.vue'
 import useDocumentUploads from '@/composables/useDocumentUpload'
 import FormDocumentUpload from '@/components/documents/FormDocumentUpload.vue'
-
+import {useRoute} from 'vue-router'
+import useUser from '@/composables/useUser'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -25,15 +26,16 @@ const {
   register,
   newUser,
   initNewUserData,
-  loadCASUser,
   emailVerification,
-  addUserAsManager,
-  CAS_INSTITUTION_DOMAIN
-} = useSecurity()
-const {groupChoiceIsValid, groupCanJoinAssociation, isStaff, studentGroupIsSelected} = useUserGroups()
+  CAS_INSTITUTION_DOMAIN,
+} = useAuthentication()
+const {groupChoiceIsValid, isStaff, studentGroupIsSelected, canJoinAssociation} = useUserGroups()
 const {phoneRegex} = useUtility()
 const {catchHTTPError} = useErrors()
 const {processDocuments, uploadRegistrationDocuments} = useDocumentUploads()
+const profileStore = useProfileStore()
+const route = useRoute()
+const {createUser} = useUser()
 
 const isLDAPEnabled: boolean = import.meta.env.VITE_APP_OPEN_LDAP === 'true'
 const hasConsent = ref<boolean>(false)
@@ -47,7 +49,7 @@ onMounted(async () => {
 
 async function onLoadCASUser() {
   try {
-    await loadCASUser()
+    await profileStore.loadCASProfile(route.query.ticket as string)
   } catch (error) {
     await router.push({name: 'Login'})
     if ((error as Error).message === 'USER_ACCOUNT_ALREADY_EXISTS') {
@@ -71,9 +73,8 @@ async function onRegister() {
   if (isStaff.value || hasConsent.value) {
     try {
       if (isStaff.value) {
-        await addUserAsManager()
+        await createUser()
         await uploadRegistrationDocuments(newUser.username)
-        // Reinitialize processDocuments to avoid persistance of non valid documents
         processDocuments.value = []
         notify({
           type: 'positive',
@@ -132,9 +133,7 @@ async function onRegister() {
       <div class="dashboard-section-container">
         <div class="container">
           <FormAddUserFromLDAP v-if="isStaff && isLDAPEnabled"/>
-
           <InfoFormRequiredFields/>
-
           <QInput
             v-model="newUser.firstName"
             :disable="newUser.isCas"
@@ -231,8 +230,7 @@ async function onRegister() {
         </div>
       </div>
     </div>
-
-    <div v-if="groupCanJoinAssociation">
+    <div v-if="canJoinAssociation">
       <h2>
         <i
           aria-hidden="true"
@@ -246,8 +244,6 @@ async function onRegister() {
         </div>
       </div>
     </div>
-
-
     <div v-if="!isStaff">
       <h2>
         <i
@@ -265,7 +261,6 @@ async function onRegister() {
         </div>
       </div>
     </div>
-
     <div class="flex-row-center padding-top padding-bottom">
       <QBtn
         :label="t('forms.send')"

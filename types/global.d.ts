@@ -45,3 +45,5 @@ export interface PaginatedList<T> {
 }
 
 export type TargetPage = 'first' | 'last' | 'previous' | 'next';
+
+export type ProcessType = 'project' | 'review' | 'charter' | 'registration' | 'account-management' | 'user-management';

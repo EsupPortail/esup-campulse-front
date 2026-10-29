@@ -42,7 +42,7 @@ describe('useAssociation', () => {
   const {newAssociations} = useUserAssociations()
   const {
     createAssociation,
-    checkHasPresident,
+    verifyAssociationRole,
     addNetwork,
     associationSocialNetworks,
     removeNetwork,
@@ -70,7 +70,7 @@ describe('useAssociation', () => {
     })
   })
 
-  describe('checkHasPresident', () => {
+  describe('verifyAssociationRole', () => {
     beforeEach(() => {
       associationStore.associationNames = _associationNames
       newAssociations.value = [_associationRole]
@@ -81,13 +81,13 @@ describe('useAssociation', () => {
     })
 
     it('should disable the association object if hasPresident is true', () => {
-      checkHasPresident(newAssociations.value[0])
+      verifyAssociationRole(newAssociations.value[0])
       expect(newAssociations.value[0].role).toEqual('isMember')
     })
 
     it('should not disable the association object if hasPresident is false', () => {
       newAssociations.value[0].role = 'isSecretary'
-      checkHasPresident(newAssociations.value[0])
+      verifyAssociationRole(newAssociations.value[0])
       expect(newAssociations.value[0].role).toEqual('isSecretary')
     })
   })

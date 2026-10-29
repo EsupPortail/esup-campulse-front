@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import FormRegister from '@/components/authentication/FormRegister.vue'</script>
+import FormRegister from '@/components/authentication/FormRegister.vue'
+</script>
 
 <template>
   <QCard class="card">

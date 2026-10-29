@@ -93,7 +93,7 @@ export interface ProcessDocument {
 export interface UploadedProcessDocument {
   id: number;
   document: number;
-  pathFile: string | string[];
+  pathFile: string;
   name: string;
 }
 

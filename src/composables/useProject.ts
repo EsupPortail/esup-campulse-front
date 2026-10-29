@@ -66,6 +66,7 @@ const projectCommission = ref<number | null>(null)
 const projectCommissionFunds = ref<number[]>([])
 const projectCommissionFundsDetail = ref<ProjectCommissionFund[]>([])
 
+// todo : remplir à partir des projectCommissionFund sur les projets ?
 const projectFunds = ref<number[]>([])
 
 const projectGoals = ref<ProjectGoals>(

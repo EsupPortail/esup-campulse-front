@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {AssociationFilters, AssociationStore,} from '#/association'
+import type {AssociationFilters, AssociationNameFilters, AssociationStore,} from '#/association'
 import type {DocumentProcessType} from '#/document'
 import * as associationService from '@/services/AssociationService'
 import * as documentUploadService from '@/services/DocumentUploadService'
@@ -45,11 +45,11 @@ export const useAssociationStore = defineStore('associationStore', {
   },
 
   actions: {
-    async getAssociations(filters?: AssociationFilters) {
+    async getAssociations(filters?: Partial<AssociationFilters>) {
       this.associations = await associationService.getAssociations(filters)
     },
 
-    async getAssociationNames(filters?: AssociationFilters) {
+    async getAssociationNames(filters?: Partial<AssociationNameFilters>) {
       this.associationNames = await associationService.getAssociationNames(filters)
     },
 

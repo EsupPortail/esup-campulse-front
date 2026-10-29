@@ -6,94 +6,85 @@ import axios from 'axios'
 import useErrors from '@/composables/useError'
 import type {DocumentProcessType, ProcessDocument, UploadedProcessDocument} from '#/document'
 import {useProjectStore} from '@/stores/useProjectStore'
-import {onMounted, ref} from 'vue'
+import {computed, onMounted} from 'vue'
 import useCharters from '@/composables/useCharter'
 import {useUserStore} from '@/stores/useUserStore'
 import useProject from '@/composables/useProject'
 import useDocuments from '@/composables/useDocument'
+import {useDocumentStore} from '@/stores/useDocumentStore'
+import {useProfileStore} from '@/stores/useProfileStore'
+import type {ProcessType} from '#/global'
 
 const {
   processDocuments,
   documentUploads,
   deleteDocumentUpload,
-  createUploadedFileLink,
+  createFileLink,
   initProjectDocumentUploads,
   initProcessDocuments,
-  getDocuments,
   initCharterDocumentUploads,
-  getStudentCertificate,
-  initManagedUserDocumentUploads,
   initUserDocumentUploads,
+  initProfileDocumentUploads,
   maxFileSize,
   maxTitleLength
 } = useDocumentUploads()
+const documentStore = useDocumentStore()
 const {acceptedFormats} = useDocuments()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
-const {getCharterDocuments} = useCharters()
+const {getCharterProcessDocumentUploads} = useCharters()
 const projectStore = useProjectStore()
 const userStore = useUserStore()
-const {projectFunds, initProjectFunds} = useProject()
+const profileStore = useProfileStore()
+const {projectFunds} = useProject()
 
 const props = defineProps<{
-  process: 'project' | 'review' | 'charter' | 'registration' | 'account-management' | 'user-management',
-  associationId: number | null | undefined
+  process: ProcessType,
+  associationId: number | null
 }>()
 
-// COLOR
-const fieldColor = ref<string>('')
 
-// INIT FIELD COLOR
-const initFieldColor = () => {
-  let color: string
+const fieldColor = computed<string>(() => {
+  let color: string = 'dashboard'
   if (props.process === 'project' || props.process === 'review') color = 'commission'
   else if (props.process === 'charter') color = 'charter'
-  else color = 'dashboard'
-  fieldColor.value = color
-}
-
-onMounted(async () => {
-  await onGetDocuments()
-  initFieldColor()
+  return color
 })
 
-// GET PROJECT DOCUMENTS
-async function onGetDocuments() {
+onMounted(async () => {
+  await onSetDocuments()
+})
+
+async function onSetDocuments() {
   loading.show()
   try {
-    // Get documents for project, review and charter processes
-    let processes: DocumentProcessType[] = []
+    const studentProcesses = ['registration', 'account-management', 'user-management']
+    if (studentProcesses.includes(props.process)) await documentStore.getStudentCertificate()
+    else {
+      let processTypes: DocumentProcessType[] = []
+      if (props.process === 'project') processTypes = ['DOCUMENT_PROJECT']
+      else if (props.process === 'review') processTypes = ['DOCUMENT_PROJECT_REVIEW']
+      else if (props.process === 'charter') processTypes = ['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']
+      await documentStore.getDocuments({processTypes})
+    }
 
-    if (props.process === 'project') processes = ['DOCUMENT_PROJECT']
-    else if (props.process === 'review') processes = ['DOCUMENT_PROJECT_REVIEW']
-    else if (props.process === 'charter') processes = ['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']
+    //if (props.process === 'project') initProjectFunds()
 
-    // Get documents by processes
-    if (processes.length) await getDocuments(processes)
-
-    // Get only one specific document for registration or account management
-    if (props.process === 'registration' || props.process === 'account-management' || props.process === 'user-management') await getStudentCertificate()
-
-    // Init documents for form
-    if (props.process === 'project') initProjectFunds()
     initProcessDocuments(props.process === 'project', projectFunds.value ?? [])
 
-    // Get uploaded documents for project, review, charter
     if (props.process === 'project' || props.process === 'review') {
-      await projectStore.getProjectDocuments()
+      await projectStore.getProjectDocumentUploads()
       initProjectDocumentUploads()
     } else if (props.process === 'charter') {
-      if (props.associationId) {
-        await getCharterDocuments(props.associationId)
-        initCharterDocumentUploads()
-      }
+      await getCharterProcessDocumentUploads(props.associationId)
+      initCharterDocumentUploads()
     } else if (props.process === 'user-management') {
-      await userStore.getUserDocuments()
-      initManagedUserDocumentUploads()
-    } else if (props.process === 'account-management') {
-      await userStore.getUserDocuments()
+      await userStore.getUserDocumentUploads()
       initUserDocumentUploads()
+    } else if (props.process === 'account-management') {
+      await profileStore.getUserDocumentUploads()
+      initProfileDocumentUploads()
     } else if (props.process === 'registration') {
       documentUploads.value = []
     }
@@ -108,7 +99,6 @@ async function onGetDocuments() {
   loading.hide()
 }
 
-// FILE TOO LARGE OR NOT IN THE RIGHT FORMAT
 async function onDocumentRejected(rejectedEntries: { failedPropValidation: string, file: File }[]) {
   rejectedEntries.forEach(entry => {
     if (entry.failedPropValidation === 'accept') {
@@ -126,7 +116,6 @@ async function onDocumentRejected(rejectedEntries: { failedPropValidation: strin
   })
 }
 
-// DELETE DOCS
 async function onDeleteDocumentUpload(documentId: number) {
   loading.show()
   try {
@@ -142,10 +131,9 @@ async function onDeleteDocumentUpload(documentId: number) {
   loading.hide()
 }
 
-// CREATE LINK TO VIEW FILE
 async function onGetFile(uploadedDocument: UploadedProcessDocument) {
   try {
-    await createUploadedFileLink(uploadedDocument.pathFile as string, uploadedDocument.name as string)
+    await createFileLink(uploadedDocument.pathFile, uploadedDocument.name)
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -156,14 +144,9 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
   }
 }
 
-// FORM VALIDATION RULES
-// Must select document
 const documentIsSelected = (document: ProcessDocument, val: File | File[]): boolean => {
-  // Only one document is required in these processes
   const userProcesses = new Set<string>(['registration', 'account-management', 'user-management'])
-  // Document is required in process if document itself is required or if process is registration, account-management, user-management
   const documentIsRequired: boolean = document.isRequiredInProcess || userProcesses.has(props.process)
-  // No document of this type has already been selected during previous processes
   let documentIsSelected: boolean
   if (userProcesses.has(props.process)) {
     const userDocuments = new Set<number>(
@@ -175,51 +158,24 @@ const documentIsSelected = (document: ProcessDocument, val: File | File[]): bool
   } else {
     documentIsSelected = documentUploads.value.some(obj => obj.document === document.document)
   }
-  // If document is required
-  // And no previous document of this type has been selected
-  // Control field and throw error
-  if (documentIsRequired && !documentIsSelected) {
-    // Field must have a val
-    const hasValue: boolean = document.maxUploads > 1 ? !!(val as File[]).length : !!val
-    // If there is a val
-    // Field is valid
-    if (hasValue) {
-      return true
-    }
-    // There is no val, but we are in the case of a process where only one document is required
-    else if (userProcesses.has(props.process)) {
-      // If there is another document in process
-      // Field is valid
-      return !!(processDocuments.value.filter(x => x.pathFile).length)
-    }
-    // If there is no val
-    else {
-      return false
-    }
-  }
-  // Field is valid
-  else {
+  if (!documentIsRequired && documentIsSelected) return true
+  const hasValue: boolean = document.maxUploads > 1 ? !!(val as File[]).length : !!val
+  if (hasValue) {
     return true
+  } else if (userProcesses.has(props.process)) {
+    return !!(processDocuments.value.filter(x => x.pathFile).length)
+  } else {
+    return false
   }
 }
 
-// Title length must be lower than maxTitleLength
 const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): boolean => {
-  // If there is a file (or a group of file)
-  // We must control each file's name length
   const hasValue: boolean = document.maxUploads > 1 ? !!(val as File[])?.length : !!val
-  if (hasValue) {
-    if (document.maxUploads > 1) {
-      // Throw error if any file's name length is greater than maxTitleLength
-      return !((val as File[]).some(obj => obj.name.length >= maxTitleLength))
-    } else {
-      // Throw error if file's name length is greater than maxTitleLength
-      return (val as File).name.length <= maxTitleLength
-    }
-  }
-  // If field is empty, we don't need to control it
-  else {
-    return true
+  if (!hasValue) return true
+  if (document.maxUploads > 1) {
+    return !((val as File[]).some(obj => obj.name.length >= maxTitleLength))
+  } else {
+    return (val as File).name.length <= maxTitleLength
   }
 }
 </script>

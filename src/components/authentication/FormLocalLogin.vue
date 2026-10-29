@@ -1,21 +1,23 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import useSecurity from '@/composables/useAuthentication'
+import useAuthentication from '@/composables/useAuthentication'
 import {useRouter} from 'vue-router'
 import {ref} from 'vue'
+import {useProfileStore} from '@/stores/useProfileStore'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const router = useRouter()
-const {user, logIn} = useSecurity()
+const {user} = useAuthentication()
+const profileStore = useProfileStore()
 
 const passwordVisibility = ref<boolean>(false)
 
 async function onLogIn() {
   loading.show()
   try {
-    await logIn()
+    await profileStore.login(user.value)
     await router.push({name: 'Dashboard'})
     notify({
       type: 'positive',

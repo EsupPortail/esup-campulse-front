@@ -35,7 +35,8 @@ watch(() => newUser.email, () => {
 const newUserFunds = ref<number[]>([])
 
 const emailVerification = ref<string | undefined>('')
-const casInstitutionDomain = import.meta.env.VITE_APP_CAS_INSTITUTION_DOMAIN as string
+
+const CAS_INSTITUTION_DOMAIN = import.meta.env.VITE_APP_CAS_INSTITUTION_DOMAIN as string
 
 function setTokens(access: string, refresh: string) {
   localStorage.setItem('JWT__access__token', access)
@@ -173,8 +174,8 @@ export default function useAuthentication() {
     initNewUserData,
     checkPasswordStrength,
     cancelAbortedCasRegistration,
-    casInstitutionDomain,
+    CAS_INSTITUTION_DOMAIN,
     tokenExpired,
-    newUserFunds
+    newUserFunds,
   }
 }

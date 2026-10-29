@@ -17,9 +17,9 @@ export async function getProfile(): Promise<User> {
   return (await axiosAuthenticated.get<User>(`${modelBaseUrl}/user/`)).data
 }
 
-export async function loadCASProfile(ticket: string, service: string): Promise<LoginResponse> {
+export async function loadCASProfile(payload: CasLogin): Promise<LoginResponse> {
   const {axiosPublic} = useAxios()
-  return (await axiosPublic.post<LoginResponse>(`${modelBaseUrl}/cas/login/`, {ticket, service})).data
+  return (await axiosPublic.post<LoginResponse>(`${modelBaseUrl}/cas/login/`, payload)).data
 }
 
 export async function login(payload: LocalLogin | CasLogin): Promise<LoginResponse> {
