@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useContentStore} from '@/stores/useContentStore'
 import {onMounted, ref} from 'vue'
-import type {Content} from '#/global'
+import type {Content} from '#/content'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import axios from 'axios'
@@ -13,7 +13,7 @@ const {catchHTTPError} = useErrors()
 
 const privacyPolicy = ref<Content>()
 
-onMounted(async function () {
+onMounted(async () => {
   loading.show()
   await onGetContent()
   initContent()
@@ -22,7 +22,7 @@ onMounted(async function () {
 
 async function onGetContent() {
   try {
-    await contentStore.getContentsByCode(['PRIVACY_POLICY'])
+    await contentStore.getContents({codes: ['PRIVACY_POLICY']})
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -58,7 +58,7 @@ const initContent = () => {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms';
-@import '@/assets/styles/contact;
+@import '@/assets/styles/contact';
 @import '@/assets/styles/dashboard';
 @import '@/assets/_variables';
 

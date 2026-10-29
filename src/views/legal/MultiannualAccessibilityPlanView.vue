@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {useContentStore} from '@/stores/useContentStore'
 import {onMounted, ref} from 'vue'
-import type {Content} from '#/global'
+import type {Content} from '#/content'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import axios from 'axios'
@@ -22,7 +22,7 @@ onMounted(async function () {
 
 async function onGetContent() {
   try {
-    await contentStore.getContentsByCode(['MULTIANNUAL_ACCESSIBILITY_PLAN'])
+    await contentStore.getContents({codes: ['MULTIANNUAL_ACCESSIBILITY_PLAN']})
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -58,7 +58,7 @@ const initContent = () => {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/forms';
-@import '@/assets/styles/contact;
+@import '@/assets/styles/contact';
 @import '@/assets/styles/dashboard';
 @import '@/assets/_variables';
 
