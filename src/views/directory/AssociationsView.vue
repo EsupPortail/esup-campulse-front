@@ -24,9 +24,8 @@ const isLoaded = ref<boolean>(false)
 
 onMounted(async function () {
   loading.show()
-  await associationStore.getAssociations({isPublic: true})
+  await onGetData()
   associations.value = associationStore.associations
-  await getContents()
   isLoaded.value = true
   loading.hide()
 })
@@ -78,8 +77,9 @@ function scrollToTop() {
 }
 
 // Functions
-async function getContents() {
+async function onGetData() {
   try {
+    await associationStore.getAssociations({isPublic: true})
     await contentStore.getContents({codes: ['ASSOCIATION_HOME_FIRST_BLOCK']})
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
