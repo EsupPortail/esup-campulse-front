@@ -3,7 +3,6 @@ import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useProjectStore} from '@/stores/useProjectStore'
 import type {ProjectListItem} from '#/project'
-import useUtility from '@/composables/useUtil'
 import {useI18n} from 'vue-i18n'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
 import TableUserProjectsBtn from '@/components/project/TableUserProjectsBtn.vue'
@@ -22,7 +21,7 @@ const importedProps = defineProps<{
 
 const projectStore = useProjectStore()
 const profileStore = useProfileStore()
-const {formatDate} = useUtility()
+const {formatDate} = useUtil()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()

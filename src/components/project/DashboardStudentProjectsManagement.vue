@@ -12,7 +12,7 @@ import useUserAssociations from '@/composables/useUserAssociation'
 
 const {hasPerm} = useSecurity()
 const {t} = useI18n()
-const userStore = useProfileStore()
+const profileStore = useProfileStore()
 const projectStore = useProjectStore()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()

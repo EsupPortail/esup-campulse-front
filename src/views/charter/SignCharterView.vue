@@ -9,7 +9,7 @@ import axios from 'axios'
 import useErrors from '@/composables/useError'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import type {EditedAssociation} from '#/association'
-import useUtility from '@/composables/useUtil'
+import useUtil from '@/composables/useUtil'
 import {useAssociation} from '@/composables/useAssociation'
 import FormDocumentUpload from '@/components/documents/FormDocumentUpload.vue'
 import useDocumentUploads from '@/composables/useDocumentUpload'
@@ -22,7 +22,7 @@ import {useProjectStore} from '@/stores/useProjectStore'
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
-const {formatDate, phoneRegex} = useUtility()
+const {formatDate, phoneRegex} = useUtil()
 const {checkChanges, updateAssociation} = useAssociation()
 const {uploadDocuments} = useDocumentUploads()
 const {patchCharterStatus} = useCharters()

@@ -8,7 +8,6 @@ import type {Association} from '#/association'
 import useSecurity from '@/composables/useAuthentication'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
-import useUtility from '@/composables/useUtil'
 
 const {t} = useI18n()
 const changes = ref<boolean>(false)
@@ -17,7 +16,7 @@ const associationStore = useAssociationStore()
 const {notify} = useQuasar()
 const {hasPerm} = useSecurity()
 const {catchHTTPError} = useErrors()
-const {openDocument} = useUtility()
+const {openDocument} = useUtil()
 
 const emit = defineEmits(['updateSelectedAssociations'])
 

@@ -6,7 +6,7 @@ import {useQuasar} from 'quasar'
 import InfoDocumentLibrary from '@/components/documents/InfoDocumentLibrary.vue'
 
 const {loading} = useQuasar()
-const userStore = useProfileStore()
+const profileStore = useProfileStore()
 
 const tab = ref('')
 

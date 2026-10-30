@@ -18,13 +18,12 @@ import ProjectValidation from '@/components/project/ProjectValidation.vue'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
 import useSecurity from '@/composables/useAuthentication'
 import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
-import useUtility from '@/composables/useUtil'
 
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const {hasPerm} = useSecurity()
-const {openDocument} = useUtility()
+const {openDocument} = useUtil()
 const projectStore = useProjectStore()
 const {
   initProjectBasicInfos,

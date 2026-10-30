@@ -1,7 +1,6 @@
 import {ref} from 'vue'
 import type {UpdateProjectReview} from '#/project'
 import {useProjectStore} from '@/stores/useProjectStore'
-import useUtility from '@/composables/useUtil'
 import {useProfileStore} from '@/stores/useProfileStore'
 import * as projectService from '@/services/ProjectService'
 
@@ -27,7 +26,7 @@ export default function useProjectReview() {
 
   const projectStore = useProjectStore()
   const profileStore = useProfileStore()
-  const {formatDate} = useUtility()
+  const {formatDate} = useUtil()
 
   const initProjectReview = () => {
     if (!projectStore.projectReview || !projectStore.project) return

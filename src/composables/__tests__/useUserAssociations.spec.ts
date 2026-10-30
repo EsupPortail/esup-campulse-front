@@ -82,7 +82,7 @@ describe('useUserAssociations', () => {
 
 
   describe('updateUserAssociations', () => {
-    describe('if editedByStaff', () => {
+    describe('if editedByManager', () => {
       beforeEach(() => {
         userStore.user = _institutionStudent
         userAssociations.value = [_associationRole]
@@ -112,7 +112,7 @@ describe('useUserAssociations', () => {
       })
     })
 
-    describe('if not editedByStaff', () => {
+    describe('if not editedByManager', () => {
       beforeEach(() => {
         userStore.user = _institutionStudent
         userAssociations.value = [_associationRole]

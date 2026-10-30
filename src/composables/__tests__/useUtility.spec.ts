@@ -1,14 +1,13 @@
 import {describe, expect, it, vi} from 'vitest'
 import type {RouteLocationNormalizedLoaded} from 'vue-router'
 import {useRoute} from 'vue-router'
-import useUtility from '@/composables/useUtil'
 
 vi.mock('vue-router', () => ({useRoute: vi.fn()}))
 
 describe('useUtility', () => {
 
   describe('formatDate', () => {
-    const {formatDate} = useUtility()
+    const {formatDate} = useUtil()
 
     it('should return formatted date', () => {
       expect(formatDate('2022-10-27 13:45:35.000000 +00:00')).toEqual('2022-10-27')
@@ -24,7 +23,7 @@ describe('useUtility', () => {
   })
 
   describe('arraysAreEqual', () => {
-    const {arraysAreEqual} = useUtility()
+    const {arraysAreEqual} = useUtil()
     const a = [1, 2, 3]
     const b = [3, 1, 2]
     const c = [1, 2, 4]
@@ -44,7 +43,7 @@ describe('useUtility', () => {
   })
 
   describe('initBreadcrumbs', () => {
-    const {initBreadcrumbs} = useUtility()
+    const {initBreadcrumbs} = useUtil()
 
     it('should return an array of breadcrumb with label and to based on the route', () => {
       vi.mocked(useRoute).mockReturnValue({
@@ -112,7 +111,7 @@ describe('useUtility', () => {
 
   describe('filterizeSearch', () => {
     it('should return a string with no spaces, lowercase, and without accents', () => {
-      const {filterizeSearch} = useUtility()
+      const {filterizeSearch} = useUtil()
       const unfilterized = 'association des étudiants du site Alsace'
       const filterized = 'associationdesetudiantsdusitealsace'
       expect(filterizeSearch(unfilterized)).toEqual(filterized)

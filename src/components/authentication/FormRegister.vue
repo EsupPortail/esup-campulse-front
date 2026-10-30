@@ -11,7 +11,6 @@ import FormUserGroups from '@/components/user/FormUserGroups.vue'
 import FormRegisterUserAssociations from '@/components/user/FormRegisterUserAssociations.vue'
 import useUserGroups from '@/composables/useUserGroup'
 import FormAddUserFromLDAP from '@/components/user/FormAddUserFromLDAP.vue'
-import useUtility from '@/composables/useUtil'
 import useErrors from '@/composables/useError'
 import InfoFormRequiredFields from '@/components/global/InfoFormRequiredFields.vue'
 import useDocumentUploads from '@/composables/useDocumentUpload'
@@ -21,7 +20,7 @@ import useUser from '@/composables/useUser'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const userStore = useProfileStore()
+const profileStore = useProfileStore()
 const {
   register,
   newUser,
@@ -30,7 +29,7 @@ const {
   CAS_INSTITUTION_DOMAIN,
 } = useAuthentication()
 const {groupChoiceIsValid, isStaff, studentGroupIsSelected, canJoinAssociation} = useUserGroups()
-const {phoneRegex} = useUtility()
+const {phoneRegex} = useUtil()
 const {catchHTTPError} = useErrors()
 const {processDocuments, uploadRegistrationDocuments} = useDocumentUploads()
 const profileStore = useProfileStore()

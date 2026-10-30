@@ -23,5 +23,5 @@ const {t} = useI18n()
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/dashboard.scss';
+@import '@/assets/styles/dashboard';
 </style>

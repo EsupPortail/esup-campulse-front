@@ -185,3 +185,20 @@ export interface RegisterUserAssociation {
   role: AssociationUserRole;
   options: AssociationOptions[];
 }
+
+export interface AssociationEditionAction {
+  button: {
+    visible: boolean;
+    color: string;
+    icon: string;
+    label: string;
+  };
+  modal: {
+    open: boolean;
+    message: string;
+    validateButtonColor?: string;
+    validateButtonIcon?: string;
+    validateButtonLabel?: string;
+    callback: () => Promise<void>;
+  };
+}

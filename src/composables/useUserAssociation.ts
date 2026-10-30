@@ -41,10 +41,14 @@ function removeAssociation(index: number) {
   newUserAssociations.value.splice(index, 1)
 }
 
+async function deleteUserAssociation(userId: number, associationId: number) {
+  await userService.deleteUserAssociation(userId, associationId)
+}
+
 export default function useUserAssociation() {
 
-  const userStore = useProfileStore()
-  const userManagerStore = useUserStore()
+  const profileStore = useProfileStore()
+  const userStore = useUserStore()
   const associationStore = useAssociationStore()
 
   const associationRoleOptions: AssociationOptions[] = [
@@ -75,8 +79,8 @@ export default function useUserAssociation() {
     }
   ]
 
-  async function updateUserAssociations(editedByStaff: boolean) {
-    const instance = editedByStaff ? userManagerStore : userStore
+  async function updateUserAssociations(editedByManager: boolean) {
+    const instance = editedByManager ? userStore : profileStore
     const userId = instance.user?.id
 
     const associationToDelete = userAssociations.value.filter(obj => obj.deleteAssociation)
@@ -145,7 +149,7 @@ export default function useUserAssociation() {
     associationMembers.value = []
     await associationStore.getAssociationUsers(associationId)
     associationMembers.value = associationStore.associationUsers
-      .filter(associationUser => withPresident || associationUser.user.id !== userStore.user?.id)
+      .filter(associationUser => withPresident || associationUser.user.id !== profileStore.user?.id)
       .map(associationUser => ({
         id: associationUser.user.id,
         firstName: associationUser.user.firstName,
@@ -157,8 +161,8 @@ export default function useUserAssociation() {
       }))
   }
 
-  const initUserAssociations = (editedByStaff: boolean) => {
-    const associations: AssociationUser[] = editedByStaff ? userManagerStore.userAssociations : userStore.userAssociations
+  const initUserAssociations = (editedByManager: boolean) => {
+    const associations: AssociationUser[] = editedByManager ? userStore.userAssociations : profileStore.userAssociations
     userAssociations.value = associations.map(association => ({
       id: association.association.id,
       name: association.association.name,
@@ -190,7 +194,7 @@ export default function useUserAssociation() {
   }
 
   const userAssociationsToRegister = (
-    userAssociations: RegisterUserAssociation[], user?: number
+    userAssociations: RegisterUserAssociation[], userId?: number
   ): CreateAssociationUser[] | RegisterAssociationUser[] => {
     const result = userAssociations.map(item => ({
       association: item.associationId,
@@ -199,17 +203,17 @@ export default function useUserAssociation() {
       isTreasurer: item.role === 'isTreasurer',
       isVicePresident: item.role === 'isVicePresident'
     }))
-    if (user) (result as Partial<CreateAssociationUser[]>).forEach(item => {
-      item.user = user
+    if (userId) (result as Partial<CreateAssociationUser[]>).forEach(item => {
+      item.user = userId
     })
     return result
   }
 
-  async function registerUserAssociations(user?: number) {
+  async function registerUserAssociations(userId?: number) {
     const userAssociations = userAssociationsToRegister(
       newUserAssociations.value,
-      user
-    ) as (typeof user extends number ? CreateAssociationUser[] : RegisterAssociationUser[])
+      userId
+    ) as (typeof userId extends number ? CreateAssociationUser[] : RegisterAssociationUser[])
     const promises = userAssociations.map(item =>
       userService.registerUserAssociation(item)
     )
@@ -232,6 +236,7 @@ export default function useUserAssociation() {
     initAssociationMembers,
     getAssociationUsers,
     userAssociationsToRegister,
-    registerUserAssociations
+    registerUserAssociations,
+    deleteUserAssociation
   }
 }

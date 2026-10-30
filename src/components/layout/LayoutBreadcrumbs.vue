@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import {useRoute} from 'vue-router'
 import {onMounted, ref, watch} from 'vue'
-import useUtility from '@/composables/useUtil'
 import {useI18n} from 'vue-i18n'
 import useColorVariants from '@/composables/useColorVariant'
 
 const {t} = useI18n()
 const route = useRoute()
-const {initBreadcrumbs} = useUtility()
+const {initBreadcrumbs} = useUtil()
 const {colorVariant} = useColorVariants()
 
 const breadcrumbs = ref<{ label: string, to: string }[]>([])

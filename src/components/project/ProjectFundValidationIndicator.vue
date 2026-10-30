@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type {ProjectCommissionFund} from '#/project'
-import useUtility from '@/composables/useUtil'
+import useUtil from '@/composables/useUtil'
 import {useI18n} from 'vue-i18n'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 import {useFundStore} from '@/stores/useFundStore'
@@ -10,7 +10,7 @@ const props = defineProps<{
 }>()
 
 const {t} = useI18n()
-const {CURRENCY} = useUtility()
+const {CURRENCY} = useUtil()
 const commissionStore = useCommissionStore()
 const fundStore = useFundStore()
 </script>

@@ -7,7 +7,6 @@ import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import useCommissions from '@/composables/useCommissionFund'
-import useUtility from '@/composables/useUtil'
 import FormProjectSearch from '@/components/project/FormProjectSearch.vue'
 import {useProjectStore} from '@/stores/useProjectStore'
 // import CommissionExport from '@/components/commissions/CommissionExport.vue'
@@ -16,7 +15,7 @@ const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {getCommission, commission} = useCommissions()
-const {dynamicTitle} = useUtility()
+const {dynamicTitle} = useUtil()
 const route = useRoute()
 const projectStore = useProjectStore()
 

@@ -3,7 +3,6 @@ import {computed, onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import axios from 'axios'
 import useProject from '@/composables/useProject'
-import useUtility from '@/composables/useUtil'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useQuasar} from 'quasar'
 import {onBeforeRouteLeave, useRoute} from 'vue-router'
@@ -50,7 +49,7 @@ const {
   uploadDocuments,
   createUploadedFileLink
 } = useDocumentUploads()
-const {fromDateIsAnterior, CURRENCY} = useUtility()
+const {fromDateIsAnterior, CURRENCY} = useUtil()
 const {
   getCommissionsForStudents,
   initCommissionLabels,
@@ -65,7 +64,7 @@ const {
 const {catchHTTPError} = useErrors()
 const {loading, notify} = useQuasar()
 const projectStore = useProjectStore()
-const userStore = useProfileStore()
+const profileStore = useProfileStore()
 const route = useRoute()
 
 onMounted(async () => {
@@ -527,7 +526,7 @@ onBeforeRouteLeave(reInitSubmitProjectForm)
                   <p>{{ t('address.verify') }}</p>
                 </div>
                 <FormUserAddress
-                  :edited-by-staff="false"
+                  :edited-by-manager="false"
                   :user="userStore.user"
                   color="commission"
                 />

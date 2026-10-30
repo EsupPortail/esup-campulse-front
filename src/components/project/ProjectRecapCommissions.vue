@@ -5,7 +5,6 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import {computed, onMounted, watch} from 'vue'
-import useUtility from '@/composables/useUtil'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 import {useFundStore} from '@/stores/useFundStore'
 import useCommissionFund from '@/composables/useCommissionFund'
@@ -13,7 +12,7 @@ import useCommissionFund from '@/composables/useCommissionFund'
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
-const {CURRENCY} = useUtility()
+const {CURRENCY} = useUtil()
 const {commissionFundLabel} = useCommissionFund()
 
 const projectStore = useProjectStore()

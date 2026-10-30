@@ -4,13 +4,12 @@ import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
 import type {ProjectList} from '#/project'
-import useUtility from '@/composables/useUtil'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
-const {openDocument} = useUtility()
+const {openDocument} = useUtil()
 const commissionStore = useCommissionStore()
 
 const props = defineProps<{

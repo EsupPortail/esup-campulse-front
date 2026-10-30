@@ -8,7 +8,6 @@ import {onMounted, ref, watch} from 'vue'
 import {useProfileStore} from '@/stores/useProfileStore'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useRoute} from 'vue-router'
-import useUtility from '@/composables/useUtil'
 import FormDocumentUpload from '@/components/documents/FormDocumentUpload.vue'
 import FormUserAddress from '@/components/user/FormUserAddress.vue'
 import useSubmitReview from '@/composables/useProjectReview'
@@ -20,10 +19,10 @@ import InfoFormRequiredFields from '@/components/global/InfoFormRequiredFields.v
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const {loading, notify} = useQuasar()
-const userStore = useProfileStore()
+const profileStore = useProfileStore()
 const projectStore = useProjectStore()
 const route = useRoute()
-const {CURRENCY, fromDateIsAnterior} = useUtility()
+const {CURRENCY, fromDateIsAnterior} = useUtil()
 const {
   uploadDocuments
 } = useDocumentUploads()
@@ -238,7 +237,7 @@ async function onUploadDocuments(nextStep: number) {
                     <p>{{ t('address.verify') }}</p>
                   </div>
                   <FormUserAddress
-                    :edited-by-staff="false"
+                    :edited-by-manager="false"
                     :user="userStore.user"
                     color="commission"
                   />

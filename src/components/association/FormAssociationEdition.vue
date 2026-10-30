@@ -1,22 +1,9 @@
 <script lang="ts" setup>
-import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import {onBeforeRouteLeave} from 'vue-router'
 import {type QFile, useQuasar} from 'quasar'
 import {useAssociation} from '@/composables/useAssociation'
 import FormAssociationSocialNetworks from '@/components/association/FormAssociationSocialNetworks.vue'
-import AlertConfirmAssociationDeletion from '@/components/association/AlertConfirmAssociationDeletion.vue'
-import AlertConfirmAssociationEnabled from '@/components/association/AlertConfirmAssociationEnabled.vue'
-import AlertConfirmAssociationPublication from '@/components/association/AlertConfirmAssociationPublication.vue'
-import AlertConfirmAssociationSite from '@/components/association/AlertConfirmAssociationSite.vue'
-import AlertConfirmAssociationUpdate from '@/components/association/AlertConfirmAssociationUpdate.vue'
-import AlertLeaveEdition from '@/components/alert/AlertLeaveEdition.vue'
-import AlertConfirmAssociationProjectSubmission
-  from '@/components/association/AlertConfirmAssociationProjectSubmission.vue'
-import router from '@/router'
-import useUtility from '@/composables/useUtil'
-import type {AssociationLogo, EditedAssociation} from '#/association'
 import axios from 'axios'
 import useUserGroups from '@/composables/useUserGroup'
 import useSecurity from '@/composables/useAuthentication'
@@ -24,13 +11,18 @@ import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import useErrors from '@/composables/useError'
 import InfoFormRequiredFields from '@/components/global/InfoFormRequiredFields.vue'
 import useDocuments from '@/composables/useDocument'
+import useUtil from '@/composables/useUtil'
+import {useInstitutionStore} from '@/stores/useInstitutionStore'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {formatDate, phoneRegex, urlRegex} = useUtility()
+const {phoneRegex, urlRegex} = useUtil()
 const {
-  checkChanges,
-  changeAssociationLogo
+  newLogo,
+  pathLogo,
+  maxFileSize,
+  editedAssociation,
+  associationMemberCount
 } = useAssociation()
 const {isStaff} = useUserGroups()
 const {hasPerm} = useSecurity()
@@ -38,85 +30,9 @@ const {catchHTTPError} = useErrors()
 const {acceptedFormats} = useDocuments()
 
 const associationStore = useAssociationStore()
+const institutionStore = useInstitutionStore()
 
 const baseUrl = import.meta.env.VITE_APP_BASE_URL
-
-const association = ref<EditedAssociation>({
-  institution: null,
-  institutionComponent: null,
-  activityField: null,
-  name: '',
-  acronym: '',
-  socialObject: '',
-  currentProjects: '',
-  address: '',
-  zipcode: '',
-  city: '',
-  country: '',
-  phone: '',
-  email: '',
-  siret: '',
-  website: '',
-  presidentNames: '',
-  presidentPhone: '',
-  presidentEmail: '',
-  approvalDate: '',
-  lastGoaDate: '',
-  amountMembersAllowed: '',
-  isPublic: false,
-  studentCount: ''
-})
-
-const initValues = () => {
-  association.value.name = associationStore.association?.name as string
-  association.value.acronym = associationStore.association?.acronym as string
-  association.value.socialObject = associationStore.association?.socialObject as string
-  association.value.currentProjects = associationStore.association?.currentProjects as string
-  association.value.address = associationStore.association?.address as string
-  association.value.zipcode = associationStore.association?.zipcode as string
-  association.value.city = associationStore.association?.city as string
-  association.value.country = associationStore.association?.country as string
-  association.value.phone = associationStore.association?.phone as string
-  association.value.email = associationStore.association?.email as string
-  association.value.siret = associationStore.association?.siret as string
-  association.value.website = associationStore.association?.website as string
-  association.value.presidentNames = associationStore.association?.presidentNames as string
-  association.value.presidentPhone = associationStore.association?.presidentPhone as string
-  association.value.presidentEmail = associationStore.association?.presidentEmail as string
-  association.value.approvalDate = formatDate(associationStore.association?.approvalDate as string)
-  association.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string)
-  association.value.institution = associationStore.association?.institution?.id
-  association.value.institutionComponent = associationStore.association?.institutionComponent?.id
-  association.value.activityField = associationStore.association?.activityField?.id
-  association.value.amountMembersAllowed = associationStore.association?.amountMembersAllowed ? associationStore.association.amountMembersAllowed.toString() : '0'
-  association.value.isPublic = associationStore.association?.isPublic as boolean
-  association.value.studentCount = associationStore.association?.studentCount ? associationStore.association.studentCount.toString() : '0'
-}
-watch(() => associationStore.association, initValues)
-
-const membersCount = ref<number>(0)
-
-const initMembersCount = async () => {
-  if (associationStore.association) {
-    await associationStore.getAssociationUsers(associationStore.association.id)
-    membersCount.value = associationStore.associationUsers.length
-  }
-}
-
-onMounted(async () => {
-  loading.show()
-  initValues()
-  await initMembersCount()
-  loading.hide()
-})
-
-// Logo management
-const newLogo = ref<undefined | File>(undefined)
-const pathLogo = ref<AssociationLogo | null | undefined>(associationStore.association?.pathLogo)
-watch(() => associationStore.association?.pathLogo, () => {
-  pathLogo.value = associationStore.association?.pathLogo
-})
-const maxFileSize = 8388608
 
 // FILE TOO LARGE OR NOT IN THE RIGHT FORMAT
 async function onLogoRejected(rejectedEntries: { failedPropValidation: string, file: File }[]) {
@@ -136,38 +52,15 @@ async function onLogoRejected(rejectedEntries: { failedPropValidation: string, f
   })
 }
 
-// Open alert if user leaves without saving
-const openAlert = ref<boolean>(false)
-const leaveEdition = ref<boolean>(false)
-const hasValidated = ref<boolean>(false)
-
-function onLeaveEdition() {
-  leaveEdition.value = true
-  router.push(isStaff.value ? {name: 'ManageAssociations'} : {
-    name: 'AssociationDashboard',
-    params: {id: associationStore.association?.id}
-  })
-}
-
-// Check is there are any changes before leaving the page
-onBeforeRouteLeave((_to, _from, next) => {
-  if (Object.keys(checkChanges(association.value)).length > 0 && !hasValidated.value) {
-    openAlert.value = true
-    next(leaveEdition.value)
-  } else {
-    next(true)
-  }
-})
-
 // Update association logo details
 async function onChangeLogo(action: string) {
   loading.show()
   try {
     if (action === 'update') {
-      await changeAssociationLogo(newLogo.value, null)
+      await associationStore.updateAssociationLogo(newLogo.value, null)
     } else if (action === 'delete') {
       const deleteLogoData = {'pathLogo': null}
-      await changeAssociationLogo(undefined, deleteLogoData)
+      await associationStore.updateAssociationLogo(undefined, deleteLogoData)
       newLogo.value = undefined
     }
     notify({
@@ -204,10 +97,10 @@ async function onChangeLogo(action: string) {
       <div class="container">
         <div class="association-name text-center">
           <p
-            v-if="association?.acronym"
+            v-if="editedAssociation?.acronym"
             class="acronym"
           >
-            {{ association?.acronym }}
+            {{ editedAssociation?.acronym }}
           </p>
         </div>
 
@@ -270,7 +163,7 @@ async function onChangeLogo(action: string) {
         <div class="container flex-column">
           <InfoFormRequiredFields/>
           <QInput
-            v-model="association.name"
+            v-model="editedAssociation.name"
             :disable=!isStaff
             :label="t('association.labels.name') + ' *'"
             :rules="[val => val && val.length > 0 || t('forms.required-association-name')]"
@@ -280,13 +173,13 @@ async function onChangeLogo(action: string) {
             lazy-rules
           />
           <QInput
-            v-model="association.acronym"
+            v-model="editedAssociation.acronym"
             :label="t('association.labels.acronym')"
             clearable
             filled
           />
           <QInput
-            v-model="association.socialObject"
+            v-model="editedAssociation.socialObject"
             :label="t('association.labels.social-object')"
             bottom-slots
             clearable
@@ -299,7 +192,7 @@ async function onChangeLogo(action: string) {
             </template>
           </QInput>
           <QInput
-            v-model="association.currentProjects"
+            v-model="editedAssociation.currentProjects"
             :label="t('association.labels.current-projects')"
             clearable
             filled
@@ -318,29 +211,30 @@ async function onChangeLogo(action: string) {
             </p>
           </div>
           <QSelect
-            v-model="association.institution"
+            v-model="editedAssociation.institution"
             :disable="!isStaff"
             :label="t('association.labels.institution') + ' *'"
-            :options="associationStore.institutionLabels"
+            :options="institutionStore.institutionLabels"
             :rules="[val => val || t('forms.required-association-institution')]"
             aria-required="true"
             clearable
             emit-value
             filled
             map-options
-            @update:model-value="association.institutionComponent = null"
+            @update:model-value="editedAssociation.institutionComponent = null"
           />
           <QSelect
-            v-model="association.institutionComponent"
+            v-model="editedAssociation.institutionComponent"
             :label="t('association.labels.institution-component')"
-            :options="associationStore.institutionComponentLabels.filter(obj => obj.institution === association.institution)"
+            :options="institutionStore.institutionComponentLabels
+              .filter(obj => obj.institution === editedAssociation.institution)"
             clearable
             emit-value
             filled
             map-options
           />
           <QSelect
-            v-model="association.activityField"
+            v-model="editedAssociation.activityField"
             :label="t('association.labels.activity-field')"
             :options="associationStore.activityFieldLabels"
             clearable
@@ -364,28 +258,28 @@ async function onChangeLogo(action: string) {
       <div class="dashboard-section-container">
         <div class="container flex-column">
           <QInput
-            v-model="association.presidentNames"
+            v-model="editedAssociation.presidentNames"
             :label="t('association.labels.president-name')"
             clearable
             filled
           />
           <QInput
-            v-model="association.presidentPhone"
+            v-model="editedAssociation.presidentPhone"
             :label="t('association.labels.president-phone')"
-            :rules="association.presidentPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+            :rules="editedAssociation.presidentPhone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
             clearable
             filled
             type="tel"
           />
           <QInput
-            v-model="association.presidentEmail"
+            v-model="editedAssociation.presidentEmail"
             :label="t('association.labels.president-email')"
             clearable
             filled
             type="email"
           />
           <QInput
-            v-model="association.lastGoaDate"
+            v-model="editedAssociation.lastGoaDate"
             :label="t('association.labels.last-goa')"
             clearable
             filled
@@ -398,7 +292,7 @@ async function onChangeLogo(action: string) {
             </template>
           </QInput>
           <QInput
-            v-model="association.siret"
+            v-model="editedAssociation.siret"
             :label="t('association.labels.siret')"
             clearable
             filled
@@ -407,9 +301,9 @@ async function onChangeLogo(action: string) {
           />
           <QInput
             v-if="hasPerm('change_association_all_fields')"
-            v-model="association.amountMembersAllowed"
+            v-model="editedAssociation.amountMembersAllowed"
             :label="t('association.labels.amount-members-allowed')"
-            :rules="[val => Number.parseInt(val) >= membersCount || t('forms.amount-members-allowed-must-be-superior-to-members')]"
+            :rules="[val => Number.parseInt(val) >= associationMemberCount || t('forms.amount-members-allowed-must-be-superior-to-members')]"
             bottom-slots
             clearable
             filled
@@ -422,13 +316,13 @@ async function onChangeLogo(action: string) {
             <template v-slot:hint>
               <p aria-describedby="amountMembersAllowed">
                 {{
-                  t('forms.amount-student-allowed-cannot-be-inferior-to-members', {amount: membersCount})
+                  t('forms.amount-student-allowed-cannot-be-inferior-to-members', {amount: associationMemberCount})
                 }}
               </p>
             </template>
           </QInput>
           <QInput
-            v-model="association.studentCount"
+            v-model="editedAssociation.studentCount"
             :label="t('forms.association-student-count')"
             clearable
             filled
@@ -454,26 +348,26 @@ async function onChangeLogo(action: string) {
           <fieldset class="address-fields flex-column">
             <legend class="padding-bottom">{{ t('association.labels.address') }}</legend>
             <QInput
-              v-model="association.address"
+              v-model="editedAssociation.address"
               :label="t('association.labels.address')"
               clearable
               filled
             />
             <div>
               <QInput
-                v-model="association.zipcode"
+                v-model="editedAssociation.zipcode"
                 :label="t('address.zipcode')"
                 clearable
                 filled
               />
               <QInput
-                v-model="association.city"
+                v-model="editedAssociation.city"
                 :label="t('address.city')"
                 clearable
                 filled
               />
               <QInput
-                v-model="association.country"
+                v-model="editedAssociation.country"
                 :label="t('address.country')"
                 clearable
                 filled
@@ -482,7 +376,7 @@ async function onChangeLogo(action: string) {
           </fieldset>
           <QSeparator aria-hidden="true"/>
           <QInput
-            v-model="association.email"
+            v-model="editedAssociation.email"
             :label="t('association.labels.mail')"
             :rules="[(val, rules) => rules.email(val) || t('forms.required-email')]"
             aria-required="true"
@@ -492,17 +386,17 @@ async function onChangeLogo(action: string) {
             type="email"
           />
           <QInput
-            v-model="association.phone"
+            v-model="editedAssociation.phone"
             :label="t('association.labels.phone')"
-            :rules="association.phone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
+            :rules="editedAssociation.phone ? [val => phoneRegex.test(val) || t('forms.required-phone')] : []"
             clearable
             filled
             type="tel"
           />
           <QInput
-            v-model="association.website"
+            v-model="editedAssociation.website"
             :label="t('association.labels.website')"
-            :rules="association.website ? [val => urlRegex.test(val) || t('forms.required-valid-url')] : []"
+            :rules="editedAssociation.website ? [val => urlRegex.test(val) || t('forms.required-valid-url')] : []"
             clearable
             filled
             type="url"
@@ -525,45 +419,6 @@ async function onChangeLogo(action: string) {
         </div>
       </div>
     </div>
-
-    <!-- Btns -->
-    <div class="flex-row-center padding-top padding-bottom padding-left padding-right">
-      <QBtn
-        :label="isStaff ? t('association.go-back') : t('dashboard.association-user.back-to-association-dashboard')"
-        :to="isStaff ? { name: 'ManageAssociations' } : { name: 'AssociationDashboard' }"
-        class="btn-lg"
-        color="association"
-        icon="bi-chevron-left"
-      />
-      <AlertConfirmAssociationUpdate
-        v-if="Object.keys(checkChanges(association)).length > 0"
-        @has-validated="hasValidated = true"
-      />
-      <AlertConfirmAssociationEnabled
-        v-if="isStaff"
-        @has-validated="hasValidated = true"
-      />
-      <AlertConfirmAssociationPublication
-        v-if="isStaff && associationStore.association?.isEnabled"
-        @has-validated="hasValidated = true"
-      />
-      <AlertConfirmAssociationSite
-        v-if="isStaff && associationStore.association?.isEnabled"
-        @has-validated="hasValidated = true"
-      />
-      <AlertConfirmAssociationProjectSubmission
-        v-if="isStaff && associationStore.association?.isEnabled"
-        @has-validated="hasValidated = true"
-      />
-      <AlertConfirmAssociationDeletion v-if="isStaff && !associationStore.association?.isEnabled"/>
-    </div>
-
-    <AlertLeaveEdition
-      :open-alert="openAlert"
-      :text="t('alerts.leave-association-edition')"
-      @closeAlert="openAlert = !openAlert"
-      @leaveEdition="onLeaveEdition"
-    />
   </QForm>
 </template>
 

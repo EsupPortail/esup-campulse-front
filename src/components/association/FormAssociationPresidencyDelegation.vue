@@ -4,7 +4,6 @@ import {onMounted, reactive, ref, toRefs, watch} from 'vue'
 import {useRoute} from 'vue-router'
 import {useQuasar} from 'quasar'
 import type {AssociationMember} from '#/user'
-import useUtility from '@/composables/useUtil'
 import useUserAssociations from '@/composables/useUserAssociation'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
@@ -18,7 +17,7 @@ const memberRef = toRefs(props).member
 const route = useRoute()
 const {notify} = useQuasar()
 const {t} = useI18n()
-const {fromDateIsAnterior} = useUtility()
+const {fromDateIsAnterior} = useUtil()
 const {patchUserAssociations, initAssociationMembers} = useUserAssociations()
 const {catchHTTPError} = useErrors()
 

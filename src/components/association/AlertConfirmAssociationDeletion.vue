@@ -17,7 +17,7 @@ const {catchHTTPError} = useErrors()
 async function onDeleteAssociation() {
   try {
     if (deletionWord.value === t('association.before-deletion-word')) {
-      await associationStore.deleteAssociation(associationStore.association?.id)
+      await associationStore.deleteAssociation()
       await router.push({name: 'ManageAssociations'})
       notify({
         type: 'positive',

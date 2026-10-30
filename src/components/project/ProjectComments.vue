@@ -5,7 +5,6 @@ import axios from 'axios'
 import {onMounted, ref} from 'vue'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
-import useUtility from '@/composables/useUtil'
 import useSecurity from '@/composables/useAuthentication'
 import {useProjectStore} from '@/stores/useProjectStore'
 import FormAddComment from '@/components/project/FormAddComment.vue'
@@ -21,7 +20,7 @@ const {
   patchProjectComment
 } = useProjectComment()
 const {catchHTTPError} = useErrors()
-const {formatDate} = useUtility()
+const {formatDate} = useUtil()
 const {hasPerm} = useSecurity()
 const projectStore = useProjectStore()
 

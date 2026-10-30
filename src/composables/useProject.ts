@@ -9,7 +9,6 @@ import type {
   UpdateProjectCommissionFund
 } from '#/project'
 import {useProjectStore} from '@/stores/useProjectStore'
-import useUtility from '@/composables/useUtil'
 import {useProfileStore} from '@/stores/useProfileStore'
 import useDocumentUploads from '@/composables/useDocumentUpload'
 import useCommissions from '@/composables/useCommissionFund'
@@ -99,7 +98,7 @@ export default function useProject() {
   const profileStore = useProfileStore()
   const commissionStore = useCommissionStore()
   const fundStore = useFundStore()
-  const {arraysAreEqual, formatDate, reverseDate} = useUtility()
+  const {arraysAreEqual, formatDate, reverseDate} = useUtil()
   const {processDocuments} = useDocumentUploads()
   const {selectedCommissionFundLabels} = useCommissions()
 

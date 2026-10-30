@@ -3,7 +3,6 @@ import {computed, onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import useUtility from '@/composables/useUtil'
 import {useRoute} from 'vue-router'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import axios from 'axios'
@@ -13,10 +12,10 @@ import {useProfileStore} from '@/stores/useProfileStore'
 const {t} = useI18n()
 const {notify} = useQuasar()
 const {loading} = useQuasar()
-const {formatDate, dynamicTitle} = useUtility()
+const {formatDate, dynamicTitle} = useUtil()
 const route = useRoute()
 const associationStore = useAssociationStore()
-const userStore = useProfileStore()
+const profileStore = useProfileStore()
 const {catchHTTPError} = useErrors()
 
 const association = ref(associationStore.association)

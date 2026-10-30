@@ -17,7 +17,7 @@ const {loading, notify} = useQuasar()
 const {initCharters, manageCharters} = useCharters()
 const {catchHTTPError} = useErrors()
 const associationStore = useAssociationStore()
-const userStore = useProfileStore()
+const profileStore = useProfileStore()
 
 
 const importedProps = defineProps<{

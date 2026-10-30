@@ -9,7 +9,6 @@ import {useRoute} from 'vue-router'
 import CharterRecapAssociationInfos from '@/components/charter/CharterRecapAssociationInfos.vue'
 import useCharters from '@/composables/useCharter'
 import RecapDocumentList from '@/components/documents/RecapDocumentList.vue'
-import useUtility from '@/composables/useUtil'
 import useUserGroups from '@/composables/useUserGroup'
 
 const {t} = useI18n()
@@ -18,7 +17,7 @@ const {catchHTTPError} = useErrors()
 const associationStore = useAssociationStore()
 const route = useRoute()
 const {charterDocuments} = useCharters()
-const {dynamicTitle} = useUtility()
+const {dynamicTitle} = useUtil()
 const {isStaff} = useUserGroups()
 
 const associationId = ref<number>()

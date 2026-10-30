@@ -1,14 +1,13 @@
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import type {Association, AssociationFilters, SearchAssociation} from '#/association'
 import {useProfileStore} from '@/stores/useProfileStore'
-import useUtility from '@/composables/useUtil'
 import * as associationService from '@/services/AssociationService'
 
 export default function useDirectory() {
 
   const associationStore = useAssociationStore()
   const profileStore = useProfileStore()
-  const {filterizeSearch} = useUtility()
+  const {filterizeSearch} = useUtil()
 
   function advancedSearch(settings: SearchAssociation): Association[] {
     const hasSettings: boolean = !!(settings.name || settings.acronym || settings.institution || settings.institutionComponent || settings.activityField)

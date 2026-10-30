@@ -8,7 +8,7 @@ import useErrors from '@/composables/useError'
 import useSecurity from '@/composables/useAuthentication'
 import router from '@/router'
 
-const userStore = useProfileStore()
+const profileStore = useProfileStore()
 const newUser = userStore.newUser
 const {t} = useI18n()
 const {notify, loading} = useQuasar()

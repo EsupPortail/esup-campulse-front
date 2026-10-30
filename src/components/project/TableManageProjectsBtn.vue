@@ -13,7 +13,7 @@ import ProjectEditCommissionFundsAmounts from '@/components/project/ProjectEditA
 import ProjectChangeCommission from '@/components/project/ProjectChangeCommission.vue'
 import useDocumentUploads from '@/composables/useDocumentUpload'
 import {useProfileStore} from '@/stores/useProfileStore'
-import useUtility from '@/composables/useUtil'
+import useUtil from '@/composables/useUtil'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 import {useFundStore} from '@/stores/useFundStore'
 
@@ -23,7 +23,7 @@ const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 
 const {getFile} = useDocumentUploads()
-const {openDocument} = useUtility()
+const {openDocument} = useUtil()
 
 const profileStore = useProfileStore()
 const projectStore = useProjectStore()

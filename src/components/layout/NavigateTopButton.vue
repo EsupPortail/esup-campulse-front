@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import {onMounted, onUnmounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
-import useUtility from '@/composables/useUtil'
+import useUtil from '@/composables/useUtil'
 
 const {t} = useI18n()
-const {openMenu} = useUtility()
+const {openMenu} = useUtil()
 
 const buttonVisible = ref(false)
 watch(() => openMenu.value, () => {

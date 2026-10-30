@@ -356,7 +356,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: '',
                 name: 'AssociationDashboard',
-                component: () => import('@/views/dashboard/AssociationDashboardView.vue')
+                component: () => import('@/views/dashboard/student/association/AssociationDashboardView.vue')
               },
               {
                 path: 'edit-my-association',
@@ -371,7 +371,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: 'presidency-delegation',
                 name: 'AssociationPresidencyDelegation',
-                component: () => import('@/views/dashboard/AssociationPresidencyDelegationView.vue'),
+                component: () => import('@/views/dashboard/student/association/AssociationPresidencyDelegationView.vue'),
                 meta: {
                   breadcrumb: i18n.global.t('breadcrumbs.edit-association-president-delegation'),
                   title: i18n.global.t('breadcrumbs.edit-association-president-delegation')
@@ -391,7 +391,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: '',
                 name: 'ValidateUsers',
-                component: () => import('@/views/dashboard/UserManagementView.vue'),
+                component: () => import('@/views/dashboard/manager/user/UserManagementView.vue'),
                 meta: {
                   title: i18n.global.t('breadcrumbs.validate-users'),
                   siteMap: true,
@@ -400,7 +400,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: ':id',
                 name: 'UserValidationDetail',
-                component: () => import('@/views/dashboard/UserValidationDetailView.vue'),
+                component: () => import('@/views/dashboard/manager/user/UserValidationDetailView.vue'),
                 meta: {
                   breadcrumb: i18n.global.t('breadcrumbs.user-account'),
                   title: i18n.global.t('breadcrumbs.user-account')
@@ -419,7 +419,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: '',
                 name: 'ValidateAssociationUsers',
-                component: () => import('@/views/dashboard/AssociationUsersValidationView.vue'),
+                component: () => import('@/views/dashboard/manager/user/AssociationUsersValidationView.vue'),
                 meta: {
                   title: i18n.global.t('breadcrumbs.validate-association-users'),
                   siteMap: true,
@@ -428,7 +428,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: ':userId/:associationId',
                 name: 'AssociationUserValidationDetail',
-                component: () => import('@/views/dashboard/AssociationUserValidationDetailView.vue'),
+                component: () => import('@/views/dashboard/manager/user/AssociationUserValidationDetailView.vue'),
                 meta: {
                   breadcrumb: i18n.global.t('breadcrumbs.validate-association-user-detail'),
                   title: i18n.global.t('breadcrumbs.validate-association-user-detail')
@@ -447,7 +447,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: '',
                 name: 'ManageUsers',
-                component: () => import('@/views/dashboard/UserManagementView.vue'),
+                component: () => import('@/views/dashboard/manager/user/UserManagementView.vue'),
                 meta: {
                   title: i18n.global.t('breadcrumbs.manage-users'),
                   siteMap: true,
@@ -456,7 +456,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: ':id',
                 name: 'UserManagementDetail',
-                component: () => import('@/views/dashboard/UserManagementDetailView.vue'),
+                component: () => import('@/views/dashboard/manager/user/UserManagementDetailView.vue'),
                 meta: {
                   breadcrumb: i18n.global.t('breadcrumbs.user-account'),
                   title: i18n.global.t('breadcrumbs.user-account')
@@ -465,7 +465,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: 'add-user',
                 name: 'AddUser',
-                component: () => import('@/views/dashboard/UserCreationView.vue'),
+                component: () => import('@/views/dashboard/manager/user/UserCreationView.vue'),
                 meta: {
                   breadcrumb: i18n.global.t('breadcrumbs.add-user'),
                   title: i18n.global.t('breadcrumbs.add-user'),
@@ -484,7 +484,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: '',
                 name: 'ManageAssociations',
-                component: () => import('@/views/dashboard/AssociationsManagementView.vue'),
+                component: () => import('@/views/dashboard/manager/association/AssociationsManagementView.vue'),
                 meta: {
                   title: i18n.global.t('breadcrumbs.manage-associations'),
                   colorVariant: 'space-1',
@@ -504,7 +504,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: 'create-new',
                 name: 'CreateAssociation',
-                component: () => import('@/views/dashboard/AssociationCreationView.vue'),
+                component: () => import('@/views/dashboard/manager/association/AssociationCreationView.vue'),
                 meta: {
                   breadcrumb: i18n.global.t('breadcrumbs.create-association'),
                   title: i18n.global.t('breadcrumbs.create-association'),
@@ -517,7 +517,7 @@ const routes: RouteRecordRaw[] = [
           {
             path: 'manage-documents-library',
             name: 'ManageDocumentsLibrary',
-            component: () => import('@/views/dashboard/ManageDocumentsLibraryView.vue'),
+            component: () => import('@/views/dashboard/manager/document/ManageDocumentsLibraryView.vue'),
             meta: {
               breadcrumb: i18n.global.t('breadcrumbs.template-documents-library'),
               title: i18n.global.t('breadcrumbs.template-documents-library'),
@@ -546,7 +546,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: '',
                 name: 'ManageContents',
-                component: () => import('@/views/dashboard/ContentManagementView.vue'),
+                component: () => import('@/views/dashboard/manager/content/ContentManagementView.vue'),
                 meta: {
                   title: i18n.global.t('breadcrumbs.contents'),
                   staffOnly: true,
@@ -556,7 +556,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: ':id',
                 name: 'ContentManagementDetail',
-                component: () => import('@/views/dashboard/ContentManagementDetailView.vue'),
+                component: () => import('@/views/dashboard/manager/content/ContentManagementDetailView.vue'),
                 meta: {
                   breadcrumb: i18n.global.t('breadcrumbs.content'),
                   title: i18n.global.t('breadcrumbs.content'),

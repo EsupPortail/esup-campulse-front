@@ -11,14 +11,13 @@ import useErrors from '@/composables/useError'
 import {useProfileStore} from '@/stores/useProfileStore'
 import router from '@/router'
 import InfoPresidencyDelegation from '@/components/association/InfoPresidencyDelegation.vue'
-import useUtility from '@/composables/useUtil'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const route = useRoute()
 const {initAssociationMembers, associationMembers} = useUserAssociations()
 const {catchHTTPError} = useErrors()
-const {kebabize} = useUtility()
+const {kebabize} = useUtil()
 const profileStore = useProfileStore()
 
 onMounted(async () => {
@@ -239,7 +238,7 @@ const columns: QTableProps['columns'] = [
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/dashboard.scss';
-@import '@/assets/styles/forms.scss';
-@import '@/assets/_variables.scss';
+@import '@/assets/styles/dashboard';
+@import '@/assets/styles/forms';
+@import '@/assets/_variables';
 </style>

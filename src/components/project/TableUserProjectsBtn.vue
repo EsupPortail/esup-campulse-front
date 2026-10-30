@@ -9,14 +9,13 @@ import ProjectDelete from '@/components/project/ProjectDelete.vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
-import useUtility from '@/composables/useUtil'
 
 const {t} = useI18n()
 const profileStore = useProfileStore()
 const projectStore = useProjectStore()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
-const {openDocument} = useUtility()
+const {openDocument} = useUtil()
 
 const props = defineProps<{
   projectId: number,

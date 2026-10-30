@@ -6,14 +6,13 @@ import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useError'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useProject from '@/composables/useProject'
-import useUtility from '@/composables/useUtil'
 
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
 const {projectBasicInfos, initProjectBasicInfos, reInitSubmitProjectForm, patchProjectBasicInfos} = useProject()
-const {fromDateIsAnterior} = useUtility()
+const {fromDateIsAnterior} = useUtil()
 
 const emit = defineEmits(['closeDialog', 'refreshProjects'])
 

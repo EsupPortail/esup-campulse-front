@@ -7,7 +7,7 @@ import {onMounted} from 'vue'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
 
-const userStore = useProfileStore()
+const profileStore = useProfileStore()
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()

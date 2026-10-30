@@ -7,7 +7,6 @@ import type {
   UpdateDocumentUpload
 } from '#/document'
 import type {AssociationCharter, AssociationCharterStatus, Charter, CharterStatus, ProcessingCharter} from '#/charter'
-import useUtility from '@/composables/useUtil'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import * as documentUploadService from '@/services/DocumentUploadService'
 import * as associationService from '@/services/AssociationService'
@@ -44,7 +43,7 @@ async function getCharterProcessDocumentUploads(associationId?: number) {
 
 export default function useCharter() {
 
-  const {formatDate, reverseDate} = useUtility()
+  const {formatDate, reverseDate} = useUtil()
   const associationStore = useAssociationStore()
   const documentStore = useDocumentStore()
 

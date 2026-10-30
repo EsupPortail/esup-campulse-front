@@ -4,7 +4,6 @@ import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useError'
-import useUtility from '@/composables/useUtil'
 import type {ProjectCommissionFund} from '#/project'
 import useManageProjects from '@/composables/useManageProject'
 import InfoFormRequiredFields from '@/components/global/InfoFormRequiredFields.vue'
@@ -17,7 +16,7 @@ const {catchHTTPError} = useErrors()
 const {canManageProjectCommissionFund, patchAmountAsked} = useManageProjects()
 const {postNewProjectComment} = useProjectComment()
 const {commissionFundLabel} = useCommissionFund()
-const {CURRENCY} = useUtility()
+const {CURRENCY} = useUtil()
 
 
 const emit = defineEmits(['closeDialog', 'refreshProjects'])

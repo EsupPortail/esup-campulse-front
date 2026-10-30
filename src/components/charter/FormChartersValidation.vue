@@ -8,14 +8,13 @@ import axios from 'axios'
 import useErrors from '@/composables/useError'
 import useDocumentUploads from '@/composables/useDocumentUpload'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import useUtility from '@/composables/useUtil'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {initCharters, patchCharterDocument} = useCharters()
 const {catchHTTPError} = useErrors()
 const {getFile} = useDocumentUploads()
-const {openDocument} = useUtility()
+const {openDocument} = useUtil()
 const associationStore = useAssociationStore()
 
 const props = defineProps<{

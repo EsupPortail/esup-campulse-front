@@ -46,8 +46,8 @@ async function onGetGroups() {
 async function onGetFunds() {
   try {
     await fundStore.getFunds()
-    const editedByStaff: boolean = route.name === 'AddUser'
-    userFunds.value = editedByStaff ? [...userStore.userFunds] : [...profileStore.userFunds]
+    const editedByManager: boolean = route.name === 'AddUser'
+    userFunds.value = editedByManager ? [...userStore.userFunds] : [...profileStore.userFunds]
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({

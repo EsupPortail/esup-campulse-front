@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import FormLocalLogin from '@/components/authentication/FormLocalLogin.vue'
 import {useI18n} from 'vue-i18n'
-import useUtility from '@/composables/useUtil'
 import {onMounted} from 'vue'
 
 const {t} = useI18n()
-const {dynamicTitle} = useUtility()
+const {dynamicTitle} = useUtil()
 
 const frontUrl = encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)
 const CASUrl = import.meta.env.VITE_APP_CAS_URL

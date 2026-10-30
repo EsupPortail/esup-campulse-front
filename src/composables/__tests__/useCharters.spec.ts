@@ -12,7 +12,6 @@ import {_documents} from '~/fixtures/document.mock'
 // import {_associationCharters, _manageCharters, _projectFundCharters} from '~/fixtures/charters.mock'
 import {_associations, _institutions} from '~/fixtures/association.mock'
 import {_todayDate} from '~/fixtures/dates.mock'
-import useUtility from '@/composables/useUtil'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -69,7 +68,7 @@ describe('useCharters', () => {
   const {
     documents
   } = useDocumentUploads()
-  const {formatDate} = useUtility()
+  const {formatDate} = useUtil()
   const {axiosAuthenticated} = useAxios()
   const mockedAxios = vi.mocked(axiosAuthenticated, true)
 

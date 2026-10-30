@@ -7,7 +7,6 @@ import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useError'
 import {onMounted, ref} from 'vue'
-import useUtility from '@/composables/useUtil'
 import useCharters from '@/composables/useCharter'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
 import TableManagerChartersBtn from '@/components/charter/TableManageChartersBtn.vue'
@@ -17,7 +16,7 @@ const route = useRoute()
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {dynamicTitle} = useUtility()
+const {dynamicTitle} = useUtil()
 const {initCharters, manageCharters} = useCharters()
 
 const associationId = ref<number>(Number.parseInt(route.params.associationId as string))

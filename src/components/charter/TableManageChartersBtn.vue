@@ -7,7 +7,7 @@ import FormChartersValidation from '@/components/charter/FormChartersValidation.
 import useDocumentUploads from '@/composables/useDocumentUpload'
 
 const {t} = useI18n()
-const {createUploadedFileLink} = useDocumentUploads()
+const {createFileLink} = useDocumentUploads()
 
 const props = defineProps<{
   charter: ManageCharter,
@@ -77,7 +77,7 @@ async function onOptionClick(option: Option) {
       openValidate.value = true
     } else if (option.action === 'view') {
       if (props.charter.pathFile) {
-        await createUploadedFileLink(props.charter.pathFile, props.charter.documentName)
+        await createFileLink(props.charter.pathFile, props.charter.documentName)
       }
     }
   }

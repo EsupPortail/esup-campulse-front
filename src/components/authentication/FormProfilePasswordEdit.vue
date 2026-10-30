@@ -3,7 +3,6 @@ import {ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {QForm, useQuasar} from 'quasar'
 import type {PasswordEdit} from '#/user'
-import {useAxios} from '@/composables/useAxios'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
 import FormPasswordChecker from '@/components/authentication/FormPasswordChecker.vue'
@@ -13,10 +12,9 @@ import useSecurity from '@/composables/useAuthentication'
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
-const {axiosAuthenticated} = useAxios()
-const {checkPasswordStrength} = useSecurity()
+const {checkPasswordStrength, editPassword} = useSecurity()
 
-const editPassword = ref<PasswordEdit>({
+const editedPassword = ref<PasswordEdit>({
   oldPassword: '',
   newPassword1: '',
   newPassword2: ''
@@ -25,17 +23,17 @@ const editPassword = ref<PasswordEdit>({
 const form = ref(QForm)
 
 const passwordChecker = ref<PasswordChecker>(checkPasswordStrength(''))
-watch(() => editPassword.value.newPassword1, () => {
+watch(() => editedPassword.value.newPassword1, () => {
   let password = ''
-  if (editPassword.value.newPassword1) password = editPassword.value.newPassword1
+  if (editedPassword.value.newPassword1) password = editedPassword.value.newPassword1
   passwordChecker.value = checkPasswordStrength(password)
 })
 
 async function passwordConfirm() {
   loading.show()
-  if (editPassword.value.newPassword1 === editPassword.value.newPassword2) {
+  if (editedPassword.value.newPassword1 === editedPassword.value.newPassword2) {
     try {
-      await axiosAuthenticated.post('/users/auth/password/change/', editPassword.value)
+      await editPassword(editedPassword.value)
       form.value.reset()
       notify({
         type: 'positive',
@@ -59,9 +57,9 @@ async function passwordConfirm() {
 }
 
 const clearValues = () => {
-  editPassword.value.oldPassword = ''
-  editPassword.value.newPassword1 = ''
-  editPassword.value.newPassword2 = ''
+  editedPassword.value.oldPassword = ''
+  editedPassword.value.newPassword1 = ''
+  editedPassword.value.newPassword2 = ''
 }
 </script>
 
@@ -84,7 +82,7 @@ const clearValues = () => {
           @submit.prevent="passwordConfirm"
         >
           <QInput
-            v-model="editPassword.oldPassword"
+            v-model="editedPassword.oldPassword"
             :label="t('forms.old-password')"
             :rules="[val => val && val.length > 0 || t('forms.required-old-password')]"
             autocomplete="current-password"
@@ -95,7 +93,7 @@ const clearValues = () => {
             type="password"
           />
           <QInput
-            v-model="editPassword.newPassword1"
+            v-model="editedPassword.newPassword1"
             :label="t('forms.new-password')"
             :rules="[
               val => val && val.length > 0 || t('forms.required-new-password'),
@@ -119,11 +117,11 @@ const clearValues = () => {
             </template>
           </QInput>
           <QInput
-            v-model="editPassword.newPassword2"
+            v-model="editedPassword.newPassword2"
             :label="t('forms.repeat-new-password')"
             :rules="[
               val => val && val.length > 0 || t('forms.required-repeat-new-password'),
-              val => val === editPassword.newPassword1 || t('forms.passwords-are-not-equal')
+              val => val === editedPassword.newPassword1 || t('forms.passwords-are-not-equal')
             ]"
             autocomplete="new-password"
             clearable
@@ -133,12 +131,12 @@ const clearValues = () => {
             type="password"
           />
           <FormPasswordChecker
-            :password="editPassword.newPassword1"
+            :password="editedPassword.newPassword1"
             :password-checker="passwordChecker"
           />
           <div class="flex-row-center">
             <QBtn
-              :disable="!passwordChecker.valid || editPassword.newPassword1 !== editPassword.newPassword2"
+              :disable="!passwordChecker.valid || editedPassword.newPassword1 !== editedPassword.newPassword2"
               :label="t('password.edit-password')"
               class="btn-lg"
               color="dashboard"

@@ -236,7 +236,7 @@ async function onDeleteUser() {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/forms.scss';
-@import '@/assets/styles/dashboard.scss';
-@import "@/assets/_variables.scss";
+@import '@/assets/styles/forms';
+@import '@/assets/styles/dashboard';
+@import "@/assets/variables";
 </style>

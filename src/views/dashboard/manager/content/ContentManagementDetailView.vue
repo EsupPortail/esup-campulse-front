@@ -6,14 +6,13 @@ import {useRoute} from 'vue-router'
 import FormChangeContents from '@/components/content/FormChangeContents.vue'
 import useErrors from '@/composables/useError'
 import axios from 'axios'
-import useUtility from '@/composables/useUtil'
 
 const {notify, loading} = useQuasar()
 
 const route = useRoute()
 const contentStore = useContentStore()
 const {catchHTTPError} = useErrors()
-const {dynamicTitle} = useUtility()
+const {dynamicTitle} = useUtil()
 
 const isLoaded = ref(false)
 
@@ -57,5 +56,5 @@ onMounted(async function () {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/dashboard.scss';
+@import '@/assets/styles/dashboard';
 </style>

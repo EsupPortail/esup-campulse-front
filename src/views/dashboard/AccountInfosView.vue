@@ -3,10 +3,9 @@ import FormProfilePasswordEdit from '@/components/authentication/FormProfilePass
 import {useI18n} from 'vue-i18n'
 import FormUserInfosEdition from '@/components/user/FormUserInfosEdition.vue'
 import {useProfileStore} from '@/stores/useProfileStore'
-import {onMounted, ref} from 'vue'
+import {ref} from 'vue'
 import useUserGroups from '@/composables/useUserGroup'
 import axios from 'axios'
-import useUsers from '@/composables/useUser'
 import {useQuasar} from 'quasar'
 import useUserAssociations from '@/composables/useUserAssociation'
 import FormDisplayUserAssociations from '@/components/user/FormDisplayUserAssociations.vue'
@@ -18,37 +17,33 @@ import useDocumentUploads from '@/composables/useDocumentUpload'
 
 const {t} = useI18n()
 const profileStore = useProfileStore()
-const {isStaff, initGroupPermToJoinAssociation} = useUserGroups()
-const {initInfosToPatch, infosToPatch, updateUserInfos} = useUsers()
+const {isStaff} = useUserGroups()
 const {notify, loading} = useQuasar()
-const {userAssociationsRegister, hasPerm} = useSecurity()
+const {hasPerm} = useSecurity()
 const {catchHTTPError} = useErrors()
 const {
-  newAssociations,
+  newUserAssociations,
   updateUserAssociations,
   initUserAssociations,
-  userAssociations
+  userAssociations,
+  registerUserAssociations
 } = useUserAssociations()
-const {uploadDocuments, initProcessDocuments, initUserDocumentUploads} = useDocumentUploads()
+const {
+  uploadDocuments,
+  initProcessDocuments,
+  initProfileDocumentUploads
+} = useDocumentUploads()
 
 const tab = ref<string>('infos')
 
 async function onUpdateUserInfos() {
   loading.show()
   try {
-    initInfosToPatch(profileStore.user)
-    if (Object.entries(infosToPatch).length) {
-      await updateUserInfos(profileStore.user, false)
-    } /*else {
-            notify({
-                type: 'warning',
-                message: t('notifications.warning.no-modifications-found')
-            })
-        }*/
-    await uploadDocuments(null, profileStore.user?.id)
+    await profileStore.updateProfile()
+    await uploadDocuments(null, profileStore.user!.id)
     initProcessDocuments()
-    await profileStore.getUserDocuments()
-    initUserDocumentUploads()
+    await profileStore.getUserDocumentUploads()
+    initProfileDocumentUploads()
     notify({
       type: 'positive',
       message: t('notifications.positive.update-user-infos')
@@ -67,9 +62,9 @@ async function onUpdateUserInfos() {
 async function onUpdateUserAssociations() {
   loading.show()
   try {
-    updateUserAssociations(false)
-    await userAssociationsRegister(profileStore.user?.id)
-    newAssociations.value = []
+    await updateUserAssociations(false)
+    await registerUserAssociations(profileStore.user!.id)
+    newUserAssociations.value = []
     await profileStore.getUserAssociations()
     initUserAssociations(false)
     notify({
@@ -86,11 +81,6 @@ async function onUpdateUserAssociations() {
   }
   loading.hide()
 }
-
-onMounted(() => {
-  const groupArray = profileStore.user?.groups.map(group => group.groupId)
-  if (groupArray && groupArray.length) initGroupPermToJoinAssociation(groupArray)
-})
 
 </script>
 
@@ -141,7 +131,7 @@ onMounted(() => {
             >
               <FormUserInfosEdition
                 v-if="profileStore.user"
-                :edited-by-staff="false"
+                :edited-by-manager="false"
                 :user="profileStore.user"
               />
               <div
@@ -217,8 +207,8 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/associations.scss';
-@import '@/assets/styles/forms.scss';
-@import '@/assets/_variables.scss';
-@import '@/assets/styles/dashboard.scss';
+@import '@/assets/styles/associations';
+@import '@/assets/styles/forms';
+@import '@/assets/_variables';
+@import '@/assets/styles/dashboard';
 </style>

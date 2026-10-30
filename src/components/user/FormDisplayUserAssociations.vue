@@ -10,7 +10,7 @@ import axios from 'axios'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const userStore = useProfileStore()
+const profileStore = useProfileStore()
 const today = new Date()
 today.setHours(0, 0, 0, 0)
 const {
@@ -26,10 +26,9 @@ onMounted(async () => {
   loading.hide()
 })
 
-// Load userAssociations
 async function onGetUserAssociations() {
   try {
-    await userStore.getUserAssociations()
+    await profileStore.getUserAssociations()
     initUserAssociations(false)
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -80,13 +79,13 @@ async function onGetUserAssociations() {
         </ul>
         <div class="flex-row padding-top padding-bottom">
           <AlertConfirmUserQuitAssociation
-            :association-id="association.id ? association.id : 0"
-            :edited-by-staff="false"
-            :user-id="userStore.user?.id ? userStore.user?.id : 0"
+            :association-id="association.id ?? null"
+            :edited-by-manager="false"
+            :user-id="profileStore.user?.id ?? null"
             @user-association-deleted="onGetUserAssociations"
           />
           <QBtn
-            v-if="association.isValidatedByAdmin && association.id !== null && userStore.hasPresidentStatus(association.id)"
+            v-if="!!association.id && association.isValidatedByAdmin && profileStore.hasPresidentStatus(association.id)"
             :label="t('dashboard.association-user.manage-association')"
             :to="{ name: 'AssociationDashboard', params: { id: association.id } }"
             class="btn-lg"

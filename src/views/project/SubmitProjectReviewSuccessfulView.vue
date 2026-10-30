@@ -7,14 +7,13 @@ import {useI18n} from 'vue-i18n'
 import router from '@/router'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
-import useUtility from '@/composables/useUtil'
 
 const projectStore = useProjectStore()
 const route = useRoute()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {openDocument} = useUtility()
+const {openDocument} = useUtil()
 
 onMounted(async () => {
   loading.show()

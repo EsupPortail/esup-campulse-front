@@ -10,12 +10,12 @@ import InfoFormRequiredFields from '@/components/global/InfoFormRequiredFields.v
 
 
 const {userToUpdate} = useUsers()
-const {getGroupLiteral} = useUserGroups()
+const {groupFriendlyName} = useUserGroups()
 const {hasPerm} = useSecurity()
 const {t} = useI18n()
 
 const props = defineProps<{
-  editedByStaff: boolean,
+  editedByManager: boolean,
   user: User
 }>()
 
@@ -43,7 +43,7 @@ watch(() => userRef.value, initUserInfos)
 const initUserGroups = () => {
   let groups: (string | undefined)[] = []
   props.user?.groups?.forEach((group: UserGroup) => {
-    groups.push(getGroupLiteral(group.groupId))
+    groups.push(groupFriendlyName(group.groupId))
   })
   groups = groups.filter((element, index) => {
     return groups.indexOf(element) === index
@@ -145,18 +145,18 @@ onMounted(() => {
       </template>
     </QInput>
     <div
-      v-if="(!editedByStaff && hasPerm('add_project_user'))
-        || (editedByStaff && userRef.permissions?.includes('add_project_user'))"
+      v-if="(!editedByManager && hasPerm('add_project_user'))
+        || (editedByManager && userRef.permissions?.includes('add_project_user'))"
     >
       <h3>{{ t('address.address') }}</h3>
       <FormUserAddress
-        :edited-by-staff="props.editedByStaff"
+        :edited-by-manager="editedByManager"
         :user="userRef"
         color="dashboard"
       />
     </div>
     <div
-      v-if="!editedByStaff"
+      v-if="!editedByManager"
       class="info-panel info-panel-dashboard"
     >
       <i

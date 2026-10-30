@@ -4,13 +4,12 @@ import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
 import {useI18n} from 'vue-i18n'
 import {ref, watch} from 'vue'
 import useColorVariants from '@/composables/useColorVariant'
-import useUtility from '@/composables/useUtil'
 import LayoutMobileMenu from '@/components/layout/LayoutMobileMenu.vue'
 
 const {t} = useI18n()
 const route = useRoute()
 const {colorVariant} = useColorVariants()
-const {dynamicTitle} = useUtility()
+const {dynamicTitle} = useUtil()
 
 const title = ref<string>(route.meta.title as string)
 

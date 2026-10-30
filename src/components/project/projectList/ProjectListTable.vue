@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import {type QTableProps, useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
-import useUtility from '@/composables/useUtil'
 import useErrors from '@/composables/useError'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
 import {useProjectStore} from '@/stores/useProjectStore'
@@ -11,7 +10,7 @@ import axios from 'axios'
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
-const {formatDate} = useUtility()
+const {formatDate} = useUtil()
 const projectStore = useProjectStore()
 
 const props = defineProps<{

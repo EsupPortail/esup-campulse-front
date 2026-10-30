@@ -1,17 +1,17 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import axios from 'axios'
-import useDocuments from '@/composables/useDocument'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import {onMounted, ref} from 'vue'
 import type {DocumentProcessType} from '#/document'
 import ListDocumentsLibrary from '@/components/documents/ListDocumentLibrary.vue'
+import {useDocumentStore} from '@/stores/useDocumentStore'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
-const {getLibraryDocuments, documents} = useDocuments()
+const documentStore = useDocumentStore()
 
 onMounted(async () => {
   loading.show()
@@ -34,7 +34,7 @@ const libraryDocuments = ref<LibraryDocument[]>([])
 
 const initLibraryDocuments = () => {
   const list: LibraryDocument[] = []
-  documents.value.forEach((document) => {
+  documentStore.documents?.forEach((document) => {
     if (document.pathTemplate) {
       list.push({
         id: document.id,
@@ -59,7 +59,7 @@ const initLibraryDocuments = () => {
 
 async function onGetLibraryDocuments() {
   try {
-    await getLibraryDocuments()
+    await documentStore.getLibraryDocuments()
     initLibraryDocuments()
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -147,7 +147,7 @@ async function onGetLibraryDocuments() {
 </template>
 
 <style lang="scss">
-@import '@/assets/styles/forms.scss';
-@import '@/assets/styles/dashboard.scss';
-@import '@/assets/_variables.scss';
+@import '@/assets/styles/forms';
+@import '@/assets/styles/dashboard';
+@import '@/assets/_variables';
 </style>

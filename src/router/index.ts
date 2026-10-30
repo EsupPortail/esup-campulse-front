@@ -4,7 +4,6 @@ import {useProfileStore} from '@/stores/useProfileStore'
 import useUserGroups from '@/composables/useUserGroup'
 import {ref, watch} from 'vue'
 import useSecurity from '@/composables/useAuthentication'
-import useUtility from '@/composables/useUtil'
 import {useGroupStore} from '@/stores/useGroupStore'
 
 const router = createRouter({
@@ -23,7 +22,7 @@ router.beforeEach(async (to) => {
   const groupStore = useGroupStore()
   const {isStaff} = useUserGroups()
   const {hasPerm} = useSecurity()
-  const {dynamicTitle, openMenu} = useUtility()
+  const {dynamicTitle, openMenu} = useUtil()
 
   if (openMenu.value) {
     openMenu.value = false

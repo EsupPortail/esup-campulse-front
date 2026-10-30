@@ -3,7 +3,6 @@ import {useI18n} from 'vue-i18n'
 import {computed, onMounted, ref} from 'vue'
 import {QForm, useQuasar} from 'quasar'
 import useCommissions from '@/composables/useCommissionFund'
-import useUtility from '@/composables/useUtil'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
 import AlertConfirmCommissionDateUpdateOrDelete from '@/components/alert/AlertConfirmCommissionDateUpdateOrDelete.vue'
@@ -11,7 +10,7 @@ import type {NewCommission, UpdateCommission} from '#/commission'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
-const {fromDateIsAnterior, arraysAreEqual} = useUtility()
+const {fromDateIsAnterior, arraysAreEqual} = useUtil()
 const {
   getFunds,
   getCommissionsForManagers,

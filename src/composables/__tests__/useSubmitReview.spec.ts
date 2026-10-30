@@ -7,7 +7,6 @@ import {useAxios} from '@/composables/useAxios'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useSubmitReview from '@/composables/useSubmitReview'
 import {_project, _projectReview} from '~/fixtures/project.mock'
-import useUtility from '../useUtil'
 
 
 vi.mock('@/composables/useAxios', () => ({
@@ -52,7 +51,7 @@ describe('useSubmitReview', () => {
     initProjectReview,
     projectId
   } = useSubmitReview()
-  const {formatDate} = useUtility()
+  const {formatDate} = useUtil()
   const {axiosAuthenticated} = useAxios()
 
   const mockedAxios = vi.mocked(axiosAuthenticated, true)

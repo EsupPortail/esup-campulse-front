@@ -10,7 +10,7 @@ const {userToUpdate} = useUsers()
 const props = defineProps<{
   user: User | undefined,
   color: 'commission' | 'dashboard',
-  editedByStaff: boolean
+  editedByManager: boolean
 }>()
 
 const userRef = toRefs(props).user
@@ -29,10 +29,10 @@ onMounted(initUserInfos)
   <div class="flex-column">
     <QInput
       v-model="userToUpdate.address"
-      :aria-required="!props.editedByStaff"
+      :aria-required="!props.editedByManager"
       :color="props.color"
-      :label="t('address.address') + (props.editedByStaff ? '' : ' *')"
-      :rules="props.editedByStaff ? [] : [val => val && val.length > 0 || t('forms.required-address')]"
+      :label="t('address.address') + (props.editedByManager ? '' : ' *')"
+      :rules="props.editedByManager ? [] : [val => val && val.length > 0 || t('forms.required-address')]"
       autocomplete="street-address"
       clearable
       filled
@@ -40,30 +40,30 @@ onMounted(initUserInfos)
     <div class="flex-row-center full-width">
       <QInput
         v-model="userToUpdate.zipcode"
-        :aria-required="!props.editedByStaff"
+        :aria-required="!props.editedByManager"
         :color="props.color"
-        :label="t('address.zipcode') + (props.editedByStaff ? '' : ' *')"
-        :rules="props.editedByStaff ? [] : [val => val && val.length > 0 || t('forms.required-zipcode')]"
+        :label="t('address.zipcode') + (props.editedByManager ? '' : ' *')"
+        :rules="props.editedByManager ? [] : [val => val && val.length > 0 || t('forms.required-zipcode')]"
         autocomplete="postal-code"
         clearable
         filled
       />
       <QInput
         v-model="userToUpdate.city"
-        :aria-required="!props.editedByStaff"
+        :aria-required="!props.editedByManager"
         :color="props.color"
-        :label="t('address.city') + (props.editedByStaff ? '' : ' *')"
-        :rules="props.editedByStaff ? [] : [val => val && val.length > 0 || t('forms.required-city')]"
+        :label="t('address.city') + (props.editedByManager ? '' : ' *')"
+        :rules="props.editedByManager ? [] : [val => val && val.length > 0 || t('forms.required-city')]"
         autocomplete="address-level2"
         clearable
         filled
       />
       <QInput
         v-model="userToUpdate.country"
-        :aria-required="!props.editedByStaff"
+        :aria-required="!props.editedByManager"
         :color="props.color"
-        :label="t('address.country') + (props.editedByStaff ? '' : ' *')"
-        :rules="props.editedByStaff ? [] : [val => val && val.length > 0 || t('forms.required-country')]"
+        :label="t('address.country') + (props.editedByManager ? '' : ' *')"
+        :rules="props.editedByManager ? [] : [val => val && val.length > 0 || t('forms.required-country')]"
         autocomplete="country-name"
         clearable
         filled

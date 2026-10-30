@@ -271,6 +271,7 @@ export default function useUserGroup() {
     groupByName,
     updateUserGroups,
     userGroupsToRegister,
-    userFunds
+    userFunds,
+    groupFriendlyName
   }
 }

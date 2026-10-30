@@ -3,7 +3,7 @@ import LayoutHeaderProfileButton from '@/components/layout/LayoutHeaderProfileBu
 import {useProfileStore} from '@/stores/useProfileStore'
 import {useI18n} from 'vue-i18n'
 
-const userStore = useProfileStore()
+const profileStore = useProfileStore()
 const {t} = useI18n()
 
 const props = defineProps<{

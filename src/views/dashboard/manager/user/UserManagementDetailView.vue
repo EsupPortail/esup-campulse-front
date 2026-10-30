@@ -99,7 +99,7 @@ onBeforeRouteLeave((to, from, next) => {
       <div class="dashboard-section-container">
         <div class="container">
           <FormUserInfosEdition
-            :edited-by-staff="true"
+            :edited-by-manager="true"
             :user="userStore.user"
           />
         </div>
@@ -186,7 +186,7 @@ onBeforeRouteLeave((to, from, next) => {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/_variables.scss';
-@import '@/assets/styles/forms.scss';
-@import '@/assets/styles/dashboard.scss';
+@import '@/assets/variables';
+@import '@/assets/styles/forms';
+@import '@/assets/styles/dashboard';
 </style>

@@ -3,6 +3,7 @@ import type {
   CasLogin,
   LocalLogin,
   LoginResponse,
+  PasswordEdit,
   PasswordResetConfirmPayload,
   RegisterCASUserPayload,
   RegisterLocalUserPayload,
@@ -65,4 +66,9 @@ export async function registerLocalUser(payload: RegisterLocalUserPayload) {
 export async function registerCASUser(payload: RegisterCASUserPayload) {
   const {axiosAuthenticated} = useAxios()
   await axiosAuthenticated.patch(`${modelBaseUrl}/registration/cas/`, payload)
+}
+
+export async function editPassword(payload: PasswordEdit): Promise<void> {
+  const {axiosAuthenticated} = useAxios()
+  await axiosAuthenticated.post(`${modelBaseUrl}/password/change/`, payload)
 }

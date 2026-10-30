@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import useUtility from '@/composables/useUtil'
+import useUtil from '@/composables/useUtil'
 import useSubmitReview from '@/composables/useProjectReview'
 import {useI18n} from 'vue-i18n'
 import useUsers from '@/composables/useUser'
@@ -11,7 +11,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useUserStore} from '@/stores/useUserStore'
 
 const {t} = useI18n()
-const {formatDate, CURRENCY} = useUtility()
+const {formatDate, CURRENCY} = useUtil()
 const {projectReview, projectId} = useSubmitReview()
 const {userToUpdate} = useUsers()
 const profileStore = useProfileStore()

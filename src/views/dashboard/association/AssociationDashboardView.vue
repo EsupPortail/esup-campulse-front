@@ -10,7 +10,6 @@ import type {UserAssociation} from '#/user'
 import useUserAssociations from '@/composables/useUserAssociation'
 import useErrors from '@/composables/useError'
 import axios from 'axios'
-import useUtility from '@/composables/useUtil'
 import InfoDocumentLibrary from '@/components/documents/InfoDocumentLibrary.vue'
 import {useProjectStore} from '@/stores/useProjectStore'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
@@ -25,7 +24,7 @@ const associationStore = useAssociationStore()
 const profileStore = useProfileStore()
 const {getAssociationUserRole, associationRoleOptions} = useUserAssociations()
 const {catchHTTPError} = useErrors()
-const {dynamicTitle} = useUtility()
+const {dynamicTitle} = useUtil()
 const projectStore = useProjectStore()
 const {initCharters, manageCharters} = useCharters()
 
@@ -288,6 +287,6 @@ async function onGetAssociationProjects() {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/dashboard.scss';
-@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard';
+@import '@/assets/styles/forms';
 </style>

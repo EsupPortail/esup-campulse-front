@@ -1,18 +1,49 @@
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
 import type {
   Association,
+  AssociationLogoFormats,
   AssociationRole,
   AssociationSocialNetwork,
   CreateAssociation,
   RegisterUserAssociation,
   UpdateAssociation
 } from '#/association'
-import useUtility from '@/composables/useUtil'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useDocumentUploads from '@/composables/useDocumentUpload'
 import * as associationService from '@/services/AssociationService'
-import type {AxiosResponse} from 'axios'
+import {type AxiosResponse} from 'axios'
+import useUtil from '@/composables/useUtil'
 
+const editedAssociation = ref<UpdateAssociation>({
+  institution: null,
+  institutionComponent: null,
+  activityField: null,
+  name: '',
+  acronym: '',
+  socialObject: '',
+  currentProjects: '',
+  address: '',
+  zipcode: '',
+  city: '',
+  country: '',
+  phone: '',
+  email: '',
+  siret: '',
+  website: '',
+  presidentNames: '',
+  presidentPhone: '',
+  presidentEmail: '',
+  approvalDate: '',
+  lastGoaDate: '',
+  amountMembersAllowed: 0,
+  isPublic: false,
+  studentCount: 0
+})
+
+
+const newLogo = ref<undefined | File>(undefined)
+
+const maxFileSize = 8388608
 
 // Needed to modify the social networks of an association
 const associationSocialNetworks = ref<AssociationSocialNetwork[]>([])
@@ -33,6 +64,41 @@ export function useAssociation() {
 
   const associationStore = useAssociationStore()
   const {processDocuments} = useDocumentUploads()
+  const {formatDate} = useUtil()
+
+  const associationMemberCount = computed<number>(() => {
+    return associationStore.associationUsers.length
+  })
+
+  const pathLogo = computed<AssociationLogoFormats | null>(() => {
+    return associationStore.association?.pathLogo ?? null
+  })
+
+  const initEditedAssociation = () => {
+    editedAssociation.value.name = associationStore.association?.name as string
+    editedAssociation.value.acronym = associationStore.association?.acronym as string
+    editedAssociation.value.socialObject = associationStore.association?.socialObject as string
+    editedAssociation.value.currentProjects = associationStore.association?.currentProjects as string
+    editedAssociation.value.address = associationStore.association?.address as string
+    editedAssociation.value.zipcode = associationStore.association?.zipcode as string
+    editedAssociation.value.city = associationStore.association?.city as string
+    editedAssociation.value.country = associationStore.association?.country as string
+    editedAssociation.value.phone = associationStore.association?.phone as string
+    editedAssociation.value.email = associationStore.association?.email as string
+    editedAssociation.value.siret = associationStore.association?.siret as string
+    editedAssociation.value.website = associationStore.association?.website as string
+    editedAssociation.value.presidentNames = associationStore.association?.presidentNames as string
+    editedAssociation.value.presidentPhone = associationStore.association?.presidentPhone as string
+    editedAssociation.value.presidentEmail = associationStore.association?.presidentEmail as string
+    editedAssociation.value.approvalDate = formatDate(associationStore.association?.approvalDate as string)
+    editedAssociation.value.lastGoaDate = formatDate(associationStore.association?.lastGoaDate as string)
+    editedAssociation.value.institution = associationStore.association?.institution?.id
+    editedAssociation.value.institutionComponent = associationStore.association?.institutionComponent?.id
+    editedAssociation.value.activityField = associationStore.association?.activityField?.id
+    editedAssociation.value.amountMembersAllowed = associationStore.association?.amountMembersAllowed ?? 0
+    editedAssociation.value.isPublic = associationStore.association?.isPublic as boolean
+    editedAssociation.value.studentCount = associationStore.association?.studentCount ?? 0
+  }
 
   function verifyAssociationRole(userAssociation: RegisterUserAssociation) {
     userAssociation.options[0].disable = false
@@ -73,8 +139,21 @@ export function useAssociation() {
     associationSocialNetworks.value?.splice(index, 1)
   }
 
-  function checkChanges(association: UpdateAssociation) {
-    const {formatDate} = useUtility()
+  function checkSocialNetworks(): AssociationSocialNetwork[] | undefined {
+    const original = associationStore.association?.socialNetworks ?? []
+    const edited = associationSocialNetworks.value ?? []
+    if (original.length !== edited.length) {
+      return edited
+    }
+    const hasChanged = original.some((originalItem) =>
+      !edited.some((editedItem) => editedItem.type === originalItem.type
+        && editedItem.location === originalItem.location)
+    )
+    return hasChanged ? edited : undefined
+  }
+
+  function checkChanges(): Partial<UpdateAssociation> {
+    const {formatDate} = useUtil()
 
     const original = associationStore.association
     const directFields = new Set([
@@ -85,7 +164,7 @@ export function useAssociation() {
     const numericFields = new Set(['amountMembersAllowed', 'studentCount'])
     const relationFields = new Set(['institution', 'institutionComponent', 'activityField'])
 
-    const changedData: UpdateAssociation = {}
+    const changedData: Partial<UpdateAssociation> = {}
 
     const compareAndAssign = <K extends keyof UpdateAssociation>(key: K, newValue: UpdateAssociation[K]) => {
       if (newValue !== original?.[key]) {
@@ -93,7 +172,7 @@ export function useAssociation() {
       }
     }
 
-    for (const [key, value] of Object.entries(association)) {
+    for (const [key, value] of Object.entries(editedAssociation.value)) {
       const typedKey = key as keyof UpdateAssociation
 
       if (directFields.has(key)) {
@@ -120,50 +199,22 @@ export function useAssociation() {
     return changedData
   }
 
-  function checkSocialNetworks(): AssociationSocialNetwork[] | undefined {
-    const original = associationStore.association?.socialNetworks ?? []
-    const edited = associationSocialNetworks.value ?? []
-    if (original.length !== edited.length) {
-      return edited
-    }
-    const hasChanged = original.some((originalItem) =>
-      !edited.some((editedItem) => editedItem.type === originalItem.type
-        && editedItem.location === originalItem.location)
-    )
-    return hasChanged ? edited : undefined
-  }
-
-  async function updateAssociation(editedAssociation: UpdateAssociation) {
-    const associationId = associationStore.association?.id
-    if (!associationId) return
-    const data = checkChanges(editedAssociation)
-    await associationService.updateAssociation(associationId, data)
-  }
-
-  async function changeAssociationLogo(newLogo: undefined | File, deleteLogoData: null | object) {
-    if (deleteLogoData === null) {
-      const patchLogoData = new FormData()
-      if (newLogo instanceof File) {
-        patchLogoData.append('pathLogo', newLogo)
-      }
-      await associationStore.updateAssociationLogo(patchLogoData, associationStore.association?.id as number)
-    } else {
-      await associationStore.updateAssociationLogo(deleteLogoData, associationStore.association?.id as number)
-    }
-  }
-
   return {
     createAssociation,
     addNetwork,
     removeNetwork,
     associationSocialNetworks,
     checkChanges,
-    updateAssociation,
     checkSocialNetworks,
     verifyAssociationRole,
-    changeAssociationLogo,
     associations,
     getAssociationPdfExport,
-    checkHasStudentCertificate
+    checkHasStudentCertificate,
+    initEditedAssociation,
+    editedAssociation,
+    maxFileSize,
+    pathLogo,
+    newLogo,
+    associationMemberCount
   }
 }

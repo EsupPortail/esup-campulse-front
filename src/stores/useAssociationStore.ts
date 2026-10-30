@@ -1,5 +1,11 @@
 import {defineStore} from 'pinia'
-import type {AssociationFilters, AssociationNameFilters, AssociationStore,} from '#/association'
+import type {
+  Association,
+  AssociationFilters,
+  AssociationNameFilters,
+  AssociationStore,
+  UpdateAssociation,
+} from '#/association'
 import type {DocumentProcessType} from '#/document'
 import * as associationService from '@/services/AssociationService'
 import * as documentUploadService from '@/services/DocumentUploadService'
@@ -55,7 +61,7 @@ export const useAssociationStore = defineStore('associationStore', {
 
     // todo voir si on a toujours besoin de ce bidule
     /*async getManagedAssociations() {
-      const userStore = useProfileStore()
+      const profileStore = useProfileStore()
       const {hasPerm} = useSecurity()
       const {isStaff} = useUserGroups()
       if (!isStaff.value && hasPerm('change_association')) { // Student institution
@@ -77,10 +83,6 @@ export const useAssociationStore = defineStore('associationStore', {
       this.association = await associationService.getAssociationDetail(associationId, isPublicRequest)
     },
 
-    async updateAssociationLogo(logoData: FormData | object, associationId: number) {
-      this.association.pathLogo.detail = await associationService.updateAssociationLogo(logoData, associationId)
-    },
-
     async getAssociationActivityFields() {
       this.activityFields = await associationService.getAssociationActivityFields()
     },
@@ -95,5 +97,25 @@ export const useAssociationStore = defineStore('associationStore', {
         processTypes
       })
     },
+
+    async updateAssociation(payload: Partial<Association | UpdateAssociation>) {
+      await associationService.updateAssociation(this.association!.id, payload)
+    },
+
+    async updateAssociationLogo(newLogo: undefined | File, deleteLogoData: null | object) {
+      if (deleteLogoData === null) {
+        const patchLogoData = new FormData()
+        if (newLogo instanceof File) {
+          patchLogoData.append('pathLogo', newLogo)
+        }
+        await associationService.updateAssociationLogo(patchLogoData, this.association!.id)
+      } else {
+        await associationService.updateAssociationLogo(deleteLogoData, this.association!.id)
+      }
+    },
+
+    async deleteAssociation() {
+      await associationService.deleteAssociation(this.association!.id)
+    }
   }
 })

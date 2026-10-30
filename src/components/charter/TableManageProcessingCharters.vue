@@ -3,12 +3,11 @@ import {useI18n} from 'vue-i18n'
 import useCharters from '@/composables/useCharter'
 import type {QTableProps} from 'quasar'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
-import useUtility from '@/composables/useUtil'
 
 
 const {t} = useI18n()
 const {processingCharters} = useCharters()
-const {formatDate} = useUtility()
+const {formatDate} = useUtil()
 
 
 const columns: QTableProps['columns'] = [

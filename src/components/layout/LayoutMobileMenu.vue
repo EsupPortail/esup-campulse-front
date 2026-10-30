@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import LayoutHeaderNav from '@/components/layout/LayoutHeaderNav.vue'
-import useUtility from '@/composables/useUtil'
 
-const {openMenu} = useUtility()
+const {openMenu} = useUtil()
 </script>
 
 <template>

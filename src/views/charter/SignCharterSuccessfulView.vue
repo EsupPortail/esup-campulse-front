@@ -7,14 +7,13 @@ import useErrors from '@/composables/useError'
 import {useAssociation} from '@/composables/useAssociation'
 import {onMounted, ref} from 'vue'
 import {useProfileStore} from '@/stores/useProfileStore'
-import useUtility from '@/composables/useUtil'
 
 const {getAssociationPdfExport} = useAssociation()
 const route = useRoute()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {openDocument} = useUtility()
+const {openDocument} = useUtil()
 
 const associationId = ref<number>()
 const associationName = ref<string>('')

@@ -2,6 +2,7 @@ import {reactive, ref, watch} from 'vue'
 import type {
   CreateUserGroup,
   LocalLogin,
+  PasswordEdit,
   PasswordResetConfirmPayload,
   RegisterCASUserPayload,
   RegisterLocalUserPayload,
@@ -76,6 +77,10 @@ async function passwordReset(email: string) {
 
 async function passwordResetConfirm(payload: PasswordResetConfirmPayload) {
   await profileService.passwordResetConfirm(payload)
+}
+
+async function editPassword(payload: PasswordEdit) {
+  await profileService.editPassword(payload)
 }
 
 export default function useAuthentication() {
@@ -177,5 +182,6 @@ export default function useAuthentication() {
     CAS_INSTITUTION_DOMAIN,
     tokenExpired,
     newUserFunds,
+    editPassword
   }
 }

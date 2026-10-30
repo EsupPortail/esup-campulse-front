@@ -34,7 +34,7 @@ watch(() => profileStore.userAssociations.length, initAssociationCounter)
 async function onGetUserDocuments() {
   if (!isStaff.value && hasPerm('add_project_user')) {
     try {
-      await profileStore.getUserDocuments(['DOCUMENT_USER'])
+      await profileStore.getUserDocumentUploads(['DOCUMENT_USER'])
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         notify({

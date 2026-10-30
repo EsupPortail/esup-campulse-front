@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import useProject from '@/composables/useProject'
-import useUtility from '@/composables/useUtil'
 import {useProjectStore} from '@/stores/useProjectStore'
 import axios from 'axios'
 import {useI18n} from 'vue-i18n'
@@ -14,7 +13,7 @@ import useCommissionFund from '@/composables/useCommissionFund'
 const {t} = useI18n()
 const {projectBudget} = useProject()
 const {commissionFundLabel} = useCommissionFund()
-const {CURRENCY} = useUtility()
+const {CURRENCY} = useUtil()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 

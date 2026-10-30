@@ -1,26 +1,26 @@
 <script lang="ts" setup>
 import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
-import useUserAssociation from '@/composables/useUserAssociation'
 import {useQuasar} from 'quasar'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import useErrors from '@/composables/useError'
 import axios from 'axios'
+import useUserAssociation from '@/composables/useUserAssociation'
 
 const {t} = useI18n()
 const confirmation = ref<boolean>(false)
-const {deleteUserAssociation} = useUserAssociation()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
+const {deleteUserAssociation} = useUserAssociation()
 
 const associationStore = useAssociationStore()
 
 const emit = defineEmits(['userAssociationDeleted'])
 
 const props = defineProps<{
-    editedByStaff: boolean
-    associationId: number,
-    userId: number,
+  editedByManager: boolean
+  associationId: number | null,
+  userId: number | null,
 }>()
 
 async function onDeleteUserAssociation() {
@@ -28,7 +28,10 @@ async function onDeleteUserAssociation() {
   try {
     await deleteUserAssociation(props.userId, props.associationId)
     emit('userAssociationDeleted')
-    await associationStore.getAssociationNames(false, true)
+    const filters = {
+      allowNewUsers: true,
+    }
+    await associationStore.getAssociationNames(filters)
     notify({
       type: 'positive',
       message: t('notifications.positive.validate-delete-user-association')
@@ -48,7 +51,7 @@ async function onDeleteUserAssociation() {
 
 <template>
   <QBtn
-    :aria-label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
+    :aria-label="t(`dashboard.association-user.delete-association${!editedByManager ? '-self' : ''}`)"
     class="btn-lg"
     color="custom-red"
     icon="bi-trash"
@@ -63,10 +66,7 @@ async function onDeleteUserAssociation() {
     <QCard>
       <QCardSection class="row items-center">
         <p class="q-ml-sm">
-          {{
-            props.editedByStaff ? t('dashboard.association-user.confirm-delete') :
-            t('dashboard.association-user.confirm-delete-self')
-          }}
+          {{ t(`dashboard.association-user.confirm-delete${!editedByManager ? '-self' : ''}`) }}
         </p>
         <div class="flex-row padding-top">
           <QBtn
@@ -78,7 +78,7 @@ async function onDeleteUserAssociation() {
           />
           <QBtn
             v-close-popup
-            :label="props.editedByStaff ? t('dashboard.association-user.delete-association') : t('dashboard.association-user.delete-association-self')"
+            :label="t(`dashboard.association-user.delete-association${!editedByManager ? '-self' : ''}`)"
             class="btn-lg"
             color="custom-red"
             icon="bi-trash"
