@@ -101,9 +101,9 @@ export default function useAuthentication() {
     removeTokens()
   }
 
-  const initNewUserData = () => {
+  const initNewUserData = (isCas?: boolean) => {
     const profileStore = useProfileStore()
-    newUser.isCas = profileStore.newUser?.isCas ?? false
+    newUser.isCas = isCas ?? profileStore.newUser?.isCas ?? false
     newUser.firstName = profileStore.newUser?.firstName ?? ''
     newUser.lastName = profileStore.newUser?.lastName ?? ''
     newUser.email = profileStore.newUser?.email ?? ''

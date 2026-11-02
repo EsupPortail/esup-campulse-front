@@ -11,7 +11,7 @@ const frontUrl = encodeURIComponent(import.meta.env.VITE_APP_FRONT_URL)
 const CASUrl = import.meta.env.VITE_APP_CAS_URL
 
 const CASUrlLogin = `${CASUrl}/login?service=${frontUrl}/cas-login`
-const CASUrlRegister = `${CASUrlLogin}/login?service=${frontUrl}/cas-register`
+const CASUrlRegister = `${CASUrl}/login?service=${frontUrl}/cas-register`
 
 onMounted(() => {
   dynamicTitle.value = t('forms.login')

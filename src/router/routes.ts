@@ -638,7 +638,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'cas-register',
         name: 'CASRegistration',
-        component: () => import('@/views/authentication/RegisterCASView.vue'),
+        component: () => import('@/views/authentication/CASRegisterView.vue'),
         meta: {
           breadcrumb: i18n.global.t('breadcrumbs.register'),
           title: i18n.global.t('breadcrumbs.register'),

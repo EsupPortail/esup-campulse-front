@@ -29,7 +29,7 @@ const {
   emailVerification,
   CAS_INSTITUTION_DOMAIN,
 } = useAuthentication()
-const {groupChoiceIsValid, isStaff, studentGroupIsSelected, canJoinAssociation, userGroupsToRegister} = useUserGroups()
+const {groupChoiceIsValid, isStaff, studentGroupIsSelected, canJoinAssociation} = useUserGroups()
 const {phoneRegex} = useUtil()
 const {catchHTTPError} = useErrors()
 const {processDocuments, uploadRegistrationDocuments} = useDocumentUploads()
@@ -45,14 +45,14 @@ const hasConsent = ref<boolean>(false)
 
 onMounted(async () => {
   loading.show()
-  initNewUserData()
+  initNewUserData(props.isCas)
   if (props.isCas) {
-    await onLoadCASUser()
+    await onLoadCASProfile()
   }
   loading.hide()
 })
 
-async function onLoadCASUser() {
+async function onLoadCASProfile() {
   try {
     await profileStore.loadCASProfile(route.query.ticket as string)
   } catch (error) {
