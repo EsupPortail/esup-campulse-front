@@ -8,7 +8,7 @@ const newComment = ref<{ text: string, isVisible: boolean }>({
   isVisible: false
 })
 
-// old = postNewProjectComment
+// old = createProjectComment
 async function createProjectComment(projectId: number, comment: CreateProjectComment): Promise<void> {
   if (!comment.text) return
   await projectService.createProjectComment(projectId, comment)

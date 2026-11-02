@@ -10,7 +10,7 @@ import type {ProjectStatus} from '#/project'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
-const {postNewProjectComment, getProjectComments, newComment} = useProjectComment()
+const {createProjectComment, getProjectComments, newComment} = useProjectComment()
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
 
@@ -40,7 +40,7 @@ async function onUpdateProjectStatus() {
       let projectStatus: ProjectStatus | '' = ''
       if (selectedAction.value === 'validate') projectStatus = 'PROJECT_REVIEW_VALIDATED'
       else if (selectedAction.value === 'return') projectStatus = 'PROJECT_REVIEW_DRAFT'
-      await postNewProjectComment(projectStore.project.id, newComment.value)
+      await createProjectComment(projectStore.project.id, newComment.value)
       if (projectStatus) await projectStore.patchProjectStatus(projectStatus)
       await getProjectComments(projectStore.project.id)
       open.value = false

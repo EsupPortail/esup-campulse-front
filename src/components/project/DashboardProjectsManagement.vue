@@ -3,12 +3,11 @@ import AtomicTab from '@/components/global/GlobalTab.vue'
 import type {Tab} from '#/global'
 import ProjectListTable from '@/components/project/projectList/ProjectListTable.vue'
 import CommissionListCard from '@/components/commission/CommissionListCard.vue'
-import useManageProjects from '@/composables/useManageProject'
 import {watch} from 'vue'
 import {useQuasar} from 'quasar'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 
-const {dashboardTab} = useManageProjects()
+const {dashboardTab} = useProject()
 const {loading} = useQuasar()
 const commissionStore = useCommissionStore()
 

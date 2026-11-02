@@ -5,7 +5,6 @@ import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useError'
 import type {ProjectCommissionFund} from '#/project'
-import useManageProjects from '@/composables/useManageProject'
 import InfoFormRequiredFields from '@/components/global/InfoFormRequiredFields.vue'
 import useProjectComment from '@/composables/useProjectComment'
 import useCommissionFund from '@/composables/useCommissionFund'
@@ -13,8 +12,8 @@ import useCommissionFund from '@/composables/useCommissionFund'
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {canManageProjectCommissionFund, patchAmountAsked} = useManageProjects()
-const {postNewProjectComment} = useProjectComment()
+const {canManageProjectCommissionFund, patchAmountAsked} = useProject()
+const {createProjectComment} = useProjectComment()
 const {commissionFundLabel} = useCommissionFund()
 const {CURRENCY} = useUtil()
 
@@ -95,7 +94,7 @@ async function onPatchProjectCommissionFunds(projectCommissionFund: EditProjectC
   loading.show()
   try {
     if (!projectCommissionFund.amountEarnedIsValidatedByAdmin) {
-      await postNewProjectComment(props.project, projectCommissionFund.comment)
+      await createProjectComment(props.project, projectCommissionFund.comment)
       await patchAmountAsked(props.project, projectCommissionFund.commissionFundId,
         Number.parseInt(projectCommissionFund.amountEarned as string))
     }

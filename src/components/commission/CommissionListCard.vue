@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type {Commission} from '#/commission'
-import AtomicDefinition from '@/components/atomic/AtomicDefinition.vue'
+import GlobalDefinition from '@/components/global/GlobalDefinition.vue'
 
 defineProps<{
   commission: Commission,
@@ -20,24 +20,24 @@ defineProps<{
           {{ commission.name }}
         </p>
         <dl class="flex-row-space-between">
-          <AtomicDefinition title="Date de commission">
+          <GlobalDefinition title="Date de commission">
             {{ commission.commissionDate }}
-          </AtomicDefinition>
-          <AtomicDefinition title="Date de soumission">
+          </GlobalDefinition>
+          <GlobalDefinition title="Date de soumission">
             {{ commission.submissionDate }}
-          </AtomicDefinition>
-          <AtomicDefinition title="Date de modification">
+          </GlobalDefinition>
+          <GlobalDefinition title="Date de modification">
             TODO
-          </AtomicDefinition>
-          <AtomicDefinition title="Financeurs">
+          </GlobalDefinition>
+          <GlobalDefinition title="Financeurs">
             TODO
-          </AtomicDefinition>
-          <AtomicDefinition title="Projets soumis">
+          </GlobalDefinition>
+          <GlobalDefinition title="Projets soumis">
             TODO
-          </AtomicDefinition>
-          <AtomicDefinition title="Bilans en retard">
+          </GlobalDefinition>
+          <GlobalDefinition title="Bilans en retard">
             TODO
-          </AtomicDefinition>
+          </GlobalDefinition>
         </dl>
       </div>
       <QBtn

@@ -48,7 +48,7 @@ describe('useProjectComments', () => {
   const {
     getProjectComments,
     comments,
-    postNewProjectComment,
+    createProjectComment,
     patchProjectComment
   } = useProjectComment()
   const {axiosAuthenticated} = useAxios()
@@ -67,7 +67,7 @@ describe('useProjectComments', () => {
   describe('postProjectComment', () => {
     it('should post new comment', async () => {
       userStore.user = _institutionManager
-      await postNewProjectComment(1, {text: 'Commentaire', isVisible: true})
+      await createProjectComment(1, {text: 'Commentaire', isVisible: true})
       expect(axiosAuthenticated.post).toHaveBeenCalledOnce()
       expect(axiosAuthenticated.post).toHaveBeenCalledWith('/projects/1/comments', {
         text: 'Commentaire',

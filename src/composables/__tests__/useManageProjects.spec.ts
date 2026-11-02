@@ -5,7 +5,6 @@ import {_axiosFixtures} from '~/fixtures/axios.mock'
 import {createPinia, setActivePinia} from 'pinia'
 import {useAxios} from '@/composables/useAxios'
 import {useProfileStore} from '@/stores/useProfileStore'
-import useManageProjects from '@/composables/useManageProject'
 import {_projectCommissionFunds} from '~/fixtures/project.mock'
 import useCommissions from '@/composables/useCommissionFund'
 import {_commissionFunds, _funds} from '~/fixtures/commissions.mock'
@@ -47,7 +46,7 @@ describe('useManageProjects', () => {
     rejectProjectCommissionFund,
     canManageProjectCommissionFund,
     patchAmountAsked
-  } = useManageProjects()
+  } = useProject()
   const {funds, commissionFunds} = useCommissions()
   const {axiosAuthenticated} = useAxios()
 

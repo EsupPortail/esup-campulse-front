@@ -7,21 +7,21 @@ import useProjectComment from '@/composables/useProjectComment'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useErrors from '@/composables/useError'
 import type {ProjectStatus} from '#/project'
-import useManageProjects from '@/composables/useManageProject'
 import {useProfileStore} from '@/stores/useProfileStore'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 import {useFundStore} from '@/stores/useFundStore'
+import useProject from '@/composables/useProject'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
-const {postNewProjectComment, getProjectComments, newComment} = useProjectComment()
+const {createProjectComment, getProjectComments, newComment} = useProjectComment()
 const {catchHTTPError} = useErrors()
 const {
   initProjectCommissionFundLabels,
   projectCommissionFundLabels,
   validateProjectCommissionFund,
   rejectProjectCommissionFund
-} = useManageProjects()
+} = useProject()
 
 const projectStore = useProjectStore()
 const profileStore = useProfileStore()
@@ -86,7 +86,7 @@ async function onUpdateProjectStatus() {
         projectStatus = 'PROJECT_REJECTED'
       }
 
-      await postNewProjectComment(projectStore.project.id, newComment.value)
+      await createProjectComment(projectStore.project.id, newComment.value)
 
       // VALIDATED
       if (projectStatus === 'PROJECT_VALIDATED') {
