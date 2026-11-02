@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
           {
             path: '',
             name: 'Associations',
-            component: () => import('@/views/directory/AssociationsView.vue'),
+            component: () => import('@/views/directory/AssociationView.vue'),
             meta: {
               title: i18n.global.t('breadcrumbs.directory'),
               siteMap: true,
@@ -356,7 +356,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: '',
                 name: 'AssociationDashboard',
-                component: () => import('@/views/dashboard/student/association/AssociationDashboardView.vue')
+                component: () => import('@/views/dashboard/association/AssociationDashboardView.vue')
               },
               {
                 path: 'edit-my-association',
@@ -371,7 +371,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: 'presidency-delegation',
                 name: 'AssociationPresidencyDelegation',
-                component: () => import('@/views/dashboard/student/association/AssociationPresidencyDelegationView.vue'),
+                component: () => import('@/views/dashboard/association/AssociationPresidencyDelegationView.vue'),
                 meta: {
                   breadcrumb: i18n.global.t('breadcrumbs.edit-association-president-delegation'),
                   title: i18n.global.t('breadcrumbs.edit-association-president-delegation')

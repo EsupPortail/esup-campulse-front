@@ -33,8 +33,6 @@ watch(() => newUser.email, () => {
   if (!newUser.isCas) newUser.username = newUser.email
 })
 
-const newUserFunds = ref<number[]>([])
-
 const emailVerification = ref<string | undefined>('')
 
 const CAS_INSTITUTION_DOMAIN = import.meta.env.VITE_APP_CAS_INSTITUTION_DOMAIN as string
@@ -83,11 +81,15 @@ async function editPassword(payload: PasswordEdit) {
   await profileService.editPassword(payload)
 }
 
+function hasPerm(permission: string): boolean {
+  const profileStore = useProfileStore()
+  return profileStore.user?.permissions.includes(permission) ?? false
+}
+
 export default function useAuthentication() {
 
-  const profileStore = useProfileStore()
-
   async function cancelAbortedCasRegistration() {
+    const profileStore = useProfileStore()
     await profileService.deleteProfile()
     newUser.isCas = false
     newUser.firstName = ''
@@ -99,11 +101,8 @@ export default function useAuthentication() {
     removeTokens()
   }
 
-  function hasPerm(permission: string): boolean {
-    return profileStore.user?.permissions.includes(permission) ?? false
-  }
-
   const initNewUserData = () => {
+    const profileStore = useProfileStore()
     newUser.isCas = profileStore.newUser?.isCas ?? false
     newUser.firstName = profileStore.newUser?.firstName ?? ''
     newUser.lastName = profileStore.newUser?.lastName ?? ''
@@ -113,7 +112,7 @@ export default function useAuthentication() {
     newUser.phone = profileStore.newUser?.phone ?? ''
   }
 
-  watch(() => profileStore.newUser, initNewUserData)
+  //watch(() => profileStore.newUser, initNewUserData)
 
   // old = userLocalRegister
   async function registerLocalUser() {
@@ -133,7 +132,6 @@ export default function useAuthentication() {
     }
 
     await profileService.registerLocalUser(user)
-    newUserFunds.value = []
   }
 
   // old = userCASRegister
@@ -151,10 +149,10 @@ export default function useAuthentication() {
     }
 
     await profileService.registerCASUser(user)
-    newUserFunds.value = []
   }
 
   async function register() {
+    const profileStore = useProfileStore()
     if (profileStore.isCas) {
       await registerCASUser()
     } else {
@@ -181,7 +179,6 @@ export default function useAuthentication() {
     cancelAbortedCasRegistration,
     CAS_INSTITUTION_DOMAIN,
     tokenExpired,
-    newUserFunds,
     editPassword
   }
 }

@@ -5,6 +5,7 @@ import {useI18n} from 'vue-i18n'
 import {ref, watch} from 'vue'
 import useColorVariants from '@/composables/useColorVariant'
 import LayoutMobileMenu from '@/components/layout/LayoutMobileMenu.vue'
+import useUtil from '@/composables/useUtil'
 
 const {t} = useI18n()
 const route = useRoute()

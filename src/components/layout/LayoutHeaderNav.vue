@@ -63,7 +63,7 @@ const props = defineProps<{
       </li>
       <li>
         <RouterLink
-          v-if="!userStore.isAuth"
+          v-if="!profileStore.isAuth"
           :to="{ name: 'Login' }"
         >
           {{ t('header.login') }}
@@ -71,7 +71,7 @@ const props = defineProps<{
       </li>
       <li>
         <LayoutHeaderProfileButton
-          v-if="userStore.isAuth"
+          v-if="profileStore.isAuth"
           :device="props.device"
           class="profile-button"
         />

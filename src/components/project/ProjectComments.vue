@@ -6,6 +6,7 @@ import {onMounted, ref} from 'vue'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import useSecurity from '@/composables/useAuthentication'
+import useUtil from '@/composables/useUtil'
 import {useProjectStore} from '@/stores/useProjectStore'
 import FormAddComment from '@/components/project/FormAddComment.vue'
 
@@ -16,8 +17,8 @@ const {
   comments,
   getProjectComments,
   newComment,
-  postNewProjectComment,
-  patchProjectComment
+  createProjectComment,
+  updateProjectComment
 } = useProjectComment()
 const {catchHTTPError} = useErrors()
 const {formatDate} = useUtil()
@@ -59,7 +60,7 @@ async function onPostNewComment() {
     loading.show()
     const projectId = projectStore.project.id
     try {
-      await postNewProjectComment(projectId, newComment.value)
+      await createProjectComment(projectId, newComment.value)
       await getProjectComments(projectId)
       open.value = false
       newComment.value = {
@@ -78,7 +79,7 @@ async function onPostNewComment() {
   }
 }
 
-async function onPatchProjectCommentVisibility(projectId: number, commentId: number) {
+async function onUpdateProjectCommentVisibility(projectId: number, commentId: number) {
   loading.show()
   const comment = comments.value.find(obj => obj.id === commentId)
   if (comment) {
@@ -88,7 +89,7 @@ async function onPatchProjectCommentVisibility(projectId: number, commentId: num
       isVisible: comment.isVisible
     }
     try {
-      await patchProjectComment(projectId, commentData)
+      await updateProjectComment(projectId, commentData)
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         notify({
@@ -138,7 +139,7 @@ async function onPatchProjectCommentVisibility(projectId: number, commentId: num
           :icon="comment.isVisible ? 'bi-eye' : 'bi-eye-slash'"
           color="commission"
           size="lg"
-          @update:model-value="onPatchProjectCommentVisibility(comment.project, comment.id)"
+          @update:model-value="onUpdateProjectCommentVisibility(comment.project, comment.id)"
         />
       </div>
     </div>

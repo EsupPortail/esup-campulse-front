@@ -60,21 +60,50 @@ async function getAssociationPdfExport(associationId: number): Promise<AxiosResp
   return await associationService.getAssociationPdfExport(associationId)
 }
 
+function verifyAssociationRole(userAssociation: RegisterUserAssociation) {
+  const associationStore = useAssociationStore()
+  userAssociation.options[0].disable = false
+  const associationDetail = associationStore.associationNames
+    .find(obj => obj.id === userAssociation.associationId)
+  if (!associationDetail!.hasPresident) return
+  userAssociation.options[0].disable = true
+  if (userAssociation.role === 'isPresident') {
+    userAssociation.role = 'isMember'
+  }
+}
+
+// Commented in component since issue is not clear
+function checkHasStudentCertificate(association: AssociationRole) {
+  const {processDocuments} = useDocumentUploads()
+  if (!association.options) return
+  // If new user has not uploaded a student certificate
+  // He/she cannot join an association as an office member
+  if (processDocuments.value.filter(doc => doc.pathFile).length === 0) {
+    association.options.forEach(association => {
+      if (association.isInOffice) association.disable = true
+    })
+  } else {
+    association.options.forEach(association => {
+      if (association.isInOffice) association.disable = false
+    })
+  }
+}
+
 export function useAssociation() {
 
-  const associationStore = useAssociationStore()
-  const {processDocuments} = useDocumentUploads()
-  const {formatDate} = useUtil()
-
   const associationMemberCount = computed<number>(() => {
+    const associationStore = useAssociationStore()
     return associationStore.associationUsers.length
   })
 
   const pathLogo = computed<AssociationLogoFormats | null>(() => {
+    const associationStore = useAssociationStore()
     return associationStore.association?.pathLogo ?? null
   })
 
   const initEditedAssociation = () => {
+    const {formatDate} = useUtil()
+    const associationStore = useAssociationStore()
     editedAssociation.value.name = associationStore.association?.name as string
     editedAssociation.value.acronym = associationStore.association?.acronym as string
     editedAssociation.value.socialObject = associationStore.association?.socialObject as string
@@ -100,33 +129,6 @@ export function useAssociation() {
     editedAssociation.value.studentCount = associationStore.association?.studentCount ?? 0
   }
 
-  function verifyAssociationRole(userAssociation: RegisterUserAssociation) {
-    userAssociation.options[0].disable = false
-    const associationDetail = associationStore.associationNames
-      .find(obj => obj.id === userAssociation.associationId)
-    if (!associationDetail!.hasPresident) return
-    userAssociation.options[0].disable = true
-    if (userAssociation.role === 'isPresident') {
-      userAssociation.role = 'isMember'
-    }
-  }
-
-  // Commented in component since issue is not clear
-  function checkHasStudentCertificate(association: AssociationRole) {
-    if (!association.options) return
-    // If new user has not uploaded a student certificate
-    // He/she cannot join an association as an office member
-    if (processDocuments.value.filter(doc => doc.pathFile).length === 0) {
-      association.options.forEach(association => {
-        if (association.isInOffice) association.disable = true
-      })
-    } else {
-      association.options.forEach(association => {
-        if (association.isInOffice) association.disable = false
-      })
-    }
-  }
-
   function addNetwork() {
     const newNetwork: AssociationSocialNetwork = {
       type: '',
@@ -140,6 +142,7 @@ export function useAssociation() {
   }
 
   function checkSocialNetworks(): AssociationSocialNetwork[] | undefined {
+    const associationStore = useAssociationStore()
     const original = associationStore.association?.socialNetworks ?? []
     const edited = associationSocialNetworks.value ?? []
     if (original.length !== edited.length) {
@@ -154,6 +157,7 @@ export function useAssociation() {
 
   function checkChanges(): Partial<UpdateAssociation> {
     const {formatDate} = useUtil()
+    const associationStore = useAssociationStore()
 
     const original = associationStore.association
     const directFields = new Set([

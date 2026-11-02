@@ -5,6 +5,7 @@ import useUserGroups from '@/composables/useUserGroup'
 import {ref, watch} from 'vue'
 import useSecurity from '@/composables/useAuthentication'
 import {useGroupStore} from '@/stores/useGroupStore'
+import useUtil from '@/composables/useUtil'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

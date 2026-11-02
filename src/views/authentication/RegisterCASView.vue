@@ -5,7 +5,7 @@ import FormRegister from '@/components/authentication/FormRegister.vue'
 <template>
   <QCard class="card">
     <QCardSection>
-      <FormRegister/>
+      <FormRegister :is-cas="true"/>
     </QCardSection>
   </QCard>
 </template>

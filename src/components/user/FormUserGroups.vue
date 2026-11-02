@@ -24,7 +24,8 @@ const {
   commissionMemberGroupIsSelected,
   userFunds,
   initGroupLabels,
-  groupLabels
+  groupLabels,
+  newUserFunds
 } = useUserGroups()
 const {notify, loading} = useQuasar()
 const route = useRoute()
@@ -59,9 +60,17 @@ async function onGetFunds() {
 }
 
 watch(() => commissionMemberGroupIsSelected.value, async () => {
-  loading.show()
-  await onGetFunds()
-  loading.hide()
+  if (commissionMemberGroupIsSelected.value) {
+    loading.show()
+    await onGetFunds()
+    loading.hide()
+  }
+})
+
+watch(() => commissionMemberGroupIsSelected.value, async () => {
+  if (!commissionMemberGroupIsSelected.value) {
+    userFunds.value = []
+  }
 })
 
 function onInitGroupLabels() {
@@ -82,6 +91,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
   newGroups.value = []
+  newUserFunds.value = []
 })
 
 </script>
@@ -104,7 +114,7 @@ onUnmounted(() => {
   </QField>
   <QSelect
     v-if="commissionMemberGroupIsSelected"
-    v-model="userFunds"
+    v-model="newUserFunds"
     :label="t('commission.commission', 2)"
     :options="fundStore.fundLabels"
     :rules="[val => val.length >= 1 || t('forms.required-commission')]"

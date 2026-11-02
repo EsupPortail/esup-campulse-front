@@ -11,6 +11,7 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 import * as documentUploadService from '@/services/DocumentUploadService'
 import * as associationService from '@/services/AssociationService'
 import {useDocumentStore} from '@/stores/useDocumentStore'
+import useUtil from '@/composables/useUtil'
 
 const charterDocumentUploads = ref<DocumentUpload[]>([])
 const charterList = ref<Charter[]>([])
@@ -41,9 +42,21 @@ async function getCharterProcessDocumentUploads(associationId?: number) {
   charterDocumentUploads.value = await documentUploadService.getDocumentUploads(filters)
 }
 
+async function patchCharterDocument(action: 'validate' | 'reject' | 'return', documentUploadId: number, comment?: string) {
+  const {formatDate} = useUtil()
+  let dataToPatch: Partial<UpdateDocumentUpload> = {}
+  if (comment) {
+    dataToPatch = Object.assign(dataToPatch, {comment})
+  }
+  if (action === 'validate') {
+    const todayDate = new Date().toJSON().slice(0, 10)
+    dataToPatch = Object.assign(dataToPatch, {validatedDate: formatDate(todayDate)})
+  }
+  await documentUploadService.updateDocumentUpload(documentUploadId, dataToPatch)
+}
+
 export default function useCharter() {
 
-  const {formatDate, reverseDate} = useUtil()
   const associationStore = useAssociationStore()
   const documentStore = useDocumentStore()
 
@@ -61,6 +74,7 @@ export default function useCharter() {
   }
 
   const initCharters = async (associationId: number, isSite: boolean, associationCharterStatus: AssociationCharterStatus | undefined) => {
+    const {formatDate, reverseDate} = useUtil()
     charterList.value = []
     const documents = documentStore.documents
     documents.forEach(document => {
@@ -80,8 +94,8 @@ export default function useCharter() {
           documentId: document.id
         }],
         pathFile: uploadedCharter?.pathFile ?? '',
-        validatedDate: formatDate(charterStatus.validatedDate).split('-').reverse().join('/'),
-        expirationDate: formatDate(charterStatus.expirationDate).split('-').reverse().join('/'),
+        validatedDate: reverseDate(formatDate(charterStatus.validatedDate)),
+        expirationDate: reverseDate(formatDate(charterStatus.expirationDate)),
         charterStatus: charterStatus.charterStatus,
         mimeTypes: document.mimeTypes
       })
@@ -196,6 +210,7 @@ export default function useCharter() {
     associationCharterStatus: AssociationCharterStatus | undefined,
     document: Document,
     uploadedCharter: DocumentUpload | undefined) => {
+    const {formatDate} = useUtil()
     let charterStatus: CharterStatus = 'NO_CHARTER'
     let validatedDate = ''
     let expirationDate = ''
@@ -256,18 +271,6 @@ export default function useCharter() {
     default:
       return 'EXPIRED'
     }
-  }
-
-  async function patchCharterDocument(action: 'validate' | 'reject' | 'return', documentUploadId: number, comment?: string) {
-    let dataToPatch: Partial<UpdateDocumentUpload> = {}
-    if (comment) {
-      dataToPatch = Object.assign(dataToPatch, {comment})
-    }
-    if (action === 'validate') {
-      const todayDate = new Date().toJSON().slice(0, 10)
-      dataToPatch = Object.assign(dataToPatch, {validatedDate: formatDate(todayDate)})
-    }
-    await documentUploadService.updateDocumentUpload(documentUploadId, dataToPatch)
   }
 
   return {

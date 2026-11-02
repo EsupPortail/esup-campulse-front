@@ -2,6 +2,7 @@
 import FormLocalLogin from '@/components/authentication/FormLocalLogin.vue'
 import {useI18n} from 'vue-i18n'
 import {onMounted} from 'vue'
+import useUtil from '@/composables/useUtil'
 
 const {t} = useI18n()
 const {dynamicTitle} = useUtil()

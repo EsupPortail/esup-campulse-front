@@ -3,6 +3,7 @@ import {useRoute} from 'vue-router'
 import {onMounted, ref, watch} from 'vue'
 import {useI18n} from 'vue-i18n'
 import useColorVariants from '@/composables/useColorVariant'
+import useUtil from '@/composables/useUtil'
 
 const {t} = useI18n()
 const route = useRoute()

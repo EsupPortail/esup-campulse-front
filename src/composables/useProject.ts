@@ -16,6 +16,7 @@ import {useCommissionStore} from '@/stores/useCommissionStore'
 import * as projectService from '@/services/ProjectService'
 import {updateProjectStatus} from '@/services/ProjectService'
 import {useFundStore} from '@/stores/useFundStore'
+import useUtil from '@/composables/useUtil'
 
 const projectStatuses: ProjectStatus[] = [
   'PROJECT_DRAFT',

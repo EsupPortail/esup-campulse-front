@@ -17,6 +17,7 @@ import useDocumentUploads from '@/composables/useDocumentUpload'
 import FormDocumentUpload from '@/components/documents/FormDocumentUpload.vue'
 import {useRoute} from 'vue-router'
 import useUser from '@/composables/useUser'
+import useUtil from '@/composables/useUtil'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -28,13 +29,16 @@ const {
   emailVerification,
   CAS_INSTITUTION_DOMAIN,
 } = useAuthentication()
-const {groupChoiceIsValid, isStaff, studentGroupIsSelected, canJoinAssociation} = useUserGroups()
+const {groupChoiceIsValid, isStaff, studentGroupIsSelected, canJoinAssociation, userGroupsToRegister} = useUserGroups()
 const {phoneRegex} = useUtil()
 const {catchHTTPError} = useErrors()
 const {processDocuments, uploadRegistrationDocuments} = useDocumentUploads()
-const profileStore = useProfileStore()
 const route = useRoute()
 const {createUser} = useUser()
+
+const props = defineProps<{
+  isCas: boolean,
+}>()
 
 const isLDAPEnabled: boolean = import.meta.env.VITE_APP_OPEN_LDAP === 'true'
 const hasConsent = ref<boolean>(false)
@@ -42,7 +46,9 @@ const hasConsent = ref<boolean>(false)
 onMounted(async () => {
   loading.show()
   initNewUserData()
-  await onLoadCASUser()
+  if (props.isCas) {
+    await onLoadCASUser()
+  }
   loading.hide()
 })
 
@@ -163,7 +169,7 @@ async function onRegister() {
             :label="t('forms.email') + ' *'"
             :rules="[(val, rules) => rules.email(val) || t('forms.required-email'),
                      val => !val.endsWith(CAS_INSTITUTION_DOMAIN) &&
-                       !userStore.isCas || t('forms.error-university-mail-domain')]"
+                       !profileStore.isCas || t('forms.error-university-mail-domain')]"
             aria-required="true"
             autocomplete="email"
             clearable

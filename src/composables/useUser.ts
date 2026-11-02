@@ -50,11 +50,8 @@ const LDAPUserOptions = computed<SelectLabel[]>(() => {
 
 export default function useUser() {
 
-  const fundStore = useFundStore()
-  const {newUserAssociations, userAssociationsToRegister} = useUserAssociation()
-  const {userGroupsToRegister} = useUserGroups()
-
   function setUserFunds(user: User): number[] {
+    const fundStore = useFundStore()
     const institutionIds = new Set(setUserInstitutions(user))
     const fundIds = fundStore.funds
       .filter(fund => fund.institution && institutionIds.has(fund.institution))
@@ -110,6 +107,8 @@ export default function useUser() {
 
   // old = addUserAsManager
   async function createUser() {
+    const {newUserAssociations, userAssociationsToRegister} = useUserAssociation()
+    const {userGroupsToRegister} = useUserGroups()
     const gifus: CreateUserGroup[] = userGroupsToRegister()
     const associations = userAssociationsToRegister(newUserAssociations.value) as RegisterAssociationUser[]
 

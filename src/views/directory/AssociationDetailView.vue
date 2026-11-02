@@ -8,11 +8,12 @@ import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
 import {useProfileStore} from '@/stores/useProfileStore'
+import useUtil from '@/composables/useUtil'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
 const {loading} = useQuasar()
-const {formatDate, dynamicTitle} = useUtil()
+const {formatDate, dynamicTitle, reverseDate} = useUtil()
 const route = useRoute()
 const associationStore = useAssociationStore()
 const profileStore = useProfileStore()
@@ -55,7 +56,7 @@ async function onGetAssociationDetail() {
 const initAssociationCharter = () => {
   let str = t('charter.association-charter-status.no-charter')
   if (association.value) {
-    const charterDate = formatDate(association.value?.charterDate).split('-').reverse().join('/')
+    const charterDate = reverseDate(formatDate(association.value?.charterDate))
     if (charterDate) {
       const charterStatus = association.value?.charterStatus
       switch (charterStatus) {
@@ -187,7 +188,7 @@ const initAssociationCharter = () => {
               class="display-row"
             >
               <dt>{{ t('association.labels.charter-date') }}</dt>
-              <dd>{{ formatDate(association?.charterDate).split('-').reverse().join('/') }}</dd>
+              <dd>{{ reverseDate(formatDate(association?.charterDate)) }}</dd>
             </div>
 
             <div
@@ -195,7 +196,7 @@ const initAssociationCharter = () => {
               class="display-row"
             >
               <dt>{{ t('association.labels.last-goa') }}</dt>
-              <dd>{{ formatDate(association?.lastGoaDate).split('-').reverse().join('/') }}</dd>
+              <dd>{{ reverseDate(formatDate(association?.lastGoaDate)) }}</dd>
             </div>
 
             <div
@@ -308,7 +309,7 @@ const initAssociationCharter = () => {
         icon="bi-box-arrow-left"
       />
       <QBtn
-        v-if="userStore.user?.associations.find(x => x.id === association?.id)"
+        v-if="profileStore.user?.associations.some(x => x.id === association?.id)"
         :label="t('dashboard.association-user.manage-association')"
         :to="{ name: 'AssociationDashboard', params: { id: association?.id } }"
         class="btn-lg"

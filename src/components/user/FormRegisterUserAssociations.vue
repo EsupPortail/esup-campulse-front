@@ -93,7 +93,7 @@ async function onAddAssociation() {
 
 const canAddUserAssociation = computed<boolean>(() => {
   const isManageAccountRoute = routeName.value === 'ManageAccount'
-  return (isManageAccountRoute && newUserAssociations.value.length < (5 - userAssociations.value.length)) ||
+  return (!isManageAccountRoute && newUserAssociations.value.length < (5 - userAssociations.value.length)) ||
       (isManageAccountRoute && !newUserAssociations.value.length)
 })
 

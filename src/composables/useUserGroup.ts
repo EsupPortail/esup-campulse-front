@@ -16,6 +16,7 @@ import useUtil from '@/composables/useUtil'
 const newGroups = ref<number[]>([])
 const groupLabels = ref<SelectLabelGroup[]>([])
 const userFunds = ref<number[]>([])
+const newUserFunds = ref<number[]>([])
 
 // Helpers
 const groupChoiceLimit: number = 2
@@ -27,19 +28,13 @@ const groupChoiceIsValid = computed<boolean>(() => {
 // old = canJoinAssociationGroups
 const associationMemberGroups = new Set(['STUDENT_INSTITUTION'])
 const studentGroups = new Set(['STUDENT_INSTITUTION', 'STUDENT_MISC'])
-const commissionMemberGroups = new Set(['MANAGER_MISC'])
+const commissionMemberGroups = new Set(['MEMBER_FUND'])
 
 export default function useUserGroup() {
 
-  const profileStore = useProfileStore()
-  const groupStore = useGroupStore()
-  const userStore = useUserStore()
-  const {arraysAreEqual} = useUtil()
-  const {setUserFunds} = useUser()
-  const {hasPerm} = useAuthentication()
-
-
   const isStaff = computed<boolean>(() => {
+    const profileStore = useProfileStore()
+    const groupStore = useGroupStore()
     if (!profileStore.user?.groups) return false
     return profileStore.user.groups.some(userGroup => {
       const group = groupStore.groups
@@ -49,6 +44,8 @@ export default function useUserGroup() {
   })
 
   const isInGroup = (groupName: GroupName): boolean => {
+    const profileStore = useProfileStore()
+    const groupStore = useGroupStore()
     if (!profileStore.user?.groups) return false
     const group = groupStore.groups.find(g => g.name === groupName)
     return profileStore.user.groups.some(g => g.id === group.id)
@@ -56,11 +53,14 @@ export default function useUserGroup() {
 
   // old = getGroupLiteral
   const groupFriendlyName = (groupId: number): string => {
+    const groupStore = useGroupStore()
     const group = groupStore.groups.find(obj => obj.id === groupId)
     return i18n.global.t(`user-groups.${group.name.replace(/_/g, '-').toLowerCase()}`) ?? ''
   }
 
   function initGroupLabels(onlyPublic?: boolean): void {
+    const groupStore = useGroupStore()
+    const {hasPerm} = useAuthentication()
     const labels = groupStore.groups.reduce<SelectLabelGroup[]>((factory, group) => {
       if (!onlyPublic || group.isPublic) {
         const label = groupFriendlyName(group.id)
@@ -91,6 +91,7 @@ export default function useUserGroup() {
 
   // old = preSelectGroup
   function selectGroup(groupName: GroupName): void {
+    const groupStore = useGroupStore()
     if (!groupStore.groups.length) return
     const groupToSelect = groupStore.groups
       .find(group => group.name === groupName)
@@ -99,6 +100,7 @@ export default function useUserGroup() {
 
   // old = groupCanJoinAssociation
   const canJoinAssociation = computed<boolean>(() => {
+    const groupStore = useGroupStore()
     if (!groupStore.groups.length) return
     let perm = false
     for (const group of newGroups.value) {
@@ -115,6 +117,7 @@ export default function useUserGroup() {
 
   // old = commissionMemberIsSelected
   const commissionMemberGroupIsSelected = computed<boolean>(() => {
+    const groupStore = useGroupStore()
     const targetGroups = new Set(groupStore.groups
       .filter(g => commissionMemberGroups.has(g.name))
       .map(g => g.id))
@@ -122,6 +125,7 @@ export default function useUserGroup() {
   })
 
   const studentGroupIsSelected = computed<boolean>(() => {
+    const groupStore = useGroupStore()
     const targetGroups = new Set(groupStore.groups
       .filter(g => studentGroups.has(g.name))
       .map(g => g.id))
@@ -129,6 +133,7 @@ export default function useUserGroup() {
   })
 
   const groupByName = (name: GroupName): Group => {
+    const groupStore = useGroupStore()
     return groupStore.groups.find(g => g.name === name)
   }
 
@@ -180,6 +185,7 @@ export default function useUserGroup() {
   }
 
   async function deleteUserGroups(user: User, groupsToDelete: number[], fundsToDelete: number[]) {
+    const {setUserFunds} = useUser()
     const funds = setUserFunds(user)
     const userId = user.id
     const commissionMemberGroup = groupByName('MEMBER_FUND')
@@ -204,6 +210,10 @@ export default function useUserGroup() {
   }
 
   async function updateUserGroups(user: User) {
+    const userStore = useUserStore()
+    const {arraysAreEqual} = useUtil()
+    const {setUserFunds} = useUser()
+
     const originalGroups = userStore.userGroups
     const updatedGroups = newGroups.value
     const originalFunds = setUserFunds(user)
@@ -235,8 +245,6 @@ export default function useUserGroup() {
   const userGroupsToRegister = (userId?: number): CreateUserGroup[] | UpdateUserGroup[] => {
     const commissionGroup = groupByName('MEMBER_FUND')
     if (!commissionGroup) return []
-
-    const {newUserFunds} = useAuthentication()
 
     const nonCommissionGroups: CreateUserGroup[] = newGroups.value
       .filter(group => group !== commissionGroup.id)
@@ -272,6 +280,7 @@ export default function useUserGroup() {
     updateUserGroups,
     userGroupsToRegister,
     userFunds,
-    groupFriendlyName
+    groupFriendlyName,
+    newUserFunds
   }
 }

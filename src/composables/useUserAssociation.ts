@@ -45,41 +45,39 @@ async function deleteUserAssociation(userId: number, associationId: number) {
   await userService.deleteUserAssociation(userId, associationId)
 }
 
+const associationRoleOptions: AssociationOptions[] = [
+  {
+    label: i18n.global.t('forms.im-association-president'),
+    value: 'isPresident',
+    isInOffice: true
+  },
+  {
+    label: i18n.global.t('forms.im-association-secretary'),
+    value: 'isSecretary',
+    isInOffice: true
+  },
+  {
+    label: i18n.global.t('forms.im-association-treasurer'),
+    value: 'isTreasurer',
+    isInOffice: true
+  },
+  {
+    label: i18n.global.t('forms.im-association-vice-president'),
+    value: 'isVicePresident',
+    isInOffice: true
+  },
+  {
+    label: i18n.global.t('forms.im-association-member'),
+    value: 'isMember',
+    isInOffice: false
+  }
+]
+
 export default function useUserAssociation() {
 
-  const profileStore = useProfileStore()
-  const userStore = useUserStore()
-  const associationStore = useAssociationStore()
-
-  const associationRoleOptions: AssociationOptions[] = [
-    {
-      label: i18n.global.t('forms.im-association-president'),
-      value: 'isPresident',
-      isInOffice: true
-    },
-    {
-      label: i18n.global.t('forms.im-association-secretary'),
-      value: 'isSecretary',
-      isInOffice: true
-    },
-    {
-      label: i18n.global.t('forms.im-association-treasurer'),
-      value: 'isTreasurer',
-      isInOffice: true
-    },
-    {
-      label: i18n.global.t('forms.im-association-vice-president'),
-      value: 'isVicePresident',
-      isInOffice: true
-    },
-    {
-      label: i18n.global.t('forms.im-association-member'),
-      value: 'isMember',
-      isInOffice: false
-    }
-  ]
-
   async function updateUserAssociations(editedByManager: boolean) {
+    const profileStore = useProfileStore()
+    const userStore = useUserStore()
     const instance = editedByManager ? userStore : profileStore
     const userId = instance.user?.id
 
@@ -146,6 +144,8 @@ export default function useUserAssociation() {
   }*/
 
   const initAssociationMembers = async (associationId: number, withPresident: boolean) => {
+    const profileStore = useProfileStore()
+    const associationStore = useAssociationStore()
     associationMembers.value = []
     await associationStore.getAssociationUsers(associationId)
     associationMembers.value = associationStore.associationUsers
@@ -162,6 +162,8 @@ export default function useUserAssociation() {
   }
 
   const initUserAssociations = (editedByManager: boolean) => {
+    const profileStore = useProfileStore()
+    const userStore = useUserStore()
     const associations: AssociationUser[] = editedByManager ? userStore.userAssociations : profileStore.userAssociations
     userAssociations.value = associations.map(association => ({
       id: association.association.id,
