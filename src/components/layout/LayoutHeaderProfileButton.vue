@@ -19,7 +19,7 @@ const props = defineProps<{
 async function onLogOut() {
   loading.show()
   try {
-    userStore.logOut()
+    profileStore.logout()
     await router.push({name: 'Login'})
     notify({
       type: 'positive',
@@ -37,8 +37,8 @@ async function onLogOut() {
 }
 
 const initUserAssociations = async () => {
-  if (userStore.user?.associations.length && !userStore.userAssociations.length && props.device !== 'mobile') {
-    await userStore.getUserAssociations()
+  if (profileStore.user?.associations.length && !profileStore.userAssociations.length && props.device !== 'mobile') {
+    await profileStore.getUserAssociations()
   }
 }
 
@@ -87,7 +87,7 @@ onMounted(async () => {
           </li>
 
           <li
-            v-for="(item) in userStore.userAssociations"
+            v-for="(item) in profileStore.userAssociations"
             :key="item.id"
           >
             <QItem

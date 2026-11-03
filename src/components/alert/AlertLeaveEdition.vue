@@ -3,20 +3,20 @@ import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n()
 
-const props = defineProps({
-  openAlert: Boolean,
-  text: String
-})
+defineProps<{
+  openAlert: boolean,
+  text: string
+}>()
 </script>
 
 <template>
   <QDialog
-    :model-value="props.openAlert"
+    :model-value="openAlert"
     persistent
   >
     <QCard class="variant-space-4">
       <QCardSection>
-        <p>{{ props.text }}</p>
+        <p>{{ text }}</p>
         <div class="flex-row padding-top align-items-stretch">
           <QBtn
             v-close-popup
@@ -45,6 +45,6 @@ const props = defineProps({
 @import '@/assets/styles/dashboard.scss';
 
 .q-card {
-    padding: 1rem
+  padding: 1rem
 }
 </style>

@@ -1,15 +1,15 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import {QForm, useQuasar} from 'quasar'
-import {onMounted, reactive, ref, watch} from 'vue'
+import {computed, onMounted, reactive, ref} from 'vue'
 import axios from 'axios'
 import {useAssociation} from '@/composables/useAssociation'
 import {useProfileStore} from '@/stores/useProfileStore'
 import type {CreateAssociation} from '#/association'
 import useSecurity from '@/composables/useAuthentication'
 import useErrors from '@/composables/useError'
-import useUser from '@/composables/useUser'
 import {useInstitutionStore} from '@/stores/useInstitutionStore'
+import type {SelectLabel} from '#/global'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
@@ -18,7 +18,6 @@ const institutionStore = useInstitutionStore()
 const profileStore = useProfileStore()
 const {hasPerm} = useSecurity()
 const {catchHTTPError} = useErrors()
-const {userInstitutions} = useUser()
 
 
 const newAssociation = reactive<CreateAssociation>({
@@ -30,31 +29,22 @@ const newAssociation = reactive<CreateAssociation>({
   isSite: false
 })
 
-const institutions = ref<({ value: number, label: string } | undefined)[]>([])
 const newAssociationForm = ref(QForm)
 
-const initValues = () => {
-  institutions.value = []
-  const userInstitutionList = userInstitutions(profileStore.user)
-  if (userInstitutionList.length) {
-    institutionStore.institutions.forEach(function (institution) {
-      if (userInstitutionList.includes(institution.id)) {
-        institutions.value.push(
-          {
-            value: institution.id,
-            label: `${institution.acronym} (${institution.name})`
-          }
-        )
-      }
-    })
-  }
-}
-watch(() => institutionStore.institutions, initValues)
-watch(() => userInstitutions(profileStore.user), initValues)
+const institutions = computed<SelectLabel[]>(() => {
+  return institutionStore.institutions.reduce((acc, institution) => {
+    if (profileStore.userInstitutions.includes(institution.id)) {
+      acc.push({
+        value: institution.id,
+        label: `${institution.acronym} (${institution.name})`
+      })
+    }
+    return acc
+  }, [])
+})
 
 onMounted(async () => {
   await institutionStore.getInstitutions()
-  initValues()
 })
 
 async function onCreate() {

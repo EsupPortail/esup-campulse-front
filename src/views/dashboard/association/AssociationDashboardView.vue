@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import {onMounted, ref, watch} from 'vue'
+import {computed, onMounted} from 'vue'
 import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
 import {useProfileStore} from '@/stores/useProfileStore'
-import type {Association} from '#/association'
-import type {UserAssociation} from '#/user'
+import type {Association, AssociationUser} from '#/association'
 import useUserAssociations from '@/composables/useUserAssociation'
 import useErrors from '@/composables/useError'
 import axios from 'axios'
@@ -16,114 +15,53 @@ import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.
 import ListDocumentDashboard from '@/components/documents/ListDocumentDashboard.vue'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
 import useCharters from '@/composables/useCharter'
+import useUtil from '@/composables/useUtil'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const route = useRoute()
 const associationStore = useAssociationStore()
 const profileStore = useProfileStore()
-const {getAssociationUserRole, associationRoleOptions} = useUserAssociations()
+const {associationUserRole, associationRoleOptions} = useUserAssociations()
 const {catchHTTPError} = useErrors()
 const {dynamicTitle} = useUtil()
 const projectStore = useProjectStore()
-const {initCharters, manageCharters} = useCharters()
+const {initCharters, charterList} = useCharters()
 
-onMounted(async function () {
+onMounted(async () => {
   loading.show()
-  await onGetAssociationDetail()
-  await onGetAssociationDocuments()
-  initAssociationUser()
-  initAssociationUserRole()
-  await onGetAssociationProjects()
-  await onGetAssociationCharters()
+  await onGetData()
   dynamicTitle.value = association.value?.name
   loading.hide()
 })
 
-// TODO find a way to avoid double request
-watch(() => route.path, async () => {
-  if (route.name === 'AssociationDashboard') await onGetAssociationDetail()
-  dynamicTitle.value = association.value?.name
+const association = computed<Association>(() => {
+  return associationStore.association
 })
 
-const association = ref<Association>()
-
-const hasPresidentStatus = ref<boolean>(false)
-
-const initValues = () => {
-  association.value = associationStore.association
-  hasPresidentStatus.value = profileStore.hasPresidentStatus(association?.value?.id as number)
-}
-
-watch(() => associationStore.association, initValues)
-watch(() => profileStore.userAssociations.length, initValues)
-
-const associationUser = ref<UserAssociation>()
-
-const initAssociationUser = () => {
-  associationUser.value = profileStore.userAssociations.find(obj => obj.association.id === Number.parseInt(route.params.id as string))
-}
-watch(() => profileStore.userAssociations.length, initAssociationUser)
-
-const associationUserRole = ref<{ codeName: string, literalName: string }>({
-  codeName: '',
-  literalName: ''
+const hasPresidentStatus = computed<boolean>(() => {
+  return profileStore.hasPresidentStatus(association.value?.id)
 })
-const initAssociationUserRole = () => {
-  if (associationUser.value) {
-    const codeName = getAssociationUserRole(associationUser.value)
-    const literalName = associationRoleOptions.find(obj => obj.value === codeName)?.label ?? ''
-    associationUserRole.value.codeName = codeName
-    associationUserRole.value.literalName = literalName
+
+const associationUser = computed<AssociationUser>(() => {
+  return profileStore.userAssociations
+    .find(obj => obj.association.id === Number.parseInt(route.params.id as string))
+})
+
+const role = computed<{ codeName: string, literalName: string }>(() => {
+  const codeName = associationUserRole(associationUser.value)
+  return {
+    codeName,
+    literalName: associationRoleOptions.find(obj => obj.value === codeName)?.label ?? ''
   }
-}
-watch(() => associationUser.value, initAssociationUserRole)
+})
 
-
-async function onGetAssociationDetail() {
+async function onGetData() {
   try {
     await associationStore.getAssociationDetail(Number.parseInt(route.params.id as string), false)
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      notify({
-        type: 'negative',
-        message: await catchHTTPError(error.response)
-      })
-    }
-  }
-}
-
-async function onGetAssociationDocuments() {
-  try {
     await associationStore.getAssociationDocuments(['DOCUMENT_ASSOCIATION'])
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      notify({
-        type: 'negative',
-        message: await catchHTTPError(error.response)
-      })
-    }
-  }
-}
-
-async function onGetAssociationCharters() {
-  try {
-    if (associationStore.association) {
-      await initCharters(associationStore.association.id, associationStore.association.isSite, associationStore.association.charterStatus)
-    }
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      notify({
-        type: 'negative',
-        message: await catchHTTPError(error.response)
-      })
-    }
-  }
-}
-
-async function onGetAssociationProjects() {
-  try {
-    await projectStore.getAssociationProjects(association.value?.id as number)
+    await initCharters(associationStore.association!.id, associationStore.association!.isSite, associationStore.association!.charterStatus)
+    await projectStore.getProjects({association: association.value!.id})
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -144,9 +82,9 @@ async function onGetAssociationProjects() {
     </h2>
     <div class="dashboard-section-container">
       <div class="container">
-        <p v-if="associationUserRole.literalName">
+        <p v-if="role.literalName">
           {{
-            associationUserRole.literalName + (associationUserRole.codeName !== 'isPresident' ?
+            role.literalName + (role.codeName !== 'isPresident' ?
               ` ${hasPresidentStatus ? t('with') : t('without')} droits de présidence` : '')
           }}
         </p>
@@ -228,9 +166,9 @@ async function onGetAssociationProjects() {
               color="dashboard"
             />
           </div>
-          <section v-if="manageCharters.length">
+          <section v-if="charterList.length">
             <div
-              v-for="charter in manageCharters"
+              v-for="charter in charterList"
               :key="charter.documentId"
               class="document-input variant-space-1"
             >
@@ -258,9 +196,9 @@ async function onGetAssociationProjects() {
               color="dashboard"
             />
           </div>
-          <section v-if="projectStore.selfProjects.length">
+          <section v-if="projectStore.projects?.results?.length">
             <div
-              v-for="project in projectStore.selfProjects.slice(0, 3)"
+              v-for="project in projectStore.projects.results.slice(0, 3)"
               :key="project.id"
               class="document-input variant-space-1"
             >

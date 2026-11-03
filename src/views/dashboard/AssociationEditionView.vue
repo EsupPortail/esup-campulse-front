@@ -28,7 +28,7 @@ const {dynamicTitle} = useUtil()
 const profileStore = useProfileStore()
 const {isStaff} = useUserGroups()
 const {t} = useI18n()
-const {checkChanges} = useAssociation()
+const {checkChanges, editedAssociation, initEditedAssociation} = useAssociation()
 
 const isLoaded = ref(false)
 
@@ -59,6 +59,7 @@ async function onGetData() {
     await institutionStore.getInstitutions()
     await institutionStore.getInstitutionComponents()
     await associationStore.getAssociationActivityFields()
+    initEditedAssociation()
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -69,7 +70,7 @@ async function onGetData() {
   }
 }
 
-onMounted(async function () {
+onMounted(async () => {
   loading.show()
   if (isAuthorized()) {
     await onGetData()

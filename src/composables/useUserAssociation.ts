@@ -25,10 +25,10 @@ const associationMembers = ref<AssociationMember[]>([])
 
 
 const associationUserRole = (associationUser: AssociationUser): AssociationUserRole => {
-  if (associationUser.isPresident) return 'isPresident'
-  if (associationUser.isSecretary) return 'isSecretary'
-  if (associationUser.isTreasurer) return 'isTreasurer'
-  if (associationUser.isVicePresident) return 'isVicePresident'
+  if (associationUser?.isPresident) return 'isPresident'
+  if (associationUser?.isSecretary) return 'isSecretary'
+  if (associationUser?.isTreasurer) return 'isTreasurer'
+  if (associationUser?.isVicePresident) return 'isVicePresident'
   return 'isMember'
 }
 

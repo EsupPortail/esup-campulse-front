@@ -11,8 +11,10 @@ import axios from 'axios'
 import FormAssociationSearch from '@/components/association/FormAssociationSearch.vue'
 import {useAssociation} from '@/composables/useAssociation'
 import {useRoute} from 'vue-router'
+import {useInstitutionStore} from '@/stores/useInstitutionStore'
 
 const associationStore = useAssociationStore()
+const institutionStore = useInstitutionStore()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {hasPerm} = useSecurity()
@@ -25,18 +27,18 @@ const initValues = () => {
 }
 watch(() => associationStore.associations, initValues)
 
-onMounted(async function () {
+onMounted(async () => {
   loading.show()
-  await onGetManagedAssociations()
+  await onGetData()
   initValues()
   loading.hide()
 })
 
-async function onGetManagedAssociations() {
+async function onGetData() {
   try {
-    await associationStore.getManagedAssociations()
-    await associationStore.getInstitutions()
-    await associationStore.getActivityFields()
+    await associationStore.getAssociations()
+    await institutionStore.getInstitutions()
+    await associationStore.getAssociationActivityFields()
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -71,8 +73,8 @@ const columns: QTableProps['columns'] = [
     label: t('directory.labels.association-institution'),
     field: 'institution',
     sortable: true,
-    sort: (a, b) => (associationStore.institutions.find(obj => obj.id === a)?.name as string)
-      .localeCompare(associationStore.institutions.find(obj => obj.id === b)?.name as string)
+    sort: (a, b) => (institutionStore.institutions.find(obj => obj.id === a)?.name as string)
+      .localeCompare(institutionStore.institutions.find(obj => obj.id === b)?.name as string)
   },
   {
     name: 'activityField',

@@ -3,6 +3,7 @@ import {useAssociation} from '@/composables/useAssociation'
 import {useI18n} from 'vue-i18n'
 import {onMounted, toRaw, watch} from 'vue'
 import {useAssociationStore} from '@/stores/useAssociationStore'
+import useUtil from '@/composables/useUtil'
 
 const {addNetwork, removeNetwork, associationSocialNetworks} = useAssociation()
 const {urlRegex} = useUtil()

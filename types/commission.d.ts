@@ -64,12 +64,12 @@ export interface CommissionStore {
 }
 
 export interface CommissionFilters {
-  funds?: number[];
-  isOpenToProjects?: boolean;
-  isSite?: boolean;
-  managedProjects?: boolean;
-  onlyWithActiveProjects?: boolean;
-  toPostponeProject?: number;
-  withActiveProjects?: boolean;
+  funds: number[];
+  isOpenToProjects: boolean;
+  isSite: boolean;
+  managedProjects: boolean;
+  onlyWithActiveProjects: boolean;
+  toPostponeProject: number;
+  withActiveProjects: boolean;
 }
 

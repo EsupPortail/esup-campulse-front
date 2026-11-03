@@ -13,7 +13,7 @@ import type {AxiosResponse} from 'axios'
 
 const modelBaseUrl = '/commissions'
 
-export async function getCommissions(filters?: CommissionFilters): Promise<PaginatedList<Commission>> {
+export async function getCommissions(filters?: Partial<CommissionFilters>): Promise<PaginatedList<Commission>> {
   let urlString = `${modelBaseUrl}/`
   const urlArray = []
   if (filters?.funds?.length) urlArray.push(`funds=${filters.funds.join(',')}`)

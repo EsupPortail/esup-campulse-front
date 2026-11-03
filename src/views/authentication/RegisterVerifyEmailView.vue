@@ -42,4 +42,3 @@ onMounted(async () => {
 <style lang="scss" scoped>
 @import '@/assets/styles/dashboard';
 </style>
-

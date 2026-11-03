@@ -9,6 +9,7 @@ import useSecurity from '@/composables/useAuthentication'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
 import useUtil from '@/composables/useUtil'
+import * as associationService from '@/services/AssociationService'
 
 const {t} = useI18n()
 const changes = ref<boolean>(false)
@@ -71,7 +72,7 @@ async function onConfirmChanges(emailType: string) {
     positiveMessage = t('notifications.positive.enable-associations')
     negativeMessage = t('notifications.negative.enable-associations-error')
     props.selectedAssociations?.forEach((selectedAssociation) => {
-      promisesToExecute.push(associationStore.patchEnabledAssociation(true, selectedAssociation.id).then(() => {
+      promisesToExecute.push(associationService.updateAssociation(selectedAssociation.id, {isEnabled: true}).then(() => {
         associationsSuccess.push(selectedAssociation.name)
       }))
     })
@@ -80,7 +81,7 @@ async function onConfirmChanges(emailType: string) {
     positiveMessage = t('notifications.positive.disable-associations')
     negativeMessage = t('notifications.negative.disable-associations-error')
     props.selectedAssociations?.forEach((selectedAssociation) => {
-      promisesToExecute.push(associationStore.patchEnabledAssociation(false, selectedAssociation.id).then(() => {
+      promisesToExecute.push(associationService.updateAssociation(selectedAssociation.id, {isEnabled: false}).then(() => {
         associationsSuccess.push(selectedAssociation.name)
       }))
     })
@@ -90,7 +91,7 @@ async function onConfirmChanges(emailType: string) {
     negativeMessage = t('notifications.negative.delete-associations-error')
     if (deletionWord.value === t('association.before-deletion-word')) {
       props.selectedAssociations?.forEach((selectedAssociation) => {
-        promisesToExecute.push(associationStore.deleteAssociation(selectedAssociation.id).then(() => {
+        promisesToExecute.push(associationService.deleteAssociation(selectedAssociation.id).then(() => {
           associationsSuccess.push(selectedAssociation.name)
           if (props.selectedAssociations) {
             let newSelectedAssociations = props.selectedAssociations
@@ -114,7 +115,7 @@ async function onConfirmChanges(emailType: string) {
     if (props.selectedAssociations?.length) {
       try {
         const associationIds = props.selectedAssociations.map(x => x.id)
-        const response = await associationStore.export(associationIds, (switches.value === 'csv-export') ? 'csv' : 'xlsx')
+        const response = await associationService.exportAssociations(associationIds, (switches.value === 'csv-export') ? 'csv' : 'xlsx')
         openDocument(response)
         const message = (switches.value === 'csv-export') ? t('notifications.positive.csv-export-associations') : t('notifications.positive.xlsx-export-associations')
         notify({
@@ -138,7 +139,7 @@ async function onConfirmChanges(emailType: string) {
   Promise.all(promisesToExecute).then(() => {
     let message = ''
     if (associationsSuccess.length > 0) {
-      associationStore.getManagedAssociations()
+      associationStore.getAssociations()
       message = positiveMessage
       notify({
         type: 'positive',
@@ -147,7 +148,7 @@ async function onConfirmChanges(emailType: string) {
       })
     }
     if (associationsError.length > 0) {
-      associationStore.getManagedAssociations()
+      associationStore.getAssociations()
       message = negativeMessage
       notify({
         type: 'negative',
