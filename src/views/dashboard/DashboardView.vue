@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import useSecurity from '@/composables/useAuthentication'
 import useUserGroups from '@/composables/useUserGroup'
 import {useProfileStore} from '@/stores/useProfileStore'
 import {onMounted, ref, watch} from 'vue'
@@ -11,11 +10,12 @@ import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import {useProjectStore} from '@/stores/useProjectStore'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
+import {usePermission} from '@/composables/usePermission'
 
 
 const profileStore = useProfileStore()
 const {t} = useI18n()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 const {isStaff, isInGroup} = useUserGroups()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()

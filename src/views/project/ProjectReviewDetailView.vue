@@ -10,16 +10,16 @@ import {useProjectStore} from '@/stores/useProjectStore'
 import {useRoute} from 'vue-router'
 import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
-import useSecurity from '@/composables/useAuthentication'
 import useSubmitReview from '@/composables/useProjectReview'
 import ProjectReviewRecapBasicInfos from '@/components/project/ProjectReviewRecapBasicInfos.vue'
 import ProjectReviewRecapReview from '@/components/project/ProjectReviewRecapReview.vue'
 import ProjectReviewValidation from '@/components/project/ProjectReviewValidation.vue'
+import {usePermission} from '@/composables/usePermission'
 
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 const projectStore = useProjectStore()
 const {initProjectReview} = useSubmitReview()
 const route = useRoute()

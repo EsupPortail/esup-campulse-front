@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import useSecurity from '@/composables/useAuthentication'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useProfileStore} from '@/stores/useProfileStore'
 import {useI18n} from 'vue-i18n'
@@ -9,8 +8,9 @@ import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import useUserAssociations from '@/composables/useUserAssociation'
+import {usePermission} from '@/composables/usePermission'
 
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 const {t} = useI18n()
 const profileStore = useProfileStore()
 const projectStore = useProjectStore()
@@ -29,7 +29,7 @@ const tabs = ref<Tabs[]>([])
 const initTabs = () => {
   tabs.value = []
   if (hasPerm('add_project_association')) {
-    userStore.userAssociations.filter(association => association.isValidatedByAdmin).forEach(association => {
+    profileStore.userAssociations.filter(association => association.isValidatedByAdmin).forEach(association => {
       tabs.value.push({
         label: t('project.projects-of') + ' ' + association.association.name,
         name: association.association.name,
@@ -48,7 +48,7 @@ const initTabs = () => {
     tab.value = tabs.value[0].name
   }
 }
-watch(() => userStore.userAssociations, initTabs)
+watch(() => profileStore.userAssociations, initTabs)
 
 const tab = ref('')
 const innerTab = ref('allProjects')
@@ -79,7 +79,7 @@ const canSubmitProjects = ref<boolean>(false)
 
 const initCanSubmitProjects = () => {
   const associationId = tabs.value.find(obj => obj.name === tab.value)?.association
-  const userAssociation = userStore.userAssociations.find(obj => obj.association.id === associationId)
+  const userAssociation = profileStore.userAssociations.find(obj => obj.association.id === associationId)
   canSubmitProjects.value = (userAssociation?.association.isEnabled && userAssociation?.association.canSubmitProjects) ?? false
 }
 watch(() => tab.value, initCanSubmitProjects)
@@ -134,7 +134,7 @@ watch(() => tab.value, initCanSubmitProjects)
                 <div v-if="tab.association">
                   <div v-if="canSubmitProjects">
                     <div
-                      v-if="userStore.hasPresidentStatus(tab.association)"
+                      v-if="profileStore.hasPresidentStatus(tab.association)"
                       class="flex-row-center padding-top padding-bottom"
                     >
                       <QBtn
@@ -227,7 +227,7 @@ watch(() => tab.value, initCanSubmitProjects)
                     <TableUserProjects
                       :association-id="tab.association"
                       :projects="projectStore.projects?.results.filter(project => tab.association ?
-                        (project.association.id === tab.association) : (project.user.id === userStore.user?.id))"
+                        (project.association.id === tab.association) : (project.user.id === profileStore.user?.id))"
                       :title="t('project.all-projects')"
                     />
                   </QTabPanel>
@@ -237,7 +237,7 @@ watch(() => tab.value, initCanSubmitProjects)
                       :projects="tab.association ?
                         projectStore.projects?.results.filter(project => project.association.id === tab.association
                           && project.projectStatus === 'PROJECT_REVIEW_VALIDATED') :
-                        projectStore.projects?.results.filter(project => project.user.id === userStore.user?.id
+                        projectStore.projects?.results.filter(project => project.user.id === profileStore.user?.id
                           && project.projectStatus === 'PROJECT_REVIEW_VALIDATED')"
                       :title="t('project.validated-projects')"
                     />
@@ -248,7 +248,7 @@ watch(() => tab.value, initCanSubmitProjects)
                       :projects="tab.association ?
                         projectStore.projects?.results.filter(project => project.association.id === tab.association &&
                           (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELED')) :
-                        projectStore.projects?.results.filter(project => project.user.id === userStore.user?.id &&
+                        projectStore.projects?.results.filter(project => project.user.id === profileStore.user?.id &&
                           (project.projectStatus === 'PROJECT_REJECTED' || project.projectStatus === 'PROJECT_CANCELED'))"
                       :title="t('project.rejected-projects')"
                     />

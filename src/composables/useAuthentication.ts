@@ -81,11 +81,6 @@ async function editPassword(payload: PasswordEdit) {
   await profileService.editPassword(payload)
 }
 
-function hasPerm(permission: string): boolean {
-  const profileStore = useProfileStore()
-  return profileStore.user?.permissions.includes(permission) ?? false
-}
-
 export default function useAuthentication() {
 
   async function cancelAbortedCasRegistration() {
@@ -173,7 +168,6 @@ export default function useAuthentication() {
     resendEmail,
     passwordReset,
     passwordResetConfirm,
-    hasPerm,
     initNewUserData,
     checkPasswordStrength,
     cancelAbortedCasRegistration,

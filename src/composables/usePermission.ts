@@ -1,5 +1,6 @@
 import type {UserGroup} from '#/user'
 import {useGroupStore} from '@/stores/useGroupStore'
+import {useProfileStore} from '@/stores/useProfileStore'
 
 
 function canEditUser(userGroups: UserGroup[]): boolean {
@@ -19,8 +20,14 @@ function canEditUser(userGroups: UserGroup[]): boolean {
   return perm
 }
 
+function hasPerm(permission: string): boolean {
+  const profileStore = useProfileStore()
+  return profileStore.user?.permissions.includes(permission) ?? false
+}
+
 export const usePermission = () => {
   return {
     canEditUser,
+    hasPerm
   }
 }

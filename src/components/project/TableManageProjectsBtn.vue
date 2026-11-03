@@ -3,7 +3,6 @@ import {useI18n} from 'vue-i18n'
 import {onMounted, ref, watch} from 'vue'
 import type {ProjectCommissionFund, ProjectStatus} from '#/project'
 import router from '@/router'
-import useSecurity from '@/composables/useAuthentication'
 import ProjectUpdateDates from '@/components/project/ProjectUpdateDates.vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
@@ -16,9 +15,10 @@ import {useProfileStore} from '@/stores/useProfileStore'
 import useUtil from '@/composables/useUtil'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 import {useFundStore} from '@/stores/useFundStore'
+import {usePermission} from '@/composables/usePermission'
 
 const {t} = useI18n()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 

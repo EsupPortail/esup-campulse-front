@@ -3,7 +3,6 @@ import {useUserStore} from '@/stores/useUserStore'
 import {onMounted} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
-import useUsers from '@/composables/useUser'
 import {useRoute} from 'vue-router'
 import router from '@/router'
 import FormUserGroups from '@/components/user/FormUserGroups.vue'
@@ -16,7 +15,6 @@ import FormDocumentUpload from '@/components/documents/FormDocumentUpload.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {validateUser} = useUsers()
 const {newGroups, groupChoiceIsValid, studentGroupIsSelected} = useUserGroups()
 const {catchHTTPError} = useErrors()
 const {uploadDocuments} = useDocumentUploads()
@@ -27,7 +25,7 @@ const route = useRoute()
 onMounted(async () => {
   loading.show()
   await onGetUser()
-  newGroups.value = userStore.userGroups
+  newGroups.value = [...userStore.userGroups]
   await onGetUserAssociations()
   loading.hide()
 })
@@ -35,7 +33,7 @@ onMounted(async () => {
 // Get user
 async function onGetUser() {
   try {
-    await userManagerStore.getUserDetail(Number.parseInt(route.params.id as string))
+    await userStore.getUserDetail(Number.parseInt(route.params.id as string))
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -49,7 +47,7 @@ async function onGetUser() {
 // Get user associations
 async function onGetUserAssociations() {
   try {
-    await userManagerStore.getUserAssociations(Number.parseInt(route.params.id as string))
+    await userStore.getUserAssociations(Number.parseInt(route.params.id as string))
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -64,8 +62,8 @@ async function onGetUserAssociations() {
 async function onValidateUser() {
   if (groupChoiceIsValid.value) {
     try {
-      await validateUser()
-      await uploadDocuments(null, userManagerStore.user?.id)
+      await userStore.validateUser()
+      await uploadDocuments(null, userStore.user?.id)
       await router.push({name: 'ValidateUsers'})
       notify({
         type: 'positive',
@@ -84,7 +82,7 @@ async function onValidateUser() {
 
 async function onDeleteUser() {
   try {
-    await userManagerStore.deleteUser()
+    await userStore.deleteUser()
     await router.push({name: 'ValidateUsers'})
     notify({
       type: 'positive',
@@ -113,27 +111,27 @@ async function onDeleteUser() {
         <div class="flex-column">
           <div class="display-row">
             <h3>{{ t('user.first-name') }}</h3>
-            <p>{{ userManagerStore.user?.firstName }}</p>
+            <p>{{ userStore.user?.firstName }}</p>
           </div>
           <div class="display-row">
             <h3>{{ t('user.last-name') }}</h3>
-            <p>{{ userManagerStore.user?.lastName }}</p>
+            <p>{{ userStore.user?.lastName }}</p>
           </div>
           <div class="display-row">
             <h3>{{ t('user.email') }}</h3>
-            <p>{{ userManagerStore.user?.email }}</p>
+            <p>{{ userStore.user?.email }}</p>
           </div>
           <div class="display-row">
             <h3>{{ t('user.phone') }}</h3>
-            <p>{{ userManagerStore.user?.phone }}</p>
+            <p>{{ userStore.user?.phone }}</p>
           </div>
           <div class="display-row">
             <h3>{{ t('user.is-cas') }}</h3>
-            <p>{{ userManagerStore.user?.isCas ? t('yes') : t('no') }}</p>
+            <p>{{ userStore.user?.isCas ? t('yes') : t('no') }}</p>
           </div>
           <div class="display-row">
             <h3>{{ t('user.is-validated-by-admin') }}</h3>
-            <p>{{ userManagerStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}</p>
+            <p>{{ userStore.user?.isValidatedByAdmin ? t('yes') : t('no') }}</p>
           </div>
         </div>
       </div>
@@ -148,10 +146,10 @@ async function onDeleteUser() {
 
     <div class="dashboard-section-container">
       <div class="container">
-        <div v-if="userManagerStore.userAssociations.length">
+        <div v-if="userStore.userAssociations.length">
           <div class="flex-column">
             <div
-              v-for="(association, index) in userManagerStore.userAssociations"
+              v-for="(association, index) in userStore.userAssociations"
               :key="index"
               class="display-row"
             >
@@ -196,7 +194,7 @@ async function onDeleteUser() {
     <div class="dashboard-section-container">
       <div class="container">
         <FormUserGroups/>
-        <div v-if="!userManagerStore.user?.isCas && studentGroupIsSelected">
+        <div v-if="!userStore.user?.isCas && studentGroupIsSelected">
           <hgroup>
             <h3>{{ t('forms.student-status-document') }}</h3>
             <p>{{ t('forms.student-status-document-hint') }}</p>

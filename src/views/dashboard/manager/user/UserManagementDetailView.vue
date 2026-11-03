@@ -21,7 +21,7 @@ import FormDocumentUpload from '@/components/documents/FormDocumentUpload.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const {groupChoiceIsValid, groupCanJoinAssociation, studentGroupIsSelected} = useUserGroups()
+const {groupChoiceIsValid, canJoinAssociation, studentGroupIsSelected, newGroups} = useUserGroups()
 const {catchHTTPError} = useErrors()
 
 
@@ -39,6 +39,7 @@ onMounted(async () => {
 async function onGetUser() {
   try {
     await userStore.getUserDetail(Number.parseInt(route.params.id as string))
+    newGroups.value = [...userStore.userGroups]
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -107,7 +108,7 @@ onBeforeRouteLeave((to, from, next) => {
     </section>
 
     <section
-      v-if="groupCanJoinAssociation"
+      v-if="canJoinAssociation"
       class="association-cards dashboard-section"
     >
       <h2>

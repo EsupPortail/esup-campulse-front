@@ -3,8 +3,7 @@ import {onMounted, ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useUserStore} from '@/stores/useUserStore'
-import type {UserSearch} from '#/user'
-import useUsers from '@/composables/useUser'
+import type {SearchUser, UserFilters} from '#/user'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
 import {useAssociationStore} from '@/stores/useAssociationStore'
@@ -12,18 +11,13 @@ import {useAssociationStore} from '@/stores/useAssociationStore'
 const {t} = useI18n()
 const userStore = useUserStore()
 const {loading, notify} = useQuasar()
-const {advancedSearch} = useUsers()
 const {catchHTTPError} = useErrors()
 const associationStore = useAssociationStore()
 
-const props = defineProps<{
-  routeName: string
-}>()
 
+const emit = defineEmits(['getUsers'])
 
-const emit = defineEmits(['advancedSearch', 'getUsers'])
-
-const settings = ref<UserSearch>({
+const settings = ref<SearchUser>({
   search: '',
   firstName: '',
   lastName: '',
@@ -35,7 +29,7 @@ const associations = ref(associationStore.associationLabels)
 
 async function onGetAssociationNames() {
   try {
-    await associationStore.getAssociationNames(false, false)
+    await associationStore.getAssociationNames()
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -55,14 +49,20 @@ onMounted(async () => {
 function filterAssociations(val: string, update: (cb: () => void) => void) {
   update(() => {
     const lower = val.toLowerCase()
-    associations.value = associationStore.associationLabels.filter(obj => obj.label.toLowerCase().indexOf(lower) > -1)
+    associations.value = associationStore.associationLabels.filter(obj => obj.label.toLowerCase().includes(lower))
   })
 }
 
 async function onSearch() {
   loading.show()
   try {
-    await userStore.searchUsers(settings.value.search, props.routeName === 'ValidateUsers' ? 'unvalidated' : '')
+    const filters: Partial<UserFilters> = {
+      search: settings.value.search,
+      name: ([settings.value.lastName, settings.value.firstName].join(' ')).trim(),
+      email: settings.value.email,
+      associationId: settings.value.association
+    }
+    await userStore.getUsers(filters)
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -104,55 +104,32 @@ async function clearSearch() {
     <QForm
       id="search-form"
       :aria-label="t('user.directory')"
-      class="search-text-field"
+      class="search-text-field flex-column"
       role="search"
       @submit.prevent="onSearch"
     >
-      <div>
-        <QInput
-          v-model="settings.search"
-          :label="t('search')"
-          :placeholder="t('search')"
-          clearable
-          color="dashboard"
-          filled
-          inputmode="search"
-          lazy-rules
-        >
-          <template v-slot:prepend>
-            <QIcon name="bi-search"/>
-          </template>
-        </QInput>
-        <div class="flex-row padding-top">
-          <QBtn
-            :label="t('search')"
-            class="btn-lg"
-            color="dashboard"
-            icon="bi-chevron-right"
-            type="submit"
+      <QInput
+        v-model="settings.search"
+        :label="t('search')"
+        :placeholder="t('search')"
+        clearable
+        color="dashboard"
+        filled
+        inputmode="search"
+        lazy-rules
+      >
+        <template v-slot:prepend>
+          <QIcon
+            aria-hidden="true"
+            name="bi-search"
           />
-          <QBtn
-            :label="t('cancel-search')"
-            class="btn-lg"
-            color="dashboard"
-            icon="bi-x-lg"
-            @click="clearSearch"
-          />
-        </div>
-      </div>
-    </QForm>
-
-    <QForm
-      id="advanced-search-form"
-      :aria-label="t('user.directory-advanced')"
-      role="search"
-      @submit.prevent="emit('advancedSearch', advancedSearch(settings) ?? userStore.users)"
-    >
+        </template>
+      </QInput>
       <QExpansionItem
         :label="t('advanced-search')"
         header-class="text-dashboard"
       >
-        <div class="flex-column">
+        <div class="flex-column padding-top">
           <div class="flex-row">
             <QInput
               v-model="settings.firstName"
@@ -194,24 +171,31 @@ async function clearSearch() {
             @filter="filterAssociations"
           />
         </div>
-
-        <div class="flex-row padding-top padding-bottom">
-          <QBtn
-            :label="t('advanced-search')"
-            class="btn-lg"
-            color="dashboard"
-            icon="bi-chevron-right"
-            type="submit"
-          />
-          <QBtn
-            :label="t('cancel-search')"
-            class="btn-lg"
-            color="dashboard"
-            icon="bi-x-lg"
-            @click="clearSearch"
-          />
-        </div>
       </QExpansionItem>
+      <div class="flex-row">
+        <QBtn
+          :label="t('search')"
+          class="btn-lg"
+          color="dashboard"
+          icon="bi-chevron-right"
+          type="submit"
+        />
+        <QBtn
+          :label="t('cancel-search')"
+          class="btn-lg"
+          color="dashboard"
+          icon="bi-x-lg"
+          @click="clearSearch"
+        />
+      </div>
+    </QForm>
+
+    <QForm
+      id="advanced-search-form"
+      :aria-label="t('user.directory-advanced')"
+      role="search"
+      @submit.prevent="onSearch"
+    >
     </QForm>
   </section>
 </template>

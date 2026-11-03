@@ -7,9 +7,9 @@ import useErrors from '@/composables/useError'
 import {useI18n} from 'vue-i18n'
 import type {LibraryDocument, NewDocument} from '#/document'
 import {useProfileStore} from '@/stores/useProfileStore'
-import useSecurity from '@/composables/useAuthentication'
 import useCommissions from '@/composables/useCommissionFund'
 import FormManageLibraryDocument from '@/components/documents/FormManageLibraryDocument.vue'
+import {usePermission} from '@/composables/usePermission'
 
 const {
   getLibraryDocuments,
@@ -20,7 +20,7 @@ const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {t} = useI18n()
 const profileStore = useProfileStore()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 const {getFunds, funds} = useCommissions()
 
 onMounted(async () => {

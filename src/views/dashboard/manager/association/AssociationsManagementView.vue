@@ -5,19 +5,19 @@ import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import AlertConfirmAssociationsChanges from '@/components/association/AlertConfirmAssociationsChanges.vue'
-import useSecurity from '@/composables/useAuthentication'
 import useErrors from '@/composables/useError'
 import axios from 'axios'
 import FormAssociationSearch from '@/components/association/FormAssociationSearch.vue'
 import {useAssociation} from '@/composables/useAssociation'
 import {useRoute} from 'vue-router'
 import {useInstitutionStore} from '@/stores/useInstitutionStore'
+import {usePermission} from '@/composables/usePermission'
 
 const associationStore = useAssociationStore()
 const institutionStore = useInstitutionStore()
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 const {catchHTTPError} = useErrors()
 const {associations} = useAssociation()
 const route = useRoute()

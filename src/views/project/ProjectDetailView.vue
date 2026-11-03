@@ -16,13 +16,14 @@ import ProjectRecapGoals from '@/components/project/ProjectRecapGoals.vue'
 import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
 import ProjectValidation from '@/components/project/ProjectValidation.vue'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
-import useSecurity from '@/composables/useAuthentication'
 import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
+import {usePermission} from '@/composables/usePermission'
+import useUtil from '@/composables/useUtil'
 
 const {notify, loading} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 const {openDocument} = useUtil()
 const projectStore = useProjectStore()
 const {

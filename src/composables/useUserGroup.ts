@@ -2,7 +2,6 @@ import {computed, ref} from 'vue'
 import type {Group, GroupName, SelectLabelGroup} from '#/group'
 import i18n from '@/plugins/i18n'
 import {useProfileStore} from '@/stores/useProfileStore'
-import useAuthentication from '@/composables/useAuthentication'
 import {useGroupStore} from '@/stores/useGroupStore'
 import type {CreateUserGroup, UpdateUserGroup, User} from '#/user'
 import * as userGroupService from '@/services/UserGroupService'
@@ -10,6 +9,7 @@ import * as userService from '@/services/UserService'
 import useUser from '@/composables/useUser'
 import {useUserStore} from '@/stores/useUserStore'
 import useUtil from '@/composables/useUtil'
+import {usePermission} from '@/composables/usePermission'
 
 
 // Global state
@@ -60,7 +60,7 @@ export default function useUserGroup() {
 
   function initGroupLabels(onlyPublic?: boolean): void {
     const groupStore = useGroupStore()
-    const {hasPerm} = useAuthentication()
+    const {hasPerm} = usePermission()
     const labels = groupStore.groups.reduce<SelectLabelGroup[]>((factory, group) => {
       if (!onlyPublic || group.isPublic) {
         const label = groupFriendlyName(group.id)

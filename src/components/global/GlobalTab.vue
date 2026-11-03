@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import {onMounted, ref} from 'vue'
 import type {Tab} from '#/global'
-import useSecurity from '@/composables/useAuthentication'
+import {usePermission} from '@/composables/usePermission'
 
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 
 const props = defineProps<{
   tabList: Tab[]

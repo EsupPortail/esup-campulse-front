@@ -4,14 +4,14 @@ import useUsers from '@/composables/useUser'
 import type {User, UserGroup} from '#/user'
 import {useI18n} from 'vue-i18n'
 import useUserGroups from '@/composables/useUserGroup'
-import useSecurity from '@/composables/useAuthentication'
 import FormUserAddress from '@/components/user/FormUserAddress.vue'
 import InfoFormRequiredFields from '@/components/global/InfoFormRequiredFields.vue'
+import {usePermission} from '@/composables/usePermission'
 
 
 const {userToUpdate} = useUsers()
 const {groupFriendlyName} = useUserGroups()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 const {t} = useI18n()
 
 const props = defineProps<{

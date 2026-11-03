@@ -6,17 +6,17 @@ import axios from 'axios'
 import {useAssociation} from '@/composables/useAssociation'
 import {useProfileStore} from '@/stores/useProfileStore'
 import type {CreateAssociation} from '#/association'
-import useSecurity from '@/composables/useAuthentication'
 import useErrors from '@/composables/useError'
 import {useInstitutionStore} from '@/stores/useInstitutionStore'
 import type {SelectLabel} from '#/global'
+import {usePermission} from '@/composables/usePermission'
 
 const {t} = useI18n()
 const {notify} = useQuasar()
 const {createAssociation} = useAssociation()
 const institutionStore = useInstitutionStore()
 const profileStore = useProfileStore()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 const {catchHTTPError} = useErrors()
 
 

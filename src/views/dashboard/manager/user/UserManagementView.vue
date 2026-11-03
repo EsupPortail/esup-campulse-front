@@ -1,65 +1,45 @@
 <script lang="ts" setup>
 import {useUserStore} from '@/stores/useUserStore'
-import {onMounted, ref, watch} from 'vue'
+import {onMounted} from 'vue'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
-import useUsers from '@/composables/useUser'
 import {useRoute} from 'vue-router'
 import useUserGroups from '@/composables/useUserGroup'
-import type {User, UserGroup} from '#/user'
 import useErrors from '@/composables/useError'
 import axios from 'axios'
 import FormUserSearch from '@/components/user/FormUserSearch.vue'
+import {usePermission} from '@/composables/usePermission'
+import type {UserGroup} from '#/user'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
-const userManagerStore = useUserStore()
-const {canEditUser} = useUsers()
+const userStore = useUserStore()
+const {canEditUser, hasPerm} = usePermission()
 const route = useRoute()
-const {getGroups, getGroupLiteral} = useUserGroups()
+const {groupFriendlyName} = useUserGroups()
 const {catchHTTPError} = useErrors()
 
-const users = ref<User[]>([])
 
-watch(() => userManagerStore.users, () => {
-  users.value = userManagerStore.users
-})
+async function onGetUsers() {
+  try {
+    if (!hasPerm('view_user')) return
+    await userStore.getUsers(route.name === 'ValidateUsers' ? {isValidatedByAdmin: false} : undefined)
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
+    }
+  }
+}
 
 onMounted(async () => {
   loading.show()
   await onGetUsers()
-  await onGetUserGroups()
   loading.hide()
 })
-
-async function onGetUsers() {
-  try {
-    let status = 'all'
-    if (route.name === 'ValidateUsers') status = 'unvalidated'
-    await userManagerStore.getUsers(status)
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      notify({
-        type: 'negative',
-        message: await catchHTTPError(error.response)
-      })
-    }
-  }
-}
-
-async function onGetUserGroups() {
-  try {
-    await getGroups()
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      notify({
-        type: 'negative',
-        message: await catchHTTPError(error.response)
-      })
-    }
-  }
-}
 
 const columns: QTableProps['columns'] = [
   {name: 'firstName', align: 'left', label: t('forms.first-name'), field: 'firstName', sortable: true},
@@ -88,6 +68,18 @@ const columns: QTableProps['columns'] = [
   }
 ]
 
+const uniqueGroups = (userGroups: UserGroup[]): UserGroup[] => {
+  const groupIds: number[] = []
+  const result: UserGroup[] = []
+  userGroups.forEach(item => {
+    const groupId = item.groupId
+    if (groupIds.includes(groupId)) return
+    result.push(item)
+    groupIds.push(item.groupId)
+  })
+  return result
+}
+
 </script>
 
 <template>
@@ -104,14 +96,13 @@ const columns: QTableProps['columns'] = [
       <div class="container-lg">
         <FormUserSearch
           :route-name="route.name as string"
-          @advanced-search="(result) => users = result"
           @get-users="onGetUsers"
         />
 
         <QTable
           :columns="columns"
-          :loading="!users"
-          :rows="users"
+          :loading="!userStore.users"
+          :rows="userStore.users"
           :rows-per-page-options="[10, 20, 50, 0]"
           :title="t('user-manager.users')"
           role="presentation"
@@ -162,7 +153,7 @@ const columns: QTableProps['columns'] = [
                 <ul>
                   <li
                     v-for="(association, index) in props.row.associations"
-                    :key="index"
+                    :key="`user-association-${index}`"
                   >
                     <QChip>{{ association.acronym ?? (association.name.slice(0, 20).trim() + '...') }}</QChip>
                   </li>
@@ -175,14 +166,12 @@ const columns: QTableProps['columns'] = [
               >
                 <ul>
                   <li
-                    v-for="(group, index) in props.row.groups"
-                    :key="index"
+                    v-for="(group, index) in uniqueGroups(props.row.groups)"
+                    :key="`user-group-${index}`"
                   >
-                    <QChip
-                      v-if="props.row.groups.map((g: UserGroup) => g.groupId).indexOf(group.groupId) === index"
-                    >
+                    <QChip>
                       {{
-                        getGroupLiteral(group.groupId)
+                        groupFriendlyName(group.groupId)
                       }}
                     </QChip>
                   </li>

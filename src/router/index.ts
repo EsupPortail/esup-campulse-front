@@ -6,6 +6,7 @@ import {ref, watch} from 'vue'
 import useSecurity from '@/composables/useAuthentication'
 import {useGroupStore} from '@/stores/useGroupStore'
 import useUtil from '@/composables/useUtil'
+import {usePermission} from '@/composables/usePermission'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,7 +23,7 @@ router.beforeEach(async (to) => {
   const profileStore = useProfileStore()
   const groupStore = useGroupStore()
   const {isStaff} = useUserGroups()
-  const {hasPerm} = useSecurity()
+  const {hasPerm} = usePermission()
   const {dynamicTitle, openMenu} = useUtil()
 
   if (openMenu.value) {

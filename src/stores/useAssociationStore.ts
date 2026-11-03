@@ -62,7 +62,7 @@ export const useAssociationStore = defineStore('associationStore', {
     // todo voir si on a toujours besoin de ce bidule
     /*async getManagedAssociations() {
       const profileStore = useProfileStore()
-      const {hasPerm} = useSecurity()
+      const {hasPerm} = usePermission()
       const {isStaff} = useUserGroups()
       if (!isStaff.value && hasPerm('change_association')) { // Student institution
         const {axiosAuthenticated} = useAxios()

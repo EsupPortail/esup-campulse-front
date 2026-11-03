@@ -5,18 +5,18 @@ import {useI18n} from 'vue-i18n'
 import {useAssociationStore} from '@/stores/useAssociationStore'
 import {useQuasar} from 'quasar'
 import type {Association} from '#/association'
-import useSecurity from '@/composables/useAuthentication'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
 import useUtil from '@/composables/useUtil'
 import * as associationService from '@/services/AssociationService'
+import {usePermission} from '@/composables/usePermission'
 
 const {t} = useI18n()
 const changes = ref<boolean>(false)
 const deletionWord = ref<string>('')
 const associationStore = useAssociationStore()
 const {notify} = useQuasar()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 const {catchHTTPError} = useErrors()
 const {openDocument} = useUtil()
 

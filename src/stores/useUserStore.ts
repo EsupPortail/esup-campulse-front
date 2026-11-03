@@ -1,6 +1,5 @@
 import {defineStore} from 'pinia'
 import type {UserFilters, UserStore} from '#/user'
-import useSecurity from '@/composables/useAuthentication'
 import type {SelectLabel} from '#/global'
 import * as userService from '@/services/UserService'
 import * as documentUploadService from '@/services/DocumentUploadService'
@@ -36,9 +35,7 @@ export const useUserStore = defineStore('userStore', {
   },
 
   actions: {
-    async getUsers(filters?: UserFilters) {
-      const {hasPerm} = useSecurity()
-      if (!hasPerm('view_user')) return
+    async getUsers(filters?: Partial<UserFilters>) {
       this.users = await userService.getUsers(filters)
     },
 
@@ -66,8 +63,7 @@ export const useUserStore = defineStore('userStore', {
       const {userDataToUpdate} = useUser()
       const payload = userDataToUpdate(this.user)
       if (!Object.entries(payload).length) return
-      const userId = this.user!.id
-      this.user = await userService.updateUser(userId, payload)
+      this.user = await userService.updateUser(this.user!.id, payload)
     }
   }
 })

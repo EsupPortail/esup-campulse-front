@@ -122,8 +122,11 @@ export interface UserStore {
 
 export interface UserFilters {
   search: string;
-  status: 'validated' | 'unvalidated';
+  isValidatedByAdmin: boolean;
   associationId: number;
+  email: string;
+  isCas: boolean;
+  name: string;
 }
 
 export interface PasswordResetConfirmPayload {

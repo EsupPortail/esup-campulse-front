@@ -7,9 +7,12 @@ const modelBaseUrl = '/users'
 export async function getUsers(filters?: Partial<UserFilters>): Promise<User[]> {
   const {axiosAuthenticated} = useAxios()
   const filterArray: string[] = []
-  if (filters?.status) filterArray.push(`is_validated_by_admin=${filters.status === 'validated'}`)
+  if (filters?.isValidatedByAdmin !== undefined) filterArray.push(`is_validated_by_admin=${filters.isValidatedByAdmin}`)
   if (filters?.search) filterArray.push(`search=${filters.search}`)
   if (filters?.associationId) filterArray.push(`association_id=${filters.associationId}`)
+  if (filters?.email) filterArray.push(`email=${filters.email}`)
+  if (filters?.isCas !== undefined) filterArray.push(`is_cas=${filters.isCas}`)
+  if (filters?.name) filterArray.push(`name=${filters.name}`)
   const filterString: string = filterArray.length ? `?${filterArray.join('&')}` : ''
   return (await axiosAuthenticated.get<User[]>(`${modelBaseUrl}/${filterString}`)).data
 }

@@ -10,16 +10,16 @@ import {useQuasar} from 'quasar'
 import useUserAssociations from '@/composables/useUserAssociation'
 import FormDisplayUserAssociations from '@/components/user/FormDisplayUserAssociations.vue'
 import FormRegisterUserAssociations from '@/components/user/FormRegisterUserAssociations.vue'
-import useSecurity from '@/composables/useAuthentication'
 import useErrors from '@/composables/useError'
 import FormDocumentUpload from '@/components/documents/FormDocumentUpload.vue'
 import useDocumentUploads from '@/composables/useDocumentUpload'
+import {usePermission} from '@/composables/usePermission'
 
 const {t} = useI18n()
 const profileStore = useProfileStore()
 const {isStaff} = useUserGroups()
 const {notify, loading} = useQuasar()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 const {catchHTTPError} = useErrors()
 const {
   newUserAssociations,

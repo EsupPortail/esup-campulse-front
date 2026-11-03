@@ -5,10 +5,10 @@ import axios from 'axios'
 import {onMounted, ref} from 'vue'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
-import useSecurity from '@/composables/useAuthentication'
 import useUtil from '@/composables/useUtil'
 import {useProjectStore} from '@/stores/useProjectStore'
 import FormAddComment from '@/components/project/FormAddComment.vue'
+import {usePermission} from '@/composables/usePermission'
 
 
 const {t} = useI18n()
@@ -22,7 +22,7 @@ const {
 } = useProjectComment()
 const {catchHTTPError} = useErrors()
 const {formatDate} = useUtil()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 const projectStore = useProjectStore()
 
 const props = defineProps<{

@@ -10,8 +10,9 @@ import axios from 'axios'
 import useErrors from '@/composables/useError'
 import {onMounted, ref} from 'vue'
 import useProject from '@/composables/useProject'
-import useSecurity from '@/composables/useAuthentication'
 import {useProfileStore} from '@/stores/useProfileStore'
+import {usePermission} from '@/composables/usePermission'
+import useUtil from '@/composables/useUtil'
 
 const importedProps = defineProps<{
   projects: ProjectListItem[],
@@ -26,7 +27,7 @@ const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {initProjectAssociationUsersLabels, projectAssociationUsersLabels} = useProject()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 
 onMounted(async () => {
   loading.show()

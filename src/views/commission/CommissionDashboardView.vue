@@ -2,10 +2,10 @@
 import useUserGroups from '@/composables/useUserGroup'
 import DashboardStudentProjectsManagement from '@/components/project/DashboardStudentProjectsManagement.vue'
 import DashboardProjectsManagement from '@/components/project/DashboardProjectsManagement.vue'
-import useSecurity from '@/composables/useAuthentication'
+import {usePermission} from '@/composables/usePermission'
 
 const {isStaff, isMemberFund} = useUserGroups()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 
 </script>
 
