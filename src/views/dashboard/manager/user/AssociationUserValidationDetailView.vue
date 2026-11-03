@@ -1,48 +1,37 @@
 <script lang="ts" setup>
 import {useUserStore} from '@/stores/useUserStore'
-import {onMounted, ref, watch} from 'vue'
+import {computed, onMounted} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import {useRoute} from 'vue-router'
 import router from '@/router'
 import useUserAssociations from '@/composables/useUserAssociation'
-import type {UserAssociation} from '#/user'
-import {useAssociationStore} from '@/stores/useAssociationStore'
 import useErrors from '@/composables/useError'
 import axios from 'axios'
+import {useInstitutionStore} from '@/stores/useInstitutionStore'
+import type {AssociationUser} from '#/association'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {
   associationRoleOptions,
-  getAssociationUserRole,
-  patchUserAssociations,
+  associationUserRole,
+  validateUserAssociation,
   deleteUserAssociation
 } = useUserAssociations()
 const {catchHTTPError} = useErrors()
-const associationStore = useAssociationStore()
-const userManagerStore = useUserStore()
+const userStore = useUserStore()
+const institutionStore = useInstitutionStore()
 const route = useRoute()
 
-onMounted(async () => {
-  loading.show()
-  await onGetUserAssociations()
-  await associationStore.getInstitutions()
-  initAssociationMember()
-  loading.hide()
+const associationUser = computed<AssociationUser>(() => {
+  return userStore.userAssociations.find(obj => obj.association.id === Number.parseInt(route.params.associationId as string))
 })
 
-const associationUser = ref<UserAssociation | undefined>()
-
-const initAssociationMember = () => {
-  associationUser.value = userManagerStore.userAssociations.find(obj => obj.association.id === Number.parseInt(route.params.associationId as string))
-}
-watch(() => userManagerStore.userAssociations.length, initAssociationMember)
-
-// Get user associations
-async function onGetUserAssociations() {
+async function onGetData() {
   try {
-    await userManagerStore.getUserAssociations(Number.parseInt(route.params.userId as string))
+    await userStore.getUserAssociations(Number.parseInt(route.params.userId as string))
+    await institutionStore.getInstitutions()
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -53,11 +42,17 @@ async function onGetUserAssociations() {
   }
 }
 
+onMounted(async () => {
+  loading.show()
+  await onGetData()
+  loading.hide()
+})
+
 async function onValidateAssociationUser() {
   try {
     const userId = associationUser.value?.user.id
     const associationId = associationUser.value?.association.id
-    await patchUserAssociations(userId, associationId as number, {isValidatedByAdmin: true})
+    await validateUserAssociation(userId, associationId)
     await router.push({name: 'ValidateAssociationUsers'})
     notify({
       type: 'positive',
@@ -140,7 +135,7 @@ async function onDeleteAssociationUser() {
               <h3>{{ t('directory.labels.association-institution') }}</h3>
               <p>
                 {{
-                  associationStore.institutions.find(obj => obj.id ===
+                  institutionStore.institutions.find(obj => obj.id ===
                     associationUser?.association.institution)?.name
                 }}
               </p>
@@ -150,7 +145,7 @@ async function onDeleteAssociationUser() {
               <p v-if="associationUser">
                 {{
                   associationRoleOptions.find(obj => obj.value === (associationUser ?
-                    getAssociationUserRole(associationUser) : undefined))?.label
+                    associationUserRole(associationUser) : undefined))?.label
                 }}
               </p>
             </div>

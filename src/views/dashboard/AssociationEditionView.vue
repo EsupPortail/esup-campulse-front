@@ -28,7 +28,7 @@ const {dynamicTitle} = useUtil()
 const profileStore = useProfileStore()
 const {isStaff} = useUserGroups()
 const {t} = useI18n()
-const {checkChanges, editedAssociation, initEditedAssociation} = useAssociation()
+const {checkChanges, initEditedAssociation} = useAssociation()
 
 const isLoaded = ref(false)
 

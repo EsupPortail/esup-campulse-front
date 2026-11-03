@@ -17,8 +17,6 @@ const {loading, notify} = useQuasar()
 const {createProjectComment, getProjectComments, newComment} = useProjectComment()
 const {catchHTTPError} = useErrors()
 const {
-  initProjectCommissionFundLabels,
-  projectCommissionFundLabels,
   validateProjectCommissionFund,
   rejectProjectCommissionFund
 } = useProject()
@@ -45,9 +43,9 @@ const onOpenDialog = async (action: Action, icon: Icon) => {
   newComment.value.isVisible = ['return', 'reject'].includes(action)
   open.value = true
   selectedProjectCommissionFunds.value = []
-  if (selectedAction.value === 'validate' || selectedAction.value === 'reject') {
+  /*if (selectedAction.value === 'validate' || selectedAction.value === 'reject') {
     await initProjectCommissionFundLabels(projectStore.projectCommissionFunds, selectedAction.value)
-  }
+  }*/
   loading.hide()
 }
 

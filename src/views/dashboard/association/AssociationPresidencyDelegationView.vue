@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {onMounted, ref} from 'vue'
+import {computed, onMounted} from 'vue'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
@@ -11,36 +11,26 @@ import useErrors from '@/composables/useError'
 import {useProfileStore} from '@/stores/useProfileStore'
 import router from '@/router'
 import InfoPresidencyDelegation from '@/components/association/InfoPresidencyDelegation.vue'
+import useUtil from '@/composables/useUtil'
+
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const route = useRoute()
 const {initAssociationMembers, associationMembers} = useUserAssociations()
 const {catchHTTPError} = useErrors()
-const {kebabize} = useUtil()
+const {kebabize, reverseDate} = useUtil()
 const profileStore = useProfileStore()
 
-onMounted(async () => {
-  loading.show()
-  await onGetAssociationUsers()
-  if (isAuthorized()) {
-    initAssociationName()
-  } else {
-    await router.push({name: '404'})
-  }
-  loading.hide()
+
+const associationName = computed<string>(() => {
+  const association = profileStore.user!.associations.find(obj => obj.id === Number.parseInt(route.params.id as string))
+  return association.name ?? ''
 })
 
-const associationName = ref<string>('')
-
-const initAssociationName = () => {
-  const association = profileStore.user?.associations.find(obj => obj.id === Number.parseInt(route.params.id as string))
-  if (association) associationName.value = association.name
-}
-
-const isAuthorized = () => {
+const isAuthorized = computed<boolean>(() => {
   return profileStore.userAssociations.find(obj => obj.association.id === Number.parseInt(route.params.id as string))?.isPresident
-}
+})
 
 async function onGetAssociationUsers() {
   try {
@@ -56,13 +46,15 @@ async function onGetAssociationUsers() {
   }
 }
 
-function reverseDate(date: string | null) {
-  if (date) {
-    return date.split('-').reverse().join('/')
+onMounted(async () => {
+  if (!isAuthorized.value) {
+    await router.push({name: '404'})
   } else {
-    return '-'
+    loading.show()
+    await onGetAssociationUsers()
+    loading.hide()
   }
-}
+})
 
 const columns: QTableProps['columns'] = [
   {

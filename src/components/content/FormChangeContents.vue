@@ -5,17 +5,15 @@ import {useContentStore} from '@/stores/useContentStore'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
-import type {EditableContent} from '#/global'
+import type {UpdateContent} from '#/content'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 
 const contentStore = useContentStore()
-const {patchContent} = useContentStore()
 
-const content = ref<EditableContent>({
-  label: '',
+const content = ref<UpdateContent>({
   header: '',
   body: '',
   footer: '',
@@ -23,7 +21,6 @@ const content = ref<EditableContent>({
 })
 
 const initValues = () => {
-  content.value.label = contentStore.content?.label as string
   content.value.header = contentStore.content?.header as string
   content.value.body = contentStore.content?.body as string
   content.value.footer = contentStore.content?.footer as string
@@ -40,7 +37,7 @@ onMounted(async () => {
 async function onUpdate() {
   loading.show()
   try {
-    await patchContent(content.value)
+    await contentStore.updateContent(content.value)
     notify({
       type: 'positive',
       message: t('notifications.positive.validate-content')

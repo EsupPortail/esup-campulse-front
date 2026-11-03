@@ -8,6 +8,7 @@ import {computed, onMounted, watch} from 'vue'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 import {useFundStore} from '@/stores/useFundStore'
 import useCommissionFund from '@/composables/useCommissionFund'
+import useUtil from '@/composables/useUtil'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -40,7 +41,7 @@ async function onGetProjectCommissions() {
   if (projectStore.project) {
     loading.show()
     try {
-      await commissionStore.getAllCommissions()
+      await commissionStore.getCommissions()
       await commissionStore.getCommissionFunds()
       await fundStore.getFunds()
       await projectStore.getProjectCommissionFunds({filter: 'project', projectId: projectStore.project?.id})

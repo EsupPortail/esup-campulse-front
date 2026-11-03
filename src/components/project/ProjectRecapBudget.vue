@@ -9,6 +9,7 @@ import {onMounted, watch} from 'vue'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 import {useFundStore} from '@/stores/useFundStore'
 import useCommissionFund from '@/composables/useCommissionFund'
+import useUtil from '@/composables/useUtil'
 
 const {t} = useI18n()
 const {projectBudget} = useProject()
@@ -39,7 +40,7 @@ watch(() => projectStore.project, async () => {
 
 async function getData() {
   try {
-    await commissionStore.getAllCommissions()
+    await commissionStore.getCommissions()
     await commissionStore.getCommissionFunds()
     await projectStore.getProjectCommissionFunds({filter: 'project', projectId: projectStore.project?.id})
     await fundStore.getFunds()

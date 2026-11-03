@@ -73,6 +73,10 @@ const associationRoleOptions: AssociationOptions[] = [
   }
 ]
 
+async function validateUserAssociation(userId: number, associationId: number) {
+  await userService.updateUserAssociations(userId, associationId, {isValidatedByAdmin: true})
+}
+
 export default function useUserAssociation() {
 
   async function updateUserAssociations(editedByManager: boolean) {
@@ -239,6 +243,7 @@ export default function useUserAssociation() {
     getAssociationUsers,
     userAssociationsToRegister,
     registerUserAssociations,
-    deleteUserAssociation
+    deleteUserAssociation,
+    validateUserAssociation
   }
 }

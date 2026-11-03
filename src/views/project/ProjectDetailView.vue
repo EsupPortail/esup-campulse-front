@@ -9,7 +9,7 @@ import {onMounted, ref} from 'vue'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useProject from '@/composables/useProject'
 import {useRoute} from 'vue-router'
-import ProjectRecapBasicInfos from '@/components/project/ProjectRecapBasicInfos.vue'
+import ProjectRecapInfos from '@/components/project/ProjectRecapInfos.vue'
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
 import ProjectRecapBudget from '@/components/project/ProjectRecapBudget.vue'
 import ProjectRecapGoals from '@/components/project/ProjectRecapGoals.vue'
@@ -37,12 +37,12 @@ const isLoaded = ref<boolean>(false)
 
 onMounted(async () => {
   loading.show()
-  await onGetProjectDetail()
+  await onGetData()
   isLoaded.value = true
   loading.hide()
 })
 
-async function onGetProjectDetail() {
+async function onGetData() {
   try {
     await projectStore.getProjectDetail(Number.parseInt(route.params.projectId as string))
     initProjectBasicInfos()
@@ -62,8 +62,7 @@ async function onGetProjectDetail() {
 async function onGetProjectPdf() {
   loading.show()
   try {
-    const projectId = Number.parseInt(route.params.projectId as string)
-    const response = await projectStore.getProjectPdf(projectId)
+    const response = await projectStore.getProjectPdf()
     openDocument(response)
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -89,7 +88,7 @@ async function onGetProjectPdf() {
     </h2>
     <div class="dashboard-section-container">
       <div class="container">
-        <ProjectRecapBasicInfos v-if="isLoaded"/>
+        <ProjectRecapInfos v-if="isLoaded"/>
       </div>
     </div>
   </div>

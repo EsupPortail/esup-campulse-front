@@ -8,7 +8,7 @@ import useCharters from '@/composables/useCharter'
 import {useProjectStore} from '@/stores/useProjectStore'
 
 const {
-  projectBasicInfos,
+  projectInfos,
   projectId,
   projectProcessingDate,
 } = useProject()
@@ -16,7 +16,7 @@ const {t} = useI18n()
 const projectStore = useProjectStore()
 const {initAssociationCharterStatus} = useCharters()
 
-const applicant = ref<'association' | 'user'>(projectBasicInfos.value.association ? 'association' : 'user')
+const applicant = ref<'association' | 'user'>(projectInfos.value.association ? 'association' : 'user')
 
 </script>
 
@@ -86,7 +86,7 @@ const applicant = ref<'association' | 'user'>(projectBasicInfos.value.associatio
       >
         {{ t('project.name') }}
       </h4>
-      <p>{{ projectBasicInfos.name }}</p>
+      <p>{{ projectInfos.name }}</p>
     </div>
 
     <div class="display-row">
@@ -98,7 +98,7 @@ const applicant = ref<'association' | 'user'>(projectBasicInfos.value.associatio
       </h4>
       <p>
         {{
-          projectBasicInfos.plannedStartDate.split('-').reverse().join('/')
+          projectInfos.plannedStartDate.split('-').reverse().join('/')
         }}
       </p>
     </div>
@@ -110,7 +110,7 @@ const applicant = ref<'association' | 'user'>(projectBasicInfos.value.associatio
       >
         {{ t('project.planned-end-date') }}
       </h4>
-      <p>{{ projectBasicInfos.plannedEndDate.split('-').reverse().join('/') }}</p>
+      <p>{{ projectInfos.plannedEndDate.split('-').reverse().join('/') }}</p>
     </div>
 
     <div class="display-row">
@@ -120,11 +120,11 @@ const applicant = ref<'association' | 'user'>(projectBasicInfos.value.associatio
       >
         {{ t('project.planned-location') }}
       </h4>
-      <p>{{ projectBasicInfos.plannedLocation }}</p>
+      <p>{{ projectInfos.plannedLocation }}</p>
     </div>
 
     <div
-      v-if="projectBasicInfos.associationUser"
+      v-if="projectInfos.associationUser"
       class="display-row"
     >
       <h4
@@ -142,7 +142,7 @@ const applicant = ref<'association' | 'user'>(projectBasicInfos.value.associatio
     </div>
 
     <div
-      v-if="projectBasicInfos.partnerAssociation"
+      v-if="projectInfos.partnerAssociation"
       class="display-row"
     >
       <h4
@@ -151,7 +151,7 @@ const applicant = ref<'association' | 'user'>(projectBasicInfos.value.associatio
       >
         {{ t('project.partner-association') }}
       </h4>
-      <p>{{ projectBasicInfos.partnerAssociation }}</p>
+      <p>{{ projectInfos.partnerAssociation }}</p>
     </div>
 
     <ProjectRecapCategories/>

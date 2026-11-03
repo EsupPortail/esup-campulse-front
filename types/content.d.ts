@@ -34,7 +34,6 @@ type ContentCode =
   ''
 
 export interface ContentBase {
-  id: number;
   header: string;
   body: string;
   footer: string;
@@ -42,6 +41,7 @@ export interface ContentBase {
 }
 
 export interface Content extends ContentBase {
+  id: number;
   code: ContentCode;
   label: string;
   isEditable: boolean;

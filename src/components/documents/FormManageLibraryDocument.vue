@@ -6,11 +6,12 @@ import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useError'
 import {ref, toRefs, watch} from 'vue'
 import useDocuments from '@/composables/useDocument'
+import * as documentService from '@/services/DocumentService'
 
 const {loading, notify} = useQuasar()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {patchDocument, deleteDocument, acceptedFormats} = useDocuments()
+const {acceptedFormats} = useDocuments()
 
 const props = defineProps<{
   libraryDocuments: LibraryDocument[]
@@ -31,7 +32,7 @@ async function onUpdateDocument(documentId: number) {
   try {
     const document = props.libraryDocuments.find(doc => doc.id === documentId)
     if (document) {
-      await patchDocument(documentId, document.newName, document.file as File)
+      await documentService.updateDocument(documentId, document.newName, document.file as File)
     }
     emit('getLibraryDocuments')
     notify({
@@ -52,7 +53,7 @@ async function onUpdateDocument(documentId: number) {
 async function onDeleteDocument(documentId: number) {
   loading.show()
   try {
-    await deleteDocument(documentId)
+    await documentService.deleteDocument(documentId)
     const libraryId = props.libraryDocuments.findIndex(doc => doc.id === documentId)
     documents.value.splice(libraryId, 1)
     notify({

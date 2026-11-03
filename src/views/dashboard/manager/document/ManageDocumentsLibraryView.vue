@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import useDocuments from '@/composables/useDocument'
 import {onMounted, ref} from 'vue'
 import {QForm, useQuasar} from 'quasar'
 import axios from 'axios'
@@ -7,29 +6,19 @@ import useErrors from '@/composables/useError'
 import {useI18n} from 'vue-i18n'
 import type {LibraryDocument, NewDocument} from '#/document'
 import {useProfileStore} from '@/stores/useProfileStore'
-import useCommissions from '@/composables/useCommissionFund'
 import FormManageLibraryDocument from '@/components/documents/FormManageLibraryDocument.vue'
 import {usePermission} from '@/composables/usePermission'
+import {useFundStore} from '@/stores/useFundStore'
+import {useDocumentStore} from '@/stores/useDocumentStore'
+import * as documentService from '@/services/DocumentService'
 
-const {
-  getLibraryDocuments,
-  documents,
-  postNewDocument
-} = useDocuments()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {t} = useI18n()
 const profileStore = useProfileStore()
+const fundStore = useFundStore()
+const documentStore = useDocumentStore()
 const {hasPerm} = usePermission()
-const {getFunds, funds} = useCommissions()
-
-onMounted(async () => {
-  loading.show()
-  await onGetFunds()
-  initManagerFunds()
-  await onGetLibraryDocuments()
-  loading.hide()
-})
 
 const newDocument = ref<NewDocument>({
   name: '',
@@ -41,42 +30,35 @@ const newDocumentForm = ref(QForm)
 
 const libraryDocuments = ref<LibraryDocument[]>([])
 
-const managerFunds = ref<number[]>([])
-
 const initLibraryDocuments = () => {
   const list: LibraryDocument[] = []
-  documents.value.forEach(document => {
+  documentStore.documents.forEach(document => {
     let canUpdateDocument = false
-    if (document.pathTemplate) {
-      if (document.processType === 'NO_PROCESS') {
+    if (!document.pathTemplate) return
+    if (document.processType === 'NO_PROCESS') {
+      canUpdateDocument = true
+    } else if (document.fund) {
+      if (hasPerm('change_document_any_fund') || profileStore.userFunds.includes(document.fund)) {
         canUpdateDocument = true
-      } else {
-        if (document.fund) {
-          if (hasPerm('change_document_any_fund')) {
-            canUpdateDocument = true
-          } else if (managerFunds.value.includes(document.fund)) {
-            canUpdateDocument = true
-          }
-        } else if (document.processType === 'CHARTER_ASSOCIATION' || document.processType === 'DOCUMENT_PROJECT') {
-          if (hasPerm('change_document_any_fund')) {
-            canUpdateDocument = true
-          }
-        }
       }
-      list.push({
-        id: document.id,
-        name: document.name,
-        acronym: document.acronym,
-        path: document.pathTemplate,
-        size: document.size,
-        newName: document.name ?? '',
-        file: undefined,
-        processType: document.processType,
-        mimeTypes: document.processType === 'NO_PROCESS' ? [] : document.mimeTypes,
-        open: false,
-        canUpdateDocument
-      })
+    } else if (document.processType === 'CHARTER_ASSOCIATION' || document.processType === 'DOCUMENT_PROJECT') {
+      if (hasPerm('change_document_any_fund')) {
+        canUpdateDocument = true
+      }
     }
+    list.push({
+      id: document.id,
+      name: document.name,
+      acronym: document.acronym,
+      path: document.pathTemplate,
+      size: document.size,
+      newName: document.name ?? '',
+      file: undefined,
+      processType: document.processType,
+      mimeTypes: document.processType === 'NO_PROCESS' ? [] : document.mimeTypes,
+      open: false,
+      canUpdateDocument
+    })
   })
   list.sort(function (a, b) {
     const labelA = a.name.toLowerCase().normalize('NFD'), labelB = b.name.toLowerCase().normalize('NFD')
@@ -91,7 +73,7 @@ const initLibraryDocuments = () => {
 
 async function onGetLibraryDocuments() {
   try {
-    await getLibraryDocuments()
+    await documentStore.getLibraryDocuments()
     initLibraryDocuments()
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -105,7 +87,7 @@ async function onGetLibraryDocuments() {
 
 async function onGetFunds() {
   try {
-    await getFunds()
+    await fundStore.getFunds()
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -116,17 +98,17 @@ async function onGetFunds() {
   }
 }
 
-const initManagerFunds = () => {
-  profileStore.user?.groups.forEach(group => {
-    const foundFunds = funds.value.filter(fund => fund.institution === group.institutionId)
-    managerFunds.value = foundFunds.map(fund => fund.id)
-  })
-}
+onMounted(async () => {
+  loading.show()
+  await onGetFunds()
+  await onGetLibraryDocuments()
+  loading.hide()
+})
 
 async function onUploadNewDocument() {
   loading.show()
   try {
-    await postNewDocument(newDocument.value)
+    await documentService.createDocument(newDocument.value)
     newDocumentForm.value.reset()
     await onGetLibraryDocuments()
     notify({

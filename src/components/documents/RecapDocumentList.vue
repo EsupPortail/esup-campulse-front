@@ -7,8 +7,9 @@ import {useProjectStore} from '@/stores/useProjectStore'
 import useCharters from '@/composables/useCharter'
 import useDocumentUploads from '@/composables/useDocumentUpload'
 import {onMounted} from 'vue'
+import {useDocumentStore} from '@/stores/useDocumentStore'
 
-const {createUploadedFileLink} = useDocumentUploads()
+const {createFileLink} = useDocumentUploads()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {
@@ -16,11 +17,11 @@ const {
   documentUploads,
   initProjectDocumentUploads,
   initProcessDocuments,
-  getDocuments,
   initCharterDocumentUploads
 } = useDocumentUploads()
-const {getCharterDocuments} = useCharters()
+const {getCharterDocumentUploads} = useCharters()
 const projectStore = useProjectStore()
+const documentStore = useDocumentStore()
 
 const props = defineProps<{
   process: 'project' | 'review' | 'charter',
@@ -31,7 +32,7 @@ const props = defineProps<{
 async function onGetFile(uploadedDocument: UploadedProcessDocument) {
   loading.show()
   try {
-    await createUploadedFileLink(uploadedDocument.pathFile as string, uploadedDocument.name as string)
+    await createFileLink(uploadedDocument.pathFile as string, uploadedDocument.name as string)
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -51,14 +52,14 @@ async function onGetDocuments() {
     if (props.process === 'project') processes = ['DOCUMENT_PROJECT']
     else if (props.process === 'review') processes = ['DOCUMENT_PROJECT_REVIEW']
     else if (props.process === 'charter') processes = ['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']
-    await getDocuments(processes)
+    await documentStore.getDocuments({processTypes: processes})
     initProcessDocuments(props.process === 'project', projectStore.projectFunds)
     if (props.process === 'project' || props.process === 'review') {
-      await projectStore.getProjectDocuments()
+      await projectStore.getProjectDocumentUploads()
       initProjectDocumentUploads()
     } else if (props.process === 'charter') {
       if (props.associationId) {
-        await getCharterDocuments(props.associationId)
+        await getCharterDocumentUploads(props.associationId)
         initCharterDocumentUploads()
       }
     }

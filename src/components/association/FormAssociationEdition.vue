@@ -6,13 +6,13 @@ import {useAssociation} from '@/composables/useAssociation'
 import FormAssociationSocialNetworks from '@/components/association/FormAssociationSocialNetworks.vue'
 import axios from 'axios'
 import useUserGroups from '@/composables/useUserGroup'
-import useSecurity from '@/composables/useAuthentication'
 import * as noLogoSquare from '@/assets/img/no_logo_square.png'
 import useErrors from '@/composables/useError'
 import InfoFormRequiredFields from '@/components/global/InfoFormRequiredFields.vue'
 import useDocuments from '@/composables/useDocument'
 import useUtil from '@/composables/useUtil'
 import {useInstitutionStore} from '@/stores/useInstitutionStore'
+import {usePermission} from '@/composables/usePermission'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -25,7 +25,7 @@ const {
   associationMemberCount
 } = useAssociation()
 const {isStaff} = useUserGroups()
-const {hasPerm} = useSecurity()
+const {hasPerm} = usePermission()
 const {catchHTTPError} = useErrors()
 const {acceptedFormats} = useDocuments()
 

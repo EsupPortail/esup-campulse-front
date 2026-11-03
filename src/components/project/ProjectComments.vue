@@ -31,13 +31,6 @@ const props = defineProps<{
 
 const open = ref<boolean>(false)
 
-onMounted(async () => {
-  loading.show()
-  await onGetProjectComments()
-  loading.hide()
-})
-
-
 async function onGetProjectComments() {
   if (props.project) {
     try {
@@ -54,6 +47,12 @@ async function onGetProjectComments() {
     comments.value = []
   }
 }
+
+onMounted(async () => {
+  loading.show()
+  await onGetProjectComments()
+  loading.hide()
+})
 
 async function onPostNewComment() {
   if (projectStore.project && newComment.value) {

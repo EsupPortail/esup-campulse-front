@@ -43,8 +43,8 @@ export const useProjectStore = defineStore('projectStore', {
       this.projects = await projectService.getProjects(params)
     },
 
-    async getProjectDetail(): Promise<void> {
-      this.project = await projectService.getProjectDetail(this.project?.id)
+    async getProjectDetail(projectId: number): Promise<void> {
+      this.project = await projectService.getProjectDetail(projectId)
     },
 
     async getProjectCategoryNames(onlyEnabled?: boolean): Promise<void> {

@@ -37,7 +37,7 @@ const route = useRoute()
 const {createUser} = useUser()
 
 const props = defineProps<{
-  isCas: boolean,
+  isCas?: boolean,
 }>()
 
 const isLDAPEnabled: boolean = import.meta.env.VITE_APP_OPEN_LDAP === 'true'

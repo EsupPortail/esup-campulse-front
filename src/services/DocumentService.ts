@@ -13,7 +13,7 @@ export async function getDocuments(filters?: Partial<DocumentFilters>): Promise<
   return (await axiosPublic.get<Document[]>(url)).data
 }
 
-export async function postDocument(document: NewDocument): Promise<void> {
+export async function createDocument(document: NewDocument): Promise<void> {
   const {axiosAuthenticated} = useAxios()
   const formData = new FormData()
   formData.append('name', document.name)

@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import {useContentStore} from '@/stores/useContentStore'
-import {onMounted, ref, watch} from 'vue'
+import {onMounted} from 'vue'
 import type {QTableProps} from 'quasar'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
-import type {Content} from '#/global'
 import useErrors from '@/composables/useError'
 import axios from 'axios'
 
@@ -13,21 +12,10 @@ const {notify, loading} = useQuasar()
 const contentStore = useContentStore()
 const {catchHTTPError} = useErrors()
 
-const contents = ref<Content[]>([])
-
-watch(() => contentStore.contents, () => {
-  contents.value = contentStore.contents
-})
-
-onMounted(async () => {
-  loading.show()
-  await onGetContents()
-  loading.hide()
-})
 
 async function onGetContents() {
   try {
-    await contentStore.getContents(true)
+    await contentStore.getContents({isEditable: true})
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -37,6 +25,12 @@ async function onGetContents() {
     }
   }
 }
+
+onMounted(async () => {
+  loading.show()
+  await onGetContents()
+  loading.hide()
+})
 
 const columns: QTableProps['columns'] = [
   {name: 'label', align: 'left', label: t('forms.label'), field: 'label', sortable: true},
@@ -65,8 +59,8 @@ const columns: QTableProps['columns'] = [
       <div class="container-lg">
         <QTable
           :columns="columns"
-          :loading="!contents"
-          :rows="contents"
+          :loading="!contentStore.contents.length"
+          :rows="contentStore.contents"
           :rows-per-page-options="[10, 20, 50, 0]"
           :title="t('dashboard.contents')"
           role="presentation"
