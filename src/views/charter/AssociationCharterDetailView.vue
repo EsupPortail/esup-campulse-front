@@ -8,7 +8,7 @@ import useErrors from '@/composables/useError'
 import {useRoute} from 'vue-router'
 import CharterRecapAssociationInfos from '@/components/charter/CharterRecapAssociationInfos.vue'
 import useCharters from '@/composables/useCharter'
-import RecapDocumentList from '@/components/documents/RecapDocumentList.vue'
+import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
 import useUserGroups from '@/composables/useUserGroup'
 
 const {t} = useI18n()
@@ -115,7 +115,7 @@ onMounted(async () => {
     </h2>
     <div class="dashboard-section-container">
       <div class="container">
-        <RecapDocumentList
+        <ProcessDocumentList
           :association-id="associationId"
           process="charter"
         />

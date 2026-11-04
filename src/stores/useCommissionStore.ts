@@ -21,8 +21,12 @@ export const useCommissionStore = defineStore('commissionStore', {
   },
 
   actions: {
-    async getCommissions(filters?: CommissionFilters) {
+    async getCommissions(filters?: Partial<CommissionFilters>) {
       this.commissions = await commissionService.getCommissions(filters)
+    },
+
+    async getManagedCommissions(filters?: Partial<CommissionFilters>) {
+      this.commissions = await commissionService.getManagedCommissions(filters)
     },
 
     async getCommission(commissionId: number) {

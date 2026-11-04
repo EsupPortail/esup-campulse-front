@@ -6,7 +6,7 @@ import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import ProjectReviewRecapReview from '@/components/project/ProjectReviewRecapReview.vue'
 import InfoVerifyDocuments from '@/components/documents/InfoVerifyDocuments.vue'
-import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
+import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
 import useSubmitReview from '@/composables/useProjectReview'
 import router from '@/router'
 
@@ -92,7 +92,7 @@ async function onSubmitProjectReview() {
       </div>
 
       <InfoVerifyDocuments v-if="props.view === 'submitProjectReview'"/>
-      <ProjectRecapDocuments
+      <ProcessDocumentList
         :association-id="null"
         process="review"
       />

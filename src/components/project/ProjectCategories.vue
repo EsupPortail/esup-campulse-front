@@ -7,27 +7,24 @@ const projectStore = useProjectStore()
 </script>
 
 <template>
-  <div class="display-row">
-    <h4
-
-      class="row-title"
+  <div class="flex-row">
+    <QChip
+      v-for="category in projectStore.project?.categories"
+      :key="category.id"
+      color="commission"
+      outline
+      size="sm"
     >
-      {{ t('project.categories') }}
-    </h4>
-    <p>
-      <QChip
-        v-for="category in projectStore.project?.categories"
-        :key="category.id"
-        color="commission"
-        outline
-      >
-        {{ category.name }}
-      </QChip>
-    </p>
+      {{ category.name }}
+    </QChip>
   </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
+
+.q-chip {
+  margin: 0.25rem 0;
+}
 </style>

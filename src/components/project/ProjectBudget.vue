@@ -23,7 +23,7 @@ const commissionStore = useCommissionStore()
 const fundStore = useFundStore()
 
 const props = defineProps<{
-  loadData: boolean
+  loadData?: boolean
 }>()
 
 onMounted(() => {
@@ -62,7 +62,7 @@ const projectReEdition = () => {
 <template>
   <div class="flex-column">
     <div class="display-row">
-      <h4>{{ t('project.re-edition') }}</h4>
+      <h5>{{ t('project.re-edition') }}</h5>
       <p>
         {{
           projectReEdition() ? t('yes') : t('no')
@@ -74,37 +74,37 @@ const projectReEdition = () => {
       v-if="projectReEdition()"
       class="display-row"
     >
-      <h4>{{ t('project.budget-previous-edition') }}</h4>
+      <h5>{{ t('project.budget-previous-edition') }}</h5>
       <p>{{ projectBudget.budgetPreviousEdition + CURRENCY }}</p>
     </div>
 
     <div class="display-row">
-      <h4>{{ t('project.target-audience') }}</h4>
+      <h5>{{ t('project.target-audience') }}</h5>
       <p>{{ projectBudget.targetAudience }}</p>
     </div>
 
     <div class="display-row">
-      <h4>{{ t('project.target-students-amount') }}</h4>
+      <h5>{{ t('project.target-students-amount') }}</h5>
       <p>{{ projectBudget.amountStudentsAudience }}</p>
     </div>
 
     <div class="display-row">
-      <h4>{{ t('project.target-all-amount') }}</h4>
+      <h5>{{ t('project.target-all-amount') }}</h5>
       <p>{{ projectBudget.amountAllAudience }}</p>
     </div>
 
     <div class="display-row">
-      <h4>{{ t('project.ticket-price') }}</h4>
+      <h5>{{ t('project.ticket-price') }}</h5>
       <p>{{ projectBudget.ticketPrice + CURRENCY }}</p>
     </div>
 
     <div class="display-row">
-      <h4>{{ t('project.student-ticket-price') }}</h4>
+      <h5>{{ t('project.student-ticket-price') }}</h5>
       <p>{{ projectBudget.studentTicketPrice + CURRENCY }}</p>
     </div>
 
     <div class="display-row">
-      <h4>{{ t('project.individual-cost') }}</h4>
+      <h5>{{ t('project.individual-cost') }}</h5>
       <p>{{ projectBudget.individualCost + CURRENCY }}</p>
     </div>
 
@@ -120,7 +120,7 @@ const projectReEdition = () => {
         class="flex-row"
       >
         <div class="display-row">
-          <h4>{{ t('project.previous-asked') }}</h4>
+          <h5>{{ t('project.previous-asked') }}</h5>
           <p>
             {{
               projectCommissionFund.amountAskedPreviousEdition +
@@ -130,7 +130,7 @@ const projectReEdition = () => {
         </div>
 
         <div class="display-row">
-          <h4>{{ t('project.previous-earned') }}</h4>
+          <h5>{{ t('project.previous-earned') }}</h5>
           <p>
             {{
               projectCommissionFund.amountEarnedPreviousEdition +
@@ -142,7 +142,7 @@ const projectReEdition = () => {
 
       <div class="flex-row">
         <div class="display-row">
-          <h4>{{ t('project.amount-asked') }}</h4>
+          <h5>{{ t('project.amount-asked') }}</h5>
           <p>{{ projectCommissionFund.amountAsked + CURRENCY }}</p>
         </div>
 
@@ -150,7 +150,7 @@ const projectReEdition = () => {
           v-if="projectCommissionFund.amountEarned || projectCommissionFund.amountEarned === 0"
           class="display-row"
         >
-          <h4>{{ t('project.amount-earned') }}</h4>
+          <h5>{{ t('project.amount-earned') }}</h5>
           <p>{{ projectCommissionFund.amountEarned + CURRENCY }}</p>
         </div>
       </div>
@@ -160,10 +160,4 @@ const projectReEdition = () => {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
-@import "@/assets/styles/dashboard.scss";
-@import "@/assets/_variables.scss";
-
-.flex-row > * {
-  width: $fullSize;
-}
 </style>

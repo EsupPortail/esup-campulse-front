@@ -23,6 +23,9 @@ export const useProjectStore = defineStore('projectStore', {
   }),
 
   getters: {
+    projectStatus: (state: ProjectStore): ProjectStatus => {
+      return state.project?.projectStatus ?? 'PROJECT_DRAFT'
+    },
     projectCategoriesLabels: (state: ProjectStore): SelectLabel[] => {
       return state.projectCategoryNames.map(category => ({
         value: category.id,
@@ -31,7 +34,7 @@ export const useProjectStore = defineStore('projectStore', {
     },
     // todo vérifier
     projectCommission: (state: ProjectStore): number | null => {
-      return state.project?.commissions[0].id
+      return state.project?.commission.id
     },
     // todo ajout de projectCommissionFunds dans project à faire en back
     projectFunds: (state: ProjectStore): number[] => {

@@ -67,6 +67,27 @@ body {
   align-items: stretch;
 }
 
+.align-items-center {
+  align-items: center;
+}
+
+.gap-m {
+  gap: 2rem;
+}
+
+.gap-l {
+  gap: 4rem;
+}
+
+.gap-xl {
+  gap: 8rem;
+}
+
+// Width utilities
+.width-100 {
+  width: 100%;
+}
+
 // Padding utilities
 .padding-top {
   padding-top: 1rem;

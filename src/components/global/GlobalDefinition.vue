@@ -14,9 +14,7 @@ defineProps<{
 </template>
 
 <style lang="scss" scoped>
-div {
-  font-weight: 600;
-}
+@import "@/assets/_variables.scss";
 
 dt {
   font-size: 1.2rem;
@@ -25,5 +23,6 @@ dt {
 
 dd {
   font-size: 1.4rem;
+  font-weight: $semibold-weight;
 }
 </style>

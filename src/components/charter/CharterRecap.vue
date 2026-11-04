@@ -2,7 +2,7 @@
 import {useI18n} from 'vue-i18n'
 import CharterRecapAssociationInfos from '@/components/charter/CharterRecapAssociationInfos.vue'
 import InfoVerifyDocuments from '@/components/documents/InfoVerifyDocuments.vue'
-import RecapDocumentList from '@/components/documents/RecapDocumentList.vue'
+import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
 
 const {t} = useI18n()
 
@@ -55,7 +55,7 @@ const emit = defineEmits(['changeStep'])
         />
       </div>
       <InfoVerifyDocuments/>
-      <RecapDocumentList
+      <ProcessDocumentList
         :association-id="props.associationId"
         process="charter"
       />

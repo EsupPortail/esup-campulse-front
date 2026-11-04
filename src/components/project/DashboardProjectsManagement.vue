@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import AtomicTab from '@/components/global/GlobalTab.vue'
+import GlobalTab from '@/components/global/GlobalTab.vue'
 import type {Tab} from '#/global'
 import ProjectListTable from '@/components/project/projectList/ProjectListTable.vue'
 import CommissionListCard from '@/components/commission/CommissionListCard.vue'
-import {watch} from 'vue'
+import {ref, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import {useCommissionStore} from '@/stores/useCommissionStore'
+import useProject from '@/composables/useProject'
+import type {CommissionFilters} from '#/commission'
 
 const {dashboardTab} = useProject()
 const {loading} = useQuasar()
@@ -22,21 +24,22 @@ const tabs: Tab[] = [
   }
 ]
 
-async function getCommissions() {
+const showClosedCommissions = ref<boolean>(false)
+
+async function onGetCommissions() {
   loading.show()
-  await commissionStore.getCommissionsForManagers(
-    undefined,
-    undefined,
-    true,
-    undefined,
-    true
-  )
+  const filters: Partial<CommissionFilters> = {}
+  if (!showClosedCommissions.value) {
+    filters.isOpenToProjects = true
+  }
+  //await commissionStore.getManagedCommissions(filters)
+  await commissionStore.getCommissions(filters)
   loading.hide()
 }
 
-watch(() => dashboardTab.value, () => {
+watch(() => dashboardTab.value, async () => {
   if (dashboardTab.value === 1) {
-    getCommissions()
+    await onGetCommissions()
   }
 })
 </script>
@@ -44,7 +47,7 @@ watch(() => dashboardTab.value, () => {
 <template>
   <div class="section">
     <div class="container-lg">
-      <AtomicTab
+      <GlobalTab
         v-model:current-tab="dashboardTab"
         :tab-list="tabs"
       >
@@ -55,6 +58,14 @@ watch(() => dashboardTab.value, () => {
         </template>
         <template #commissions>
           <section class="flex-column">
+            <div>
+              <QToggle
+                v-model="showClosedCommissions"
+                color="commission"
+                label="Voir les commissions non ouvertes"
+                @update:model-value="onGetCommissions"
+              />
+            </div>
             <CommissionListCard
               v-for="commission in commissionStore.commissions?.results"
               :key="`commission-${commission.id}`"
@@ -63,7 +74,7 @@ watch(() => dashboardTab.value, () => {
             />
           </section>
         </template>
-      </AtomicTab>
+      </GlobalTab>
     </div>
   </div>
 </template>

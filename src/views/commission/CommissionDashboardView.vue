@@ -4,7 +4,7 @@ import DashboardStudentProjectsManagement from '@/components/project/DashboardSt
 import DashboardProjectsManagement from '@/components/project/DashboardProjectsManagement.vue'
 import {usePermission} from '@/composables/usePermission'
 
-const {isStaff, isMemberFund} = useUserGroups()
+const {isStaff, isInGroup} = useUserGroups()
 const {hasPerm} = usePermission()
 
 </script>
@@ -13,6 +13,6 @@ const {hasPerm} = usePermission()
   <DashboardStudentProjectsManagement
     v-if="hasPerm('add_project_association') || hasPerm('add_project_user')"
   />
-  <DashboardProjectsManagement v-if="isStaff || isMemberFund"/>
+  <DashboardProjectsManagement v-if="isStaff || isInGroup('MEMBER_FUND')"/>
 </template>
 

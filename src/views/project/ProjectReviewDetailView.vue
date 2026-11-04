@@ -8,7 +8,7 @@ import router from '@/router'
 import {onMounted, ref} from 'vue'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useRoute} from 'vue-router'
-import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
+import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
 import useSubmitReview from '@/composables/useProjectReview'
 import ProjectReviewRecapBasicInfos from '@/components/project/ProjectReviewRecapBasicInfos.vue'
@@ -95,7 +95,7 @@ async function onGetProjectReviewDetail() {
     </h2>
     <div class="dashboard-section-container">
       <div class="container">
-        <ProjectRecapDocuments
+        <ProcessDocumentList
           v-if="isLoaded"
           :association-id="null"
           process="review"

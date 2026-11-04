@@ -44,7 +44,6 @@ async function onGetFile(uploadedDocument: UploadedProcessDocument) {
   loading.hide()
 }
 
-// GET PROJECT DOCUMENTS
 async function onGetDocuments() {
   loading.show()
   try {
@@ -84,7 +83,7 @@ onMounted(async () => await onGetDocuments())
       :key="index"
       class="display-row"
     >
-      <h4>{{ document.description }}</h4>
+      <h5>{{ document.description }}</h5>
       <ul>
         <li
           v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"

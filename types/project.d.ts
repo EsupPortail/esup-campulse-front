@@ -47,7 +47,7 @@ export interface Project extends ProjectBase {
   plannedLocation: string;
   partnerAssociation: string;
   categories: ProjectCategoryName[];
-  commissions: Commission[];
+  commission: Commission;
   budgetPreviousEdition: number;
   targetAudience: string;
   amountStudentsAudience: number;

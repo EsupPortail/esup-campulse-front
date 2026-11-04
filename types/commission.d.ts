@@ -21,6 +21,10 @@ export interface CommissionBase {
   commissionDate: string;
   isOpenToProjects: boolean;
   name: string;
+  standbyProjectsCount: number | null;
+  processingProjectsCount: number | null;
+  submittedProjectsCount: number | null;
+  funds: Fund[];
 }
 
 export interface Commission extends CommissionBase {

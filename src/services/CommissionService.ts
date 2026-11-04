@@ -13,19 +13,32 @@ import type {AxiosResponse} from 'axios'
 
 const modelBaseUrl = '/commissions'
 
+const commissionFilterFactory = (filters?: Partial<CommissionFilters>): string[] => {
+  const factory = []
+  if (filters?.funds?.length) factory.push(`funds=${filters.funds.join(',')}`)
+  if (filters?.isOpenToProjects !== undefined) factory.push(`is_open_to_projects=${filters.isOpenToProjects}`)
+  if (filters?.isSite !== undefined) factory.push(`is_site=${filters.isSite}`)
+  if (filters?.managedProjects !== undefined) factory.push(`managed_projects=${filters.managedProjects}`)
+  if (filters?.onlyWithActiveProjects !== undefined) factory.push(`only_with_active_projects=${filters.onlyWithActiveProjects}`)
+  if (filters?.toPostponeProject) factory.push(`to_postpone_project=${filters.toPostponeProject}`)
+  if (filters?.withActiveProjects !== undefined) factory.push(`with_active_projects=${filters.withActiveProjects}`)
+  return factory
+}
+
 export async function getCommissions(filters?: Partial<CommissionFilters>): Promise<PaginatedList<Commission>> {
   let urlString = `${modelBaseUrl}/`
-  const urlArray = []
-  if (filters?.funds?.length) urlArray.push(`funds=${filters.funds.join(',')}`)
-  if (filters?.isOpenToProjects !== undefined) urlArray.push(`is_open_to_projects=${filters.isOpenToProjects}`)
-  if (filters?.isSite !== undefined) urlArray.push(`is_site=${filters.isSite}`)
-  if (filters?.managedProjects !== undefined) urlArray.push(`managed_projects=${filters.managedProjects}`)
-  if (filters?.onlyWithActiveProjects !== undefined) urlArray.push(`only_with_active_projects=${filters.onlyWithActiveProjects}`)
-  if (filters?.toPostponeProject) urlArray.push(`to_postpone_project=${filters.toPostponeProject}`)
-  if (filters?.withActiveProjects !== undefined) urlArray.push(`with_active_projects=${filters.withActiveProjects}`)
-  if (urlArray.length) urlString += `?${urlArray.join('&')}`
+  const factory = commissionFilterFactory(filters)
+  if (factory) urlString += `?${factory.join('&')}`
   const {axiosPublic} = useAxios()
   return (await axiosPublic.get<PaginatedList<Commission>>(urlString)).data
+}
+
+export async function getManagedCommissions(filters?: Partial<CommissionFilters>): Promise<PaginatedList<Commission>> {
+  let urlString = `${modelBaseUrl}/manage`
+  const factory = commissionFilterFactory(filters)
+  if (factory) urlString += `?${factory.join('&')}`
+  const {axiosAuthenticated} = useAxios()
+  return (await axiosAuthenticated.get<PaginatedList<Commission>>(urlString)).data
 }
 
 export async function getCommission(commissionId: number): Promise<Commission> {

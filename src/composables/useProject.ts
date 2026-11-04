@@ -18,6 +18,8 @@ import {updateProjectStatus} from '@/services/ProjectService'
 import {useFundStore} from '@/stores/useFundStore'
 import useUtil from '@/composables/useUtil'
 
+const dashboardTab = ref<number>(0)
+
 const projectStatuses: ProjectStatus[] = [
   'PROJECT_DRAFT',
   'PROJECT_DRAFT_PROCESSED',
@@ -399,6 +401,7 @@ export default function useProject() {
     validateProjectCommissionFund,
     rejectProjectCommissionFund,
     canManageProjectCommissionFund,
-    updateAmountEarned
+    updateAmountEarned,
+    dashboardTab
   }
 }

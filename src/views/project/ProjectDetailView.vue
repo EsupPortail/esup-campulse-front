@@ -1,39 +1,47 @@
 <script lang="ts" setup>
-import ProjectComments from '@/components/project/ProjectComments.vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useError'
 import router from '@/router'
-import {onMounted, ref} from 'vue'
+import {computed, onMounted, ref} from 'vue'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useProject from '@/composables/useProject'
 import {useRoute} from 'vue-router'
-import ProjectRecapInfos from '@/components/project/ProjectRecapInfos.vue'
-import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
-import ProjectRecapBudget from '@/components/project/ProjectRecapBudget.vue'
-import ProjectRecapGoals from '@/components/project/ProjectRecapGoals.vue'
-import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
-import ProjectValidation from '@/components/project/ProjectValidation.vue'
-import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
-import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
-import {usePermission} from '@/composables/usePermission'
 import useUtil from '@/composables/useUtil'
+import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
+import GlobalDefinition from '@/components/global/GlobalDefinition.vue'
+import ProjectExpansionItem from '@/components/project/projectDetail/ProjectExpansionItem.vue'
+import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
+import useCharter from '@/composables/useCharter'
+import ProjectCategories from '@/components/project/ProjectCategories.vue'
+import ProjectBudget from '@/components/project/ProjectBudget.vue'
+import ProjectGoals from '@/components/project/ProjectGoals.vue'
+import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
+import ProjectComments from '@/components/project/ProjectComments.vue'
+import useProjectReview from '@/composables/useProjectReview'
+import ProjectReviewRecap from '@/components/project/ProjectReviewRecap.vue'
 
 const {notify, loading} = useQuasar()
+const {initAssociationCharterStatus} = useCharter()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {hasPerm} = usePermission()
-const {openDocument} = useUtil()
+const {openDocument, formatDate, reverseDate} = useUtil()
 const projectStore = useProjectStore()
 const {
   initProjectBasicInfos,
   initProjectGoals,
   initProjectBudget
 } = useProject()
+const {initProjectReview} = useProjectReview()
 const route = useRoute()
 
 const isLoaded = ref<boolean>(false)
+
+const showReview = computed<boolean>(() => {
+  return ['PROJECT_REVIEW_PROCESSING', 'PROJECT_REVIEW_VALIDATED', 'PROJECT_CANCELED']
+    .includes(projectStore.projectStatus)
+})
 
 onMounted(async () => {
   loading.show()
@@ -48,6 +56,10 @@ async function onGetData() {
     initProjectBasicInfos()
     initProjectBudget()
     initProjectGoals()
+    if (showReview.value) {
+      await projectStore.getProjectReview()
+      initProjectReview()
+    }
   } catch (error) {
     await router.push({name: '404'})
     if (axios.isAxiosError(error) && error.response) {
@@ -77,179 +89,243 @@ async function onGetProjectPdf() {
 </script>
 
 <template>
-  <!-- General Section -->
   <div class="dashboard-section">
-    <h2>
-      <i
-        aria-hidden="true"
-        class="bi bi-info-circle"
-      ></i>
-      {{ t('project.general-infos') }}
-    </h2>
-    <div class="dashboard-section-container">
-      <div class="container">
-        <ProjectRecapInfos v-if="isLoaded"/>
-      </div>
-    </div>
-  </div>
-
-  <!-- Commission Section -->
-  <div class="dashboard-section">
-    <h2>
-      <i
-        aria-hidden="true"
-        class="bi bi-calendar"
-      ></i>
-      {{ t('commission.commission', 1) }}
-    </h2>
-    <div class="dashboard-section-container">
-      <div class="container">
-        <ProjectRecapCommissions view="projectRecap"/>
-      </div>
-    </div>
-  </div>
-
-  <!-- Budget Section -->
-  <div class="dashboard-section">
-    <h2>
-      <i
-        aria-hidden="true"
-        class="bi bi-piggy-bank"
-      ></i>
-      {{ t('project.budget') }}
-    </h2>
-    <div class="dashboard-section-container">
-      <div class="container">
-        <ProjectRecapBudget :load-data="false"/>
-      </div>
-    </div>
-  </div>
-
-  <!-- Goals Section -->
-  <div class="dashboard-section">
-    <h2>
-      <i
-        aria-hidden="true"
-        class="bi bi-flag"
-      ></i>
-      {{ t('project.goals') }}
-    </h2>
-    <div class="dashboard-section-container">
-      <div class="container">
-        <ProjectRecapGoals/>
-      </div>
-    </div>
-  </div>
-
-  <!-- Documents Section -->
-  <div class="dashboard-section">
-    <h2>
-      <i
-        aria-hidden="true"
-        class="bi bi-file-earmark"
-      ></i>
-      {{ t('project.documents') }}
-    </h2>
-    <div class="dashboard-section-container">
-      <div class="container">
-        <ProjectRecapDocuments
-          v-if="isLoaded"
-          :association-id="null"
-          process="project"
-        />
-      </div>
-    </div>
-  </div>
-
-  <!-- Fund validation section -->
-  <div class="dashboard-section">
-    <h2>
-      <i
-        aria-hidden="true"
-        class="bi bi-bank"
-      ></i>
-      {{ t('commission.funds-validation-status') }}
-    </h2>
-    <div class="dashboard-section-container">
-      <div class="container">
-        <div class="display-row">
-          <ProjectFundValidationIndicator :project-commission-funds="projectStore.projectCommissionFunds"/>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Status Section -->
-  <div class="dashboard-section">
-    <h2>
-      <i
-        aria-hidden="true"
-        class="bi bi-check-lg"
-      ></i>
-      {{ t('project.status.title') }}
-    </h2>
-    <div class="dashboard-section-container">
-      <div class="container">
-        <div class="display-row">
-          <p class="row-title">{{ t('status') }}</p>
+    <div class="flex-row-space-between">
+      <div>
+        <h2>
+          <i
+            aria-hidden="true"
+            class="bi bi-journal-bookmark"
+          ></i>
+          {{ projectStore.project?.name }}
+        </h2>
+        <div>
           <ProjectStatusIndicator
             :project-status="projectStore.project?.projectStatus"
             :show-draft="true"
           />
         </div>
       </div>
+      <QBtn
+        color="commission"
+        disable
+        icon="bi-pencil"
+        label="Éditer"
+        outline
+      />
     </div>
-  </div>
-
-  <!-- Comment Section -->
-  <div class="dashboard-section">
-    <h2>
-      <i
-        aria-hidden="true"
-        class="bi bi-chat"
-      ></i>
-      {{ t('project.comments.title') }}
-    </h2>
     <div class="dashboard-section-container">
-      <div class="container">
-        <ProjectComments
-          v-if="isLoaded"
-          :project="projectStore.project?.id"
-        />
+      <div class="container flex-column gap-m">
+        <section>
+          <dl class="flex-column">
+            <div>
+              <GlobalDefinition
+                v-if="projectStore.project?.association"
+                title="Association"
+              >
+                {{
+                  `${projectStore.project?.association.name}
+ (${projectStore.project?.associationUser.user.firstName + ' ' + projectStore.project?.associationUser.user.lastName})`
+                }}
+              </GlobalDefinition>
+              <GlobalDefinition
+                v-else
+                title="Porteur"
+              >
+                {{ projectStore.project?.user.firstName + ' ' + projectStore.project?.user.lastName }}
+              </GlobalDefinition>
+              <GlobalDefinition
+                v-if="projectStore.project?.partnerAssociation"
+                title="Association co-porteuse"
+              >
+                {{ projectStore.project?.partnerAssociation }}
+              </GlobalDefinition>
+              <GlobalDefinition
+                v-if="projectStore.project?.association"
+                title="Statut de la charte"
+              >
+                <CharterStatusIndicator
+                  :charter-status="initAssociationCharterStatus(projectStore.project?.association.charterStatus)"
+                />
+              </GlobalDefinition>
+              <GlobalDefinition title="Bilans en retard">
+                TODO
+              </GlobalDefinition>
+            </div>
+            <div>
+              <GlobalDefinition title="Date de dépôt du projet">
+                {{ reverseDate(formatDate(projectStore.project?.creationDate)) }}
+              </GlobalDefinition>
+              <GlobalDefinition title="Date de dernière modification">
+                {{ reverseDate(formatDate(projectStore.project?.editionDate)) }}
+              </GlobalDefinition>
+              <GlobalDefinition title="Date de début du projet">
+                {{ reverseDate(formatDate(projectStore.project?.plannedStartDate)) }}
+              </GlobalDefinition>
+              <GlobalDefinition title="Date de fin du projet">
+                {{ reverseDate(formatDate(projectStore.project?.plannedEndDate)) }}
+              </GlobalDefinition>
+              <GlobalDefinition title="Catégorie">
+                <ProjectCategories/>
+              </GlobalDefinition>
+            </div>
+            <div>
+              <GlobalDefinition title="Lieux prévus">
+                {{ projectStore.project?.plannedLocation }}
+              </GlobalDefinition>
+            </div>
+            <div>
+              <GlobalDefinition title="Commission">
+                {{ projectStore.project?.commission.name }}
+              </GlobalDefinition>
+            </div>
+            <div>
+              <table>
+                <caption>Financeurs et montants</caption>
+                <tbody>
+                  <tr>
+                    <th>Fonds</th>
+                    <th>Statut</th>
+                    <th>Montant demandé</th>
+                    <th>Montant obtenu</th>
+                  </tr>
+                  <tr>
+                    <td>TODO</td>
+                    <td>TODO</td>
+                    <td>TODO</td>
+                    <td>TODO</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </dl>
+        </section>
+        <section>
+          <QList
+            bordered
+            class="rounded-borders bg-white"
+          >
+            <ProjectExpansionItem
+              icon="bi-gear"
+              label="Paramètres du projet"
+            >
+              TODO
+            </ProjectExpansionItem>
+            <ProjectExpansionItem
+              icon="bi-send"
+              label="Autres projets du porteur"
+            >
+              TODO
+            </ProjectExpansionItem>
+            <ProjectExpansionItem
+              icon="bi-clipboard"
+              label="Détails du projet"
+            >
+              <section class="flex-column">
+                <h4>
+                  {{ t('project.budget') }}
+                </h4>
+                <ProjectBudget/>
+                <h4>
+                  Objectifs
+                </h4>
+                <ProjectGoals/>
+              </section>
+            </ProjectExpansionItem>
+            <ProjectExpansionItem
+              :disable="!showReview"
+              icon="bi-person-video3"
+              label="Détails du bilan"
+            >
+              <ProjectReviewRecap view="projectReviewDetail"/>
+            </ProjectExpansionItem>
+            <ProjectExpansionItem
+              icon="bi-file-earmark"
+              label="Documents du projet"
+            >
+              <ProcessDocumentList
+                v-if="isLoaded"
+                :association-id="null"
+                process="project"
+              />
+            </ProjectExpansionItem>
+            <ProjectExpansionItem
+              icon="bi-chat"
+              label="Commentaires"
+            >
+              <ProjectComments
+                v-if="isLoaded"
+                :project="projectStore.project?.id"
+              />
+            </ProjectExpansionItem>
+          </QList>
+        </section>
       </div>
     </div>
-    <ProjectValidation
-      v-if="projectStore.project?.projectStatus === 'PROJECT_PROCESSING'
-        && hasPerm('change_project_as_validator')
-        && route.name === 'ManageProject'"
-    />
-    <section
-      v-else
-      class="flex-row-center padding-top padding-bottom"
-    >
-      <QBtn
-        :label="t('project.download-recap')"
-        class="btn-lg"
-        color="commission"
-
-        icon="bi-filetype-pdf"
-        @click="onGetProjectPdf"
-      />
-    </section>
   </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
+@import "@/assets/_variables.scss";
 
-/*.flex-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.flex-row-space-between {
+  width: $fullSize;
+  max-width: 120rem;
+  padding: 0 1rem 1rem 1rem;
+  margin: auto;
+
+  h2 {
+    padding: 1rem 0;
+  }
 }
 
-.display-row {
-  width: $fullSize;
-}*/
+.container {
+  padding: 0 1rem;
+}
+
+dl {
+  & > div:not(:nth-child(3)) {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  & > div:nth-child(3) {
+    border-bottom: 1px solid #d7d7d7;
+    padding-bottom: 1rem;
+  }
+}
+
+caption {
+  font-size: 1.2rem;
+  color: #454545;
+  text-align: left;
+}
+
+table {
+  border: 1px solid #d7d7d7;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 1.4rem;
+  width: 80rem;
+
+  tr {
+    border: 1px solid #d7d7d7;
+  }
+
+  th {
+    font-weight: $semibold-weight;
+    text-transform: uppercase;
+  }
+
+  td, th {
+    padding: 0.75rem;
+  }
+}
+
+dd > span {
+  font-weight: $semibold-weight !important;
+}
+
 </style>

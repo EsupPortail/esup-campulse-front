@@ -6,11 +6,15 @@ import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.
 import {useProjectStore} from '@/stores/useProjectStore'
 import {onMounted, ref} from 'vue'
 import axios from 'axios'
+import useUtil from '@/composables/useUtil'
+import useProject from '@/composables/useProject'
+import router from '@/router'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {formatDate} = useUtil()
+const {projectStatuses} = useProject()
 const projectStore = useProjectStore()
 
 const props = defineProps<{
@@ -83,10 +87,14 @@ const columns: QTableProps['columns'] = [
     label: t('status'),
     field: row => row.projectStatus,
     sortable: true,
-    sort: (a, b) => (projectStore.projectStatuses.indexOf(a) - projectStore.projectStatuses.indexOf(b)),
+    sort: (a, b) => (projectStatuses.indexOf(a) - projectStatuses.indexOf(b)),
     format: val => `${val}`
   }
 ]
+
+async function onRowClick(projectId: number) {
+  await router.push({name: 'Project', params: {projectId}})
+}
 </script>
 
 <template>
@@ -97,7 +105,6 @@ const columns: QTableProps['columns'] = [
     :no-data-label="t('project.no-project-to-show')"
     :rows="projectStore.projects?.results || []"
     :rows-per-page-options="[10, 20, 50, 0]"
-
     row-key="id"
     selection="multiple"
     wrap-cells
@@ -124,7 +131,10 @@ const columns: QTableProps['columns'] = [
       </QTr>
     </template>
     <template v-slot:body="props">
-      <QTr :props="props">
+      <QTr
+        :props="props"
+        @click="onRowClick(props.row.id)"
+      >
         <QTd>
           <QCheckbox
             v-model="props.selected"
@@ -198,4 +208,8 @@ class="padding-bottom"
 <style lang="scss" scoped>
 @import '@/assets/styles/dashboard';
 @import '@/assets/styles/forms';
+
+.q-tr {
+  cursor: pointer;
+}
 </style>

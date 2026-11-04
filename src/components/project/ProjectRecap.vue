@@ -2,9 +2,9 @@
 import {useI18n} from 'vue-i18n'
 import ProjectRecapInfos from '@/components/project/ProjectRecapInfos.vue'
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
-import ProjectRecapBudget from '@/components/project/ProjectRecapBudget.vue'
-import ProjectRecapGoals from '@/components/project/ProjectRecapGoals.vue'
-import ProjectRecapDocuments from '@/components/documents/RecapDocumentList.vue'
+import ProjectBudget from '@/components/project/ProjectBudget.vue'
+import ProjectGoals from '@/components/project/ProjectGoals.vue'
+import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
 import InfoVerifyDocuments from '@/components/documents/InfoVerifyDocuments.vue'
 
 const {t} = useI18n()
@@ -76,7 +76,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
           @click="emit('changeStep', 3)"
         />
       </div>
-      <ProjectRecapBudget :load-data="false"/>
+      <ProjectBudget :load-data="false"/>
 
       <!-- GOALS -->
       <div
@@ -92,7 +92,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
           @click="emit('changeStep', 4)"
         />
       </div>
-      <ProjectRecapGoals/>
+      <ProjectGoals/>
 
       <!-- DOCUMENTS -->
       <div
@@ -110,7 +110,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
       </div>
 
       <InfoVerifyDocuments v-if="props.view === 'submitProject'"/>
-      <ProjectRecapDocuments
+      <ProcessDocumentList
         :association-id="null"
         process="project"
       />
