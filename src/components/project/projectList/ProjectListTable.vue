@@ -45,11 +45,15 @@ async function onGetProjects() {
     const page = pagination.value.page
     const pageSize = pagination.value.rowsPerPage
     const search = searchProjectFilters.value
+    const cleanDate = (date: string | null): string | null => {
+      if (!date) return null
+      return date.replace(/\//g, '-')
+    }
     const filters: Partial<ProjectListFilters> = {
       commissionId: props.commissionId,
       association: search.associationName,
-      editionDateAfter: search.editionDate.from,
-      editionDateBefore: search.editionDate.to,
+      editionDateAfter: cleanDate(search.editionDate.from),
+      editionDateBefore: cleanDate(search.editionDate.to),
       manualIdentifier: search.manualIdentifier,
       projectStatuses: search.projectStatuses,
       funds: search.funds,

@@ -142,7 +142,7 @@ const routes: RouteRecordRaw[] = [
           {
             path: '',
             name: 'Commission',
-            component: () => import('@/views/commission/CommissionsView.vue'),
+            component: () => import('@/views/commission/CommissionLandingView.vue'),
             meta: {
               title: i18n.global.t('breadcrumbs.commission')
             }

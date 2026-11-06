@@ -27,7 +27,7 @@ export const useProjectStore = defineStore('projectStore', {
     projectStatus: (state: ProjectStore): ProjectStatus => {
       return state.project?.projectStatus ?? 'PROJECT_DRAFT'
     },
-    projectCategoriesLabels: (state: ProjectStore): SelectLabel[] => {
+    projectCategoryLabels: (state: ProjectStore): SelectLabel[] => {
       return state.projectCategoryNames.map(category => ({
         value: category.id,
         label: category.name
