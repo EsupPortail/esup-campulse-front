@@ -1,6 +1,7 @@
 import {defineStore} from 'pinia'
 import type {
   ProjectCommissionFundFilter,
+  ProjectListFilters,
   ProjectStatus,
   ProjectStore,
   UpdateProjectCommissionFund,
@@ -42,7 +43,7 @@ export const useProjectStore = defineStore('projectStore', {
     }
   },
   actions: {
-    async getProjects(params?: { commission?: number, association?: number }): Promise<void> {
+    async getProjects(params?: Partial<ProjectListFilters>): Promise<void> {
       this.projects = await projectService.getProjects(params)
     },
 

@@ -26,6 +26,11 @@ export interface Tab {
   hasUnsavedData?: boolean;
 }
 
+export interface DateRange {
+  from: string | null;
+  to: string | null;
+}
+
 export interface PaginatedList<T> {
   count: number;
   totalPages: number;

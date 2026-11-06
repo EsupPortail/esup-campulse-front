@@ -20,7 +20,6 @@ import ProjectGoals from '@/components/project/ProjectGoals.vue'
 import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
 import ProjectComments from '@/components/project/ProjectComments.vue'
 import useProjectReview from '@/composables/useProjectReview'
-import ProjectReviewRecap from '@/components/project/ProjectReviewRecap.vue'
 
 const {notify, loading} = useQuasar()
 const {initAssociationCharterStatus} = useCharter()
@@ -237,7 +236,7 @@ async function onGetProjectPdf() {
               icon="bi-person-video3"
               label="Détails du bilan"
             >
-              <ProjectReviewRecap view="projectReviewDetail"/>
+              <!--<ProjectReviewRecap view="projectReviewDetail"/>-->
             </ProjectExpansionItem>
             <ProjectExpansionItem
               icon="bi-file-earmark"

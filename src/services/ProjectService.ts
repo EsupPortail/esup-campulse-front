@@ -9,6 +9,7 @@ import type {
   ProjectCommissionFund,
   ProjectCommissionFundFilter,
   ProjectInfos,
+  ProjectListFilters,
   ProjectListItem,
   ProjectReview,
   ProjectStatus,
@@ -23,13 +24,23 @@ import type {AxiosResponse} from 'axios'
 const modelBaseUrl = '/projects'
 
 export async function getProjects(
-  params?: { commission?: number, association?: number }
+  params?: Partial<ProjectListFilters>
 ): Promise<PaginatedList<ProjectListItem>> {
   const {axiosAuthenticated} = useAxios()
   let url = `${modelBaseUrl}/`
   const factory = []
-  if (params?.commission) factory.push(`commission_id=${params.commission}`)
-  if (params?.association) factory.push(`association_id=${params.association}`)
+  if (params?.activeProjects !== undefined) factory.push(`active_projects=${params.activeProjects}`)
+  if (params?.association) factory.push(`association=${params.association}`)
+  if (params?.editionDateAfter) factory.push(`edition_date_after=${params.editionDateAfter}`)
+  if (params?.editionDateBefore) factory.push(`edition_date_before=${params.editionDateBefore}`)
+  if (params?.funds.length) factory.push(`funds=${params.funds.join(',')}`)
+  if (params?.commissionId) factory.push(`commission_id=${params.commissionId}`)
+  if (params?.associationId) factory.push(`association_id=${params.associationId}`)
+  if (params?.manualIdentifier) factory.push(`manual_identifier=${params.manualIdentifier}`)
+  if (params?.name) factory.push(`name=${params.name}`)
+  if (params?.page) factory.push(`page=${params.page}`)
+  if (params?.pageSize) factory.push(`page_size=${params.pageSize}`)
+  if (params?.projectStatuses.length) factory.push(`project_statuses=${params.projectStatuses.join(',')}`)
   if (factory.length) url += '?' + factory.join('&')
   return (await axiosAuthenticated.get<PaginatedList<ProjectListItem>>(url)).data
 }

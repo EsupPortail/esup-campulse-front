@@ -1,7 +1,7 @@
 import type {DocumentUpload} from '#/document'
 import type {Commission} from '#/commission'
 import type {UserBase} from '#/user'
-import type {PaginatedList} from '#/global'
+import type {DateRange, PaginatedList} from '#/global'
 import type {AssociationUser, AssociationUserAssociation} from '#/association'
 
 type ProjectStatus =
@@ -179,4 +179,31 @@ export type ProjectCommissionFundFilter =
 export interface CreateProjectCommissionFund {
   project: number;
   commissionFund: number;
+}
+
+export interface SearchProjectFilters {
+  manualIdentifier: string | null;
+  name: string | null;
+  associationName: string | null;
+  userName: string | null;
+  editionDate: DateRange;
+  commissionDate: DateRange;
+  funds: number[];
+  projectStatuses: ProjectStatus[];
+  category: number | null;
+}
+
+export interface ProjectListFilters {
+  activeProjects: boolean;
+  association: string;
+  associationId: number;
+  commissionId: number;
+  editionDateAfter: string;
+  editionDateBefore: string;
+  funds: number[];
+  manualIdentifier: string;
+  name: string;
+  page: number;
+  pageSize: number;
+  projectStatuses: ProjectStatus[];
 }

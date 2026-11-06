@@ -5,6 +5,7 @@ import type {
   ProjectGoals,
   ProjectInfos,
   ProjectStatus,
+  SearchProjectFilters,
   UpdateProject,
   UpdateProjectCommissionFund
 } from '#/project'
@@ -94,6 +95,18 @@ async function rejectProjectCommissionFund(projectId: number, commissionFundId: 
 async function updateAmountEarned(projectId: number, commissionFundId: number, amountEarned: number) {
   await projectService.updateProjectCommissionFund(projectId, commissionFundId, {amountEarned})
 }
+
+const searchProjectFilters = ref<SearchProjectFilters>({
+  manualIdentifier: null,
+  name: null,
+  associationName: null,
+  userName: null,
+  editionDate: {from: null, to: null},
+  commissionDate: {from: null, to: null},
+  funds: [],
+  projectStatuses: [],
+  category: null,
+})
 
 export default function useProject() {
 
@@ -402,6 +415,7 @@ export default function useProject() {
     rejectProjectCommissionFund,
     canManageProjectCommissionFund,
     updateAmountEarned,
-    dashboardTab
+    dashboardTab,
+    searchProjectFilters,
   }
 }

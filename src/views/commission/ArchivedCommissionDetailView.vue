@@ -7,7 +7,7 @@ import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import useCommissions from '@/composables/useCommissionFund'
-import FormProjectSearch from '@/components/project/FormProjectSearch.vue'
+import ProjectSearchForm from '@/components/project/projectList/ProjectSearchForm.vue'
 import {useProjectStore} from '@/stores/useProjectStore'
 // import CommissionExport from '@/components/commissions/CommissionExport.vue'
 
@@ -73,7 +73,7 @@ async function onClearSearch() {
     <div class="dashboard-section-container">
       <div class="container-lg flex-column">
         <div class="container padding-top padding-bottom">
-          <FormProjectSearch @on-clear-search="onClearSearch"/>
+          <ProjectSearchForm @on-clear-search="onClearSearch"/>
         </div>
         <ProjectListTable
           :commission-id="commissionId"

@@ -32,8 +32,7 @@ async function onGetCommissions() {
   if (!showClosedCommissions.value) {
     filters.isOpenToProjects = true
   }
-  //await commissionStore.getManagedCommissions(filters)
-  await commissionStore.getCommissions(filters)
+  await commissionStore.getManagedCommissions(filters)
   loading.hide()
 }
 

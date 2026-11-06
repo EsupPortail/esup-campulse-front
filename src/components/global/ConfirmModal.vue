@@ -18,9 +18,7 @@ const emit = defineEmits<{
 }>()
 
 function confirmAction(confirm: boolean) {
-  // Close modal
   emit('update:open-modal', false)
-  // If needed, confirm action
   if (confirm) {
     emit('confirm-action')
   }

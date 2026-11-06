@@ -23,7 +23,7 @@ function formatDate(date: string): string {
 
 function reverseDate(date: string): string {
   if (!date) return ''
-  return date.split('-').reverse().join('/')
+  return date.split(/[-/]/).reverse().join('/')
 }
 
 export default function useUtil() {
