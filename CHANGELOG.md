@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.8 (novembre 2026)
+
+- Ajout de sécurités sur le tableau de bord étudiant de gestion de projet en cas de données manquantes
+- Changement de la configuration pour la PPRD (CAS devient CAS-PPRD et plus CAS-DEV)
+
 ## 1.6.7 (octobre 2026)
 
 - Les contenus des pages de garde "Commission" et "Charte" sont désormais désactivables à l'affichage
