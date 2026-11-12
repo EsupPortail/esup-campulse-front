@@ -19,6 +19,7 @@ export type CreateCommissionFund = Omit<CommissionFund, 'id'>;
 export interface CommissionBase {
   submissionDate: string;
   commissionDate: string;
+  editionDate: string;
   isOpenToProjects: boolean;
   name: string;
   standbyProjectsCount: number | null;

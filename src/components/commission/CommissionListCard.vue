@@ -5,7 +5,7 @@ import useUtil from '@/composables/useUtil'
 import GlobalBooleanIcon from '@/components/global/GlobalBooleanIcon.vue'
 import {useI18n} from 'vue-i18n'
 
-const {reverseDate} = useUtil()
+const {reverseDate, formatDate} = useUtil()
 const {t} = useI18n()
 
 defineProps<{
@@ -40,7 +40,7 @@ defineProps<{
             {{ reverseDate(commission.submissionDate) }}
           </GlobalDefinition>
           <GlobalDefinition title="Date de modification">
-            TODO
+            {{ reverseDate(formatDate(commission.editionDate)) }}
           </GlobalDefinition>
           <GlobalDefinition title="Financeurs">
             <div class="flex-row">
