@@ -55,6 +55,7 @@ watch(() => dashboardTab.value, async () => {
             <ProjectListTable/>
           </section>
         </template>
+        
         <template #commissions>
           <section class="flex-column">
             <div>

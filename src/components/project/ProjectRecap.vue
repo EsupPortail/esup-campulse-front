@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import ProjectRecapInfos from '@/components/project/ProjectRecapInfos.vue'
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
 import ProjectBudget from '@/components/project/ProjectBudget.vue'
 import ProjectGoals from '@/components/project/ProjectGoals.vue'
@@ -44,7 +43,6 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
           @click="emit('changeStep', 1)"
         />
       </div>
-      <ProjectRecapInfos/>
 
       <!-- COMMISSION CHOICE -->
       <div

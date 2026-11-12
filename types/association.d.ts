@@ -2,6 +2,7 @@ import type {UserAssociation, UserBase} from '#/user'
 import type {DocumentUpload} from '#/document'
 import type {AssociationCharterStatus} from '#/charter'
 import type {Institution, InstitutionComponent} from '#/institution'
+import {PaginatedList} from './global'
 
 export interface AssociationActivityField {
   id: number;
@@ -158,7 +159,7 @@ export interface AssociationRole {
 
 export interface AssociationStore {
   association: Association | undefined;
-  associations: Association[];
+  associations: PaginatedList<Association>;
   associationNames: AssociationName[];
   activityFields: AssociationActivityField[];
   associationUsers: AssociationUser[];

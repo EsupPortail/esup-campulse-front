@@ -25,7 +25,7 @@ const isLoaded = ref<boolean>(false)
 onMounted(async function () {
   loading.show()
   await onGetData()
-  associations.value = associationStore.associations
+  associations.value = associationStore.associations?.results
   isLoaded.value = true
   loading.hide()
 })

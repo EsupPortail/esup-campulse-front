@@ -1,7 +1,7 @@
 import {ref, watch} from 'vue'
 import type {
   ProjectBudget,
-  ProjectCommissionFund,
+  ProjectCommissionFundBase,
   ProjectGoals,
   ProjectInfos,
   ProjectStatus,
@@ -67,7 +67,7 @@ const projectBudget = ref<ProjectBudget>(
 const projectCommission = ref<number | null>(null)
 
 const projectCommissionFunds = ref<number[]>([])
-const projectCommissionFundsDetail = ref<ProjectCommissionFund[]>([])
+const projectCommissionFundsDetail = ref<ProjectCommissionFundBase[]>([])
 
 // todo : remplir à partir des projectCommissionFund sur les projets ?
 const projectFunds = ref<number[]>([])

@@ -63,6 +63,7 @@ export interface Project extends ProjectBase {
   sustainableDevelopment: string;
   creationDate: string;
   processingDate: string;
+  projectCommissionFunds: ProjectCommissionFund[];
 }
 
 export type UpdateProject = Pick<Project,
@@ -87,7 +88,7 @@ export type ProjectBudget = Pick<Project, 'budgetPreviousEdition' | 'targetAudie
 export type ProjectGoals = Pick<Project, 'goals' | 'summary' | 'plannedActivities' | 'preventionSafety' |
   'marketingCampaign' | 'sustainableDevelopment'>
 
-export interface ProjectCommissionFund {
+export interface ProjectCommissionFundBase {
   id: number;
   project: number;
   commissionFund: number;
@@ -99,8 +100,20 @@ export interface ProjectCommissionFund {
   isValidatedByAdmin: boolean;
 }
 
-export type UpdateProjectCommissionFund = Pick<ProjectCommissionFund, 'isFirstEdition' | 'amountAskedPreviousEdition' |
+export type UpdateProjectCommissionFund = Pick<ProjectCommissionFundBase, 'isFirstEdition' | 'amountAskedPreviousEdition' |
   'amountEarnedPreviousEdition' | 'amountAsked' | 'amountEarned' | 'isValidatedByAdmin'>
+
+export type ProjectCommissionFund =
+  Pick<ProjectCommissionFundBase, 'isValidatedByAdmin' | 'amountAsked' | 'amountEarned'>
+  & {
+  pk: number;
+  projectId: number;
+  commissionFund: {
+    id: number;
+    commission: Commission;
+    fund: Fund;
+  };
+}
 
 export interface ProjectReviewBase {
   associationUser: number | null;
@@ -196,14 +209,18 @@ export interface SearchProjectFilters {
 export interface ProjectListFilters {
   activeProjects: boolean;
   association: string;
+  user: string;
   associationId: number;
   commissionId: number;
   editionDateAfter: string;
   editionDateBefore: string;
+  commissionDateAfter: string;
+  commissionDateBefore: string;
   funds: number[];
   manualIdentifier: string;
   name: string;
   page: number;
   pageSize: number;
   projectStatuses: ProjectStatus[];
+  category: number;
 }

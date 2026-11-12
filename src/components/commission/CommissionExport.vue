@@ -3,26 +3,25 @@ import {useI18n} from 'vue-i18n'
 import {useQuasar} from 'quasar'
 import axios from 'axios'
 import useErrors from '@/composables/useError'
-import type {ProjectList} from '#/project'
-import {useCommissionStore} from '@/stores/useCommissionStore'
+import type {ProjectListItem} from '#/project'
+import useUtil from '@/composables/useUtil'
+import * as commissionService from '@/services/CommissionService'
 
 const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {openDocument} = useUtil()
-const commissionStore = useCommissionStore()
 
 const props = defineProps<{
   commissionId: number,
-  commissionName: string,
-  selected: ProjectList[] | undefined
+  selected: ProjectListItem[] | undefined
 }>()
 
 async function onExportCommission(mode: 'csv' | 'pdf' | 'xlsx') {
   loading.show()
   try {
     const projects = props.selected?.map(project => project.id)
-    const response = await commissionStore.getCommissionExport(props.commissionId, mode, projects)
+    const response = await commissionService.getCommissionExport(props.commissionId, mode, projects)
     openDocument(response)
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

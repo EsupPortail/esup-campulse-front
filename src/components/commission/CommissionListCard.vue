@@ -65,6 +65,7 @@ defineProps<{
       </div>
       <QBtn
         v-if="commission.submittedProjectsCount"
+        :to="{name: 'ManageCommissionProjects', params: {commissionId: commission.id}}"
         flat
         icon="bi-arrow-right"
       />

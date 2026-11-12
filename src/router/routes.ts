@@ -165,6 +165,15 @@ const routes: RouteRecordRaw[] = [
                 }
               },
               {
+                path: ':commissionId',
+                name: 'ManageCommissionProjects',
+                component: () => import('@/views/commission/CommissionProjectsView.vue'),
+                meta: {
+                  title: i18n.global.t('breadcrumbs.commission-dashboard'),
+                  siteMap: true,
+                }
+              },
+              {
                 path: 'association/:associationId',
                 meta: {
                   projectBearersOnly: true,
@@ -265,7 +274,7 @@ const routes: RouteRecordRaw[] = [
               }
             ]
           },
-          {
+          /*{
             path: 'archived',
             meta: {
               breadcrumb: i18n.global.t('breadcrumbs.archived-commission'),
@@ -293,7 +302,7 @@ const routes: RouteRecordRaw[] = [
                 }
               },
             ]
-          },
+          },*/
           {
             path: 'manage-commission-dates',
             name: 'ManageCommissionDates',
@@ -367,7 +376,6 @@ const routes: RouteRecordRaw[] = [
                   title: i18n.global.t('breadcrumbs.edit-association-president-delegation')
                 }
               }
-
             ]
           },
           {

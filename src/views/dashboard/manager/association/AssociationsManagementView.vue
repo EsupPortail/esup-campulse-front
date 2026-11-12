@@ -23,7 +23,7 @@ const {associations} = useAssociation()
 const route = useRoute()
 
 const initValues = () => {
-  associations.value = associationStore.associations
+  associations.value = associationStore.associations?.results
 }
 watch(() => associationStore.associations, initValues)
 

@@ -33,14 +33,15 @@ export async function getProjects(
   if (params?.association) factory.push(`association=${params.association}`)
   if (params?.editionDateAfter) factory.push(`edition_date_after=${params.editionDateAfter}`)
   if (params?.editionDateBefore) factory.push(`edition_date_before=${params.editionDateBefore}`)
-  if (params?.funds.length) factory.push(`funds=${params.funds.join(',')}`)
+  if (params?.funds?.length) factory.push(`funds=${params.funds.join(',')}`)
   if (params?.commissionId) factory.push(`commission_id=${params.commissionId}`)
   if (params?.associationId) factory.push(`association_id=${params.associationId}`)
   if (params?.manualIdentifier) factory.push(`manual_identifier=${params.manualIdentifier}`)
   if (params?.name) factory.push(`name=${params.name}`)
   if (params?.page) factory.push(`page=${params.page}`)
   if (params?.pageSize) factory.push(`page_size=${params.pageSize}`)
-  if (params?.projectStatuses.length) factory.push(`project_statuses=${params.projectStatuses.join(',')}`)
+  if (params?.projectStatuses?.length) factory.push(`project_statuses=${params.projectStatuses.join(',')}`)
+  if (params?.category) factory.push(`category=${params.category}`)
   if (factory.length) url += '?' + factory.join('&')
   return (await axiosAuthenticated.get<PaginatedList<ProjectListItem>>(url)).data
 }

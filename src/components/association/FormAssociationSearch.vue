@@ -24,7 +24,7 @@ const route = useRoute()
 const emit = defineEmits(['updatePage'])
 
 watch(() => associationStore.associations, () => {
-  associations.value = associationStore.associations
+  associations.value = associationStore.associations?.results
 })
 
 const expanded = ref<boolean>(false)
@@ -140,7 +140,7 @@ async function clearSearch() {
       // TODO récupérer uniquement les associations managées
       await associationStore.getAssociations()
     }
-    associations.value = associationStore.associations
+    associations.value = associationStore.associations?.results
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({

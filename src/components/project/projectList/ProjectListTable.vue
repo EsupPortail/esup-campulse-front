@@ -13,6 +13,8 @@ import {usePagination} from '@/composables/usePagination'
 import type {TargetPage} from '#/global'
 import type {ProjectListFilters} from '#/project'
 import ProjectSearchForm from '@/components/project/projectList/ProjectSearchForm.vue'
+import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
+import CommissionExport from '@/components/commission/CommissionExport.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
@@ -52,14 +54,18 @@ async function onGetProjects() {
     const filters: Partial<ProjectListFilters> = {
       commissionId: props.commissionId,
       association: search.associationName,
+      user: search.userName,
       editionDateAfter: cleanDate(search.editionDate.from),
       editionDateBefore: cleanDate(search.editionDate.to),
+      commissionDateAfter: cleanDate(search.commissionDate.from),
+      commissionDateBefore: cleanDate(search.commissionDate.to),
       manualIdentifier: search.manualIdentifier,
       projectStatuses: search.projectStatuses,
       funds: search.funds,
       name: search.name,
       page,
       pageSize,
+      category: search.category,
     }
     await projectStore.getProjects(filters)
   } catch (error) {
@@ -79,14 +85,14 @@ const totalPages = computed<number>(() => {
   return projectStore.projects?.totalPages ?? 0
 })
 
-function onChangePage(page: TargetPage) {
-  changePage(page, totalPages.value, onGetProjects)
+async function onChangePage(page: TargetPage) {
+  await changePage(page, totalPages.value, onGetProjects)
 }
 
 // Object not typed by Quasar
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function onRequest(props: any) {
-  updateRowsPerPage(props, totalPages.value, onGetProjects)
+async function onRequest(props: any) {
+  await updateRowsPerPage(props, totalPages.value, onGetProjects)
 }
 
 function onClearSearch() {
@@ -135,7 +141,13 @@ const columns: QTableProps['columns'] = [
     sortable: true,
     format: val => `${val}`
   },
-  {name: 'funds', align: 'right', label: t('commission.funds'), field: 'funds', sortable: true},
+  {
+    name: 'projectCommissionFunds',
+    align: 'right',
+    label: t('commission.funds'),
+    field: 'projectCommissionFunds',
+    sortable: false
+  },
   {
     name: 'status',
     align: 'right',
@@ -166,14 +178,14 @@ async function onRowClick(projectId: number) {
       :no-data-label="t('project.no-project-to-show')"
       :rows="projectStore.projects?.results || []"
       :rows-per-page-options="[10, 20, 50]"
+      :selection="commissionId ? 'multiple' : undefined"
       row-key="id"
-      selection="multiple"
       wrap-cells
       @request="onRequest"
     >
       <template v-slot:header="props">
         <QTr :props="props">
-          <QTh>
+          <QTh v-if="commissionId">
             <QCheckbox
               v-model="props.selected"
               :aria-label="t('table.select-all')"
@@ -197,7 +209,7 @@ async function onRowClick(projectId: number) {
           :props="props"
           @click="onRowClick(props.row.id)"
         >
-          <QTd>
+          <QTd v-if="commissionId">
             <QCheckbox
               v-model="props.selected"
               :aria-label="props.row.name"
@@ -240,12 +252,12 @@ async function onRowClick(projectId: number) {
             {{ formatDate(props.row.commission?.commissionDate).split('-').reverse().join('/') }}
           </QTd>
           <QTd
-            key="funds"
+            key="projectCommissionFunds"
             :props="props"
           >
-            <!--                    <ProjectFundValidationIndicator
-  :project-commission-funds="props.row.commissionFunds"
-  />-->
+            <ProjectFundValidationIndicator
+              :project-commission-funds="props.row.projectCommissionFunds"
+            />
           </QTd>
           <QTd
             key="status"
@@ -310,14 +322,13 @@ async function onRowClick(projectId: number) {
         </div>
       </template>
     </QTable>
+    <CommissionExport
+      v-if="commissionId"
+      :commission-id="commissionId"
+      :selected="selected"
+      class="padding-bottom"
+    />
   </div>
-
-  <!--    <CommissionExport
-:commission-id="props.commissionId"
-:commission-name="props.commissionName"
-:selected="selected"
-class="padding-bottom"
-/>-->
 </template>
 
 <style lang="scss" scoped>

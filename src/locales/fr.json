@@ -796,7 +796,7 @@
     "sign-charter": "N'oubliez pas de signer les chartes de subventionnement des financeurs liées à votre demande afin que votre dossier soit complet.",
     "status": {
       "archived": "Terminé",
-      "cancelled": "Annulé",
+      "canceled": "Annulé",
       "draft": "Brouillon",
       "draft-processed": "En attente de modification par le demandeur",
       "processing": "Projet en attente de validation",
