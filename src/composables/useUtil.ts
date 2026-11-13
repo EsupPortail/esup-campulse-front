@@ -63,11 +63,13 @@ export default function useUtil() {
       if (!route.meta.breadcrumb) continue
       let path = ''
       if (route.path.includes(':id') || route.path.includes(':associationId') ||
-        route.path.includes(':projectId')) {
+        route.path.includes(':projectId') || route.path.includes(':commissionId')) {
         const id = routeParams.id as string
         const associationId = routeParams.associationId as string
         const projectId = routeParams.projectId as string
-        path = route.path.replace(':id', id).replace(':associationId', associationId).replace(':projectId', projectId)
+        const commissionId = routeParams.commissionId as string
+        path = route.path.replace(':id', id).replace(':associationId', associationId)
+          .replace(':projectId', projectId).replace(':commissionId', commissionId)
       } else {
         path = route.path
       }

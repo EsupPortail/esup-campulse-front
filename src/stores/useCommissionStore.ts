@@ -33,6 +33,10 @@ export const useCommissionStore = defineStore('commissionStore', {
       this.commission = await commissionService.getCommission(commissionId)
     },
 
+    async getManagedCommission(commissionId: number) {
+      this.commission = await commissionService.getManagedCommission(commissionId)
+    },
+
     async getCommissionFunds() {
       this.commissionFunds = await commissionService.getCommissionFunds()
     }

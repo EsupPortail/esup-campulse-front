@@ -160,13 +160,17 @@ const columns: QTableProps['columns'] = [
 ]
 
 async function onRowClick(projectId: number) {
-  await router.push({name: 'Project', params: {projectId}})
+  await router.push(props.commissionId ? {
+    name: 'CommissionProject',
+    params: {projectId, commissionId: props.commissionId}
+  } : {name: 'Project', params: {projectId}})
 }
 </script>
 
 <template>
   <div class="flex-column">
     <ProjectSearchForm
+      :show-commission-field="!commissionId"
       @clear="onClearSearch"
       @search="onChangePage('first')"
     />
@@ -235,7 +239,7 @@ async function onRowClick(projectId: number) {
             :props="props"
             headers="applicant"
           >
-            {{ props.row.association?.acronym || (props.row.user?.firstName + props.row.user?.lastName) }}
+            {{ props.row.association?.acronym || (props.row.user?.firstName + ' ' + props.row.user?.lastName) }}
           </QTd>
           <QTd
             key="lastModifiedDate"

@@ -31,8 +31,11 @@ export async function getProjects(
   const factory = []
   if (params?.activeProjects !== undefined) factory.push(`active_projects=${params.activeProjects}`)
   if (params?.association) factory.push(`association=${params.association}`)
+  if (params?.user) factory.push(`user=${params.user}`)
   if (params?.editionDateAfter) factory.push(`edition_date_after=${params.editionDateAfter}`)
   if (params?.editionDateBefore) factory.push(`edition_date_before=${params.editionDateBefore}`)
+  if (params?.commissionDateAfter) factory.push(`commission_date_after=${params.commissionDateAfter}`)
+  if (params?.commissionDateBefore) factory.push(`commission_date_before=${params.commissionDateBefore}`)
   if (params?.funds?.length) factory.push(`funds=${params.funds.join(',')}`)
   if (params?.commissionId) factory.push(`commission_id=${params.commissionId}`)
   if (params?.associationId) factory.push(`association_id=${params.associationId}`)

@@ -59,13 +59,13 @@ defineProps<{
             {{ commission.submittedProjectsCount ?? 0 }}
           </GlobalDefinition>
           <GlobalDefinition title="Bilans en retard">
-            {{ commission.standbyProjectsCount ?? 0 }}
+            TODO
           </GlobalDefinition>
         </dl>
       </div>
       <QBtn
         v-if="commission.submittedProjectsCount"
-        :to="{name: 'ManageCommissionProjects', params: {commissionId: commission.id}}"
+        :to="{name: 'CommissionProjects', params: {commissionId: commission.id}}"
         flat
         icon="bi-arrow-right"
       />

@@ -46,6 +46,11 @@ export async function getCommission(commissionId: number): Promise<Commission> {
   return (await axiosPublic.get<Commission>(`${modelBaseUrl}/${commissionId}`)).data
 }
 
+export async function getManagedCommission(commissionId: number): Promise<Commission> {
+  const {axiosAuthenticated} = useAxios()
+  return (await axiosAuthenticated.get<Commission>(`${modelBaseUrl}/${commissionId}/manage`)).data
+}
+
 export async function getCommissionFunds(): Promise<CommissionFund[]> {
   const {axiosPublic} = useAxios()
   return (await axiosPublic.get<CommissionFund[]>(`${modelBaseUrl}/funds`)).data

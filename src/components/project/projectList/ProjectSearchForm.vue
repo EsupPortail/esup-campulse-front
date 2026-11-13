@@ -15,6 +15,10 @@ const projectStore = useProjectStore()
 const {loading} = useQuasar()
 const {t} = useI18n()
 
+defineProps<{
+  showCommissionField: boolean,
+}>()
+
 const emit = defineEmits<{
   (e: 'search'): void,
   (e: 'clear'): void
@@ -68,7 +72,6 @@ const projectStatusOptions = computed<SelectLabel[]>(() => {
     v-model="open"
     bordered
     class="rounded-borders bg-white"
-    expand-separator
   >
     <template v-slot:header>
       <QItemSection
@@ -128,6 +131,7 @@ const projectStatusOptions = computed<SelectLabel[]>(() => {
         />
         <GlobalInputDatePicker
           :date-range="searchProjectFilters.commissionDate"
+          :disable="!showCommissionField"
           color="commission"
           label="Date de commission"
           @update:date-range="searchProjectFilters.commissionDate = $event"

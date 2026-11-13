@@ -133,189 +133,14 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: 'commission',
+        name: 'Commission',
+        component: () => import('@/views/commission/CommissionLandingView.vue'),
         meta: {
           breadcrumb: i18n.global.t('breadcrumbs.commission'),
+          title: i18n.global.t('breadcrumbs.commission'),
           colorVariant: 'space-3',
           siteMap: true,
         },
-        children: [
-          {
-            path: '',
-            name: 'Commission',
-            component: () => import('@/views/commission/CommissionLandingView.vue'),
-            meta: {
-              title: i18n.global.t('breadcrumbs.commission')
-            }
-          },
-          {
-            path: 'manage',
-            meta: {
-              breadcrumb: i18n.global.t('breadcrumbs.commission-dashboard'),
-              requiresAuth: true,
-              siteMap: true,
-            },
-            children: [
-              {
-                path: '',
-                name: 'ManageProjects',
-                component: () => import('@/views/commission/CommissionDashboardView.vue'),
-                meta: {
-                  title: i18n.global.t('breadcrumbs.commission-dashboard'),
-                  siteMap: true,
-                }
-              },
-              {
-                path: ':commissionId',
-                name: 'ManageCommissionProjects',
-                component: () => import('@/views/commission/CommissionProjectsView.vue'),
-                meta: {
-                  title: i18n.global.t('breadcrumbs.commission-dashboard'),
-                  siteMap: true,
-                }
-              },
-              {
-                path: 'association/:associationId',
-                meta: {
-                  projectBearersOnly: true,
-                  requiresAuth: true
-                },
-                children: [
-                  {
-                    path: 'submit-project/:projectId?',
-                    name: 'SubmitProjectAssociation',
-                    component: () => import('@/views/project/SubmitProjectView.vue'),
-                    meta: {
-                      title: i18n.global.t('breadcrumbs.submit-project'),
-                      breadcrumb: i18n.global.t('breadcrumbs.submit-project')
-                    }
-                  }
-                ]
-              },
-              {
-                path: 'individual',
-                meta: {
-                  projectBearersOnly: true,
-                  requiresAuth: true,
-                  siteMap: true,
-                },
-                children: [
-                  {
-                    path: 'submit-project/:projectId?',
-                    name: 'SubmitProjectIndividual',
-                    component: () => import('@/views/project/SubmitProjectView.vue'),
-                    meta: {
-                      title: i18n.global.t('breadcrumbs.submit-project'),
-                      breadcrumb: i18n.global.t('breadcrumbs.submit-project')
-                    }
-                  }
-                ]
-              },
-              {
-                path: 'submit-project-successful/:projectId',
-                name: 'SubmitProjectSuccessful',
-                component: () => import('@/views/project/SubmitProjectSuccessfulView.vue'),
-                meta: {
-                  title: i18n.global.t('breadcrumbs.project-recap'),
-                  breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
-                  projectBearersOnly: true,
-                  requiresAuth: true
-                }
-              },
-              {
-                path: 'project/:projectId',
-                name: 'Project',
-                component: () => import('@/views/project/ProjectDetailView.vue'),
-                meta: {
-                  title: i18n.global.t('breadcrumbs.project-recap'),
-                  breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
-                  requiresAuth: true
-                }
-              },
-              {
-                path: 'submit-project-review/:projectId',
-                name: 'SubmitProjectReview',
-                component: () => import('@/views/project/SubmitProjectReviewView.vue'),
-                meta: {
-                  title: i18n.global.t('breadcrumbs.submit-project-review'),
-                  breadcrumb: i18n.global.t('breadcrumbs.submit-project-review'),
-                  requiresAuth: true
-                }
-              },
-              {
-                path: 'submit-project-review-successful/:projectId',
-                name: 'SubmitProjectReviewSuccessful',
-                component: () => import('@/views/project/SubmitProjectReviewSuccessfulView.vue'),
-                meta: {
-                  title: i18n.global.t('breadcrumbs.project-recap'),
-                  breadcrumb: i18n.global.t('breadcrumbs.project-recap'),
-                  projectBearersOnly: true,
-                  requiresAuth: true
-                }
-              },
-              {
-                path: 'view-project-review/:projectId',
-                name: 'ViewProjectReview',
-                component: () => import('@/views/project/ProjectReviewDetailView.vue'),
-                meta: {
-                  title: i18n.global.t('breadcrumbs.project-review-recap'),
-                  breadcrumb: i18n.global.t('breadcrumbs.project-review-recap'),
-                  requiresAuth: true
-                }
-              },
-              {
-                path: 'manage-project-review/:projectId',
-                name: 'ManageProjectReview',
-                component: () => import('@/views/project/ProjectReviewDetailView.vue'),
-                meta: {
-                  title: i18n.global.t('breadcrumbs.project-review-recap'),
-                  breadcrumb: i18n.global.t('breadcrumbs.project-review-recap'),
-                  requiresAuth: true
-                }
-              }
-            ]
-          },
-          /*{
-            path: 'archived',
-            meta: {
-              breadcrumb: i18n.global.t('breadcrumbs.archived-commission'),
-              staffOnly: true,
-              requiresAuth: true,
-              siteMap: true,
-            },
-            children: [
-              {
-                path: '',
-                name: 'ArchivedCommission',
-                component: () => import('@/views/commission/ArchivedCommissionsView.vue'),
-                meta: {
-                  title: i18n.global.t('breadcrumbs.archived-commission'),
-                  siteMap: true,
-                }
-              },
-              {
-                path: ':id',
-                name: 'ArchivedCommissionDetail',
-                component: () => import('@/views/commission/ArchivedCommissionDetailView.vue'),
-                meta: {
-                  breadcrumb: i18n.global.t('breadcrumbs.archived-projects'),
-                  staffOnly: true
-                }
-              },
-            ]
-          },*/
-          {
-            path: 'manage-commission-dates',
-            name: 'ManageCommissionDates',
-            component: () => import('@/views/commission/ManageCommissionDatesView.vue'),
-            meta: {
-              title: i18n.global.t('breadcrumbs.manage-commission-dates'),
-              breadcrumb: i18n.global.t('breadcrumbs.manage-commission-dates'),
-              staffOnly: true,
-              requiresAuth: true,
-              siteMap: true,
-            }
-          }
-        ]
       },
       {
         path: 'dashboard',
@@ -563,7 +388,67 @@ const routes: RouteRecordRaw[] = [
               }
             ]
           },
-        ]
+          {
+            path: 'manage-projects',
+            meta: {
+              colorVariant: 'space-3',
+              breadcrumb: i18n.global.t('breadcrumbs.commission-dashboard'),
+              staffOnly: true,
+              siteMap: true,
+            },
+            children: [
+              {
+                path: '',
+                name: 'ManageProjects',
+                component: () => import('@/views/dashboard/manager/commission/CommissionDashboardView.vue'),
+                meta: {
+                  title: i18n.global.t('breadcrumbs.commission-dashboard'),
+                  staffOnly: true,
+                }
+              },
+              {
+                path: ':projectId',
+                name: 'Project',
+                component: () => import('@/views/project/ProjectDetailView.vue'),
+                meta: {
+                  breadcrumb: i18n.global.t('breadcrumbs.project'),
+                }
+              },
+              {
+                path: 'commission/:commissionId',
+                meta: {
+                  breadcrumb: i18n.global.t('breadcrumbs.commission-projects'),
+                },
+                children: [
+                  {
+                    path: '',
+                    name: 'CommissionProjects',
+                    component: () => import('@/views/dashboard/manager/commission/CommissionProjectsView.vue'),
+                  },
+                  {
+                    path: 'project/:projectId',
+                    name: 'CommissionProject',
+                    component: () => import('@/views/project/ProjectDetailView.vue'),
+                    meta: {
+                      breadcrumb: i18n.global.t('breadcrumbs.project'),
+                    }
+                  },
+                ]
+              },
+            ]
+          },
+          {
+            path: 'manage-commissions',
+            name: 'ManageCommissions',
+            component: () => import('@/views/dashboard/manager/commission/ManageCommissionDatesView.vue'),
+            meta: {
+              title: i18n.global.t('breadcrumbs.manage-commission-dates'),
+              breadcrumb: i18n.global.t('breadcrumbs.manage-commission-dates'),
+              staffOnly: true,
+              siteMap: true,
+            }
+          },
+        ],
       },
       {
         path: 'about',

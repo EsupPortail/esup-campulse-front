@@ -25,7 +25,7 @@ const {notify, loading} = useQuasar()
 const {initAssociationCharterStatus} = useCharter()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {openDocument, formatDate, reverseDate} = useUtil()
+const {openDocument, formatDate, reverseDate, dynamicTitle} = useUtil()
 const projectStore = useProjectStore()
 const {
   initProjectBasicInfos,
@@ -45,6 +45,7 @@ const showReview = computed<boolean>(() => {
 onMounted(async () => {
   loading.show()
   await onGetData()
+  dynamicTitle.value = projectStore.project?.name
   isLoaded.value = true
   loading.hide()
 })
@@ -89,22 +90,11 @@ async function onGetProjectPdf() {
 
 <template>
   <div class="dashboard-section">
-    <div class="flex-row-space-between">
-      <div>
-        <h2>
-          <i
-            aria-hidden="true"
-            class="bi bi-journal-bookmark"
-          ></i>
-          {{ projectStore.project?.name }}
-        </h2>
-        <div>
-          <ProjectStatusIndicator
-            :project-status="projectStore.project?.projectStatus"
-            :show-draft="true"
-          />
-        </div>
-      </div>
+    <div class="container">
+      <ProjectStatusIndicator
+        :project-status="projectStore.project?.projectStatus"
+        :show-draft="true"
+      />
       <QBtn
         color="commission"
         disable
@@ -269,15 +259,11 @@ async function onGetProjectPdf() {
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/_variables.scss";
 
-.flex-row-space-between {
-  width: $fullSize;
-  max-width: 120rem;
-  padding: 0 1rem 1rem 1rem;
-  margin: auto;
-
-  h2 {
-    padding: 1rem 0;
-  }
+.dashboard-section > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
 }
 
 .container {
