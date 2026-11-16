@@ -364,7 +364,7 @@ async function onGetProjectPdf() {
 }
 
 dl {
-  & > div:not(:nth-child(3)) {
+  & > div:not(:nth-child(3), :nth-child(4)) {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 2rem;
@@ -377,7 +377,7 @@ dl {
 }
 
 caption {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: #454545;
   text-align: left;
 }
