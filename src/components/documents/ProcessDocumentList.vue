@@ -24,8 +24,8 @@ const projectStore = useProjectStore()
 const documentStore = useDocumentStore()
 
 const props = defineProps<{
-  process: 'project' | 'review' | 'charter',
-  associationId: number | null | undefined
+  process: 'manageProject' | 'project' | 'review' | 'charter',
+  associationId?: number | null,
 }>()
 
 
@@ -50,10 +50,11 @@ async function onGetDocuments() {
     let processes: DocumentProcessType[] = []
     if (props.process === 'project') processes = ['DOCUMENT_PROJECT']
     else if (props.process === 'review') processes = ['DOCUMENT_PROJECT_REVIEW']
+    else if (props.process === 'manageProject') processes = ['DOCUMENT_PROJECT', 'DOCUMENT_PROJECT_REVIEW']
     else if (props.process === 'charter') processes = ['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']
     await documentStore.getDocuments({processTypes: processes})
     initProcessDocuments(props.process === 'project', projectStore.projectFunds)
-    if (props.process === 'project' || props.process === 'review') {
+    if (props.process === 'project' || props.process === 'review' || props.process === 'manageProject') {
       await projectStore.getProjectDocumentUploads()
       initProjectDocumentUploads()
     } else if (props.process === 'charter') {

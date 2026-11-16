@@ -13,7 +13,7 @@ import FormUserAddress from '@/components/user/FormUserAddress.vue'
 import useSubmitReview from '@/composables/useProjectReview'
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
 import InfoProcessDocuments from '@/components/documents/InfoProcessDocuments.vue'
-import ProjectReviewRecap from '@/components/project/ProjectReviewRecap.vue'
+import ProjectReview from '@/components/project/ProjectReview.vue'
 import InfoFormRequiredFields from '@/components/global/InfoFormRequiredFields.vue'
 
 const {t} = useI18n()
@@ -431,7 +431,7 @@ async function onUploadDocuments(nextStep: number) {
             :title="t('recap')"
             icon="bi-check-lg"
           >
-            <ProjectReviewRecap
+            <ProjectReview
               :view="'submitProjectReview'"
               @change-step="newStep => step = newStep"
             />

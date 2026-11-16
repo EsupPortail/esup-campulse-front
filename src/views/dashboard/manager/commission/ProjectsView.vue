@@ -3,7 +3,7 @@ import GlobalTab from '@/components/global/GlobalTab.vue'
 import type {Tab} from '#/global'
 import ProjectListTable from '@/components/project/projectList/ProjectListTable.vue'
 import CommissionListCard from '@/components/commission/CommissionListCard.vue'
-import {ref, watch} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 import useProject from '@/composables/useProject'
@@ -36,6 +36,12 @@ async function onGetCommissions() {
   loading.hide()
 }
 
+onMounted(async () => {
+  if (dashboardTab.value === 1) {
+    await onGetCommissions()
+  }
+})
+
 watch(() => dashboardTab.value, async () => {
   if (dashboardTab.value === 1) {
     await onGetCommissions()
@@ -55,7 +61,7 @@ watch(() => dashboardTab.value, async () => {
             <ProjectListTable/>
           </section>
         </template>
-        
+
         <template #commissions>
           <section class="flex-column">
             <div>
@@ -72,6 +78,15 @@ watch(() => dashboardTab.value, async () => {
               :commission="commission"
               :heading-level="2"
             />
+            <div class="flex-row-center">
+              <QBtn
+                :to="{name: 'ArchivedCommissions'}"
+                class="btn-lg"
+                color="commission"
+                icon="bi-archive"
+                label="Commissions archivées"
+              />
+            </div>
           </section>
         </template>
       </GlobalTab>

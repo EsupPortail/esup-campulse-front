@@ -18,6 +18,7 @@ const itemKey = crypto.randomUUID()
     <li
       v-for="item in projectCommissionFunds"
       :key="`${itemKey}-${item.pk}`"
+      class="flex-row align-items-center"
     >
       {{ item.commissionFund.fund.acronym }}
       <span

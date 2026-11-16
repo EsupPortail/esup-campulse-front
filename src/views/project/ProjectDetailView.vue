@@ -3,8 +3,7 @@ import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import useErrors from '@/composables/useError'
-import router from '@/router'
-import {computed, onMounted, ref} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useProject from '@/composables/useProject'
 import {useRoute} from 'vue-router'
@@ -19,7 +18,8 @@ import ProjectBudget from '@/components/project/ProjectBudget.vue'
 import ProjectGoals from '@/components/project/ProjectGoals.vue'
 import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
 import ProjectComments from '@/components/project/ProjectComments.vue'
-import useProjectReview from '@/composables/useProjectReview'
+import GlobalBooleanIcon from '@/components/global/GlobalBooleanIcon.vue'
+import type {ProjectListFilters} from '#/project'
 
 const {notify, loading} = useQuasar()
 const {initAssociationCharterStatus} = useCharter()
@@ -32,7 +32,7 @@ const {
   initProjectGoals,
   initProjectBudget
 } = useProject()
-const {initProjectReview} = useProjectReview()
+const {CURRENCY} = useUtil()
 const route = useRoute()
 
 const isLoaded = ref<boolean>(false)
@@ -42,26 +42,20 @@ const showReview = computed<boolean>(() => {
     .includes(projectStore.projectStatus)
 })
 
-onMounted(async () => {
-  loading.show()
-  await onGetData()
-  dynamicTitle.value = projectStore.project?.name
-  isLoaded.value = true
-  loading.hide()
+const projectId = computed<number>(() => {
+  return parseInt(route.params.projectId as string)
 })
 
 async function onGetData() {
   try {
-    await projectStore.getProjectDetail(Number.parseInt(route.params.projectId as string))
+    await projectStore.getProjectDetail(projectId.value)
     initProjectBasicInfos()
     initProjectBudget()
     initProjectGoals()
     if (showReview.value) {
       await projectStore.getProjectReview()
-      initProjectReview()
     }
   } catch (error) {
-    await router.push({name: '404'})
     if (axios.isAxiosError(error) && error.response) {
       notify({
         type: 'negative',
@@ -70,6 +64,47 @@ async function onGetData() {
     }
   }
 }
+
+async function onGetOtherProjects() {
+  try {
+    const filters: Partial<ProjectListFilters> = {}
+    const associationId = projectStore.project?.association?.id ?? null
+    const userId = projectStore.project?.user?.id ?? null
+    if (associationId) {
+      filters.associationId = associationId
+    } else {
+      filters.userId = userId
+    }
+    await projectStore.getProjects(filters)
+    const current = projectStore.projects?.results.find(item => item.id === projectId.value)
+    const currentIndex = projectStore.projects?.results.indexOf(current)
+    projectStore.projects?.results.splice(currentIndex, 1)
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      notify({
+        type: 'negative',
+        message: await catchHTTPError(error.response)
+      })
+    }
+  }
+}
+
+async function mountPage() {
+  loading.show()
+  await onGetData()
+  await onGetOtherProjects()
+  dynamicTitle.value = projectStore.project?.name
+  isLoaded.value = true
+  loading.hide()
+}
+
+onMounted(async () => {
+  await mountPage()
+})
+
+watch(() => route.params.projectId, async () => {
+  await mountPage()
+})
 
 async function onGetProjectPdf() {
   loading.show()
@@ -138,7 +173,7 @@ async function onGetProjectPdf() {
                 />
               </GlobalDefinition>
               <GlobalDefinition title="Bilans en retard">
-                TODO
+                {{ projectStore.project?.bearerOverdueReviewCount ?? 0 }}
               </GlobalDefinition>
             </div>
             <div>
@@ -154,7 +189,7 @@ async function onGetProjectPdf() {
               <GlobalDefinition title="Date de fin du projet">
                 {{ reverseDate(formatDate(projectStore.project?.plannedEndDate)) }}
               </GlobalDefinition>
-              <GlobalDefinition title="Catégorie">
+              <GlobalDefinition :title="`Catégorie${projectStore.project?.categories.length > 1 ? 's' : ''}`">
                 <ProjectCategories/>
               </GlobalDefinition>
             </div>
@@ -178,11 +213,20 @@ async function onGetProjectPdf() {
                     <th>Montant demandé</th>
                     <th>Montant obtenu</th>
                   </tr>
-                  <tr>
-                    <td>TODO</td>
-                    <td>TODO</td>
-                    <td>TODO</td>
-                    <td>TODO</td>
+                  <tr
+                    v-for="item in projectStore.project?.projectCommissionFunds"
+                    :key="`project-commission-fund-${item.pk}`"
+                  >
+                    <td>{{ item.commissionFund.fund.acronym }}</td>
+                    <td>
+                      <GlobalBooleanIcon
+                        :state="item.isValidatedByAdmin"
+                        ariaLabelFalse="Refusé"
+                        ariaLabelTrue="Validé"
+                      />
+                    </td>
+                    <td>{{ (item.amountAsked ?? 0) + CURRENCY }}</td>
+                    <td>{{ (item.amountEarned ?? 0) + CURRENCY }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -198,13 +242,20 @@ async function onGetProjectPdf() {
               icon="bi-gear"
               label="Paramètres du projet"
             >
-              TODO
+              En construction
             </ProjectExpansionItem>
             <ProjectExpansionItem
               icon="bi-send"
               label="Autres projets du porteur"
             >
-              TODO
+              <ul>
+                <li
+                  v-for="item in projectStore.projects?.results"
+                  :key="`other-project-${item.id}`"
+                >
+                  <RouterLink :to="{name: 'Project', params: {projectId: item.id}}">{{ item.name }}</RouterLink>
+                </li>
+              </ul>
             </ProjectExpansionItem>
             <ProjectExpansionItem
               icon="bi-clipboard"
@@ -226,16 +277,57 @@ async function onGetProjectPdf() {
               icon="bi-person-video3"
               label="Détails du bilan"
             >
-              <!--<ProjectReviewRecap view="projectReviewDetail"/>-->
+              <div class="flex-column">
+                <div class="grid">
+                  <GlobalDefinition :title="t('project.planned-start-date')">
+                    {{ reverseDate(formatDate(projectStore.projectReview?.realStartDate)) }}
+                  </GlobalDefinition>
+                  <GlobalDefinition :title="t('project.planned-end-date')">
+                    {{ reverseDate(formatDate(projectStore.projectReview?.realEndDate)) }}
+                  </GlobalDefinition>
+                </div>
+                <GlobalDefinition :title="t('project.planned-location')">
+                  {{ projectStore.projectReview?.realLocation }}
+                </GlobalDefinition>
+                <div class="grid">
+                  <GlobalDefinition :title="t('project.outcome')">
+                    {{ projectStore.projectReview?.outcome + CURRENCY }}
+                  </GlobalDefinition>
+                  <GlobalDefinition :title="t('project.income')">
+                    {{ projectStore.projectReview?.income + CURRENCY }}
+                  </GlobalDefinition>
+                </div>
+
+                <GlobalDefinition :title="t('project.review')">
+                  {{ projectStore.projectReview?.review }}
+                </GlobalDefinition>
+
+                <GlobalDefinition :title="t('project.impact-students')">
+                  {{ projectStore.projectReview?.impactStudents }}
+                </GlobalDefinition>
+
+                <GlobalDefinition :title="t('project.description')">
+                  {{ projectStore.projectReview?.description }}
+                </GlobalDefinition>
+
+                <GlobalDefinition :title="t('project.difficulties')">
+                  {{ projectStore.projectReview?.difficulties }}
+                </GlobalDefinition>
+
+                <GlobalDefinition :title="t('project.improvements')">
+                  {{ projectStore.projectReview?.improvements }}
+                </GlobalDefinition>
+              </div>
             </ProjectExpansionItem>
             <ProjectExpansionItem
+              :disable="!projectStore.projectDocuments.length"
               icon="bi-file-earmark"
               label="Documents du projet"
             >
               <ProcessDocumentList
                 v-if="isLoaded"
                 :association-id="null"
-                process="project"
+                :process="showReview ? 'manageProject' : 'project'"
               />
             </ProjectExpansionItem>
             <ProjectExpansionItem
@@ -274,6 +366,7 @@ dl {
   & > div:not(:nth-child(3)) {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
+    grid-gap: 2rem;
   }
 
   & > div:nth-child(3) {
@@ -313,4 +406,9 @@ dd > span {
   font-weight: $semibold-weight !important;
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 2rem;
+}
 </style>

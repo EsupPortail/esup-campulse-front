@@ -6,7 +6,7 @@ defineProps<{
 }>()
 </script>
 <template>
-  <p class="form-state form-state-cape">
+  <div class="form-state form-state-cape">
     <span
       v-if="state"
       :aria-label="ariaLabelTrue"
@@ -23,7 +23,7 @@ defineProps<{
       aria-hidden="true"
       class="bi bi-x"
     ></i></span>
-  </p>
+  </div>
 </template>
 
 <style lang="scss" scoped>

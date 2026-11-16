@@ -25,7 +25,8 @@ const {projectStatuses, searchProjectFilters} = useProject()
 const projectStore = useProjectStore()
 
 const props = defineProps<{
-  commissionId?: number
+  commissionId?: number,
+  archived?: boolean,
 }>()
 
 const selected = ref<QTableProps['selected']>([])
@@ -143,7 +144,7 @@ const columns: QTableProps['columns'] = [
   },
   {
     name: 'projectCommissionFunds',
-    align: 'right',
+    align: 'left',
     label: t('commission.funds'),
     field: 'projectCommissionFunds',
     sortable: false
@@ -161,7 +162,7 @@ const columns: QTableProps['columns'] = [
 
 async function onRowClick(projectId: number) {
   await router.push(props.commissionId ? {
-    name: 'CommissionProject',
+    name: `${props.archived ? 'Archived' : ''}CommissionProject`,
     params: {projectId, commissionId: props.commissionId}
   } : {name: 'Project', params: {projectId}})
 }

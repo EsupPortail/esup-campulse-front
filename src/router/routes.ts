@@ -400,7 +400,7 @@ const routes: RouteRecordRaw[] = [
               {
                 path: '',
                 name: 'ManageProjects',
-                component: () => import('@/views/dashboard/manager/commission/CommissionDashboardView.vue'),
+                component: () => import('@/views/dashboard/manager/commission/ProjectsView.vue'),
                 meta: {
                   title: i18n.global.t('breadcrumbs.commission-dashboard'),
                   staffOnly: true,
@@ -435,12 +435,49 @@ const routes: RouteRecordRaw[] = [
                   },
                 ]
               },
+              {
+                path: 'archived-commission',
+                meta: {
+                  breadcrumb: i18n.global.t('breadcrumbs.archived-commission'),
+                },
+                children: [
+                  {
+                    path: '',
+                    name: 'ArchivedCommissions',
+                    component: () => import('@/views/dashboard/manager/commission/ArchivedCommissionsView.vue'),
+                    meta: {
+                      title: i18n.global.t('breadcrumbs.archived-commission'),
+                    },
+                  },
+                  {
+                    path: ':commissionId',
+                    meta: {
+                      breadcrumb: i18n.global.t('breadcrumbs.commission-projects'),
+                    },
+                    children: [
+                      {
+                        path: '',
+                        name: 'ArchivedCommissionProjects',
+                        component: () => import('@/views/dashboard/manager/commission/CommissionProjectsView.vue'),
+                      },
+                      {
+                        path: 'project/:projectId',
+                        name: 'ArchivedCommissionProject',
+                        component: () => import('@/views/project/ProjectDetailView.vue'),
+                        meta: {
+                          breadcrumb: i18n.global.t('breadcrumbs.project'),
+                        }
+                      },
+                    ]
+                  },
+                ]
+              },
             ]
           },
           {
             path: 'manage-commissions',
             name: 'ManageCommissions',
-            component: () => import('@/views/dashboard/manager/commission/ManageCommissionDatesView.vue'),
+            component: () => import('@/views/dashboard/manager/commission/CommissionDatesView.vue'),
             meta: {
               title: i18n.global.t('breadcrumbs.manage-commission-dates'),
               breadcrumb: i18n.global.t('breadcrumbs.manage-commission-dates'),

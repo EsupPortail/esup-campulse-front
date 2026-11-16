@@ -17,12 +17,12 @@ defineProps<{
 @import "@/assets/_variables.scss";
 
 dt {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: #454545;
 }
 
 dd {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: $semibold-weight;
 }
 </style>

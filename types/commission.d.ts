@@ -25,6 +25,7 @@ export interface CommissionBase {
   standbyProjectsCount: number | null;
   processingProjectsCount: number | null;
   submittedProjectsCount: number | null;
+  overdueReviewCount: number | null;
   funds: Fund[];
 }
 

@@ -1,49 +1,39 @@
 <script lang="ts" setup>
 import useProject from '@/composables/useProject'
 import {useProjectStore} from '@/stores/useProjectStore'
-import axios from 'axios'
 import {useI18n} from 'vue-i18n'
-import {useQuasar} from 'quasar'
-import useErrors from '@/composables/useError'
-import {onMounted, watch} from 'vue'
-import {useCommissionStore} from '@/stores/useCommissionStore'
-import {useFundStore} from '@/stores/useFundStore'
 import useCommissionFund from '@/composables/useCommissionFund'
 import useUtil from '@/composables/useUtil'
+import GlobalDefinition from '@/components/global/GlobalDefinition.vue'
+import {computed, onMounted} from 'vue'
+import axios from 'axios'
+import {useRoute} from 'vue-router'
+import {useQuasar} from 'quasar'
+import useError from '@/composables/useError'
 
 const {t} = useI18n()
 const {projectBudget} = useProject()
 const {commissionFundLabel} = useCommissionFund()
 const {CURRENCY} = useUtil()
-const {notify, loading} = useQuasar()
-const {catchHTTPError} = useErrors()
-
 const projectStore = useProjectStore()
-const commissionStore = useCommissionStore()
-const fundStore = useFundStore()
+const route = useRoute()
+const {notify, loading} = useQuasar()
+const {catchHTTPError} = useError()
 
-const props = defineProps<{
-  loadData?: boolean
-}>()
-
-onMounted(() => {
-  if (projectStore.project && props.loadData) getData()
+const projectReEdition = computed<boolean>(() => {
+  return projectStore.project?.projectCommissionFunds.some(obj => !obj.isFirstEdition)
 })
 
-watch(() => projectStore.project, async () => {
-  if (props.loadData) {
-    loading.show()
-    await getData()
-    loading.hide()
-  }
+const projectId = computed<number>(() => {
+  return parseInt(route.params.projectId as string)
 })
 
-async function getData() {
+async function onGetData() {
   try {
-    await commissionStore.getCommissions()
-    await commissionStore.getCommissionFunds()
-    await projectStore.getProjectCommissionFunds({filter: 'project', projectId: projectStore.project?.id})
-    await fundStore.getFunds()
+    await projectStore.getProjectCommissionFunds({
+      filter: 'project',
+      projectId: projectId.value,
+    })
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       notify({
@@ -54,59 +44,49 @@ async function getData() {
   }
 }
 
-const projectReEdition = () => {
-  return projectStore.projectCommissionFunds.some(obj => obj.isFirstEdition === false)
-}
+onMounted(async () => {
+  loading.show()
+  await onGetData()
+  loading.hide()
+})
 </script>
 
 <template>
   <div class="flex-column">
-    <div class="display-row">
-      <h5>{{ t('project.re-edition') }}</h5>
-      <p>
-        {{
-          projectReEdition() ? t('yes') : t('no')
-        }}
-      </p>
-    </div>
-
-    <div
-      v-if="projectReEdition()"
-      class="display-row"
+    <GlobalDefinition :title="t('project.re-edition')">
+      {{
+        projectReEdition ? t('yes') : t('no')
+      }}
+    </GlobalDefinition>
+    <GlobalDefinition
+      v-if="projectReEdition"
+      :title="t('project.budget-previous-edition')"
     >
-      <h5>{{ t('project.budget-previous-edition') }}</h5>
-      <p>{{ projectBudget.budgetPreviousEdition + CURRENCY }}</p>
+      {{ projectBudget.budgetPreviousEdition + CURRENCY }}
+    </GlobalDefinition>
+    <GlobalDefinition :title="t('project.target-audience')">{{ projectBudget.targetAudience }}</GlobalDefinition>
+    <div class="grid">
+      <GlobalDefinition :title="t('project.target-students-amount')">
+        {{
+          projectBudget.amountStudentsAudience
+        }}
+      </GlobalDefinition>
+      <GlobalDefinition :title="t('project.target-all-amount')">{{ projectBudget.amountAllAudience }}</GlobalDefinition>
+    </div>
+    <div class="grid">
+      <GlobalDefinition :title="t('project.ticket-price')">
+        {{ projectBudget.ticketPrice + CURRENCY }}
+      </GlobalDefinition>
+
+      <GlobalDefinition :title="t('project.student-ticket-price')">
+        {{ projectBudget.studentTicketPrice + CURRENCY }}
+      </GlobalDefinition>
+
+      <GlobalDefinition :title="t('project.individual-cost')">
+        {{ projectBudget.individualCost + CURRENCY }}
+      </GlobalDefinition>
     </div>
 
-    <div class="display-row">
-      <h5>{{ t('project.target-audience') }}</h5>
-      <p>{{ projectBudget.targetAudience }}</p>
-    </div>
-
-    <div class="display-row">
-      <h5>{{ t('project.target-students-amount') }}</h5>
-      <p>{{ projectBudget.amountStudentsAudience }}</p>
-    </div>
-
-    <div class="display-row">
-      <h5>{{ t('project.target-all-amount') }}</h5>
-      <p>{{ projectBudget.amountAllAudience }}</p>
-    </div>
-
-    <div class="display-row">
-      <h5>{{ t('project.ticket-price') }}</h5>
-      <p>{{ projectBudget.ticketPrice + CURRENCY }}</p>
-    </div>
-
-    <div class="display-row">
-      <h5>{{ t('project.student-ticket-price') }}</h5>
-      <p>{{ projectBudget.studentTicketPrice + CURRENCY }}</p>
-    </div>
-
-    <div class="display-row">
-      <h5>{{ t('project.individual-cost') }}</h5>
-      <p>{{ projectBudget.individualCost + CURRENCY }}</p>
-    </div>
 
     <div
       v-for="projectCommissionFund in projectStore.projectCommissionFunds"
@@ -116,43 +96,16 @@ const projectReEdition = () => {
       <h3>{{ commissionFundLabel(projectCommissionFund.commissionFund) }}</h3>
 
       <div
-        v-if="projectReEdition()"
+        v-if="projectReEdition"
         class="flex-row"
       >
-        <div class="display-row">
-          <h5>{{ t('project.previous-asked') }}</h5>
-          <p>
-            {{
-              projectCommissionFund.amountAskedPreviousEdition +
-                CURRENCY
-            }}
-          </p>
-        </div>
+        <GlobalDefinition :title="t('project.previous-asked')">
+          {{ projectCommissionFund.amountAskedPreviousEdition + CURRENCY }}
+        </GlobalDefinition>
 
-        <div class="display-row">
-          <h5>{{ t('project.previous-earned') }}</h5>
-          <p>
-            {{
-              projectCommissionFund.amountEarnedPreviousEdition +
-                CURRENCY
-            }}
-          </p>
-        </div>
-      </div>
-
-      <div class="flex-row">
-        <div class="display-row">
-          <h5>{{ t('project.amount-asked') }}</h5>
-          <p>{{ projectCommissionFund.amountAsked + CURRENCY }}</p>
-        </div>
-
-        <div
-          v-if="projectCommissionFund.amountEarned || projectCommissionFund.amountEarned === 0"
-          class="display-row"
-        >
-          <h5>{{ t('project.amount-earned') }}</h5>
-          <p>{{ projectCommissionFund.amountEarned + CURRENCY }}</p>
-        </div>
+        <GlobalDefinition :title="t('project.previous-earned')">
+          {{ projectCommissionFund.amountEarnedPreviousEdition + CURRENCY }}
+        </GlobalDefinition>
       </div>
     </div>
   </div>
@@ -160,4 +113,10 @@ const projectReEdition = () => {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms.scss";
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 2rem;
+}
 </style>

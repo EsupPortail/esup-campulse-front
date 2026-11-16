@@ -19,6 +19,10 @@ const commissionId = computed<number>(() => {
   return parseInt(route.params.commissionId as string)
 })
 
+const archived = computed<boolean>(() => {
+  return (route.name as string).includes('Archived')
+})
+
 async function onGetCommission() {
   loading.show()
   try {
@@ -71,10 +75,13 @@ onMounted(async () => {
             {{ commissionStore.commission?.standbyProjectsCount }}
           </GlobalDefinition>
           <GlobalDefinition title="Bilan en retard">
-            TODO
+            {{ commissionStore.commission?.overdueReviewCount }}
           </GlobalDefinition>
         </dl>
-        <ProjectListTable :commission-id="commissionId"/>
+        <ProjectListTable
+          :archived
+          :commission-id="commissionId"
+        />
       </div>
     </div>
   </div>

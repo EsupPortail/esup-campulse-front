@@ -7,13 +7,12 @@ const projectStore = useProjectStore()
 </script>
 
 <template>
-  <div class="flex-row">
+  <div class="flex-row flex-wrap">
     <QChip
       v-for="category in projectStore.project?.categories"
       :key="category.id"
       color="commission"
       outline
-      size="sm"
     >
       {{ category.name }}
     </QChip>

@@ -32,6 +32,7 @@ export async function getProjects(
   if (params?.activeProjects !== undefined) factory.push(`active_projects=${params.activeProjects}`)
   if (params?.association) factory.push(`association=${params.association}`)
   if (params?.user) factory.push(`user=${params.user}`)
+  if (params?.userId) factory.push(`user_id=${params.userId}`)
   if (params?.editionDateAfter) factory.push(`edition_date_after=${params.editionDateAfter}`)
   if (params?.editionDateBefore) factory.push(`edition_date_before=${params.editionDateBefore}`)
   if (params?.commissionDateAfter) factory.push(`commission_date_after=${params.commissionDateAfter}`)

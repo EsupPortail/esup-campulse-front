@@ -10,7 +10,8 @@ const {t} = useI18n()
 
 defineProps<{
   commission: Commission,
-  headingLevel: number
+  headingLevel: number,
+  archived?: boolean,
 }>()
 </script>
 
@@ -59,13 +60,13 @@ defineProps<{
             {{ commission.submittedProjectsCount ?? 0 }}
           </GlobalDefinition>
           <GlobalDefinition title="Bilans en retard">
-            TODO
+            {{ commission.overdueReviewCount }}
           </GlobalDefinition>
         </dl>
       </div>
       <QBtn
         v-if="commission.submittedProjectsCount"
-        :to="{name: 'CommissionProjects', params: {commissionId: commission.id}}"
+        :to="{name: `${archived ? 'Archived' : ''}CommissionProjects`, params: {commissionId: commission.id}}"
         flat
         icon="bi-arrow-right"
       />

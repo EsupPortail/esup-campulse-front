@@ -94,12 +94,10 @@ export const useProjectStore = defineStore('projectStore', {
       await projectService.postponeProject(this.project?.id, newCommissionId)
     },
 
-    // old = getProjectDocuments
     async getProjectDocumentUploads(): Promise<void> {
       this.projectDocuments = await documentUploadService.getDocumentUploads({projectId: this.project!.id})
     },
 
-    // old = getProjectFiles
     async getProjectFileZip(): Promise<AxiosResponse<ArrayBuffer>> {
       return await documentUploadService.getProjectFileZip(this.project?.id)
     },

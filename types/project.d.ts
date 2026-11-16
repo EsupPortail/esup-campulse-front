@@ -1,8 +1,9 @@
 import type {DocumentUpload} from '#/document'
-import type {Commission} from '#/commission'
+import type {Commission, Fund} from '#/commission'
 import type {UserBase} from '#/user'
 import type {DateRange, PaginatedList} from '#/global'
-import type {AssociationUser, AssociationUserAssociation} from '#/association'
+import type {AssociationUser} from '#/association'
+import {UserAssociation} from './user'
 
 type ProjectStatus =
   'PROJECT_DRAFT'
@@ -29,7 +30,7 @@ export interface ProjectBase {
   id: number;
   name: string;
   manualIdentifier: string;
-  association: AssociationUserAssociation | null;
+  association: UserAssociation | null;
   user: UserBase | null;
   associationUser: AssociationUser | null;
   plannedStartDate: string;
@@ -64,6 +65,7 @@ export interface Project extends ProjectBase {
   creationDate: string;
   processingDate: string;
   projectCommissionFunds: ProjectCommissionFund[];
+  bearerOverdueReviewCount: number;
 }
 
 export type UpdateProject = Pick<Project,
@@ -74,7 +76,6 @@ export type UpdateProject = Pick<Project,
   associationUser: Project['associationUser']['id'];
 };
 
-// old = ProjectBasicInfos
 export type ProjectInfos = Pick<Project, 'name' | 'plannedStartDate' | 'plannedEndDate' | 'plannedLocation' |
   'partnerAssociation'> & {
   user: Project['user']['id'] | null;
@@ -113,6 +114,7 @@ export type ProjectCommissionFund =
     commission: Commission;
     fund: Fund;
   };
+  isFirstEdition: boolean;
 }
 
 export interface ProjectReviewBase {
@@ -162,13 +164,11 @@ export type CreateProjectComment = Omit<UpdateProjectComment, 'id'>
 export interface ProjectStore {
   project: Project | undefined;
   projects: PaginatedList<ProjectListItem> | undefined;
-  projectCommissionFunds: ProjectCommissionFund[];
+  projectCommissionFunds: ProjectCommissionFundBase[];
   projectDocuments: DocumentUpload[];
   projectCategoryNames: ProjectCategoryName[];
   projectReview: ProjectReview | undefined;
 }
-
-// REFACTO
 
 interface ProjectCommissionFundFilterAll {
   filter: 'all';
@@ -210,6 +210,7 @@ export interface ProjectListFilters {
   activeProjects: boolean;
   association: string;
   user: string;
+  userId: number;
   associationId: number;
   commissionId: number;
   editionDateAfter: string;
