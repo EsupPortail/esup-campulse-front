@@ -114,16 +114,16 @@ const columns: QTableProps['columns'] = [
     align: 'left',
     label: t('project.id'),
     field: row => row.manualIdentifier,
-    sortable: true,
+    sortable: false,
     format: val => `${val}`
   },
-  {name: 'name', align: 'left', label: t('project.name'), field: 'name', sortable: true},
+  {name: 'name', align: 'left', label: t('project.name'), field: 'name', sortable: false},
   {
     name: 'applicant',
     align: 'left',
     label: t('project.applicant'),
     field: row => row.association?.acronym || row.user?.lastName,
-    sortable: true,
+    sortable: false,
     format: val => `${val}`
   },
   {
@@ -131,7 +131,7 @@ const columns: QTableProps['columns'] = [
     align: 'left',
     label: t('project.last-modified-date'),
     field: row => row.editionDate,
-    sortable: true,
+    sortable: false,
     format: val => `${val}`
   },
   {
@@ -139,7 +139,7 @@ const columns: QTableProps['columns'] = [
     align: 'left',
     label: t('commission.commission'),
     field: row => row.commission?.commissionDate,
-    sortable: true,
+    sortable: false,
     format: val => `${val}`
   },
   {
@@ -154,7 +154,7 @@ const columns: QTableProps['columns'] = [
     align: 'right',
     label: t('status'),
     field: row => row.projectStatus,
-    sortable: true,
+    sortable: false,
     sort: (a, b) => (projectStatuses.indexOf(a) - projectStatuses.indexOf(b)),
     format: val => `${val}`
   }

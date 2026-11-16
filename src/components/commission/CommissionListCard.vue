@@ -60,7 +60,7 @@ defineProps<{
             {{ commission.submittedProjectsCount ?? 0 }}
           </GlobalDefinition>
           <GlobalDefinition title="Bilans en retard">
-            {{ commission.overdueReviewCount }}
+            {{ commission.overdueReviewCount ?? 0 }}
           </GlobalDefinition>
         </dl>
       </div>

@@ -126,6 +126,7 @@ const projectStatusOptions = computed<SelectLabel[]>(() => {
         <GlobalInputDatePicker
           :date-range="searchProjectFilters.editionDate"
           color="commission"
+          hint="Veuillez saisir une plage de dates à l'aide du calentdrier."
           label="Date de dernière modification"
           @update:date-range="searchProjectFilters.editionDate = $event"
         />
@@ -133,6 +134,7 @@ const projectStatusOptions = computed<SelectLabel[]>(() => {
           :date-range="searchProjectFilters.commissionDate"
           :disable="!showCommissionField"
           color="commission"
+          hint="Veuillez saisir une plage de dates à l'aide du calentdrier."
           label="Date de commission"
           @update:date-range="searchProjectFilters.commissionDate = $event"
         />

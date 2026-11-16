@@ -66,16 +66,16 @@ onMounted(async () => {
             </QChip>
           </GlobalDefinition>
           <GlobalDefinition title="Projets soumis">
-            {{ commissionStore.commission?.submittedProjectsCount }}
+            {{ commissionStore.commission?.submittedProjectsCount ?? 0 }}
           </GlobalDefinition>
           <GlobalDefinition title="En attente de validation">
-            {{ commissionStore.commission?.processingProjectsCount }}
+            {{ commissionStore.commission?.processingProjectsCount ?? 0 }}
           </GlobalDefinition>
           <GlobalDefinition title="En attente de modification">
-            {{ commissionStore.commission?.standbyProjectsCount }}
+            {{ commissionStore.commission?.standbyProjectsCount ?? 0 }}
           </GlobalDefinition>
           <GlobalDefinition title="Bilan en retard">
-            {{ commissionStore.commission?.overdueReviewCount }}
+            {{ commissionStore.commission?.overdueReviewCount ?? 0 }}
           </GlobalDefinition>
         </dl>
         <ProjectListTable
