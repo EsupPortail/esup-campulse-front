@@ -18,7 +18,6 @@ import ProjectBudget from '@/components/project/ProjectBudget.vue'
 import ProjectGoals from '@/components/project/ProjectGoals.vue'
 import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
 import ProjectComments from '@/components/project/ProjectComments.vue'
-import GlobalBooleanIcon from '@/components/global/GlobalBooleanIcon.vue'
 import type {ProjectListFilters} from '#/project'
 
 const {notify, loading} = useQuasar()
@@ -219,11 +218,55 @@ async function onGetProjectPdf() {
                   >
                     <td>{{ item.commissionFund.fund.acronym }}</td>
                     <td>
-                      <GlobalBooleanIcon
-                        :state="item.isValidatedByAdmin"
-                        ariaLabelFalse="Refusé"
-                        ariaLabelTrue="Validé"
-                      />
+                      <span
+                        v-if="item.isValidatedByAdmin"
+                        class="form-state form-state-cape"
+                      >
+                        <span
+                          v-if="item.amountEarned === 0"
+                          class="form-state-icon form-state-red"
+                        >
+                          <i
+                            :aria-label="t('rejected')"
+                            class="bi bi-x"
+                          ></i>
+                        </span>
+                        <span
+                          v-else
+                          class="form-state-icon form-state-green"
+                        >
+                          <i
+                            :aria-label="t('validated')"
+                            class="bi bi-check"
+                          ></i>
+                        </span>
+                      </span>
+                      <span
+                        v-else-if="item.isValidatedByAdmin === false"
+                        class="form-state form-state-cape"
+                      >
+                        <span
+                          class="form-state-icon form-state-red"
+                        >
+                          <i
+                            :aria-label="t('rejected')"
+                            class="bi bi-x"
+                          ></i>
+                        </span>
+                      </span>
+                      <span
+                        v-else
+                        class="form-state form-state-cape"
+                      >
+                        <span
+                          class="form-state-icon form-state-grey"
+                        >
+                          <i
+                            :aria-label="t('validation-pending')"
+                            class="bi bi-dash"
+                          ></i>
+                        </span>
+                      </span>
                     </td>
                     <td>{{ (item.amountAsked ?? 0) + CURRENCY }}</td>
                     <td>{{ (item.amountEarned ?? 0) + CURRENCY }}</td>

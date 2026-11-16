@@ -149,7 +149,6 @@ async function onUpdateProjectCommentVisibility(projectId: number, commentId: nu
       <QBtn
         v-if="hasPerm('add_projectcomment')"
         :label="t('project.new-comment')"
-        class="btn-lg"
         color="commission"
         icon="bi-plus-circle"
         @click="open = true"
