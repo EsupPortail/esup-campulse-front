@@ -13,7 +13,7 @@ const route = useRoute()
 const {loading, notify} = useQuasar()
 const commissionStore = useCommissionStore()
 const {catchHTTPError} = useError()
-const {reverseDate, dynamicTitle} = useUtil()
+const {reverseDate, dynamicTitle, formatDate} = useUtil()
 
 const commissionId = computed<number>(() => {
   return parseInt(route.params.commissionId as string)
@@ -54,6 +54,9 @@ onMounted(async () => {
           </GlobalDefinition>
           <GlobalDefinition title="Date de soumission">
             {{ reverseDate(commissionStore.commission?.submissionDate) }}
+          </GlobalDefinition>
+          <GlobalDefinition title="Date de modification">
+            {{ reverseDate(formatDate(commissionStore.commission?.editionDate)) }}
           </GlobalDefinition>
           <GlobalDefinition title="Financeurs">
             <QChip
@@ -96,5 +99,6 @@ dl {
   display: flex;
   gap: 3rem;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 </style>
