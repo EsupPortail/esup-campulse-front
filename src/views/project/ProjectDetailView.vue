@@ -245,6 +245,7 @@ async function onGetProjectPdf() {
               En construction
             </ProjectExpansionItem>
             <ProjectExpansionItem
+              :disable="!projectStore.projects?.results.length"
               icon="bi-send"
               label="Autres projets du porteur"
             >
