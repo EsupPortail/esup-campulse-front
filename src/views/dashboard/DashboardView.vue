@@ -97,6 +97,7 @@ onMounted(async () => {
           :to="{ name: 'ManageAccount' }"
           class="btn-lg"
           color="dashboard"
+          disable
         />
       </div>
     </div>
@@ -121,6 +122,7 @@ onMounted(async () => {
             :to="{ name: 'ValidateUsers' }"
             class="btn-lg"
             color="dashboard"
+            disable
           />
           <QBtn
             v-if="hasPerm('change_associationuser')"
@@ -128,6 +130,7 @@ onMounted(async () => {
             :to="{ name: 'ValidateAssociationUsers' }"
             class="btn-lg"
             color="dashboard"
+            disable
           />
           <QBtn
             v-if="hasPerm('change_user')"
@@ -135,6 +138,7 @@ onMounted(async () => {
             :to="{ name: 'ManageUsers' }"
             class="btn-lg"
             color="dashboard"
+            disable
           />
           <QBtn
             v-if="hasPerm('add_user')"
@@ -142,6 +146,7 @@ onMounted(async () => {
             :to="{ name: 'AddUser' }"
             class="btn-lg"
             color="dashboard"
+            disable
           />
         </div>
       </div>
@@ -168,6 +173,7 @@ onMounted(async () => {
             :to="{ name: 'ManageAssociations' }"
             class="btn-lg"
             color="dashboard"
+            disable
           />
           <QBtn
             v-if="hasPerm('add_association')"
@@ -175,6 +181,7 @@ onMounted(async () => {
             :to="{ name: 'CreateAssociation' }"
             class="btn-lg"
             color="dashboard"
+            disable
           />
         </div>
       </div>
@@ -198,6 +205,7 @@ onMounted(async () => {
             :to="{ name: 'ManageCharters' }"
             class="btn-lg"
             color="dashboard"
+            disable
           />
         </div>
       </div>
@@ -228,6 +236,7 @@ onMounted(async () => {
             :to="{ name: 'ManageCommissionDates' }"
             class="btn-lg"
             color="dashboard"
+            disable
           />
         </div>
       </div>
@@ -252,6 +261,7 @@ onMounted(async () => {
             :to="{ name: 'ManageDocumentsLibrary' }"
             class="btn-lg"
             color="dashboard"
+            disable
           />
         </div>
       </div>
@@ -276,6 +286,7 @@ onMounted(async () => {
             :to="{ name: 'ManageContents' }"
             class="btn-lg"
             color="dashboard"
+            disable
           />
         </div>
       </div>
@@ -299,6 +310,7 @@ onMounted(async () => {
             :to="{ name: 'DocumentsLibrary' }"
             class="btn-lg"
             color="dashboard"
+            disable
           />
         </div>
       </div>
