@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-import {useI18n} from 'vue-i18n'
 import {useProjectStore} from '@/stores/useProjectStore'
 
-const {t} = useI18n()
 const projectStore = useProjectStore()
 </script>
 

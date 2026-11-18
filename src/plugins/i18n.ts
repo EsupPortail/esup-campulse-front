@@ -1,6 +1,8 @@
 import {createI18n} from 'vue-i18n'
 
-import fr from '@/locales/fr.json'
+//import fr from '@/locales/fr.json'
+import fr from '@/locales/frv2.json'
+
 
 const appLocale = import.meta.env.VITE_APP_I18N_LOCALE
 

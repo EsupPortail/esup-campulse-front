@@ -19,7 +19,7 @@ import CommissionExport from '@/components/commission/CommissionExport.vue'
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
-const {formatDate} = useUtil()
+const {formatDate, reverseDate} = useUtil()
 const {listRange, changePage, pagination, updateRowsPerPage} = usePagination()
 const {projectStatuses, searchProjectFilters} = useProject()
 const projectStore = useProjectStore()
@@ -137,7 +137,7 @@ const columns: QTableProps['columns'] = [
   {
     name: 'commissionDate',
     align: 'left',
-    label: t('commission.commission'),
+    label: t('commission'),
     field: row => row.commission?.commissionDate,
     sortable: false,
     format: val => `${val}`
@@ -247,14 +247,14 @@ async function onRowClick(projectId: number) {
             :props="props"
             headers="lastModifiedDate"
           >
-            {{ formatDate(props.row.editionDate).split('-').reverse().join('/') }}
+            {{ reverseDate(formatDate(props.row.editionDate)) }}
           </QTd>
           <QTd
             key="commissionDate"
             :props="props"
             headers="commissionDate"
           >
-            {{ formatDate(props.row.commission?.commissionDate).split('-').reverse().join('/') }}
+            {{ reverseDate(formatDate(props.row.commission?.commissionDate)) }}
           </QTd>
           <QTd
             key="projectCommissionFunds"

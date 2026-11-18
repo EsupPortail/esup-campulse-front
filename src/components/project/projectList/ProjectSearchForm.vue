@@ -85,7 +85,7 @@ const projectStatusOptions = computed<SelectLabel[]>(() => {
       </QItemSection>
 
       <QItemSection>
-        <span :class="{'text-commission-color': true}">Recherche</span>
+        <span :class="{'text-commission-color': true}">{{ t('research') }}</span>
       </QItemSection>
     </template>
     <QForm
@@ -95,101 +95,101 @@ const projectStatusOptions = computed<SelectLabel[]>(() => {
       <div class="grid-container">
         <QInput
           v-model="searchProjectFilters.manualIdentifier"
+          :label="t('project.id')"
           clearable
           color="commission"
           filled
-          label="Identifiant"
         />
         <QInput
           v-model="searchProjectFilters.name"
+          :label="t('project.name')"
           clearable
           color="commission"
           filled
-          label="Nom du projet"
         />
         <QInput
           v-model="searchProjectFilters.associationName"
+          :label="t('association')"
           clearable
           color="commission"
           filled
-          label="Association"
         />
         <QInput
           v-model="searchProjectFilters.userName"
+          :label="t('individual-bearer')"
           clearable
           color="commission"
           filled
-          label="Porteur individuel"
         />
       </div>
       <div class="grid-container">
         <GlobalInputDatePicker
           :date-range="searchProjectFilters.editionDate"
+          :hint="t('forms.date-range-hint')"
+          :label="t('project.edition-date')"
           color="commission"
-          hint="Veuillez saisir une plage de dates à l'aide du calentdrier."
-          label="Date de dernière modification"
           @update:date-range="searchProjectFilters.editionDate = $event"
         />
         <GlobalInputDatePicker
           :date-range="searchProjectFilters.commissionDate"
           :disable="!showCommissionField"
+          :hint="t('forms.date-range-hint')"
+          :label="t('commission.date')"
           color="commission"
-          hint="Veuillez saisir une plage de dates à l'aide du calentdrier."
-          label="Date de commission"
           @update:date-range="searchProjectFilters.commissionDate = $event"
         />
       </div>
       <div class="grid-container">
         <QSelect
           v-model="searchProjectFilters.funds"
+          :label="t('commission.funds')"
           :options="fundStore.fundLabels"
           clearable
           color="commission"
           emit-value
           filled
-          label="Financeurs"
           map-options
           multiple
           use-chips
         />
         <QSelect
           v-model="searchProjectFilters.projectStatuses"
+          :label="t('status')"
           :options="projectStatusOptions"
           clearable
           color="commission"
           emit-value
           filled
-          label="Statut"
           map-options
           multiple
           use-chips
         />
         <QSelect
           v-model="searchProjectFilters.category"
+          :label="t('project.category')"
           :options="projectStore.projectCategoryLabels"
           clearable
           color="commission"
           emit-value
           filled
-          label="Catégorie"
           map-options
         />
       </div>
       <div class="btn flex-row-center">
         <QBtn
+          :label="t('search')"
           class="btn-lg"
           color="commission"
           icon="bi-search"
-          label="Rechercher"
           type="submit"
         />
         <QBtn
           v-if="searchIsActive"
+          :label="t('cancel-search')"
           class="btn-lg"
           color="commission"
           flat
           icon="bi-x"
-          label="Annuler la recherche"
           @click="onClear"
         />
       </div>

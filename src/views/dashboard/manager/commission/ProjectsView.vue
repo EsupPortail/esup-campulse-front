@@ -8,8 +8,10 @@ import {useQuasar} from 'quasar'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 import useProject from '@/composables/useProject'
 import type {CommissionFilters} from '#/commission'
+import {useI18n} from 'vue-i18n'
 
 const {dashboardTab} = useProject()
+const {t} = useI18n()
 const {loading} = useQuasar()
 const commissionStore = useCommissionStore()
 
@@ -67,8 +69,8 @@ watch(() => dashboardTab.value, async () => {
             <div>
               <QToggle
                 v-model="showClosedCommissions"
+                :label="t('commission.show-not-already-opened')"
                 color="commission"
-                label="Voir les commissions non ouvertes"
                 @update:model-value="onGetCommissions"
               />
             </div>
@@ -80,11 +82,11 @@ watch(() => dashboardTab.value, async () => {
             />
             <div class="flex-row-center">
               <QBtn
+                :label="t('commission.archived')"
                 :to="{name: 'ArchivedCommissions'}"
                 class="btn-lg"
                 color="commission"
                 icon="bi-archive"
-                label="Commissions archivées"
               />
             </div>
           </section>

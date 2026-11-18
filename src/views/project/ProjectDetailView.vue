@@ -130,10 +130,10 @@ async function onGetProjectPdf() {
         :show-draft="true"
       />
       <QBtn
+        :label="t('edit')"
         color="commission"
         disable
         icon="bi-pencil"
-        label="Éditer"
         outline
       />
     </div>
@@ -144,7 +144,7 @@ async function onGetProjectPdf() {
             <div>
               <GlobalDefinition
                 v-if="projectStore.project?.association"
-                title="Association"
+                :title="t('association')"
               >
                 {{
                   `${projectStore.project?.association.name}
@@ -153,64 +153,66 @@ async function onGetProjectPdf() {
               </GlobalDefinition>
               <GlobalDefinition
                 v-else
-                title="Porteur"
+                :title="t('project.applicant')"
               >
                 {{ projectStore.project?.user.firstName + ' ' + projectStore.project?.user.lastName }}
               </GlobalDefinition>
               <GlobalDefinition
                 v-if="projectStore.project?.partnerAssociation"
-                title="Association co-porteuse"
+                :title="t('project.partner-association')"
               >
                 {{ projectStore.project?.partnerAssociation }}
               </GlobalDefinition>
               <GlobalDefinition
                 v-if="projectStore.project?.association"
-                title="Statut de la charte"
+                :title="t('charter.status.title')"
               >
                 <CharterStatusIndicator
                   :charter-status="initAssociationCharterStatus(projectStore.project?.association.charterStatus)"
                 />
               </GlobalDefinition>
-              <GlobalDefinition title="Bilans en retard">
+              <GlobalDefinition :title="t('commission.overdue-reviews-count')">
                 {{ projectStore.project?.bearerOverdueReviewCount ?? 0 }}
               </GlobalDefinition>
             </div>
             <div>
-              <GlobalDefinition title="Date de dépôt du projet">
+              <GlobalDefinition :title="t('project.creation-date')">
                 {{ reverseDate(formatDate(projectStore.project?.creationDate)) }}
               </GlobalDefinition>
-              <GlobalDefinition title="Date de dernière modification">
+              <GlobalDefinition :title="t('project.edition-date')">
                 {{ reverseDate(formatDate(projectStore.project?.editionDate)) }}
               </GlobalDefinition>
-              <GlobalDefinition title="Date de début du projet">
+              <GlobalDefinition :title="t('project.planned-start-date')">
                 {{ reverseDate(formatDate(projectStore.project?.plannedStartDate)) }}
               </GlobalDefinition>
-              <GlobalDefinition title="Date de fin du projet">
+              <GlobalDefinition :title="t('project.planned-end-date')">
                 {{ reverseDate(formatDate(projectStore.project?.plannedEndDate)) }}
               </GlobalDefinition>
-              <GlobalDefinition :title="`Catégorie${projectStore.project?.categories.length > 1 ? 's' : ''}`">
+              <GlobalDefinition
+                :title="t('project.category', (projectStore.project?.categories.length + 1))"
+              >
                 <ProjectCategories/>
               </GlobalDefinition>
             </div>
             <div>
-              <GlobalDefinition title="Lieux prévus">
+              <GlobalDefinition :title="t('project.planned-location')">
                 {{ projectStore.project?.plannedLocation }}
               </GlobalDefinition>
             </div>
             <div>
-              <GlobalDefinition title="Commission">
+              <GlobalDefinition :title="t('commission')">
                 {{ projectStore.project?.commission.name }}
               </GlobalDefinition>
             </div>
             <div>
               <table>
-                <caption>Financeurs et montants</caption>
+                <caption>{{ t('commission.funds-and-amounts') }}</caption>
                 <tbody>
                   <tr>
-                    <th>Fonds</th>
-                    <th>Statut</th>
-                    <th>Montant demandé</th>
-                    <th>Montant obtenu</th>
+                    <th>{{ t('commission.funds') }}</th>
+                    <th>{{ t('status') }}</th>
+                    <th>{{ t('project.amount-asked') }}</th>
+                    <th>{{ t('project.amount-earned') }}</th>
                   </tr>
                   <tr
                     v-for="item in projectStore.project?.projectCommissionFunds"
@@ -282,15 +284,15 @@ async function onGetProjectPdf() {
             class="rounded-borders bg-white"
           >
             <ProjectExpansionItem
+              :label="t('project.settings')"
               icon="bi-gear"
-              label="Paramètres du projet"
             >
               En construction
             </ProjectExpansionItem>
             <ProjectExpansionItem
               :disable="!projectStore.projects?.results.length"
+              :label="t('project.bearer-others')"
               icon="bi-send"
-              label="Autres projets du porteur"
             >
               <ul>
                 <li
@@ -302,8 +304,8 @@ async function onGetProjectPdf() {
               </ul>
             </ProjectExpansionItem>
             <ProjectExpansionItem
+              :label="t('project.details')"
               icon="bi-clipboard"
-              label="Détails du projet"
             >
               <section class="flex-column">
                 <h4>
@@ -311,15 +313,15 @@ async function onGetProjectPdf() {
                 </h4>
                 <ProjectBudget/>
                 <h4>
-                  Objectifs
+                  {{ t('project.goals-title') }}
                 </h4>
                 <ProjectGoals/>
               </section>
             </ProjectExpansionItem>
             <ProjectExpansionItem
               :disable="!showReview"
+              :label="t('project.review-details')"
               icon="bi-person-video3"
-              label="Détails du bilan"
             >
               <div class="flex-column">
                 <div class="grid">
@@ -341,23 +343,18 @@ async function onGetProjectPdf() {
                     {{ projectStore.projectReview?.income + CURRENCY }}
                   </GlobalDefinition>
                 </div>
-
                 <GlobalDefinition :title="t('project.review')">
                   {{ projectStore.projectReview?.review }}
                 </GlobalDefinition>
-
                 <GlobalDefinition :title="t('project.impact-students')">
                   {{ projectStore.projectReview?.impactStudents }}
                 </GlobalDefinition>
-
                 <GlobalDefinition :title="t('project.description')">
                   {{ projectStore.projectReview?.description }}
                 </GlobalDefinition>
-
                 <GlobalDefinition :title="t('project.difficulties')">
                   {{ projectStore.projectReview?.difficulties }}
                 </GlobalDefinition>
-
                 <GlobalDefinition :title="t('project.improvements')">
                   {{ projectStore.projectReview?.improvements }}
                 </GlobalDefinition>
@@ -365,8 +362,8 @@ async function onGetProjectPdf() {
             </ProjectExpansionItem>
             <ProjectExpansionItem
               :disable="!projectStore.projectDocuments.length"
+              :label="t('project.documents')"
               icon="bi-file-earmark"
-              label="Documents du projet"
             >
               <ProcessDocumentList
                 v-if="isLoaded"
@@ -375,8 +372,8 @@ async function onGetProjectPdf() {
               />
             </ProjectExpansionItem>
             <ProjectExpansionItem
+              :label="t('comment', 2)"
               icon="bi-chat"
-              label="Commentaires"
             >
               <ProjectComments
                 v-if="isLoaded"

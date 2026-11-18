@@ -34,16 +34,16 @@ defineProps<{
           />
         </div>
         <dl class="flex-row-space-between">
-          <GlobalDefinition title="Date de commission">
+          <GlobalDefinition :title="t('commission.date')">
             {{ reverseDate(commission.commissionDate) }}
           </GlobalDefinition>
-          <GlobalDefinition title="Date de soumission">
+          <GlobalDefinition :title="t('commission.submission-date')">
             {{ reverseDate(commission.submissionDate) }}
           </GlobalDefinition>
-          <GlobalDefinition title="Date de modification">
+          <GlobalDefinition :title="t('edition-date')">
             {{ reverseDate(formatDate(commission.editionDate)) }}
           </GlobalDefinition>
-          <GlobalDefinition title="Financeurs">
+          <GlobalDefinition :title="t('commission.funds')">
             <div class="flex-row">
               <QChip
                 v-for="item in commission.funds.map(item => item.acronym)"
@@ -56,16 +56,17 @@ defineProps<{
               </QChip>
             </div>
           </GlobalDefinition>
-          <GlobalDefinition title="Projets soumis">
+          <GlobalDefinition :title="t('commission.submitted-projects-count')">
             {{ commission.submittedProjectsCount ?? 0 }}
           </GlobalDefinition>
-          <GlobalDefinition title="Bilans en retard">
+          <GlobalDefinition :title="t('commission.overdue-reviews-count')">
             {{ commission.overdueReviewCount ?? 0 }}
           </GlobalDefinition>
         </dl>
       </div>
       <QBtn
         v-if="commission.submittedProjectsCount"
+        :title="t('view.projects')"
         :to="{name: `${archived ? 'Archived' : ''}CommissionProjects`, params: {commissionId: commission.id}}"
         flat
         icon="bi-arrow-right"
