@@ -58,6 +58,11 @@ async function onGetCommissions() {
   loading.hide()
 }
 
+async function onResetCommissionsPage() {
+  commissionPaginationCurrent.value = 1
+  await onGetCommissions()
+}
+
 onMounted(async () => {
   if (dashboardTab.value === 1) {
     await onGetCommissions()
@@ -72,10 +77,6 @@ watch(() => dashboardTab.value, async () => {
   clearProjectSearch()
   openCommissionSearch.value = false
   clearCommissionSearch()
-})
-
-watch(() => commissionPaginationCurrent.value, async () => {
-  await onGetCommissions()
 })
 
 </script>
@@ -103,14 +104,14 @@ watch(() => commissionPaginationCurrent.value, async () => {
                 funds: true
               }"
               @clear="clearCommissionSearch"
-              @search="onGetCommissions"
+              @search="onResetCommissionsPage"
             />
             <div>
               <QToggle
                 v-model="showClosedCommissions"
                 :label="t('commission.show-not-already-opened')"
                 color="commission"
-                @update:model-value="onGetCommissions"
+                @update:model-value="onResetCommissionsPage"
               />
             </div>
             <ProjectCommissionListCard
@@ -124,6 +125,7 @@ watch(() => commissionPaginationCurrent.value, async () => {
                 v-model="commissionPaginationCurrent"
                 :max="commissionStore.commissions?.totalPages"
                 color="commission"
+                @update:model-value="onGetCommissions"
               />
             </div>
 
