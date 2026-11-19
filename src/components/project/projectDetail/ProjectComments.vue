@@ -7,7 +7,7 @@ import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import useUtil from '@/composables/useUtil'
 import {useProjectStore} from '@/stores/useProjectStore'
-import FormAddComment from '@/components/project/FormAddComment.vue'
+import ProjectCommentForm from '@/components/project/projectDetail/ProjectCommentForm.vue'
 import {usePermission} from '@/composables/usePermission'
 
 
@@ -159,7 +159,7 @@ async function onUpdateProjectCommentVisibility(projectId: number, commentId: nu
   <QDialog v-model="open">
     <QCard class="variant-space-3">
       <QCardSection class="q-pt-none">
-        <FormAddComment
+        <ProjectCommentForm
           @submit="onPostNewComment"
           @close-dialog="open = false"
         />
@@ -169,9 +169,9 @@ async function onUpdateProjectCommentVisibility(projectId: number, commentId: nu
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/forms.scss";
-@import "@/assets/styles/dashboard.scss";
-@import "@/assets/_variables.scss";
+@import "@/assets/styles/forms";
+@import "@/assets/styles/dashboard";
+@import "@/assets/variables";
 
 .comment-row > div {
   align-items: flex-start;

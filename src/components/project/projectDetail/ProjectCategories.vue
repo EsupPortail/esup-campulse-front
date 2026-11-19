@@ -18,8 +18,8 @@ const projectStore = useProjectStore()
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/forms.scss";
-@import "@/assets/styles/dashboard.scss";
+@import "@/assets/styles/forms";
+@import "@/assets/styles/dashboard";
 
 .q-chip {
   margin: 0.25rem 0;

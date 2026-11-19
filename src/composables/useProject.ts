@@ -96,6 +96,8 @@ async function updateAmountEarned(projectId: number, commissionFundId: number, a
   await projectService.updateProjectCommissionFund(projectId, commissionFundId, {amountEarned})
 }
 
+const openProjectSearch = ref<boolean>(false)
+
 const searchProjectFilters = ref<SearchProjectFilters>({
   manualIdentifier: null,
   name: null,
@@ -136,6 +138,18 @@ export default function useProject() {
       }
     })
   })*/
+
+  function clearProjectSearch() {
+    searchProjectFilters.value.manualIdentifier = null
+    searchProjectFilters.value.name = null
+    searchProjectFilters.value.associationName = null
+    searchProjectFilters.value.userName = null
+    searchProjectFilters.value.editionDate = {from: null, to: null}
+    searchProjectFilters.value.commissionDate = {from: null, to: null}
+    searchProjectFilters.value.funds = []
+    searchProjectFilters.value.projectStatuses = []
+    searchProjectFilters.value.category = null
+  }
 
   const initProjectBasicInfos = () => {
     projectId.value = projectStore.project?.manualIdentifier
@@ -417,5 +431,7 @@ export default function useProject() {
     updateAmountEarned,
     dashboardTab,
     searchProjectFilters,
+    openProjectSearch,
+    clearProjectSearch
   }
 }

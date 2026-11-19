@@ -6,8 +6,10 @@ import type {ProjectListItem} from '#/project'
 import useUtil from '@/composables/useUtil'
 import * as commissionService from '@/services/CommissionService'
 import {ref} from 'vue'
+import {useI18n} from 'vue-i18n'
 
 const {loading, notify} = useQuasar()
+const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const {openDocument} = useUtil()
 
@@ -42,18 +44,18 @@ const format = ref()
   <div>
     <QSelect
       v-model="format"
+      :label="t('forms.select-format')"
       :options
       clearable
       color="commission"
       filled
-      label="Sélectionner un format"
     />
     <QBtn
       :disable="!(format && selected.length > 0)"
+      :label="t('project.export')"
       class="btn-lg"
       color="commission"
       icon="bi-file-earmark"
-      label="Exporter les projets"
       @click="onExportCommission"
     />
   </div>

@@ -3,6 +3,7 @@ import type {
   CommissionBase,
   CreateCommission,
   PostCommission,
+  SearchCommissionFilters,
   SelectLabelFund,
   UpdateCommission
 } from '#/commission'
@@ -11,6 +12,19 @@ import {useFundStore} from '@/stores/useFundStore'
 import {useProjectStore} from '@/stores/useProjectStore'
 import * as commissionService from '@/services/CommissionService'
 import useUtil from '@/composables/useUtil'
+import {ref} from 'vue'
+
+const openCommissionSearch = ref<boolean>(false)
+
+const commissionPaginationCurrent = ref<number>(1)
+
+const searchCommissionFilters = ref<SearchCommissionFilters>({
+  name: '',
+  commissionDate: {from: null, to: null},
+  submissionDate: {from: null, to: null},
+  editionDate: {from: null, to: null},
+  funds: []
+})
 
 async function postCommission(commission: CreateCommission) {
   const data: PostCommission = {
@@ -68,6 +82,14 @@ export default function useCommissionFund() {
   const fundStore = useFundStore()
   const projectStore = useProjectStore()
 
+  function clearCommissionSearch() {
+    searchCommissionFilters.value.name = ''
+    searchCommissionFilters.value.commissionDate = {from: null, to: null}
+    searchCommissionFilters.value.submissionDate = {from: null, to: null}
+    searchCommissionFilters.value.editionDate = {from: null, to: null}
+    searchCommissionFilters.value.funds = []
+  }
+
   const selectedCommissionFundLabels = (commissionId: number, isSite: boolean): SelectLabelFund[] => {
     return commissionStore.commissionFunds.reduce((labels, commissionFund) => {
       if (commissionFund.commission === commissionId) {
@@ -108,6 +130,10 @@ export default function useCommissionFund() {
     commissionFundLabels,
     commissionFundLabel,
     postCommission,
-    updateCommission
+    updateCommission,
+    openCommissionSearch,
+    searchCommissionFilters,
+    clearCommissionSearch,
+    commissionPaginationCurrent
   }
 }

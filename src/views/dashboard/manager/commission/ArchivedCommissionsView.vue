@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import CommissionListCard from '@/components/commission/CommissionListCard.vue'
+import ProjectCommissionListCard from '@/components/commission/ProjectCommissionListCard.vue'
 import {useQuasar} from 'quasar'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 import type {CommissionFilters} from '#/commission'
@@ -28,7 +28,7 @@ onMounted(onGetCommissions)
 
 <template>
   <div class="container-lg">
-    <CommissionListCard
+    <ProjectCommissionListCard
       v-for="commission in commissionStore.commissions?.results"
       :key="`commission-${commission.id}`"
       :archived="true"

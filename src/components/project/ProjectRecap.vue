@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
-import ProjectBudget from '@/components/project/ProjectBudget.vue'
-import ProjectGoals from '@/components/project/ProjectGoals.vue'
+import ProjectBudget from '@/components/project/projectDetail/ProjectBudget.vue'
+import ProjectGoals from '@/components/project/projectDetail/ProjectGoals.vue'
 import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
 import InfoVerifyDocuments from '@/components/documents/InfoVerifyDocuments.vue'
 

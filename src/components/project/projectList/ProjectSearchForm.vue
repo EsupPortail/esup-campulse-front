@@ -9,7 +9,7 @@ import type {SelectLabel} from '#/global'
 import type {ProjectStatus} from '#/project'
 import {useI18n} from 'vue-i18n'
 
-const {searchProjectFilters} = useProject()
+const {searchProjectFilters, openProjectSearch, dashboardTab} = useProject()
 const fundStore = useFundStore()
 const projectStore = useProjectStore()
 const {loading} = useQuasar()
@@ -37,9 +37,7 @@ function onClear() {
   emit('search')
 }
 
-const open = ref<boolean>(false)
-
-watch(() => open.value, (val) => {
+watch(() => openProjectSearch.value, (val) => {
   if (!val) {
     onClear()
   }
@@ -69,7 +67,7 @@ const projectStatusOptions = computed<SelectLabel[]>(() => {
 
 <template>
   <QExpansionItem
-    v-model="open"
+    v-model="openProjectSearch"
     bordered
     class="rounded-borders bg-white"
   >

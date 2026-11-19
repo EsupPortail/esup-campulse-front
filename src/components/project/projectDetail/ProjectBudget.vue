@@ -112,7 +112,7 @@ onMounted(async () => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/forms.scss";
+@import "@/assets/styles/forms";
 
 .grid {
   display: grid;

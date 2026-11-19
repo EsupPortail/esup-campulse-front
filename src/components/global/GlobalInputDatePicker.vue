@@ -9,6 +9,7 @@ const props = defineProps<{
   dateRange: DateRange,
   color: string,
   label: string,
+  hint?: string
 }>()
 
 const emit = defineEmits<{
@@ -29,6 +30,7 @@ const formattedDateRange = computed<string>(() => {
 <template>
   <QInput
     :color
+    :hint
     :label
     :model-value="formattedDateRange"
     clearable

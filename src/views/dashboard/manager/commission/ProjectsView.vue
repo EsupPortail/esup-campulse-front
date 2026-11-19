@@ -2,15 +2,23 @@
 import GlobalTab from '@/components/global/GlobalTab.vue'
 import type {Tab} from '#/global'
 import ProjectListTable from '@/components/project/projectList/ProjectListTable.vue'
-import CommissionListCard from '@/components/commission/CommissionListCard.vue'
+import ProjectCommissionListCard from '@/components/commission/ProjectCommissionListCard.vue'
 import {onMounted, ref, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 import useProject from '@/composables/useProject'
 import type {CommissionFilters} from '#/commission'
 import {useI18n} from 'vue-i18n'
+import CommissionSearchForm from '@/components/commission/CommissionSearchForm.vue'
+import useCommissionFund from '@/composables/useCommissionFund'
 
-const {dashboardTab} = useProject()
+const {dashboardTab, openProjectSearch, clearProjectSearch} = useProject()
+const {
+  clearCommissionSearch,
+  searchCommissionFilters,
+  openCommissionSearch,
+  commissionPaginationCurrent
+} = useCommissionFund()
 const {t} = useI18n()
 const {loading} = useQuasar()
 const commissionStore = useCommissionStore()
@@ -30,7 +38,19 @@ const showClosedCommissions = ref<boolean>(false)
 
 async function onGetCommissions() {
   loading.show()
-  const filters: Partial<CommissionFilters> = {}
+  const search = searchCommissionFilters.value
+  const filters: Partial<CommissionFilters> = {
+    funds: searchCommissionFilters.value.funds,
+    commissionDateAfter: search.commissionDate.from,
+    commissionDateBefore: search.commissionDate.to,
+    editionDateAfter: search.editionDate.from,
+    editionDateBefore: search.editionDate.to,
+    submissionDateAfter: search.submissionDate.from,
+    submissionDateBefore: search.submissionDate.to,
+    name: search.name,
+    page: commissionPaginationCurrent.value,
+    pageSize: 10,
+  }
   if (!showClosedCommissions.value) {
     filters.isOpenToProjects = true
   }
@@ -48,7 +68,16 @@ watch(() => dashboardTab.value, async () => {
   if (dashboardTab.value === 1) {
     await onGetCommissions()
   }
+  openProjectSearch.value = false
+  clearProjectSearch()
+  openCommissionSearch.value = false
+  clearCommissionSearch()
 })
+
+watch(() => commissionPaginationCurrent.value, async () => {
+  await onGetCommissions()
+})
+
 </script>
 
 <template>
@@ -66,6 +95,16 @@ watch(() => dashboardTab.value, async () => {
 
         <template #commissions>
           <section class="flex-column">
+            <CommissionSearchForm
+              :fields="{
+                commissionDate: true,
+                submissionDate: true,
+                editionDate: true,
+                funds: true
+              }"
+              @clear="clearCommissionSearch"
+              @search="onGetCommissions"
+            />
             <div>
               <QToggle
                 v-model="showClosedCommissions"
@@ -74,12 +113,20 @@ watch(() => dashboardTab.value, async () => {
                 @update:model-value="onGetCommissions"
               />
             </div>
-            <CommissionListCard
+            <ProjectCommissionListCard
               v-for="commission in commissionStore.commissions?.results"
               :key="`commission-${commission.id}`"
               :commission="commission"
               :heading-level="2"
             />
+            <div class="flex-row-center">
+              <QPagination
+                v-model="commissionPaginationCurrent"
+                :max="commissionStore.commissions?.totalPages"
+                color="commission"
+              />
+            </div>
+
             <div class="flex-row-center">
               <QBtn
                 :label="t('commission.archived')"

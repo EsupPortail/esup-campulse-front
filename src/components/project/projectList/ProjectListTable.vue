@@ -14,14 +14,14 @@ import type {TargetPage} from '#/global'
 import type {ProjectListFilters} from '#/project'
 import ProjectSearchForm from '@/components/project/projectList/ProjectSearchForm.vue'
 import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
-import CommissionExport from '@/components/commission/CommissionExport.vue'
+import CommissionProjectExport from '@/components/commission/CommissionProjectExport.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {formatDate, reverseDate} = useUtil()
 const {listRange, changePage, pagination, updateRowsPerPage} = usePagination()
-const {projectStatuses, searchProjectFilters} = useProject()
+const {projectStatuses, searchProjectFilters, clearProjectSearch} = useProject()
 const projectStore = useProjectStore()
 
 const props = defineProps<{
@@ -96,18 +96,6 @@ async function onRequest(props: any) {
   await updateRowsPerPage(props, totalPages.value, onGetProjects)
 }
 
-function onClearSearch() {
-  searchProjectFilters.value.manualIdentifier = null
-  searchProjectFilters.value.name = null
-  searchProjectFilters.value.associationName = null
-  searchProjectFilters.value.userName = null
-  searchProjectFilters.value.editionDate = {from: null, to: null}
-  searchProjectFilters.value.commissionDate = {from: null, to: null}
-  searchProjectFilters.value.funds = []
-  searchProjectFilters.value.projectStatuses = []
-  searchProjectFilters.value.category = null
-}
-
 const columns: QTableProps['columns'] = [
   {
     name: 'id',
@@ -172,7 +160,7 @@ async function onRowClick(projectId: number) {
   <div class="flex-column">
     <ProjectSearchForm
       :show-commission-field="!commissionId"
-      @clear="onClearSearch"
+      @clear="clearProjectSearch"
       @search="onChangePage('first')"
     />
     <QTable
@@ -327,7 +315,7 @@ async function onRowClick(projectId: number) {
         </div>
       </template>
     </QTable>
-    <CommissionExport
+    <CommissionProjectExport
       v-if="commissionId"
       :commission-id="commissionId"
       :selected="selected"
