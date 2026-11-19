@@ -36,17 +36,22 @@ const tabs: Tab[] = [
 
 const showClosedCommissions = ref<boolean>(false)
 
+function cleanDate(date: string | null): string | null {
+  if (!date) return null
+  return date.replace(/\//g, '-')
+}
+
 async function onGetCommissions() {
   loading.show()
   const search = searchCommissionFilters.value
   const filters: Partial<CommissionFilters> = {
     funds: searchCommissionFilters.value.funds,
-    commissionDateAfter: search.commissionDate.from,
-    commissionDateBefore: search.commissionDate.to,
-    editionDateAfter: search.editionDate.from,
-    editionDateBefore: search.editionDate.to,
-    submissionDateAfter: search.submissionDate.from,
-    submissionDateBefore: search.submissionDate.to,
+    commissionDateAfter: cleanDate(search.commissionDate.from),
+    commissionDateBefore: cleanDate(search.commissionDate.to),
+    editionDateAfter: cleanDate(search.editionDate.from),
+    editionDateBefore: cleanDate(search.editionDate.to),
+    submissionDateAfter: cleanDate(search.submissionDate.from),
+    submissionDateBefore: cleanDate(search.submissionDate.to),
     name: search.name,
     page: commissionPaginationCurrent.value,
     pageSize: 10,
