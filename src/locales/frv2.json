@@ -223,6 +223,7 @@
   "commission.is-closed-to-projects": "Fermée à la soumission de nouveaux projets",
   "commission.is-open-to-projects": "Ouverte à la soumission de nouveaux projets",
   "commission.name": "Nom de la commission",
+  "commission.no-archived-commission": "Aucune commission archivée.",
   "commission.on-going": "Commissions en cours",
   "commission.ongoing-or-to-come": "Commissions en cours ou à venir",
   "commission.overdue-reviews-count": "Bilans en retard",
