@@ -172,7 +172,7 @@ async function onGetProjectPdf() {
                 />
               </GlobalDefinition>
               <GlobalDefinition :title="t('commission.overdue-reviews-count')">
-                {{ projectStore.project?.bearerOverdueReviewCount ?? 0 }}
+                TODO
               </GlobalDefinition>
             </div>
             <div>

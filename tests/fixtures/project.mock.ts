@@ -23,7 +23,7 @@ export const _project: Project = {
   associationUser: _userAssociation,
   commission: _commissions[1],
   projectCommissionFunds: [],
-  bearerOverdueReviewCount: 0,
+  reviewOverdueDays: 0,
   categories: [{
     id: 1,
     name: 'category'
@@ -63,7 +63,8 @@ export const _projects: ProjectListItem[] = [
     plannedStartDate: '2023-09-01',
     plannedEndDate: '2023-09-30',
     manualIdentifier: '2023090001',
-    budgetFile: ''
+    budgetFile: '',
+    reviewOverdueDays: 0
   },
   {
     id: 2,
@@ -77,7 +78,8 @@ export const _projects: ProjectListItem[] = [
     plannedStartDate: '2023-09-01',
     plannedEndDate: '2023-09-30',
     manualIdentifier: '2023090002',
-    budgetFile: ''
+    budgetFile: '',
+    reviewOverdueDays: 0
   },
   {
     id: 3,
@@ -91,7 +93,8 @@ export const _projects: ProjectListItem[] = [
     plannedStartDate: '2023-10-01',
     plannedEndDate: '2023-10-15',
     manualIdentifier: '2023090003',
-    budgetFile: ''
+    budgetFile: '',
+    reviewOverdueDays: 2
   },
   {
     id: 4,
@@ -105,7 +108,8 @@ export const _projects: ProjectListItem[] = [
     plannedStartDate: '2023-11-01',
     plannedEndDate: '2023-11-07',
     manualIdentifier: '2023090004',
-    budgetFile: ''
+    budgetFile: '',
+    reviewOverdueDays: 0
   },
   {
     id: 5,
@@ -119,7 +123,8 @@ export const _projects: ProjectListItem[] = [
     plannedStartDate: '2023-12-01',
     plannedEndDate: '2023-12-02',
     manualIdentifier: '2023090005',
-    budgetFile: ''
+    budgetFile: '',
+    reviewOverdueDays: 5
   },
   {
     id: 6,
@@ -133,7 +138,8 @@ export const _projects: ProjectListItem[] = [
     plannedStartDate: '2023-10-10',
     plannedEndDate: '2023-10-12',
     manualIdentifier: '2023090006',
-    budgetFile: ''
+    budgetFile: '',
+    reviewOverdueDays: 1
   }
 ]
 

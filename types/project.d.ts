@@ -38,6 +38,7 @@ export interface ProjectBase {
   editionDate: string;
   projectStatus: ProjectStatus;
   budgetFile: string;
+  reviewOverdueDays: number;
 }
 
 export interface ProjectListItem extends ProjectBase {
@@ -65,7 +66,6 @@ export interface Project extends ProjectBase {
   creationDate: string;
   processingDate: string;
   projectCommissionFunds: ProjectCommissionFund[];
-  bearerOverdueReviewCount: number;
 }
 
 export type UpdateProject = Pick<Project,
