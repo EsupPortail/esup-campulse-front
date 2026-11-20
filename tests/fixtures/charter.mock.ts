@@ -1,8 +1,8 @@
-import type {AssociationCharter, ManageCharter} from '#/charter'
-import {_chartersExpirationDate, _currentYear, _todayDate} from './dates.mock'
+import type {AssociationCharter, Charter} from '#/charter'
+import {_chartersExpirationDate, _currentYear, _todayDate} from './date.mock'
 
 
-export const _associationCharter: ManageCharter = {
+export const _associationCharter: Charter = {
   associationId: 1,
   documentId: 1,
   documentAcronym: 'CHARTE_SITE_ALSACE',
@@ -27,7 +27,7 @@ export const _associationCharter: ManageCharter = {
   charterStatus: 'VALIDATED'
 }
 
-const _validatedCharter: ManageCharter = {
+const _validatedCharter: Charter = {
   associationId: 1,
   documentId: 3,
   documentAcronym: 'CHARTE_FSDIE',
@@ -48,7 +48,7 @@ const _validatedCharter: ManageCharter = {
   ],
 }
 
-const _expiredCharter: ManageCharter = {
+const _expiredCharter: Charter = {
   associationId: 1,
   documentId: 3,
   documentAcronym: 'CHARTE_FSDIE',
@@ -69,9 +69,9 @@ const _expiredCharter: ManageCharter = {
   ],
 }
 
-const _projectFundCharter: ManageCharter = _chartersExpirationDate >= _todayDate ? _validatedCharter : _expiredCharter
+const _projectFundCharter: Charter = _chartersExpirationDate >= _todayDate ? _validatedCharter : _expiredCharter
 
-export const _manageCharters: ManageCharter[] = [
+export const _manageCharters: Charter[] = [
   _associationCharter,
   _projectFundCharter
 ]

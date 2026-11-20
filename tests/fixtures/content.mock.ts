@@ -1,4 +1,4 @@
-import type {Content, Logo} from '#/global'
+import type {Content, Logo} from '#/content'
 
 export const _contents: Content[] = [
   {

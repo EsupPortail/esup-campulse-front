@@ -6,4 +6,4 @@ export const _tokens = {
   accessRefreshed: 'accessRefreshed'
 }
 
-export const tokenMock = vi.fn()
+export const _tokenMock = vi.fn()

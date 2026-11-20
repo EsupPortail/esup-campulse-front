@@ -3,14 +3,14 @@
   "include": [
     "src/locales/*.json",
     //"src/**/__tests__/**/*.spec.ts",
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "tests/**/*.ts"
     //"tests/**/*.spec.ts",
     //"tests/**/*.fixture.ts",
     //"tests/**/*.mock.ts"
   ],
   "exclude": [
-    "src/**/__tests__/*",
-    "tests/**/*"
+    "src/**/__tests__/*"
   ],
   "compilerOptions": {
     "composite": true,

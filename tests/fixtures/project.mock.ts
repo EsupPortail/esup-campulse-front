@@ -1,16 +1,16 @@
 import type {
   Project,
-  ProjectBasicInfos,
   ProjectBudget,
-  ProjectCommissionFund,
+  ProjectCommissionFundBase,
   ProjectGoals,
-  ProjectList,
+  ProjectInfos,
+  ProjectListItem,
   ProjectReview,
 } from '#/project'
 import type {DocumentUpload} from '#/document'
-import {_currentYear} from './dates.mock'
+import {_currentYear} from './date.mock'
 import {_userAssociation, _userAssociationDetail} from '~/fixtures/user.mock'
-import {_commissions} from '~/fixtures/commissions.mock'
+import {_commissions} from '~/fixtures/commission.mock'
 
 export const _project: Project = {
   id: 1,
@@ -21,7 +21,9 @@ export const _project: Project = {
   user: null,
   association: _userAssociationDetail,
   associationUser: _userAssociation,
-  commissions: _commissions,
+  commission: _commissions[1],
+  projectCommissionFunds: [],
+  bearerOverdueReviewCount: 0,
   categories: [{
     id: 1,
     name: 'category'
@@ -48,84 +50,90 @@ export const _project: Project = {
   budgetFile: 'file',
 }
 
-export const _projects: ProjectList[] = [
+export const _projects: ProjectListItem[] = [
   {
     id: 1,
     name: 'Projet associatif de porteur de projet individuel',
     association: null,
-    user: 'Tarte en Pion',
+    user: {id: 8, firstName: 'Alice', lastName: 'Martin'},
     editionDate: '2023-03-15T11:18:47+01:00',
     projectStatus: 'PROJECT_DRAFT',
     associationUser: null,
+    commission: _commissions[1],
+    plannedStartDate: '2023-09-01',
     plannedEndDate: '2023-09-30',
-    plannedLocation: 'Strasbourg',
     manualIdentifier: '2023090001',
-    budgetFile: null
+    budgetFile: ''
   },
   {
     id: 2,
     name: 'Projet associatif porté par une association',
-    association: 'Association super',
+    association: _userAssociationDetail,
     user: null,
     editionDate: '2023-03-14T11:18:47+01:00',
     projectStatus: 'PROJECT_DRAFT',
-    associationUser: 'Tarte au chocolat',
+    associationUser: _userAssociation,
+    commission: _commissions[1],
+    plannedStartDate: '2023-09-01',
     plannedEndDate: '2023-09-30',
-    plannedLocation: 'Strasbourg',
     manualIdentifier: '2023090002',
-    budgetFile: null
+    budgetFile: ''
   },
   {
     id: 3,
-    name: 'test',
-    association: 'Association vraiment super',
+    name: 'Festival des cultures du monde',
+    association: {..._userAssociationDetail, id: 3, name: 'OCTANT', acronym: 'OCTANT'},
     user: null,
     editionDate: '2023-04-26T14:27:42.938670+02:00',
-    projectStatus: 'PROJECT_DRAFT',
-    associationUser: 'Tarte au citron',
-    plannedEndDate: '2023-09-30',
-    plannedLocation: 'Strasbourg',
+    projectStatus: 'PROJECT_PROCESSING',
+    associationUser: {..._userAssociation, id: 3},
+    commission: _commissions[3],
+    plannedStartDate: '2023-10-01',
+    plannedEndDate: '2023-10-15',
     manualIdentifier: '2023090003',
-    budgetFile: null
+    budgetFile: ''
   },
   {
     id: 4,
-    name: 'test',
-    association: 'Association vraiment trop trop super',
+    name: 'Semaine de la sciences',
+    association: {..._userAssociationDetail, id: 4, name: 'OPALINE', acronym: 'OPALINE'},
     user: null,
     editionDate: '2023-04-26T14:28:59.408076+02:00',
-    projectStatus: 'PROJECT_DRAFT',
-    associationUser: 'Tarte aux fraises',
-    plannedEndDate: '2023-09-30',
-    plannedLocation: 'Strasbourg',
+    projectStatus: 'PROJECT_VALIDATED',
+    associationUser: {..._userAssociation, id: 4},
+    commission: _commissions[2],
+    plannedStartDate: '2023-11-01',
+    plannedEndDate: '2023-11-07',
     manualIdentifier: '2023090004',
-    budgetFile: null
+    budgetFile: ''
   },
   {
     id: 5,
-    name: 'test',
-    association: 'Association géniale',
+    name: 'Marathon solidaire',
+    association: {..._userAssociationDetail, id: 5, name: 'CAMPULSE', acronym: 'CAMPULSE'},
     user: null,
     editionDate: '2023-04-28T11:06:52.944326+02:00',
-    projectStatus: 'PROJECT_DRAFT',
-    associationUser: 'Tarte tatin',
-    plannedEndDate: '2023-09-30',
-    plannedLocation: 'Strasbourg',
+    projectStatus: 'PROJECT_REJECTED',
+    associationUser: {..._userAssociation, id: 5},
+    commission: _commissions[1],
+    plannedStartDate: '2023-12-01',
+    plannedEndDate: '2023-12-02',
     manualIdentifier: '2023090005',
-    budgetFile: null
+    budgetFile: ''
   },
   {
     id: 6,
-    name: 'test',
-    association: 'Association bof',
+    name: 'Atelier de sensibilisation au développement durable',
+    association: {..._userAssociationDetail, id: 6, name: 'LUCIE', acronym: 'LUCIE'},
     user: null,
     editionDate: '2023-04-28T11:07:42.336557+02:00',
     projectStatus: 'PROJECT_DRAFT',
-    associationUser: 'Tarte au fromage blanc',
-    plannedEndDate: '2023-09-30',
-    plannedLocation: 'Strasbourg',
+    associationUser: {..._userAssociation, id: 6},
+    commission: _commissions[2],
+    plannedStartDate: '2023-10-10',
+    plannedEndDate: '2023-10-12',
     manualIdentifier: '2023090006',
-    budgetFile: null
+    budgetFile: ''
   }
 ]
 
@@ -180,7 +188,7 @@ export const _projectCategoryNames = [
   }
 ]
 
-export const _projectCommissionFunds: ProjectCommissionFund[] = [
+export const _projectCommissionFunds: ProjectCommissionFundBase[] = [
   {
     id: 1,
     project: 1,
@@ -216,7 +224,7 @@ export const _projectCommissionFunds: ProjectCommissionFund[] = [
   }
 ]
 
-export const _updatedProjectCommissionFunds: ProjectCommissionFund[] = [
+export const _updatedProjectCommissionFunds: ProjectCommissionFundBase[] = [
   {
     id: 1,
     project: 1,
@@ -257,41 +265,47 @@ export const _documentUploads: DocumentUpload[] = [
     id: 1,
     uploadDate: '2023-01-01',
     pathFile: 'https://plana.unistra.fr',
+    size: 1024,
     validatedDate: '2023-01-01',
     comment: '',
     document: 1,
     user: null,
     association: 1,
     project: null,
-    name: 'charte-site-alsace.fr'
+    name: 'charte-site-alsace.fr',
+    calculatedExpirationDate: '2024-01-01'
   },
   {
     id: 2,
     uploadDate: '2023-01-01',
     pathFile: 'https://plana.unistra.fr',
+    size: 2048,
     validatedDate: '2023-01-01',
     comment: '',
     document: 2,
     user: null,
     association: 1,
     project: null,
-    name: 'charte-rgpd-site-alsace.fr'
+    name: 'charte-rgpd-site-alsace.fr',
+    calculatedExpirationDate: '2024-01-01'
   },
   {
     id: 3,
     uploadDate: '2023-01-01',
     pathFile: 'https://plana.unistra.fr',
+    size: 3072,
     validatedDate: [_currentYear, '01', '01'].join('-'),
     comment: '',
     document: 3,
     user: null,
     association: 1,
     project: null,
-    name: 'charte-fsdie.fr'
+    name: 'charte-fsdie.fr',
+    calculatedExpirationDate: null
   }
 ]
 
-export const _projectBasicInfos: ProjectBasicInfos = {
+export const _projectBasicInfos: ProjectInfos = {
   name: 'Projet test',
   plannedStartDate: '2023-06-15',
   plannedEndDate: '2023-06-15',
@@ -326,8 +340,16 @@ export const _projectReview: ProjectReview = {
   name: 'Review',
   user: null,
   association: 1,
-  outcome: '300',
-  income: '200',
+  associationUser: null,
+  outcome: 300,
+  income: 200,
+  plannedStartDate: '2023-07-20',
+  plannedEndDate: '2023-07-22',
+  plannedLocation: 'Strasbourg',
+  commissions: _commissions,
+  creationDate: '2023-06-01',
+  editionDate: '2023-06-02',
+  processingDate: '2023-06-03',
   realStartDate: '2023-07-21',
   realEndDate: '2023-07-22',
   realLocation: 'Strasbourg',
@@ -335,6 +357,5 @@ export const _projectReview: ProjectReview = {
   impactStudents: 'Amazing.',
   description: 'A project for students.',
   difficulties: 'The weather was hot.',
-  improvements: 'Need more parasols and free water.',
-  associationUser: null
+  improvements: 'Need more parasols and free water.'
 }
