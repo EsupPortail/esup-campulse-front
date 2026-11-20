@@ -127,6 +127,7 @@ watch(() => dashboardTab.value, async () => {
             />
             <div class="flex-row-center">
               <QPagination
+                v-if="commissionStore.commissions?.count > 10"
                 v-model="commissionPaginationCurrent"
                 :max="commissionStore.commissions?.totalPages"
                 color="commission"
