@@ -18,7 +18,8 @@ const commissionStore = useCommissionStore()
 const {
   openCommissionSearch,
   searchCommissionFilters,
-  clearCommissionSearch
+  clearCommissionSearch,
+  commissionPaginationCurrent
 } = useCommissionFund()
 const {dynamicTitle} = useUtil()
 
@@ -41,15 +42,23 @@ async function onGetCommissions() {
     submissionDateAfter: cleanDate(search.submissionDate.from),
     submissionDateBefore: cleanDate(search.submissionDate.to),
     name: search.name,
+    page: commissionPaginationCurrent.value,
+    pageSize: 10,
   }
   await commissionStore.getManagedCommissions(filters)
   loading.hide()
+}
+
+async function onResetCommissionsPage() {
+  commissionPaginationCurrent.value = 1
+  await onGetCommissions()
 }
 
 onMounted(onGetCommissions)
 
 onUnmounted(() => {
   openCommissionSearch.value = false
+  commissionPaginationCurrent.value = 1
   clearCommissionSearch()
 })
 </script>
@@ -66,7 +75,7 @@ onUnmounted(() => {
           funds: true
         }"
         @clear="clearCommissionSearch"
-        @search="onGetCommissions"
+        @search="onResetCommissionsPage"
       />
       <ProjectCommissionListCard
         v-for="commission in commissionStore.commissions?.results"
@@ -75,6 +84,15 @@ onUnmounted(() => {
         :commission="commission"
         :heading-level="2"
       />
+      <div class="flex-row-center">
+        <QPagination
+          v-if="commissionStore.commissions?.count > 10"
+          v-model="commissionPaginationCurrent"
+          :max="commissionStore.commissions?.totalPages"
+          color="commission"
+          @update:model-value="onGetCommissions"
+        />
+      </div>
       <p v-if="!commissionStore.commissions?.results.length">{{ t('commission.no-archived-commission') }}</p>
       <div class="flex-row-center">
         <QBtn
