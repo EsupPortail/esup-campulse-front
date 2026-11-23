@@ -5,31 +5,53 @@ import GlobalDefinition from '@/components/global/GlobalDefinition.vue'
 
 const {projectGoals} = useProject()
 const {t} = useI18n()
+
+defineProps<{
+  richText?: boolean
+}>()
 </script>
 
 <template>
   <div class="flex-column">
-    <GlobalDefinition :title="t('project.goals')">
+    <GlobalDefinition
+      :rich-text="richText"
+      :title="t('project.goals')"
+    >
       {{ projectGoals.goals }}
     </GlobalDefinition>
 
-    <GlobalDefinition :title="t('project.summary')">
+    <GlobalDefinition
+      :rich-text="richText"
+      :title="t('project.summary')"
+    >
       {{ projectGoals.summary }}
     </GlobalDefinition>
 
-    <GlobalDefinition :title="t('project.planned-activities')">
+    <GlobalDefinition
+      :rich-text="richText"
+      :title="t('project.planned-activities')"
+    >
       {{ projectGoals.plannedActivities }}
     </GlobalDefinition>
 
-    <GlobalDefinition :title="t('project.prevention-safety')">
+    <GlobalDefinition
+      :rich-text="richText"
+      :title="t('project.prevention-safety')"
+    >
       {{ projectGoals.preventionSafety }}
     </GlobalDefinition>
 
-    <GlobalDefinition :title="t('project.marketing-campaign')">
+    <GlobalDefinition
+      :rich-text="richText"
+      :title="t('project.marketing-campaign')"
+    >
       {{ projectGoals.marketingCampaign }}
     </GlobalDefinition>
 
-    <GlobalDefinition :title="t('project.sustainable-development')">
+    <GlobalDefinition
+      :rich-text="richText"
+      :title="t('project.sustainable-development')"
+    >
       {{ projectGoals.sustainableDevelopment }}
     </GlobalDefinition>
   </div>

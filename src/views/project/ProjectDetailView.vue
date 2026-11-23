@@ -323,7 +323,7 @@ async function onGetProjectPdf() {
                 <h4>
                   {{ t('project.goals-title') }}
                 </h4>
-                <ProjectGoals/>
+                <ProjectGoals rich-text/>
               </section>
             </ProjectExpansionItem>
             <ProjectExpansionItem
@@ -351,19 +351,34 @@ async function onGetProjectPdf() {
                     {{ projectStore.projectReview?.income + CURRENCY }}
                   </GlobalDefinition>
                 </div>
-                <GlobalDefinition :title="t('project.review')">
+                <GlobalDefinition
+                  :title="t('project.review')"
+                  rich-text
+                >
                   {{ projectStore.projectReview?.review }}
                 </GlobalDefinition>
-                <GlobalDefinition :title="t('project.impact-students')">
+                <GlobalDefinition
+                  :title="t('project.impact-students')"
+                  rich-text
+                >
                   {{ projectStore.projectReview?.impactStudents }}
                 </GlobalDefinition>
-                <GlobalDefinition :title="t('project.description')">
+                <GlobalDefinition
+                  :title="t('project.description')"
+                  rich-text
+                >
                   {{ projectStore.projectReview?.description }}
                 </GlobalDefinition>
-                <GlobalDefinition :title="t('project.difficulties')">
+                <GlobalDefinition
+                  :title="t('project.difficulties')"
+                  rich-text
+                >
                   {{ projectStore.projectReview?.difficulties }}
                 </GlobalDefinition>
-                <GlobalDefinition :title="t('project.improvements')">
+                <GlobalDefinition
+                  :title="t('project.improvements')"
+                  rich-text
+                >
                   {{ projectStore.projectReview?.improvements }}
                 </GlobalDefinition>
               </div>
