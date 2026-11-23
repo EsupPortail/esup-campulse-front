@@ -9,6 +9,7 @@ import useProject from '@/composables/useProject'
 import {useRoute} from 'vue-router'
 import useUtil from '@/composables/useUtil'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
+import OverdueReviewWarning from '@/components/project/projectList/OverdueReviewWarning.vue'
 import GlobalDefinition from '@/components/global/GlobalDefinition.vue'
 import ProjectExpansionItem from '@/components/project/projectDetail/ProjectExpansionItem.vue'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
@@ -27,6 +28,7 @@ const {catchHTTPError} = useErrors()
 const {openDocument, formatDate, reverseDate, dynamicTitle} = useUtil()
 const projectStore = useProjectStore()
 const {
+  isReviewOverdue,
   initProjectBasicInfos,
   initProjectGoals,
   initProjectBudget
@@ -171,8 +173,12 @@ async function onGetProjectPdf() {
                   :charter-status="initAssociationCharterStatus(projectStore.project?.association.charterStatus)"
                 />
               </GlobalDefinition>
-              <GlobalDefinition :title="t('commission.overdue-reviews-count')">
-                TODO
+              <GlobalDefinition
+                v-if="isReviewOverdue(projectStore.project)"
+                :title="t('project.review')"
+              >
+                <OverdueReviewWarning aria-hidden="true"/>
+                {{ t('project.review-overdue-days', {days: projectStore.project?.reviewOverdueDays}) }}
               </GlobalDefinition>
             </div>
             <div>
@@ -287,7 +293,7 @@ async function onGetProjectPdf() {
               :label="t('project.settings')"
               icon="bi-gear"
             >
-              En construction
+              {{ t('under-construction') }}
             </ProjectExpansionItem>
             <ProjectExpansionItem
               :disable="!projectStore.projects?.results.length"

@@ -196,6 +196,7 @@ describe('useProject', () => {
     submitProject,
     initProjectCommissionFunds,
     canManageProjectCommissionFund,
+    isReviewOverdue,
     validateProjectCommissionFund,
     rejectProjectCommissionFund,
     updateAmountEarned,
@@ -256,6 +257,27 @@ describe('useProject', () => {
       clearProjectSearch()
 
       expect(searchProjectFilters.value).toEqual(emptyFilters)
+    })
+  })
+
+  describe('isReviewOverdue', () => {
+    it('doit retourner false sans projet', () => {
+      expect(isReviewOverdue()).toBe(false)
+    })
+
+    it.each(['PROJECT_REVIEW_DRAFT', 'PROJECT_REVIEW_DRAFT_PROCESSED'] as const)(
+      'doit retourner true pour %s avec des jours de retard',
+      (projectStatus) => {
+        expect(isReviewOverdue({...projectFixture, projectStatus, reviewOverdueDays: 2})).toBe(true)
+      }
+    )
+
+    it('doit retourner false si le bilan n a pas de retard', () => {
+      expect(isReviewOverdue({...projectFixture, projectStatus: 'PROJECT_REVIEW_DRAFT', reviewOverdueDays: 0})).toBe(false)
+    })
+
+    it('doit retourner false si le projet n attend pas de bilan', () => {
+      expect(isReviewOverdue({...projectFixture, projectStatus: 'PROJECT_PROCESSING', reviewOverdueDays: 2})).toBe(false)
     })
   })
 

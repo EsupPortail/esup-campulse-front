@@ -15,13 +15,14 @@ import type {ProjectListFilters} from '#/project'
 import ProjectSearchForm from '@/components/project/projectList/ProjectSearchForm.vue'
 import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
 import CommissionProjectExport from '@/components/commission/CommissionProjectExport.vue'
+import OverdueReviewWarning from '@/components/project/projectList/OverdueReviewWarning.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {formatDate, reverseDate} = useUtil()
 const {listRange, changePage, pagination, updateRowsPerPage} = usePagination()
-const {projectStatuses, searchProjectFilters, clearProjectSearch} = useProject()
+const {projectStatuses, searchProjectFilters, clearProjectSearch, isReviewOverdue} = useProject()
 const projectStore = useProjectStore()
 
 const props = defineProps<{
@@ -256,10 +257,13 @@ async function onRowClick(projectId: number) {
             key="status"
             :props="props"
           >
-            <ProjectStatusIndicator
-              :project-status="props.row.projectStatus"
-              :show-draft="false"
-            />
+            <div class="row justify-end items-center no-wrap">
+              <ProjectStatusIndicator
+                :project-status="props.row.projectStatus"
+                :show-draft="false"
+              />
+              <OverdueReviewWarning v-if="isReviewOverdue(props.row)" />
+            </div>
           </QTd>
         </QTr>
       </template>

@@ -1,5 +1,6 @@
 import {ref, watch} from 'vue'
 import type {
+  ProjectBase,
   ProjectBudget,
   ProjectCommissionFundBase,
   ProjectGoals,
@@ -356,6 +357,10 @@ export default function useProject() {
       .map(commissionFund => commissionFund.id)
   }
 
+  const isReviewOverdue = (project?: Pick<ProjectBase, 'projectStatus' | 'reviewOverdueDays'>): boolean =>
+    ['PROJECT_REVIEW_DRAFT', 'PROJECT_REVIEW_DRAFT_PROCESSED'].includes(project?.projectStatus ?? '')
+    && (project?.reviewOverdueDays ?? 0) > 0
+
   const canManageProjectCommissionFund = (commissionFund: number): boolean => {
     const fund = commissionStore.commissionFunds.find(obj => obj.id === commissionFund)?.fund
     const fundInstitution = fundStore.funds.find(obj => obj.id === fund)?.institution
@@ -398,6 +403,7 @@ export default function useProject() {
     validateProjectCommissionFund,
     rejectProjectCommissionFund,
     canManageProjectCommissionFund,
+    isReviewOverdue,
     updateAmountEarned,
     dashboardTab,
     searchProjectFilters,
