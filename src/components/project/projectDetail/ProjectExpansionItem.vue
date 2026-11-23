@@ -33,7 +33,7 @@ defineProps<{
             {{ label }}
           </h3>
           <QChip
-            v-if="count !== undefined"
+            v-if="count !== undefined && count > 0"
             :aria-label="`${label} : ${count}`"
             color="commission"
             dense
