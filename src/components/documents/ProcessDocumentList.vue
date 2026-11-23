@@ -1,15 +1,17 @@
 <script lang="ts" setup>
-import type {DocumentProcessType, UploadedProcessDocument} from '#/document'
+import type {DocumentProcessType, ProcessDocument, UploadedProcessDocument} from '#/document'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import {useProjectStore} from '@/stores/useProjectStore'
 import useCharters from '@/composables/useCharter'
 import useDocumentUploads from '@/composables/useDocumentUpload'
-import {onMounted} from 'vue'
+import {computed, onMounted} from 'vue'
+import {useI18n} from 'vue-i18n'
 import {useDocumentStore} from '@/stores/useDocumentStore'
 
 const {createFileLink} = useDocumentUploads()
+const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {
@@ -27,6 +29,23 @@ const props = defineProps<{
   process: 'manageProject' | 'project' | 'review' | 'charter',
   associationId?: number | null,
 }>()
+
+const documentGroups = computed<{title: string, documents: ProcessDocument[]}[]>(() => {
+  if (props.process !== 'manageProject') {
+    return [{title: '', documents: processDocuments.value}]
+  }
+
+  return [
+    {
+      title: t('documents.project-documents-detail'),
+      documents: processDocuments.value.filter(item => item.processType === 'DOCUMENT_PROJECT')
+    },
+    {
+      title: t('documents.review-documents-detail'),
+      documents: processDocuments.value.filter(item => item.processType === 'DOCUMENT_PROJECT_REVIEW')
+    }
+  ].filter(group => group.documents.length)
+})
 
 
 async function onGetFile(uploadedDocument: UploadedProcessDocument) {
@@ -80,20 +99,29 @@ onMounted(async () => await onGetDocuments())
 <template>
   <section class="flex-column padding-top padding-bottom">
     <div
-      v-for="(document, index) in processDocuments"
-      :key="index"
-      class="display-row"
+      v-for="group in documentGroups"
+      :key="group.title"
+      class="flex-column document-group"
     >
-      <h5>{{ document.description }}</h5>
-      <ul>
-        <li
-          v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
-          :key="uploadedDocument.id"
-          @click="onGetFile(uploadedDocument)"
-        >
-          {{ uploadedDocument.name }}
-        </li>
-      </ul>
+      <h4 v-if="group.title">
+        {{ group.title }}
+      </h4>
+      <div
+        v-for="document in group.documents"
+        :key="document.document"
+        class="display-row"
+      >
+        <h5>{{ document.description }}</h5>
+        <ul>
+          <li
+            v-for="uploadedDocument in documentUploads.filter(obj => obj.document === document.document)"
+            :key="uploadedDocument.id"
+            @click="onGetFile(uploadedDocument)"
+          >
+            {{ uploadedDocument.name }}
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 </template>
@@ -102,6 +130,15 @@ onMounted(async () => await onGetDocuments())
 @import "@/assets/styles/forms.scss";
 @import "@/assets/styles/dashboard.scss";
 @import "@/assets/_variables.scss";
+
+.document-group {
+  gap: 0.5rem;
+
+  & + & {
+    border-top: 1px solid #d7d7d7;
+    padding-top: 1.5rem;
+  }
+}
 
 ul > li {
   text-decoration: underline;

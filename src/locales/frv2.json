@@ -335,6 +335,8 @@
   "documents.no-process-library": "Documents de la bibliothèque",
   "documents.other-documents": "Autres documents",
   "documents.project-documents": "Documents de projets",
+  "documents.project-documents-detail": "Documents de projet",
+  "documents.review-documents-detail": "Documents de bilan",
   "documents.template-documents": "Documents obligatoires pour dépôt de projet",
   "documents.upload-new": "Déposer un nouveau document",
   "download": "Télécharger",
