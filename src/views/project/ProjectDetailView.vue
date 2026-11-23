@@ -19,7 +19,7 @@ import ProjectBudget from '@/components/project/projectDetail/ProjectBudget.vue'
 import ProjectGoals from '@/components/project/projectDetail/ProjectGoals.vue'
 import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
 import ProjectComments from '@/components/project/projectDetail/ProjectComments.vue'
-import type {ProjectListFilters} from '#/project'
+import type {ProjectListFilters, ProjectListItem} from '#/project'
 
 const {notify, loading} = useQuasar()
 const {initAssociationCharterStatus} = useCharter()
@@ -42,6 +42,22 @@ const commentsCount = ref<number>(0)
 const showReview = computed<boolean>(() => {
   return ['PROJECT_REVIEW_PROCESSING', 'PROJECT_REVIEW_VALIDATED', 'PROJECT_CANCELED']
     .includes(projectStore.projectStatus)
+})
+
+const projectsByYear = computed<{year: string, projects: ProjectListItem[]}[]>(() => {
+  const groups = new Map<string, ProjectListItem[]>()
+
+  for (const project of projectStore.projects?.results ?? []) {
+    if (!project.commission?.commissionDate) continue
+    const year = formatDate(project.commission.commissionDate).split('-')[0]
+    const projects = groups.get(year)
+    if (projects) projects.push(project)
+    else groups.set(year, [project])
+  }
+
+  return [...groups.entries()]
+    .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
+    .map(([year, projects]) => ({year, projects}))
 })
 
 const projectId = computed<number>(() => {
@@ -298,18 +314,26 @@ async function onGetProjectPdf() {
               {{ t('under-construction') }}
             </ProjectExpansionItem>
             <ProjectExpansionItem
-              :disable="!projectStore.projects?.results.length"
+              :disable="!projectsByYear.length"
               :label="t('project.bearer-others')"
               icon="bi-send"
             >
-              <ul>
-                <li
-                  v-for="item in projectStore.projects?.results"
-                  :key="`other-project-${item.id}`"
+              <section class="flex-column projects-by-year">
+                <div
+                  v-for="group in projectsByYear"
+                  :key="group.year"
                 >
-                  <RouterLink :to="{name: 'Project', params: {projectId: item.id}}">{{ item.name }}</RouterLink>
-                </li>
-              </ul>
+                  <h4>{{ group.year }}</h4>
+                  <ul>
+                    <li
+                      v-for="item in group.projects"
+                      :key="`other-project-${item.id}`"
+                    >
+                      <RouterLink :to="{name: 'Project', params: {projectId: item.id}}">{{ item.name }}</RouterLink>
+                    </li>
+                  </ul>
+                </div>
+              </section>
             </ProjectExpansionItem>
             <ProjectExpansionItem
               :label="t('project.details')"
@@ -476,5 +500,11 @@ dd > span {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 2rem;
+}
+
+.projects-by-year {
+  h4 {
+    margin-bottom: 0.5rem;
+  }
 }
 </style>
