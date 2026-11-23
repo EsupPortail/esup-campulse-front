@@ -2,7 +2,7 @@
 import useProjectComment from '@/composables/useProjectComment'
 import {useI18n} from 'vue-i18n'
 import axios from 'axios'
-import {onMounted, ref} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import useUtil from '@/composables/useUtil'
@@ -25,6 +25,10 @@ const {formatDate} = useUtil()
 const {hasPerm} = usePermission()
 const projectStore = useProjectStore()
 
+const emit = defineEmits<{
+  (_e: 'count-change', _count: number): void
+}>()
+
 const props = defineProps<{
   project: number | undefined
 }>()
@@ -35,6 +39,7 @@ async function onGetProjectComments() {
   if (props.project) {
     try {
       await getProjectComments(props.project)
+      emit('count-change', comments.value.length)
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         notify({
@@ -45,6 +50,7 @@ async function onGetProjectComments() {
     }
   } else {
     comments.value = []
+    emit('count-change', 0)
   }
 }
 
@@ -54,13 +60,17 @@ onMounted(async () => {
   loading.hide()
 })
 
+watch(() => props.project, async () => {
+  await onGetProjectComments()
+})
+
 async function onPostNewComment() {
   if (projectStore.project && newComment.value) {
     loading.show()
     const projectId = projectStore.project.id
     try {
       await createProjectComment(projectId, newComment.value)
-      await getProjectComments(projectId)
+      await onGetProjectComments()
       open.value = false
       newComment.value = {
         text: '',

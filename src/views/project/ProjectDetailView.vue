@@ -37,6 +37,7 @@ const {CURRENCY} = useUtil()
 const route = useRoute()
 
 const isLoaded = ref<boolean>(false)
+const commentsCount = ref<number>(0)
 
 const showReview = computed<boolean>(() => {
   return ['PROJECT_REVIEW_PROCESSING', 'PROJECT_REVIEW_VALIDATED', 'PROJECT_CANCELED']
@@ -92,6 +93,7 @@ async function onGetOtherProjects() {
 
 async function mountPage() {
   loading.show()
+  commentsCount.value = 0
   await onGetData()
   await onGetOtherProjects()
   dynamicTitle.value = projectStore.project?.name
@@ -378,12 +380,14 @@ async function onGetProjectPdf() {
               />
             </ProjectExpansionItem>
             <ProjectExpansionItem
+              :count="commentsCount"
               :label="t('comment', 2)"
               icon="bi-chat"
             >
               <ProjectComments
                 v-if="isLoaded"
                 :project="projectStore.project?.id"
+                @count-change="commentsCount = $event"
               />
             </ProjectExpansionItem>
           </QList>
