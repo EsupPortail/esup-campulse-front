@@ -52,7 +52,7 @@ pour supporter cette personnalisation.
 - **Vue I18n** — internationalisation
 - **Vitest** — tests unitaires / composants
 - **Playwright** — tests E2E
-- **npm** — gestion des dépendances
+- **pnpm** — gestion des dépendances
 
 > [!info]
 > Quasar impose un système de **variables CSS / dark mode** et des
@@ -113,12 +113,12 @@ pour supporter cette personnalisation.
 ## Commandes utiles
 
 ```sh
-npm install         # installation des dépendances
-npm run dev         # dev server (Vite + Quasar)
-npm run build       # type-check + build production
-npm run test:unit   # tests unitaires (Vitest)
-npm run test:e2e    # tests E2E (Playwright)
-npm run lint        # lint
+pnpm install        # installation des dépendances
+pnpm dev            # dev server (Vite + Quasar)
+pnpm build:prod     # type-check + build production
+pnpm test:unit      # tests unitaires (Vitest)
+pnpm test:e2e       # tests E2E (Playwright)
+pnpm lint           # lint
 ```
 
 ## Commits

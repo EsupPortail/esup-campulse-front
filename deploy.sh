@@ -148,14 +148,14 @@ for i in "$@"; do
   fi
 done
 
-echo "🏗 Installing npm dependencies"
-npm ci
+echo "🏗 Installing pnpm dependencies"
+pnpm install --frozen-lockfile
 echo "📦 Packaging stuff"
 
 # shellcheck source=/dev/null
 . "${SOURCE_ENV_FILE}"
 
-npm run build:$ENVIRONMENT
+pnpm run build:$ENVIRONMENT
 PROJECT_VERSION=$(git describe --always --tags)
 # Create info file for app
 echo $(printf "$TEMPLATE" "$HOST" "$DISTANT_REPO" "$(whoami)" "$1" "$PROJECT_VERSION") > "dist/${PROJECT}_info.json"
