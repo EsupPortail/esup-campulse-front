@@ -33,13 +33,11 @@ export const useProjectStore = defineStore('projectStore', {
         label: category.name
       }))
     },
-    // todo vérifier
     projectCommission: (state: ProjectStore): number | null => {
       return state.project?.commission.id
     },
-    // todo ajout de projectCommissionFunds dans project à faire en back
     projectFunds: (state: ProjectStore): number[] => {
-      return []
+      return state.project?.projectCommissionFunds.map(item => item.commissionFund.fund.id) ?? []
     }
   },
   actions: {

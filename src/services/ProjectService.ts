@@ -6,7 +6,7 @@ import type {
   Project,
   ProjectCategoryName,
   ProjectComment,
-  ProjectCommissionFund,
+  ProjectCommissionFundBase,
   ProjectCommissionFundFilter,
   ProjectInfos,
   ProjectListFilters,
@@ -61,7 +61,7 @@ export async function getProjectCategoryNames(onlyEnabled?: boolean): Promise<Pr
   return (await axiosPublic.get<ProjectCategoryName[]>(url)).data
 }
 
-export async function getProjectCommissionFunds(filter: ProjectCommissionFundFilter): Promise<ProjectCommissionFund[]> {
+export async function getProjectCommissionFunds(filter: ProjectCommissionFundFilter): Promise<ProjectCommissionFundBase[]> {
   const {axiosAuthenticated} = useAxios()
   let url = ''
   switch (filter.filter) {
@@ -75,7 +75,7 @@ export async function getProjectCommissionFunds(filter: ProjectCommissionFundFil
     url = `${modelBaseUrl}/commission_funds`
     break
   }
-  return (await axiosAuthenticated.get<ProjectCommissionFund[]>(url)).data
+  return (await axiosAuthenticated.get<ProjectCommissionFundBase[]>(url)).data
 }
 
 export async function getProjectReview(projectId: number): Promise<ProjectReview> {
