@@ -25,7 +25,7 @@ const emit = defineEmits<{
     @submit.prevent="emit('submit')"
   >
     <div
-      v-if="!props.commissionLabels.length"
+      v-if="!commissionLabels.length"
       class="info-panel info-panel-warning"
     >
       <i
@@ -39,7 +39,7 @@ const emit = defineEmits<{
       <QSelect
         v-model="projectCommission"
         :label="t('project.commission-choice') + ' *'"
-        :options="props.commissionLabels"
+        :options="commissionLabels"
         :rules="[val => val !== null || t('forms.select-project-commission-date')]"
         clearable
         color="commission"

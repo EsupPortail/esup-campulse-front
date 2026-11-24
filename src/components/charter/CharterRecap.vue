@@ -6,7 +6,7 @@ import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
 
 const {t} = useI18n()
 
-const props = defineProps<{
+defineProps<{
   view: 'signCharter' | 'charterDetail',
   associationId: number | undefined
 }>()
@@ -25,7 +25,7 @@ const emit = defineEmits(['changeStep'])
           }}
         </h4>
         <QBtn
-          v-if="props.view === 'signCharter'"
+          v-if="view === 'signCharter'"
           :label="t('modify')"
           class="btn-lg"
           color="charter"
@@ -34,7 +34,7 @@ const emit = defineEmits(['changeStep'])
           @click="emit('changeStep', 1)"
         />
       </div>
-      <CharterRecapAssociationInfos :association="props.associationId"/>
+      <CharterRecapAssociationInfos :association="associationId"/>
     </div>
     <!-- Documents -->
     <div>
@@ -45,7 +45,7 @@ const emit = defineEmits(['changeStep'])
           }}
         </h4>
         <QBtn
-          v-if="props.view === 'signCharter'"
+          v-if="view === 'signCharter'"
           :label="t('modify')"
           class="btn-lg"
           color="charter"
@@ -56,7 +56,7 @@ const emit = defineEmits(['changeStep'])
       </div>
       <InfoVerifyDocuments/>
       <ProcessDocumentList
-        :association-id="props.associationId"
+        :association-id="associationId"
         process="charter"
       />
     </div>

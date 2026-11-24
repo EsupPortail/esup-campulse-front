@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import DOMPurify from 'dompurify'
 
-const props = defineProps<{
+defineProps<{
   header?: string,
   body?: string,
   cssClass: string
@@ -10,7 +10,7 @@ const props = defineProps<{
 
 
 <template>
-  <section :class="['home-section', 'form-container', props.cssClass]">
+  <section :class="['home-section', 'form-container', cssClass]">
     <div class="section-card">
       <div class="section-background">
         <span></span>
@@ -18,11 +18,11 @@ const props = defineProps<{
 
       <div class="section-title">
         <div class="section-info">
-          <h3 v-html="DOMPurify.sanitize(props.header)"></h3>
+          <h3 v-html="DOMPurify.sanitize(header)"></h3>
         </div>
       </div>
       <div class="section-content">
-        <p v-html="DOMPurify.sanitize(props.body)"></p>
+        <p v-html="DOMPurify.sanitize(body)"></p>
       </div>
     </div>
   </section>

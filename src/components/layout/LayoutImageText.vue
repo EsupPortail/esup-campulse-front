@@ -14,10 +14,10 @@ const props = defineProps<{
     <div class="container">
       <figure>
         <img
-          :src="props.img"
+          :src="img"
           alt=""
         />
-        <figcaption v-if="props.copyright">{{ props.copyright }}</figcaption>
+        <figcaption v-if="copyright">{{ copyright }}</figcaption>
       </figure>
       <div>
         <h2 v-html="DOMPurify.sanitize(props?.title)"></h2>

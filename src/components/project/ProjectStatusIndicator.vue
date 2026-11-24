@@ -4,7 +4,7 @@ import {useI18n} from 'vue-i18n'
 import {onMounted, ref} from 'vue'
 import {useRoute} from 'vue-router'
 
-const props = defineProps<{
+defineProps<{
   showDraft: boolean,
   projectStatus: ProjectStatus | undefined
 }>()
@@ -24,7 +24,7 @@ onMounted(initSpanClasses)
 
 <template>
   <span
-    v-if="(props.projectStatus === 'PROJECT_DRAFT') && showDraft"
+    v-if="(projectStatus === 'PROJECT_DRAFT') && showDraft"
     :class="spanClasses"
   >
     {{ t('project.status.draft') }}
@@ -34,7 +34,7 @@ onMounted(initSpanClasses)
     ><i class="bi bi-dash"></i></span>
   </span>
   <span
-    v-if="props.projectStatus === 'PROJECT_DRAFT_PROCESSED'"
+    v-if="projectStatus === 'PROJECT_DRAFT_PROCESSED'"
     :class="spanClasses"
   >
     {{ t('project.status.draft-processed') }}
@@ -44,7 +44,7 @@ onMounted(initSpanClasses)
     ><i class="bi bi-dash"></i></span>
   </span>
   <span
-    v-if="props.projectStatus === 'PROJECT_REJECTED'"
+    v-if="projectStatus === 'PROJECT_REJECTED'"
     :class="spanClasses"
   >
     {{ t('project.status.rejected') }}
@@ -54,7 +54,7 @@ onMounted(initSpanClasses)
     ><i class="bi bi-x"></i></span>
   </span>
   <span
-    v-if="props.projectStatus === 'PROJECT_PROCESSING'"
+    v-if="projectStatus === 'PROJECT_PROCESSING'"
     :class="spanClasses"
   >
     {{ t('project.status.processing') }}
@@ -64,7 +64,7 @@ onMounted(initSpanClasses)
     ><i class="bi bi-dash"></i></span>
   </span>
   <span
-    v-if="props.projectStatus === 'PROJECT_VALIDATED'"
+    v-if="projectStatus === 'PROJECT_VALIDATED'"
     :class="spanClasses"
   >
     {{ t('project.status.validated') }}
@@ -74,7 +74,7 @@ onMounted(initSpanClasses)
     ><i class="bi bi-check"></i></span>
   </span>
   <span
-    v-if="props.projectStatus === 'PROJECT_REVIEW_DRAFT'"
+    v-if="projectStatus === 'PROJECT_REVIEW_DRAFT'"
     :class="spanClasses"
   >
     {{ t('project.status.review-draft') }}
@@ -84,7 +84,7 @@ onMounted(initSpanClasses)
     ><i class="bi bi-dash"></i></span>
   </span>
   <span
-    v-if="props.projectStatus === 'PROJECT_REVIEW_PROCESSING'"
+    v-if="projectStatus === 'PROJECT_REVIEW_PROCESSING'"
     :class="spanClasses"
   >
     {{ t('project.status.review-processing') }}
@@ -94,7 +94,7 @@ onMounted(initSpanClasses)
     ><i class="bi bi-dash"></i></span>
   </span>
   <span
-    v-if="props.projectStatus === 'PROJECT_CANCELED'"
+    v-if="projectStatus === 'PROJECT_CANCELED'"
     :class="spanClasses"
   >
     {{ t('project.status.canceled') }}
@@ -104,7 +104,7 @@ onMounted(initSpanClasses)
     ><i class="bi bi-x"></i></span>
   </span>
   <span
-    v-if="props.projectStatus === 'PROJECT_REVIEW_VALIDATED'"
+    v-if="projectStatus === 'PROJECT_REVIEW_VALIDATED'"
     :class="spanClasses"
   >
     {{ t('project.status.archived') }}

@@ -4,7 +4,7 @@ import FormDocumentUpload from '@/components/documents/FormDocumentUpload.vue'
 
 const {t} = useI18n()
 
-const props = defineProps<{
+defineProps<{
   associationId: number | null
 }>()
 
@@ -25,7 +25,7 @@ const emit = defineEmits<{
     </div>
 
     <FormDocumentUpload
-      :association-id="props.associationId"
+      :association-id="associationId"
       process="project"
     />
 

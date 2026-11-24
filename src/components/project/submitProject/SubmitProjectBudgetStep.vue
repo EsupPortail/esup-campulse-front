@@ -15,7 +15,7 @@ const projectCommissionFundsDetail = defineModel<ProjectCommissionFundBase[]>(
   {required: true}
 )
 
-const props = defineProps<{
+defineProps<{
   funds: Fund[],
   commissionFunds: CommissionFund[],
   currency: string,
@@ -43,9 +43,9 @@ const emit = defineEmits<{
       v-if="projectReEdition"
       v-model:project-budget="projectBudget"
       v-model:project-commission-funds-detail="projectCommissionFundsDetail"
-      :funds="props.funds"
-      :commission-funds="props.commissionFunds"
-      :currency="props.currency"
+      :funds="funds"
+      :commission-funds="commissionFunds"
+      :currency="currency"
     />
 
     <QInput
@@ -63,7 +63,7 @@ const emit = defineEmits<{
       v-model="projectBudget.amountStudentsAudience"
       :label="t('project.target-students-amount') + ' *'"
       :rules="[val => val && val.length > 0 || t('forms.required-project-amount-students-audience'),
-               val => val && props.correctAudienceAmount || t('forms.correct-amount-audience')]"
+               val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
       aria-required="true"
       color="commission"
       filled
@@ -78,7 +78,7 @@ const emit = defineEmits<{
       :label="t('project.target-all-amount') + ' *'"
       :rules="[val => val && val.length > 0 || t('forms.required-project-amount-audience'),
                val => val !== '0' || t('forms.required-project-amount-all-audience-not-null'),
-               val => val && props.correctAudienceAmount || t('forms.correct-amount-audience')]"
+               val => val && correctAudienceAmount || t('forms.correct-amount-audience')]"
       aria-required="true"
       color="commission"
       filled
@@ -92,7 +92,7 @@ const emit = defineEmits<{
       v-model="projectBudget.ticketPrice"
       :label="t('project.ticket-price') + ' *'"
       :rules="[val => val && val.length > 0 || t('forms.required-project-ticket')]"
-      :shadow-text="` ${props.currency}`"
+      :shadow-text="` ${currency}`"
       aria-required="true"
       color="commission"
       filled
@@ -106,7 +106,7 @@ const emit = defineEmits<{
       v-model="projectBudget.studentTicketPrice"
       :label="t('project.student-ticket-price') + ' *'"
       :rules="[val => val && val.length > 0 || t('forms.required-project-ticket')]"
-      :shadow-text="` ${props.currency}`"
+      :shadow-text="` ${currency}`"
       aria-required="true"
       color="commission"
       filled
@@ -121,7 +121,7 @@ const emit = defineEmits<{
       :label="t('project.individual-cost') + ' *'"
       :rules="[val => val && val.length || t('forms.required-project-individual-cost'),
                val => val !== '0' || t('forms.required-project-individual-cost-not-null')]"
-      :shadow-text="` ${props.currency}`"
+      :shadow-text="` ${currency}`"
       aria-required="true"
       color="commission"
       filled
@@ -138,9 +138,9 @@ const emit = defineEmits<{
 
     <SubmitProjectAskedAmounts
       v-model:project-commission-funds-detail="projectCommissionFundsDetail"
-      :funds="props.funds"
-      :commission-funds="props.commissionFunds"
-      :currency="props.currency"
+      :funds="funds"
+      :commission-funds="commissionFunds"
+      :currency="currency"
     />
 
     <div class="flex-row-center padding-top padding-bottom">

@@ -36,7 +36,7 @@ function fundAcronym(commissionFundId: number): string {
         val => val && val.length > 0 || t('forms.required-project-budget'),
         val => val > 0 || t('forms.greater-than-zero')
       ]"
-      :shadow-text="` ${props.currency}`"
+      :shadow-text="` ${currency}`"
       color="commission"
       filled
       inputmode="numeric"

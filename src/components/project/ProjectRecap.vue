@@ -8,7 +8,7 @@ import InfoVerifyDocuments from '@/components/documents/InfoVerifyDocuments.vue'
 
 const {t} = useI18n()
 
-const props = defineProps<{
+defineProps<{
   view: 'submitProject' | 'projectDetail'
 }>()
 
@@ -22,7 +22,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
     @submit.prevent="emit('submitProject')"
   >
     <!--        <h3
-                v-if="props.view === 'submitProject'"
+                v-if="view === 'submitProject'"
                 class="title-2"
             >
                 {{ t('recap') }}
@@ -35,7 +35,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
       >
         <h3>{{ t('project.general-infos') }}</h3>
         <QBtn
-          v-if="props.view === 'submitProject'"
+          v-if="view === 'submitProject'"
           :label="t('modify')"
           class="btn-lg"
           color="commission"
@@ -50,7 +50,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
       >
         <h3>{{ t('project.commission-choice') }}</h3>
         <QBtn
-          v-if="props.view === 'submitProject'"
+          v-if="view === 'submitProject'"
           :label="t('modify')"
           class="btn-lg"
           color="commission"
@@ -66,7 +66,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
       >
         <h3>{{ t('project.budget') }}</h3>
         <QBtn
-          v-if="props.view === 'submitProject'"
+          v-if="view === 'submitProject'"
           :label="t('modify')"
           class="btn-lg"
           color="commission"
@@ -82,7 +82,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
       >
         <h3>{{ t('project.goals-title') }}</h3>
         <QBtn
-          v-if="props.view === 'submitProject'"
+          v-if="view === 'submitProject'"
           :label="t('modify')"
           class="btn-lg"
           color="commission"
@@ -98,7 +98,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
       >
         <h3>{{ t('project.documents') }}</h3>
         <QBtn
-          v-if="props.view === 'submitProject'"
+          v-if="view === 'submitProject'"
           :label="t('modify')"
           class="btn-lg"
           color="commission"
@@ -107,7 +107,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
         />
       </div>
 
-      <InfoVerifyDocuments v-if="props.view === 'submitProject'"/>
+      <InfoVerifyDocuments v-if="view === 'submitProject'"/>
       <ProcessDocumentList
         :association-id="null"
         process="project"
@@ -115,7 +115,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
     </div>
 
     <div
-      v-if="props.view === 'submitProject'"
+      v-if="view === 'submitProject'"
       class="flex-row-center"
     >
       <QBtn

@@ -33,7 +33,7 @@ const emit = defineEmits<{
     >
       <QBtn
         :aria-pressed="applicant === 'association'"
-        :disable="!props.canChooseApplicant"
+        :disable="!canChooseApplicant"
         :icon="applicant === 'association' ? 'bi-check2' : 'bi-people'"
         :label="t('project.deposit-for-association')"
         :outline="applicant !== 'association'"
@@ -44,7 +44,7 @@ const emit = defineEmits<{
       />
       <QBtn
         :aria-pressed="applicant === 'user'"
-        :disable="!props.canChooseApplicant"
+        :disable="!canChooseApplicant"
         :icon="applicant === 'user' ? 'bi-check2' : 'bi-person'"
         :label="t('project.deposit-as-individual')"
         :outline="applicant !== 'user'"
@@ -60,7 +60,7 @@ const emit = defineEmits<{
 
       <template v-if="applicant === 'association'">
         <div
-          v-if="!props.associationOptions.length"
+          v-if="!associationOptions.length"
           class="info-panel info-panel-warning"
         >
           <i
@@ -72,9 +72,9 @@ const emit = defineEmits<{
         <QSelect
           v-else
           v-model="associationId"
-          :disable="!props.canChooseApplicant"
+          :disable="!canChooseApplicant"
           :label="t('project.concerned-association') + ' *'"
-          :options="props.associationOptions"
+          :options="associationOptions"
           :rules="[val => val !== null || t('forms.required-project-association')]"
           aria-required="true"
           clearable
@@ -87,9 +87,9 @@ const emit = defineEmits<{
         <QSelect
           v-if="associationId !== null"
           v-model="projectInfos.associationUser"
-          :disable="!props.canChooseApplicant"
+          :disable="!canChooseApplicant"
           :label="t('project.association-user') + ' *'"
-          :options="props.associationUserLabels"
+          :options="associationUserLabels"
           :rules="[val => val !== null || t('forms.required-project-association-user')]"
           aria-required="true"
           clearable

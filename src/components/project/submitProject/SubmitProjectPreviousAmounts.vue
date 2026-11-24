@@ -34,7 +34,7 @@ function fundAcronym(commissionFundId: number): string {
       :data-test="fundAcronym(commissionFund.commissionFund) + '-amount-asked-previous-edition-input'"
       :label="fundAcronym(commissionFund.commissionFund) + ' *'"
       :rules="[val => val && val.length > 0 || t('forms.required-project-amount-asked-previous')]"
-      :shadow-text="` ${props.currency}`"
+      :shadow-text="` ${currency}`"
       color="commission"
       filled
       inputmode="numeric"
@@ -52,7 +52,7 @@ function fundAcronym(commissionFundId: number): string {
       :data-test="fundAcronym(commissionFund.commissionFund) + '-amount-earned-previous-edition-input'"
       :label="fundAcronym(commissionFund.commissionFund) + ' *'"
       :rules="[val => val && val.length > 0 || t('forms.required-project-amount-earned-previous')]"
-      :shadow-text="` ${props.currency}`"
+      :shadow-text="` ${currency}`"
       color="commission"
       filled
       inputmode="numeric"
@@ -65,7 +65,7 @@ function fundAcronym(commissionFundId: number): string {
     v-model="projectBudget.budgetPreviousEdition"
     :label="t('project.budget-previous-edition') + ' *'"
     :rules="[val => val && val.length > 0 || t('forms.required-project-budget-previous')]"
-    :shadow-text="` ${props.currency}`"
+    :shadow-text="` ${currency}`"
     aria-required="true"
     color="commission"
     filled
