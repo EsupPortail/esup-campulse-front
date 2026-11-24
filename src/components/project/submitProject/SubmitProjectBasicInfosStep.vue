@@ -139,3 +139,7 @@ const emit = defineEmits<{
     </div>
   </QForm>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/forms";
+</style>
