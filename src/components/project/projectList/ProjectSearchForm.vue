@@ -9,7 +9,7 @@ import type {SelectLabel} from '#/global'
 import type {ProjectStatus} from '#/project'
 import {useI18n} from 'vue-i18n'
 
-const {searchProjectFilters, openProjectSearch, dashboardTab} = useProject()
+const {searchProjectFilters, openProjectSearch} = useProject()
 const fundStore = useFundStore()
 const projectStore = useProjectStore()
 const {loading} = useQuasar()

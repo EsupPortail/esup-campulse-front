@@ -9,7 +9,6 @@ import useErrors from '@/composables/useError'
 import TableStudentChartersBtn from '@/components/charter/TableStudentChartersBtn.vue'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
 import {useAssociationStore} from '@/stores/useAssociationStore'
-import {useProfileStore} from '@/stores/useProfileStore'
 
 
 const {t} = useI18n()
@@ -17,7 +16,6 @@ const {loading, notify} = useQuasar()
 const {initCharters, manageCharters} = useCharters()
 const {catchHTTPError} = useErrors()
 const associationStore = useAssociationStore()
-const profileStore = useProfileStore()
 
 
 const importedProps = defineProps<{

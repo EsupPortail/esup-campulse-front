@@ -4,7 +4,7 @@ declare module 'vue-matomo' {
   import {RouteLocationNormalized, Router} from 'vue-router'
   import {App} from 'vue'
 
-  declare type DefaultOptions = {
+  type DefaultOptions = {
     debug: boolean;
     disableCookies: boolean;
     enableHeartBeatTimer: boolean;
@@ -21,7 +21,7 @@ declare module 'vue-matomo' {
     preInitActions: string[][];
   }
 
-  declare type MatomoSetupOptions = {
+  type MatomoSetupOptions = {
     host: string;
     siteId: number;
     router: Router;
@@ -50,7 +50,7 @@ declare module 'vue-matomo' {
     VITE_APP_OPEN_LDAP: boolean;
   }
 
-  declare type MatomoOptions = DefaultOptions | MatomoSetupOptions;
+  type MatomoOptions = DefaultOptions | MatomoSetupOptions;
   const defaultOptions: DefaultOptions
   const matomoKey: string
 

@@ -1,12 +1,10 @@
 <script lang="ts" setup>
 import {onMounted, ref, watch} from 'vue'
-import {useProfileStore} from '@/stores/useProfileStore'
 import TableAssociationUserCharters from '@/components/charter/TableAssociationUserCharters.vue'
 import {useQuasar} from 'quasar'
 import InfoDocumentLibrary from '@/components/documents/InfoDocumentLibrary.vue'
 
 const {loading} = useQuasar()
-const profileStore = useProfileStore()
 
 const tab = ref('')
 

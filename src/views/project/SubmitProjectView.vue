@@ -6,7 +6,6 @@ import useProject from '@/composables/useProject'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useQuasar} from 'quasar'
 import {onBeforeRouteLeave, useRoute} from 'vue-router'
-import {useProfileStore} from '@/stores/useProfileStore'
 import useCommissions from '@/composables/useCommissionFund'
 import useDocumentUploads from '@/composables/useDocumentUpload'
 import router from '@/router'
@@ -64,7 +63,6 @@ const {
 const {catchHTTPError} = useErrors()
 const {loading, notify} = useQuasar()
 const projectStore = useProjectStore()
-const profileStore = useProfileStore()
 const route = useRoute()
 
 onMounted(async () => {

@@ -25,7 +25,7 @@ const {notify, loading} = useQuasar()
 const {initAssociationCharterStatus} = useCharter()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {openDocument, formatDate, reverseDate, dynamicTitle} = useUtil()
+const {formatDate, reverseDate, dynamicTitle} = useUtil()
 const projectStore = useProjectStore()
 const {
   isReviewOverdue,
@@ -125,21 +125,6 @@ watch(() => route.params.projectId, async () => {
   await mountPage()
 })
 
-async function onGetProjectPdf() {
-  loading.show()
-  try {
-    const response = await projectStore.getProjectPdf()
-    openDocument(response)
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      notify({
-        type: 'negative',
-        message: await catchHTTPError(error.response)
-      })
-    }
-  }
-  loading.hide()
-}
 </script>
 
 <template>

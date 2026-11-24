@@ -16,10 +16,10 @@ export default defineConfig(({command, mode}) => {
         sourcemap: true,
         rollupOptions: {
           output: {
-            manualChunks: {
-              zxcvbn: [
-                'zxcvbn'
-              ]
+            manualChunks(id) {
+              if (id.includes('zxcvbn')) {
+                return 'zxcvbn'
+              }
             }
           }
         }

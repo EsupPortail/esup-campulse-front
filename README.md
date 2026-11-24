@@ -21,7 +21,7 @@ l'adresse [https://github.com/EsupPortail/esup-campulse-back](https://github.com
 
 ## Technologies requises
 
-- [Node](https://nodejs.org/) (version >= 18)
+- [Node](https://nodejs.org/) (version ^22.18.0 ou >= 24.0.0)
 - [pnpm](https://pnpm.io/) (gestionnaire de dépendances)
 
 ## Technologies conseillées

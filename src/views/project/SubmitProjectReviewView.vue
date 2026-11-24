@@ -5,7 +5,6 @@ import useDocumentUploads from '@/composables/useDocumentUpload'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import {onMounted, ref, watch} from 'vue'
-import {useProfileStore} from '@/stores/useProfileStore'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useRoute} from 'vue-router'
 import FormDocumentUpload from '@/components/documents/FormDocumentUpload.vue'
@@ -19,7 +18,6 @@ import InfoFormRequiredFields from '@/components/global/InfoFormRequiredFields.v
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
 const {loading, notify} = useQuasar()
-const profileStore = useProfileStore()
 const projectStore = useProjectStore()
 const route = useRoute()
 const {CURRENCY, fromDateIsAnterior} = useUtil()
