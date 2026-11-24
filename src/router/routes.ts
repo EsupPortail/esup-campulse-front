@@ -359,6 +359,66 @@ const routes: RouteRecordRaw[] = [
             },
           },
           {
+            path: 'submit-project/:projectId?',
+            name: 'SubmitProject',
+            component: () => import('@/views/dashboard/student/SubmitProjectView.vue'),
+            meta: {
+              title: i18n.global.t('breadcrumbs.submit-project'),
+              breadcrumb: i18n.global.t('breadcrumbs.submit-project'),
+              requiresAuth: true,
+            }
+          },
+          {
+            path: 'submit-project-successful/:projectId',
+            name: 'SubmitProjectSuccessful',
+            component: () => import('@/views/dashboard/student/SubmitProjectSuccessfulView.vue'),
+            meta: {
+              title: i18n.global.t('breadcrumbs.project'),
+              breadcrumb: i18n.global.t('breadcrumbs.project'),
+              requiresAuth: true,
+            }
+          },
+          {
+            path: 'view-project/:projectId',
+            name: 'ViewProject',
+            component: () => import('@/views/project/ProjectDetailView.vue'),
+            meta: {
+              title: i18n.global.t('breadcrumbs.project'),
+              breadcrumb: i18n.global.t('breadcrumbs.project'),
+              requiresAuth: true,
+            }
+          },
+          {
+            path: 'submit-project-review/:projectId',
+            name: 'SubmitProjectReview',
+            component: () => import('@/views/dashboard/student/SubmitProjectReviewView.vue'),
+            meta: {
+              title: i18n.global.t('breadcrumbs.submit-project-review'),
+              breadcrumb: i18n.global.t('breadcrumbs.submit-project-review'),
+              requiresAuth: true,
+            }
+          },
+          {
+            path: 'submit-project-review-successful/:projectId',
+            name: 'SubmitProjectReviewSuccessful',
+            component: () => import('@/views/dashboard/student/SubmitProjectReviewSuccessfulView.vue'),
+            meta: {
+              title: i18n.global.t('breadcrumbs.project'),
+              breadcrumb: i18n.global.t('breadcrumbs.project'),
+              requiresAuth: true,
+            }
+          },
+          {
+            path: 'view-project-review/:projectId',
+            name: 'ViewProjectReview',
+            component: () => import('@/views/project/ProjectReviewDetailView.vue'),
+            meta: {
+              title: i18n.global.t('breadcrumbs.project-review-recap'),
+              breadcrumb: i18n.global.t('breadcrumbs.project-review-recap'),
+              requiresAuth: true,
+            }
+          },
+          {
             path: 'manage-contents',
             meta: {
               breadcrumb: i18n.global.t('breadcrumbs.contents'),
@@ -400,10 +460,10 @@ const routes: RouteRecordRaw[] = [
               {
                 path: '',
                 name: 'ManageProjects',
-                component: () => import('@/views/dashboard/manager/commission/ProjectsView.vue'),
+                component: () => import('@/views/dashboard/ManageProjectsView.vue'),
                 meta: {
                   title: i18n.global.t('breadcrumbs.commission-dashboard'),
-                  staffOnly: true,
+                  staffOnly: false,
                 }
               },
               {
@@ -412,6 +472,7 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/project/ProjectDetailView.vue'),
                 meta: {
                   breadcrumb: i18n.global.t('breadcrumbs.project'),
+                  staffOnly: false,
                 }
               },
               {

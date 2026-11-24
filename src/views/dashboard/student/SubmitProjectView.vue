@@ -122,9 +122,9 @@ watch(() => step.value === 4, () => {
 })
 
 // REFS
-const applicant = ref<'association' | 'user' | undefined>(route.name === 'SubmitProjectAssociation' ? 'association' : 'user')
+const applicant = ref<'association' | 'user' | undefined>('user')
 
-const associationId = ref<number>(Number.parseInt(route.params.associationId as string))
+const associationId = ref<number | undefined>()
 
 const projectId = ref<number>()
 watch(() => projectId.value, () => {
@@ -184,10 +184,12 @@ const correctAudienceAmount = computed<boolean>(() => {
 
 // GET DATA FOR STEP 1
 async function onGetProjectDetail() {
-  if (!newProject.value) {
+  if (!newProject.value || newProjectPosted.value) {
     try {
       await projectStore.getProjectDetail(projectId.value as number)
       initProjectBasicInfos()
+      applicant.value = projectStore.project?.association ? 'association' : 'user'
+      associationId.value = projectStore.project?.association?.id
     } catch (error) {
       await router.push({name: '404'})
       if (axios.isAxiosError(error) && error.response) {
@@ -284,13 +286,16 @@ async function onSubmitBasicInfos(nextStep: number) {
   loading.show()
   try {
     if (newProject.value && !newProjectPosted.value) {
-      await postNewProject(Number.parseInt(route.params.associationId as string))
+      await postNewProject()
       newProjectPosted.value = true
+      projectId.value = projectStore.project?.id
+      await router.replace({name: 'SubmitProject', params: {projectId: projectId.value}})
     } else {
       await patchProjectBasicInfos()
     }
     await updateProjectCategory()
     await onGetProjectDetail()
+    await onGetAssociationUsers()
     step.value = nextStep
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
