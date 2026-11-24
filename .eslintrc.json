@@ -37,10 +37,6 @@
         "ts-ignore": "allow-with-description"
       }
     ],
-    "@intlify/vue-i18n/key-format-style": [
-      "warn",
-      "kebab-case"
-    ],
     "@intlify/vue-i18n/no-unused-keys": [
       "warn",
       {
