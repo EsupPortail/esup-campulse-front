@@ -545,6 +545,7 @@ const routes: RouteRecordRaw[] = [
               breadcrumb: i18n.global.t('breadcrumbs.manage-commission-dates'),
               staffOnly: true,
               siteMap: true,
+              colorVariant: 'space-3',
             }
           },
         ],

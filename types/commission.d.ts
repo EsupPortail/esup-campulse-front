@@ -33,11 +33,12 @@ export interface Commission extends CommissionBase {
   id: number;
 }
 
-export type PostCommission = CommissionBase;
+export type PostCommission = Pick<
+  CommissionBase,
+  'submissionDate' | 'commissionDate' | 'isOpenToProjects' | 'name'
+>;
 
-export interface CreateCommission extends CommissionBase {
-  datesAreLegal: boolean;
-  commission: number | null;
+export interface CreateCommission extends PostCommission {
   funds: number[];
 }
 
