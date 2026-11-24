@@ -40,7 +40,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
           class="btn-lg"
           color="commission"
           icon="bi-pencil"
-          @click="emit('changeStep', 1)"
+          @click="emit('changeStep', 3)"
         />
       </div>
 
@@ -71,7 +71,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
           class="btn-lg"
           color="commission"
           icon="bi-pencil"
-          @click="emit('changeStep', 3)"
+          @click="emit('changeStep', 4)"
         />
       </div>
       <ProjectBudget :load-data="false"/>
@@ -87,7 +87,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
           class="btn-lg"
           color="commission"
           icon="bi-pencil"
-          @click="emit('changeStep', 4)"
+          @click="emit('changeStep', 5)"
         />
       </div>
       <ProjectGoals/>
@@ -103,7 +103,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
           class="btn-lg"
           color="commission"
           icon="bi-pencil"
-          @click="emit('changeStep', 5)"
+          @click="emit('changeStep', 6)"
         />
       </div>
 
@@ -124,7 +124,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
         color="commission"
 
         icon="bi-chevron-left"
-        @click="emit('changeStep', 5)"
+        @click="emit('changeStep', 6)"
       />
       <QBtn
         :label="t('project.submit')"

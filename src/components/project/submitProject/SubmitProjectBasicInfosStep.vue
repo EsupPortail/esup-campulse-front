@@ -11,16 +11,16 @@ const {t} = useI18n()
 const projectInfos = defineModel<ProjectInfos>('projectInfos', {required: true})
 const projectCategory = defineModel<number | null>('projectCategory', {required: true})
 
-const props = defineProps<{
+defineProps<{
   projectCategoryLabels: SelectLabel[],
-  associationUserLabels: SelectLabel[],
-  applicant: 'association' | 'user',
+  applicant: 'association' | 'user' | null,
   datesAreLegal: boolean,
   user: User | undefined
 }>()
 
 const emit = defineEmits<{
-  submit: []
+  submit: [],
+  back: []
 }>()
 </script>
 
@@ -30,22 +30,12 @@ const emit = defineEmits<{
     @submit.prevent="emit('submit')"
   >
     <InfoFormRequiredFields/>
-    <QInput
-      v-model="projectInfos.name"
-      :label="t('project.name') + ' *'"
-      :rules="[val => val && val.length > 0 || t('forms.required-project-name'),
-               val => val && val.length < 100 || t('forms.project-name-under-100')]"
-      aria-required="true"
-      clearable
-      color="commission"
-      filled
-      lazy-rules
-    />
+
     <QInput
       v-model="projectInfos.plannedStartDate"
       :label="t('project.planned-start-date') + ' *'"
       :rules="[val => val && val.length > 0 || t('forms.required-project-startdate'),
-               val => val && props.datesAreLegal || t('forms.legal-dates')]"
+               val => val && datesAreLegal || t('forms.legal-dates')]"
       aria-required="true"
       clearable
       color="commission"
@@ -59,7 +49,7 @@ const emit = defineEmits<{
       v-model="projectInfos.plannedEndDate"
       :label="t('project.planned-end-date') + ' *'"
       :rules="[val => val && val.length > 0 || t('forms.required-project-enddate'),
-               val => val && props.datesAreLegal || t('forms.legal-dates')]"
+               val => val && datesAreLegal || t('forms.legal-dates')]"
       aria-required="true"
       clearable
       color="commission"
@@ -82,7 +72,7 @@ const emit = defineEmits<{
     <QSelect
       v-model="projectCategory"
       :label="t('project.categories') + ' *'"
-      :options="props.projectCategoryLabels"
+      :options="projectCategoryLabels"
       :rules="[val => val !== null || t('forms.required-project-categories')]"
       clearable
       color="commission"
@@ -91,21 +81,8 @@ const emit = defineEmits<{
       lazy-rules
       map-options
     />
-    <div v-if="props.applicant === 'association'">
-      <QSelect
-        v-model="projectInfos.associationUser"
-        :label="t('project.association-user') + ' *'"
-        :options="props.associationUserLabels"
-        :rules="[val => val !== null || t('forms.required-project-association-user')]"
-        clearable
-        color="commission"
-        emit-value
-        filled
-        lazy-rules
-        map-options
-      />
-    </div>
-    <div v-else>
+
+    <div v-if="applicant === 'user'">
       <div class="info-panel info-panel-warning">
         <i
           aria-hidden="true"
@@ -115,12 +92,13 @@ const emit = defineEmits<{
       </div>
       <FormUserAddress
         :edited-by-manager="false"
-        :user="props.user"
+        :user="user"
         color="commission"
       />
     </div>
+
     <QInput
-      v-if="props.applicant === 'association'"
+      v-if="applicant === 'association'"
       v-model="projectInfos.partnerAssociation"
       :label="t('project.partner-association')"
       clearable
@@ -128,7 +106,15 @@ const emit = defineEmits<{
       filled
       lazy-rules
     />
+
     <div class="flex-row-center padding-top padding-bottom">
+      <QBtn
+        :label="t('back')"
+        class="btn-lg"
+        color="commission"
+        icon="bi-chevron-left"
+        @click="emit('back')"
+      />
       <QBtn
         :label="t('continue')"
         class="btn-lg"

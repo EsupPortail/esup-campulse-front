@@ -6,6 +6,7 @@ import useSubmitProject from '@/composables/useSubmitProject'
 import InfoProcessDocuments from '@/components/documents/InfoProcessDocuments.vue'
 import ProjectComments from '@/components/project/projectDetail/ProjectComments.vue'
 import ProjectRecap from '@/components/project/ProjectRecap.vue'
+import SubmitProjectApplicantStep from '@/components/project/submitProject/SubmitProjectApplicantStep.vue'
 import SubmitProjectBasicInfosStep from '@/components/project/submitProject/SubmitProjectBasicInfosStep.vue'
 import SubmitProjectCommissionStep from '@/components/project/submitProject/SubmitProjectCommissionStep.vue'
 import SubmitProjectBudgetStep from '@/components/project/submitProject/SubmitProjectBudgetStep.vue'
@@ -33,6 +34,8 @@ const {
   funds,
   fundsLabels,
   associationUserLabels,
+  associationOptions,
+  canChooseApplicant,
   datesAreLegal,
   correctAudienceAmount,
   CURRENCY,
@@ -43,6 +46,7 @@ const {
   loadProjectBudget,
   loadProjectGoals,
   onCommissionChange,
+  submitApplicant,
   submitBasicInfos,
   submitCommission,
   submitBudget,
@@ -62,8 +66,8 @@ watch(step, async nextStep => {
   await nextTick()
   document.getElementById('stepper')?.scrollIntoView(true)
   if (nextStep === 2) await loadCommissionData()
-  if (nextStep === 3) await loadProjectBudget()
-  if (nextStep === 4) loadProjectGoals()
+  if (nextStep === 4) await loadProjectBudget()
+  if (nextStep === 5) loadProjectGoals()
 })
 
 onBeforeRouteLeave(resetForm)
@@ -94,18 +98,17 @@ onBeforeRouteLeave(resetForm)
         >
           <QStep
             :name="1"
-            :title="t('project.general-infos')"
-            icon="bi-card-text"
+            :title="t('project.applicant')"
+            icon="bi-person-check"
           >
-            <SubmitProjectBasicInfosStep
+            <SubmitProjectApplicantStep
               v-model:project-infos="projectInfos"
-              v-model:project-category="projectCategory"
-              :project-category-labels="projectStore.projectCategoryLabels"
+              v-model:applicant="applicant"
+              v-model:association-id="associationId"
+              :association-options="associationOptions"
               :association-user-labels="associationUserLabels"
-              :applicant="applicant"
-              :dates-are-legal="datesAreLegal"
-              :user="profileStore.user"
-              @submit="submitBasicInfos(2)"
+              :can-choose-applicant="canChooseApplicant"
+              @submit="submitApplicant(2)"
             />
           </QStep>
 
@@ -120,13 +123,30 @@ onBeforeRouteLeave(resetForm)
               :commission-labels="commissionLabels"
               :funds-labels="fundsLabels"
               @submit="submitCommission(3)"
-              @back="submitCommission(1)"
+              @back="goToStep(1)"
               @commission-change="onCommissionChange"
             />
           </QStep>
 
           <QStep
             :name="3"
+            :title="t('project.general-infos')"
+            icon="bi-card-text"
+          >
+            <SubmitProjectBasicInfosStep
+              v-model:project-infos="projectInfos"
+              v-model:project-category="projectCategory"
+              :project-category-labels="projectStore.projectCategoryLabels"
+              :applicant="applicant"
+              :dates-are-legal="datesAreLegal"
+              :user="profileStore.user"
+              @submit="submitBasicInfos(4)"
+              @back="goToStep(2)"
+            />
+          </QStep>
+
+          <QStep
+            :name="4"
             :title="t('project.budget')"
             icon="bi-piggy-bank"
           >
@@ -138,37 +158,37 @@ onBeforeRouteLeave(resetForm)
               :commission-funds="commissionFunds"
               :currency="CURRENCY"
               :correct-audience-amount="correctAudienceAmount"
-              @submit="submitBudget(4)"
-              @back="submitBudget(2)"
-            />
-          </QStep>
-
-          <QStep
-            :name="4"
-            :title="t('project.goals-title')"
-            icon="bi-flag"
-          >
-            <SubmitProjectGoalsStep
-              v-model:project-goals="projectGoals"
-              @submit="submitGoals(5)"
-              @back="submitGoals(3)"
+              @submit="submitBudget(5)"
+              @back="submitBudget(3)"
             />
           </QStep>
 
           <QStep
             :name="5"
-            :title="t('project.documents')"
-            icon="bi-file-earmark"
+            :title="t('project.goals-title')"
+            icon="bi-flag"
           >
-            <SubmitProjectDocumentsStep
-              :association-id="associationId"
-              @submit="submitDocuments(6)"
-              @back="submitDocuments(4)"
+            <SubmitProjectGoalsStep
+              v-model:project-goals="projectGoals"
+              @submit="submitGoals(6)"
+              @back="submitGoals(4)"
             />
           </QStep>
 
           <QStep
             :name="6"
+            :title="t('project.documents')"
+            icon="bi-file-earmark"
+          >
+            <SubmitProjectDocumentsStep
+              :association-id="associationId"
+              @submit="submitDocuments(7)"
+              @back="submitDocuments(5)"
+            />
+          </QStep>
+
+          <QStep
+            :name="7"
             :title="t('recap')"
             icon="bi-check-lg"
           >

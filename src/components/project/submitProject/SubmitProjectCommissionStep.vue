@@ -24,50 +24,63 @@ const emit = defineEmits<{
     class="flex-column"
     @submit.prevent="emit('submit')"
   >
-    <QSelect
-      v-model="projectCommission"
-      :label="t('project.commission-choice') + ' *'"
-      :options="props.commissionLabels"
-      :rules="[val => val !== null || t('forms.select-project-commission-date')]"
-      clearable
-      color="commission"
-      emit-value
-      filled
-      for="projectCommission"
-      lazy-rules
-      map-options
-      @update:model-value="emit('commissionChange')"
+    <div
+      v-if="!props.commissionLabels.length"
+      class="info-panel info-panel-warning"
     >
-      <template #hint>
-        <p aria-describedby="projectCommission">
-          {{ t('project.commission-choice-hint') }}
-        </p>
-      </template>
-    </QSelect>
+      <i
+        aria-hidden="true"
+        class="bi bi-info-circle"
+      ></i>
+      <p>{{ t('project.no-commission-available') }}</p>
+    </div>
 
-    <QSelect
-      v-model="projectCommissionFunds"
-      :label="t('project.commission-funds-choice') + ' *'"
-      :options="props.fundsLabels"
-      :readonly="projectCommission === null"
-      :rules="[val => val.length || t('forms.select-project-commission-member')]"
-      clearable
-      color="commission"
-      emit-value
-      filled
-      for="projectCommissionFunds"
-      lazy-rules
-      map-options
-      multiple
-      stack-label
-      use-chips
-    >
-      <template #hint>
-        <p aria-describedby="projectCommissionFunds">
-          {{ t('project.commission-funds-choice-hint') }}
-        </p>
-      </template>
-    </QSelect>
+    <template v-else>
+      <QSelect
+        v-model="projectCommission"
+        :label="t('project.commission-choice') + ' *'"
+        :options="props.commissionLabels"
+        :rules="[val => val !== null || t('forms.select-project-commission-date')]"
+        clearable
+        color="commission"
+        emit-value
+        filled
+        for="projectCommission"
+        lazy-rules
+        map-options
+        @update:model-value="emit('commissionChange')"
+      >
+        <template #hint>
+          <p aria-describedby="projectCommission">
+            {{ t('project.commission-choice-hint') }}
+          </p>
+        </template>
+      </QSelect>
+
+      <QSelect
+        v-model="projectCommissionFunds"
+        :label="t('project.commission-funds-choice') + ' *'"
+        :options="props.fundsLabels"
+        :readonly="projectCommission === null"
+        :rules="[val => val.length || t('forms.select-project-commission-member')]"
+        clearable
+        color="commission"
+        emit-value
+        filled
+        for="projectCommissionFunds"
+        lazy-rules
+        map-options
+        multiple
+        stack-label
+        use-chips
+      >
+        <template #hint>
+          <p aria-describedby="projectCommissionFunds">
+            {{ t('project.commission-funds-choice-hint') }}
+          </p>
+        </template>
+      </QSelect>
+    </template>
 
     <div class="flex-row-center padding-top padding-bottom">
       <QBtn
@@ -78,6 +91,7 @@ const emit = defineEmits<{
         @click="emit('back')"
       />
       <QBtn
+        :disable="!props.commissionLabels.length"
         :label="t('continue')"
         class="btn-lg"
         color="commission"
@@ -87,3 +101,7 @@ const emit = defineEmits<{
     </div>
   </QForm>
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/forms";
+</style>

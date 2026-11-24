@@ -1,8 +1,9 @@
-import {computed, ref} from 'vue'
+import {computed, ref, watch} from 'vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import type {ProjectStatus} from '#/project'
 import type {UploadedProcessDocument} from '#/document'
+import type {SelectLabel} from '#/global'
 import router from '@/router'
 import useProject from '@/composables/useProject'
 import useUtil from '@/composables/useUtil'
@@ -57,7 +58,7 @@ export default function useSubmitProject() {
   const newProjectPosted = ref<boolean>(false)
   const projectReEdition = ref<boolean>(false)
   const isLoaded = ref<boolean>(false)
-  const applicant = ref<'association' | 'user'>('user')
+  const applicant = ref<'association' | 'user' | null>(null)
   const associationId = ref<number | null>(null)
 
   const associationUser = computed(() => profileStore.userAssociations
@@ -85,6 +86,13 @@ export default function useSubmitProject() {
   const fundsLabels = computed(() => projectCommission.value === null ? [] :
     selectedCommissionFundLabels(projectCommission.value, isSite.value))
   const associationUserLabels = computed(() => associationStore.associationUserLabels)
+
+  const canChooseApplicant = computed<boolean>(() => newProject.value && !newProjectPosted.value)
+
+  const associationOptions = computed<SelectLabel[]>(() => profileStore.userAssociations
+    .filter(obj => obj.association.canSubmitProjects)
+    .map(obj => ({label: obj.association.name, value: obj.association.id}))
+    .sort((a, b) => a.label.localeCompare(b.label, 'fr')))
 
   async function notifyError(error: unknown): Promise<void> {
     if (axios.isAxiosError(error) && error.response) {
@@ -121,6 +129,27 @@ export default function useSubmitProject() {
     const currentAssociationId = associationId.value
     await withErrorNotification(() => associationStore.getAssociationUsers(currentAssociationId))
   }
+
+  watch([applicant, associationId], async ([currentApplicant, currentAssociationId]) => {
+    if (!canChooseApplicant.value) return
+
+    if (currentApplicant !== 'association' && currentAssociationId !== null) {
+      associationId.value = null
+      return
+    }
+
+    if (currentApplicant === 'association' && currentAssociationId !== null) {
+      projectInfos.value.association = currentAssociationId
+      projectInfos.value.user = null
+      projectInfos.value.associationUser = null
+      await loadAssociationUsers()
+      return
+    }
+
+    projectInfos.value.association = null
+    projectInfos.value.associationUser = null
+    projectInfos.value.user = currentApplicant === 'user' ? profileStore.user?.id ?? null : null
+  })
 
   async function loadCommissionData(): Promise<void> {
     await withErrorNotification(async () => {
@@ -164,16 +193,18 @@ export default function useSubmitProject() {
     reInitProjectCommissionFunds(isSite.value)
   }
 
+  async function submitApplicant(nextStep: number): Promise<void> {
+    if (!projectInfos.value.name) return
+    if (!applicant.value) return
+    if (applicant.value === 'association'
+      && (associationId.value === null || projectInfos.value.associationUser === null)) return
+    step.value = nextStep
+  }
+
   async function submitBasicInfos(nextStep: number): Promise<void> {
+    if (!projectStore.project) return
     await withErrorNotification(async () => {
-      if (newProject.value && !newProjectPosted.value) {
-        await createProject(associationId.value ?? undefined)
-        newProjectPosted.value = true
-        projectId.value = projectStore.project?.id
-        await router.replace({name: 'SubmitProject', params: {projectId: projectId.value}})
-      } else {
-        await updateProjectInfos()
-      }
+      await updateProjectInfos()
       await updateProjectCategory()
       await loadProjectDetail()
       await loadAssociationUsers()
@@ -182,7 +213,15 @@ export default function useSubmitProject() {
   }
 
   async function submitCommission(nextStep: number): Promise<void> {
+    if (projectCommission.value === null || !projectCommissionFunds.value.length) return
     await withErrorNotification(async () => {
+      if (newProject.value && !newProjectPosted.value) {
+        await createProject(associationId.value ?? undefined)
+        newProjectPosted.value = true
+        projectId.value = projectStore.project?.id
+        await router.replace({name: 'SubmitProject', params: {projectId: projectId.value}})
+        await loadProjectDetail()
+      }
       await updateProjectCommission()
       step.value = nextStep
     })
@@ -235,7 +274,7 @@ export default function useSubmitProject() {
   }
 
   async function ensureCanUpdateProject(): Promise<void> {
-    if (applicant.value === 'user') return
+    if (applicant.value !== 'association') return
     const associationCanSubmitProjects = associationUser.value?.association?.canSubmitProjects
     if (associationCanSubmitProjects) {
       const isReferent = projectStore.project?.associationUser?.id === associationUser.value?.id
@@ -253,6 +292,9 @@ export default function useSubmitProject() {
     if (loadedProject && loadedProject.id === projectId.value
       && !acceptedProjectStatuses.includes(loadedProject.projectStatus)) {
       await router.push({name: '404'})
+    }
+    if (profileStore.user?.associations.length && !profileStore.userAssociations.length) {
+      await withErrorNotification(() => profileStore.getUserAssociations())
     }
     await projectStore.getProjectCategoryNames(true)
     await loadAssociationUsers()
@@ -296,6 +338,8 @@ export default function useSubmitProject() {
     funds,
     fundsLabels,
     associationUserLabels,
+    associationOptions,
+    canChooseApplicant,
     CURRENCY,
     profileStore,
     projectStore,
@@ -304,6 +348,7 @@ export default function useSubmitProject() {
     loadProjectBudget,
     loadProjectGoals,
     onCommissionChange,
+    submitApplicant,
     submitBasicInfos,
     submitCommission,
     submitBudget,
