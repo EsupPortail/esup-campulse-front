@@ -366,6 +366,7 @@ const routes: RouteRecordRaw[] = [
               title: i18n.global.t('breadcrumbs.submit-project'),
               breadcrumb: i18n.global.t('breadcrumbs.submit-project'),
               requiresAuth: true,
+              colorVariant: 'space-3',
             }
           },
           {
