@@ -134,10 +134,10 @@ async function onOptionClick(option: Option) {
     </QBtnDropdown>
   </div>
   <FormSignCharters
-    :association-charter-status="props.associationCharterStatus"
-    :association-id="props.associationId"
-    :charter="props.charter"
-    :is-site="props.isSite"
+    :association-charter-status="associationCharterStatus"
+    :association-id="associationId"
+    :charter="charter"
+    :is-site="isSite"
     :open-sign="openSign"
     @close-dialog="openSign = false"
   />

@@ -3,6 +3,7 @@ defineProps<{
   icon: string;
   label: string;
   disable?: boolean;
+  count?: number;
 }>()
 </script>
 <template>
@@ -23,13 +24,24 @@ defineProps<{
       </QItemSection>
 
       <QItemSection>
-        <h3
-          :class="
-            {'text-commission-color':
-              !disable}"
-        >
-          {{ label }}
-        </h3>
+        <div class="header-title">
+          <h3
+            :class="
+              {'text-commission-color':
+                !disable}"
+          >
+            {{ label }}
+          </h3>
+          <QChip
+            v-if="count !== undefined && count > 0"
+            :aria-label="`${label} : ${count}`"
+            color="commission"
+            dense
+            text-color="white"
+          >
+            {{ count }}
+          </QChip>
+        </div>
       </QItemSection>
     </template>
 
@@ -48,6 +60,12 @@ defineProps<{
 
 ::v-deep(.text-commission-color) {
   color: $commissionColor;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 h3 {

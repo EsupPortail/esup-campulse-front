@@ -22,6 +22,16 @@ const commissionFilterFactory = (filters?: Partial<CommissionFilters>): string[]
   if (filters?.onlyWithActiveProjects !== undefined) factory.push(`only_with_active_projects=${filters.onlyWithActiveProjects}`)
   if (filters?.toPostponeProject) factory.push(`to_postpone_project=${filters.toPostponeProject}`)
   if (filters?.withActiveProjects !== undefined) factory.push(`with_active_projects=${filters.withActiveProjects}`)
+  if (filters?.commissionDateAfter) factory.push(`commission_date_after=${filters.commissionDateAfter}`)
+  if (filters?.commissionDateBefore) factory.push(`commission_date_before=${filters.commissionDateBefore}`)
+  if (filters?.editionDateAfter) factory.push(`edition_date_after=${filters.editionDateAfter}`)
+  if (filters?.editionDateBefore) factory.push(`edition_date_before=${filters.editionDateBefore}`)
+  if (filters?.submissionDateAfter) factory.push(`submission_date_after=${filters.submissionDateAfter}`)
+  if (filters?.submissionDateBefore) factory.push(`submission_date_before=${filters.submissionDateBefore}`)
+  if (filters?.withClosedFutureCommissions !== undefined) factory.push(`with_closed_future_commissions=${filters.withClosedFutureCommissions}`)
+  if (filters?.name) factory.push(`name=${filters.name}`)
+  if (filters?.page) factory.push(`page=${filters.page}`)
+  if (filters?.pageSize) factory.push(`page_size=${filters.pageSize}`)
   return factory
 }
 

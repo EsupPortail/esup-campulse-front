@@ -6,7 +6,7 @@ import {useI18n} from 'vue-i18n'
 const profileStore = useProfileStore()
 const {t} = useI18n()
 
-const props = defineProps<{
+defineProps<{
   device: 'mobile' | 'desktop'
 }>()
 </script>
@@ -14,7 +14,7 @@ const props = defineProps<{
 <template>
   <nav
     :aria-label="t('primary-nav')"
-    :class="`${props.device === 'desktop' ? 'flex-row-right' : 'flex-column'} ${props.device}`"
+    :class="`${device === 'desktop' ? 'flex-row-right' : 'flex-column'} ${device}`"
     role="navigation"
   >
     <ul>
@@ -72,7 +72,7 @@ const props = defineProps<{
       <li>
         <LayoutHeaderProfileButton
           v-if="profileStore.isAuth"
-          :device="props.device"
+          :device="device"
           class="profile-button"
         />
       </li>

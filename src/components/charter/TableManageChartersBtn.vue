@@ -115,7 +115,7 @@ async function onOptionClick(option: Option) {
   </div>
   <FormChartersValidation
     :association-id="props?.associationId"
-    :charter="props.charter"
+    :charter="charter"
     :open-validate="openValidate"
     @close-dialog="openValidate = false"
   />

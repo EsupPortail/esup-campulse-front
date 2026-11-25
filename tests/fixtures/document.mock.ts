@@ -1,5 +1,5 @@
 import type {Document, DocumentUpload, ProcessDocument} from '#/document'
-import {_chartersExpirationDay} from '~/fixtures/dates.mock'
+import {_chartersExpirationDay} from '~/fixtures/date.mock'
 
 export const _document: Document = {
   id: 1,
@@ -87,7 +87,6 @@ export const _documents: Document[] = [
 
 export const _processDocuments: ProcessDocument[] = [
   {
-    id: 1,
     document: 1,
     acronym: 'DOCUMENT_1',
     maxUploads: 2,
@@ -96,10 +95,11 @@ export const _processDocuments: ProcessDocument[] = [
     isRequiredInProcess: false,
     mimeTypes: [
       'application/pdf'
-    ]
+    ],
+    pathTemplate: undefined,
+    processType: 'DOCUMENT_PROJECT'
   },
   {
-    id: 2,
     document: 2,
     acronym: 'DOCUMENT_2',
     maxUploads: 1,
@@ -108,7 +108,9 @@ export const _processDocuments: ProcessDocument[] = [
     isRequiredInProcess: true,
     mimeTypes: [
       'application/pdf'
-    ]
+    ],
+    pathTemplate: undefined,
+    processType: 'DOCUMENT_PROJECT'
   }
 ]
 
@@ -134,11 +136,13 @@ export const _projectDocuments: DocumentUpload[] = [
     validatedDate: '',
     comment: '',
     pathFile: 'pathFile',
+    size: 1024,
     document: 1,
     user: null,
     association: 1,
     project: 1,
-    name: 'documentName'
+    name: 'documentName',
+    calculatedExpirationDate: '2024-06-19'
   },
   {
     id: 2,
@@ -147,9 +151,11 @@ export const _projectDocuments: DocumentUpload[] = [
     validatedDate: '',
     comment: '',
     document: 2,
+    size: 2048,
     user: 1,
     association: null,
     project: 2,
-    name: 'documentName'
+    name: 'documentName',
+    calculatedExpirationDate: null
   }
 ]

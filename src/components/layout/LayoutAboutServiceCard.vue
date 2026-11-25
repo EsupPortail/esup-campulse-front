@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import DOMPurify from 'dompurify'
 
-const props = defineProps<{
+defineProps<{
   header?: string,
   body?: string,
   cssClass: string
@@ -10,7 +10,7 @@ const props = defineProps<{
 
 
 <template>
-  <section :class="['services-section', 'home-section', props.cssClass]">
+  <section :class="['services-section', 'home-section', cssClass]">
     <div :class="['section-card', 'service-card']">
       <div class="flex-column">
         <div
@@ -20,10 +20,10 @@ const props = defineProps<{
           <i class="bi bi-filter-circle"></i>
         </div>
 
-        <h3 v-html="DOMPurify.sanitize(props.header)"></h3>
+        <h3 v-html="DOMPurify.sanitize(header)"></h3>
 
         <div class="section-content">
-          <p v-html="DOMPurify.sanitize(props.body)"></p>
+          <p v-html="DOMPurify.sanitize(body)"></p>
         </div>
       </div>
     </div>

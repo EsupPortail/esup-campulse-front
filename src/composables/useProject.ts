@@ -1,5 +1,6 @@
 import {ref, watch} from 'vue'
 import type {
+  ProjectBase,
   ProjectBudget,
   ProjectCommissionFundBase,
   ProjectGoals,
@@ -96,6 +97,8 @@ async function updateAmountEarned(projectId: number, commissionFundId: number, a
   await projectService.updateProjectCommissionFund(projectId, commissionFundId, {amountEarned})
 }
 
+const openProjectSearch = ref<boolean>(false)
+
 const searchProjectFilters = ref<SearchProjectFilters>({
   manualIdentifier: null,
   name: null,
@@ -118,24 +121,17 @@ export default function useProject() {
   const {processDocuments} = useDocumentUploads()
   const {selectedCommissionFundLabels} = useCommissions()
 
-  // todo : on en a plus besoin (commissionFunds sur le projet) ?
-  /*const projectCommissionFundLabels = computed<SelectLabel[]>(() => {
-    projectCommissionFunds.value.forEach(projectCommissionFund => {
-      const commissionFunds = commissionStore.commissionFunds
-      const fund = commissionFunds.find(obj => obj.id === projectCommissionFund.commissionFund)?.fund
-      const isMemberOfFund = userStore.userFunds?.includes(fund)
-      if (!isMemberOfFund) return
-      const isValidatedByAdmin = projectCommissionFund.isValidatedByAdmin
-      if (isValidatedByAdmin === null ||
-        isValidatedByAdmin && action !== 'validate' ||
-        !isValidatedByAdmin && action !== 'reject') {
-        projectCommissionFundLabels.value.push({
-          value: projectCommissionFund.commissionFund as number,
-          label: funds.value.find(obj => obj.id === fund)?.acronym as string,
-        })
-      }
-    })
-  })*/
+  function clearProjectSearch() {
+    searchProjectFilters.value.manualIdentifier = null
+    searchProjectFilters.value.name = null
+    searchProjectFilters.value.associationName = null
+    searchProjectFilters.value.userName = null
+    searchProjectFilters.value.editionDate = {from: null, to: null}
+    searchProjectFilters.value.commissionDate = {from: null, to: null}
+    searchProjectFilters.value.funds = []
+    searchProjectFilters.value.projectStatuses = []
+    searchProjectFilters.value.category = null
+  }
 
   const initProjectBasicInfos = () => {
     projectId.value = projectStore.project?.manualIdentifier
@@ -215,24 +211,13 @@ export default function useProject() {
     processDocuments.value = []
   }
 
-  // todo : sera OK quand on aura les commissionFunds dans les projets
-  /*const initProjectFunds = () => {
-    projectFunds.value = []
-    projectCommissionFunds.value.forEach(projectCommissionFund => {
-      const commissionFund = commissionFunds.value.find(commissionFund => commissionFund.id === projectCommissionFund)
-      if (commissionFund) {
-        projectFunds.value.push(commissionFund.fund)
-      }
-    })
-  }*/
-
   async function createProject(associationId?: number) {
     if (associationId) projectInfos.value.association = associationId
     else projectInfos.value.user = profileStore.user?.id
-    let dataToPost = {}
+    let dataToPost: Partial<ProjectInfos> = {}
     for (const [key, value] of Object.entries(projectInfos.value)) {
       if (!value) continue
-      dataToPost = Object.assign(dataToPost, {[key]: value + (key.includes('Date') ? 'T00:00:00.000Z' : '')})
+      dataToPost = Object.assign(dataToPost, {[key]: key.includes('Date') ? `${value}T00:00:00.000Z` : value})
     }
     projectStore.project = await projectService.createProject(dataToPost)
   }
@@ -336,7 +321,7 @@ export default function useProject() {
           dataToPatch[key] = value
         }
       }
-      if (!Object.entries(dataToPatch).length) return
+      if (!Object.entries(dataToPatch).length) continue
       promises.push(projectService.updateProjectCommissionFund(
         projectStore.project!.id,
         projectCommissionFund.commissionFund,
@@ -371,6 +356,10 @@ export default function useProject() {
       .filter(commissionFund => commissionFund.commission === projectCommission.value && originalFunds.has(commissionFund.fund))
       .map(commissionFund => commissionFund.id)
   }
+
+  const isReviewOverdue = (project?: Pick<ProjectBase, 'projectStatus' | 'reviewOverdueDays'>): boolean =>
+    ['PROJECT_REVIEW_DRAFT', 'PROJECT_REVIEW_DRAFT_PROCESSED'].includes(project?.projectStatus ?? '')
+    && (project?.reviewOverdueDays ?? 0) > 0
 
   const canManageProjectCommissionFund = (commissionFund: number): boolean => {
     const fund = commissionStore.commissionFunds.find(obj => obj.id === commissionFund)?.fund
@@ -414,8 +403,11 @@ export default function useProject() {
     validateProjectCommissionFund,
     rejectProjectCommissionFund,
     canManageProjectCommissionFund,
+    isReviewOverdue,
     updateAmountEarned,
     dashboardTab,
     searchProjectFilters,
+    openProjectSearch,
+    clearProjectSearch
   }
 }

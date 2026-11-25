@@ -8,8 +8,10 @@ import {useCommissionStore} from '@/stores/useCommissionStore'
 import useError from '@/composables/useError'
 import GlobalDefinition from '@/components/global/GlobalDefinition.vue'
 import useUtil from '@/composables/useUtil'
+import {useI18n} from 'vue-i18n'
 
 const route = useRoute()
+const {t} = useI18n()
 const {loading, notify} = useQuasar()
 const commissionStore = useCommissionStore()
 const {catchHTTPError} = useError()
@@ -49,16 +51,16 @@ onMounted(async () => {
     <div class="dashboard-section-container">
       <div class="container-lg flex-column">
         <dl>
-          <GlobalDefinition title="Date de commission">
+          <GlobalDefinition :title="t('commission.date')">
             {{ reverseDate(commissionStore.commission?.commissionDate) }}
           </GlobalDefinition>
-          <GlobalDefinition title="Date de soumission">
+          <GlobalDefinition :title="t('commission.submission-date')">
             {{ reverseDate(commissionStore.commission?.submissionDate) }}
           </GlobalDefinition>
-          <GlobalDefinition title="Date de modification">
+          <GlobalDefinition :title="t('edition-date')">
             {{ reverseDate(formatDate(commissionStore.commission?.editionDate)) }}
           </GlobalDefinition>
-          <GlobalDefinition title="Financeurs">
+          <GlobalDefinition :title="t('commission.funds')">
             <QChip
               v-for="fund in commissionStore.commission?.funds"
               :key="`fund-${fund.id}`"
@@ -68,16 +70,16 @@ onMounted(async () => {
               {{ fund.acronym }}
             </QChip>
           </GlobalDefinition>
-          <GlobalDefinition title="Projets soumis">
+          <GlobalDefinition :title="t('commission.submitted-projects-count')">
             {{ commissionStore.commission?.submittedProjectsCount ?? 0 }}
           </GlobalDefinition>
-          <GlobalDefinition title="En attente de validation">
+          <GlobalDefinition :title="t('validation-pending')">
             {{ commissionStore.commission?.processingProjectsCount ?? 0 }}
           </GlobalDefinition>
-          <GlobalDefinition title="En attente de modification">
+          <GlobalDefinition :title="t('edition-pending')">
             {{ commissionStore.commission?.standbyProjectsCount ?? 0 }}
           </GlobalDefinition>
-          <GlobalDefinition title="Bilan en retard">
+          <GlobalDefinition :title="t('commission.overdue-reviews-count')">
             {{ commissionStore.commission?.overdueReviewCount ?? 0 }}
           </GlobalDefinition>
         </dl>

@@ -235,7 +235,7 @@ const fileTitleLengthIsValid = (document: ProcessDocument, val: File | File[]): 
         <template v-slot:hint>
           <p aria-describedby="pathFile">
             {{
-              props.process === 'registration' ? t('forms.student-certificate-hint') :
+              process === 'registration' ? t('forms.student-certificate-hint') :
               (t('project.document-hint')
                 + (document.maxUploads > 1 ? (' ' + t('project.document-hint-multiple')) : '') + ' ' +
                 t('forms.accepted-formats') + acceptedFormats(document.mimeTypes) + '.')

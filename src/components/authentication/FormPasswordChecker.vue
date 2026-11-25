@@ -68,8 +68,8 @@ const resultLabels = [
       aria-describedby="new-password-to-check"
       aria-live="polite"
     >
-      <p :class="`paragraph __${props.passwordChecker.score}`">
-        {{ resultLabels.find(label => label.score === props.passwordChecker.score)?.label }}
+      <p :class="`paragraph __${passwordChecker.score}`">
+        {{ resultLabels.find(label => label.score === passwordChecker.score)?.label }}
       </p>
     </div>
   </div>

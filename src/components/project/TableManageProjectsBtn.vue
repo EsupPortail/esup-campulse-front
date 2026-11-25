@@ -300,22 +300,22 @@ async function onGetProjectFiles(projectId: number) {
   </div>
   <ProjectUpdateDates
     :open-dialog="updateProjectDates"
-    :project="props.projectId"
+    :project="projectId"
     @close-dialog="updateProjectDates = false"
     @refresh-projects="emit('refreshProjects')"
   />
   <ProjectChangeCommission
-    :is-site="props.isSite"
+    :is-site="isSite"
     :open-dialog="changeCommission"
-    :project="props.projectId"
+    :project="projectId"
     @close-dialog="changeCommission = false"
     @refresh-projects="emit('refreshProjects')"
   />
   <ProjectEditCommissionFundsAmounts
     :open-dialog="editCommissionFundsAmounts"
-    :project="props.projectId"
-    :project-commission-funds="props.projectCommissionFunds"
-    :project-name="props.projectName"
+    :project="projectId"
+    :project-commission-funds="projectCommissionFunds"
+    :project-name="projectName"
     @close-dialog="editCommissionFundsAmounts = false"
     @refresh-projects="emit('refreshProjects')"
   />

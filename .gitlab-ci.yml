@@ -12,9 +12,10 @@ lint_typecheck:
   only:
     - develop
   script:
-    - npm install --progress=false
-    - npm run lint
-    - npm run typecheck
+    - corepack enable && corepack prepare pnpm@10.28.2 --activate
+    - pnpm install --frozen-lockfile
+    - pnpm lint
+    - pnpm typecheck
 
 unit_test:
   stage: unit_test
@@ -23,8 +24,9 @@ unit_test:
   only:
     - develop
   script:
-    - npm install --progress=false
-    - npm run test:unit:coverage
+    - corepack enable && corepack prepare pnpm@10.28.2 --activate
+    - pnpm install --frozen-lockfile
+    - pnpm test:unit:coverage
   coverage: /All files\s*\|\s*([\d\.]+)/
 
 sonarqube_check:

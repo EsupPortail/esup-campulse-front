@@ -1,4 +1,4 @@
-import type {PaginatedList} from '#/global'
+import type {DateRange, PaginatedList} from '#/global'
 
 export interface Fund {
   id: number;
@@ -33,11 +33,12 @@ export interface Commission extends CommissionBase {
   id: number;
 }
 
-export type PostCommission = CommissionBase;
+export type PostCommission = Pick<
+  CommissionBase,
+  'submissionDate' | 'commissionDate' | 'isOpenToProjects' | 'name'
+>;
 
-export interface CreateCommission extends CommissionBase {
-  datesAreLegal: boolean;
-  commission: number | null;
+export interface CreateCommission extends PostCommission {
   funds: number[];
 }
 
@@ -77,5 +78,22 @@ export interface CommissionFilters {
   onlyWithActiveProjects: boolean;
   toPostponeProject: number;
   withActiveProjects: boolean;
+  commissionDateAfter: string;
+  commissionDateBefore: string;
+  editionDateAfter: string;
+  editionDateBefore: string;
+  submissionDateAfter: string;
+  submissionDateBefore: string;
+  name: string;
+  withClosedFutureCommissions: boolean;
+  page: number;
+  pageSize: number;
 }
 
+export interface SearchCommissionFilters {
+  name: string; // todo
+  commissionDate: DateRange;
+  submissionDate: DateRange; // todo
+  editionDate: DateRange; // todo
+  funds: number[]; // todo
+}

@@ -85,12 +85,12 @@ async function onDocumentRejected(rejectedEntries: { failedPropValidation: strin
   <QDialog v-model="open">
     <QCard>
       <QCardSection>
-        <h3>{{ props.charter.documentName }}</h3>
+        <h3>{{ charter.documentName }}</h3>
         <p>{{ t('charter.sign-hint') }}</p>
         <QForm @submit="onSignCharter">
           <QFile
             v-model="signedCharter"
-            :accept="props.charter.mimeTypes?.join(', ')"
+            :accept="charter.mimeTypes?.join(', ')"
             :label="t('charter.signed-charter') + ' *'"
             :max-file-size="maxFileSize"
             aria-required="true"
@@ -106,7 +106,7 @@ async function onDocumentRejected(rejectedEntries: { failedPropValidation: strin
             <template v-slot:hint>
               <p aria-describedby="pathFile">
                 {{
-                  t('forms.accepted-formats') + acceptedFormats(props.charter.mimeTypes) + '.'
+                  t('forms.accepted-formats') + acceptedFormats(charter.mimeTypes) + '.'
                 }}
               </p>
             </template>

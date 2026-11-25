@@ -20,7 +20,7 @@ const projectStore = useProjectStore()
 const commissionStore = useCommissionStore()
 const fundStore = useFundStore()
 
-const props = defineProps<{
+defineProps<{
   view: 'projectRecap' | 'submitProjectReview' | 'projectReviewRecap'
 }>()
 
@@ -60,7 +60,7 @@ async function onGetProjectCommissions() {
 
 <template>
   <div
-    v-if="props.view === 'projectRecap' || props.view === 'projectReviewRecap'"
+    v-if="view === 'projectRecap' || view === 'projectReviewRecap'"
     class="flex-column"
   >
     <div class="display-row">
@@ -84,7 +84,7 @@ async function onGetProjectCommissions() {
       </p>
     </div>
 
-    <div v-if="props.view === 'projectReviewRecap'">
+    <div v-if="view === 'projectReviewRecap'">
       <div
         v-for="projectCommissionFund in projectStore.projectCommissionFunds"
         :key="projectCommissionFund.id"
@@ -112,7 +112,7 @@ async function onGetProjectCommissions() {
   </div>
 
   <div
-    v-if="props.view === 'submitProjectReview'"
+    v-if="view === 'submitProjectReview'"
     class="flex-column"
   >
     <QInput

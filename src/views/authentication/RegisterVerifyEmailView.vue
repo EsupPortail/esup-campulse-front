@@ -16,7 +16,7 @@ onMounted(async () => {
       await verifyEmail(route.query.key as string)
       messageTitle.value = t('register.register-verify-email')
       messageDescription.value = t('register.email-verified')
-    } catch (e) {
+    } catch {
       messageTitle.value = t('register.register-not-verify-email')
       messageDescription.value = t('register.email-not-verified')
     }

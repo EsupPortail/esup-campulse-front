@@ -92,11 +92,11 @@ async function onValidateCharter(action: 'validate' | 'reject') {
                 <div class="document-input-header">
                   <h4 class="library-document">
                     <span>
-                      {{ props.charter.documentName }}
+                      {{ charter.documentName }}
                     </span>
                   </h4>
                   <button
-                    :aria-label="t('download') + ' ' + props.charter.documentName"
+                    :aria-label="t('download') + ' ' + charter.documentName"
                     @click.prevent="onDownloadCharter"
                   >
                     <i

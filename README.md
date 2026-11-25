@@ -10,8 +10,10 @@
 ## Description
 
 Création d'une application web pour la gestion des associations étudiantes et de leurs projets.  
-Documentation technique accessible à l'adresse [https://di.pages.unistra.fr/plan_a/plana/](https://di.pages.unistra.fr/plan_a/plana/)  
-Dépôt du back accessible à l'adresse [https://github.com/EsupPortail/esup-campulse-back](https://github.com/EsupPortail/esup-campulse-back)
+Documentation technique accessible à
+l'adresse [https://di.pages.unistra.fr/plan_a/plana/](https://di.pages.unistra.fr/plan_a/plana/)  
+Dépôt du back accessible à
+l'adresse [https://github.com/EsupPortail/esup-campulse-back](https://github.com/EsupPortail/esup-campulse-back)
 
 ### Instances en ligne
 
@@ -19,11 +21,10 @@ Dépôt du back accessible à l'adresse [https://github.com/EsupPortail/esup-cam
 
 ## Technologies requises
 
-- [Node](https://nodejs.org/) (version >= 18)
+- [Node](https://nodejs.org/) (version ^22.18.0 ou >= 24.0.0)
+- [pnpm](https://pnpm.io/) (gestionnaire de dépendances)
 
 ## Technologies conseillées
-
-
 
 ## Technologies de développement
 

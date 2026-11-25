@@ -126,7 +126,7 @@ function updateAmountEarned(projectCommissionFund: EditProjectCommissionFund) {
   <QDialog v-model="open">
     <QCard class="variant-space-3">
       <QCardSection>
-        <h2>{{ props.projectName }}</h2>
+        <h2>{{ projectName }}</h2>
         <QList
           bordered
           class="rounded-borders"

@@ -27,9 +27,9 @@ function onDownloadDocument(documentId: number | undefined) {
 </script>
 
 <template>
-  <div v-if="props.documents.length">
+  <div v-if="documents.length">
     <div
-      v-for="(document, index) in props.documents"
+      v-for="(document, index) in documents"
       :key="index"
       class="document-input-group"
     >

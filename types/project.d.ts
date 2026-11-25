@@ -13,6 +13,7 @@ type ProjectStatus =
   | 'PROJECT_VALIDATED'
   | 'PROJECT_REVIEW_DRAFT'
   | 'PROJECT_REVIEW_PROCESSING'
+  | 'PROJECT_REVIEW_DRAFT_PROCESSED'
   | 'PROJECT_REVIEW_VALIDATED'
   | 'PROJECT_CANCELED'
 
@@ -38,6 +39,7 @@ export interface ProjectBase {
   editionDate: string;
   projectStatus: ProjectStatus;
   budgetFile: string;
+  reviewOverdueDays: number;
 }
 
 export interface ProjectListItem extends ProjectBase {
@@ -65,7 +67,6 @@ export interface Project extends ProjectBase {
   creationDate: string;
   processingDate: string;
   projectCommissionFunds: ProjectCommissionFund[];
-  bearerOverdueReviewCount: number;
 }
 
 export type UpdateProject = Pick<Project,

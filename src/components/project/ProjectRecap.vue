@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import ProjectRecapCommissions from '@/components/project/ProjectRecapCommissions.vue'
-import ProjectBudget from '@/components/project/ProjectBudget.vue'
-import ProjectGoals from '@/components/project/ProjectGoals.vue'
+import ProjectBudget from '@/components/project/projectDetail/ProjectBudget.vue'
+import ProjectGoals from '@/components/project/projectDetail/ProjectGoals.vue'
 import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
 import InfoVerifyDocuments from '@/components/documents/InfoVerifyDocuments.vue'
 
 const {t} = useI18n()
 
-const props = defineProps<{
+defineProps<{
   view: 'submitProject' | 'projectDetail'
 }>()
 
@@ -22,7 +22,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
     @submit.prevent="emit('submitProject')"
   >
     <!--        <h3
-                v-if="props.view === 'submitProject'"
+                v-if="view === 'submitProject'"
                 class="title-2"
             >
                 {{ t('recap') }}
@@ -35,12 +35,12 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
       >
         <h3>{{ t('project.general-infos') }}</h3>
         <QBtn
-          v-if="props.view === 'submitProject'"
+          v-if="view === 'submitProject'"
           :label="t('modify')"
           class="btn-lg"
           color="commission"
           icon="bi-pencil"
-          @click="emit('changeStep', 1)"
+          @click="emit('changeStep', 3)"
         />
       </div>
 
@@ -50,7 +50,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
       >
         <h3>{{ t('project.commission-choice') }}</h3>
         <QBtn
-          v-if="props.view === 'submitProject'"
+          v-if="view === 'submitProject'"
           :label="t('modify')"
           class="btn-lg"
           color="commission"
@@ -66,12 +66,12 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
       >
         <h3>{{ t('project.budget') }}</h3>
         <QBtn
-          v-if="props.view === 'submitProject'"
+          v-if="view === 'submitProject'"
           :label="t('modify')"
           class="btn-lg"
           color="commission"
           icon="bi-pencil"
-          @click="emit('changeStep', 3)"
+          @click="emit('changeStep', 4)"
         />
       </div>
       <ProjectBudget :load-data="false"/>
@@ -82,12 +82,12 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
       >
         <h3>{{ t('project.goals-title') }}</h3>
         <QBtn
-          v-if="props.view === 'submitProject'"
+          v-if="view === 'submitProject'"
           :label="t('modify')"
           class="btn-lg"
           color="commission"
           icon="bi-pencil"
-          @click="emit('changeStep', 4)"
+          @click="emit('changeStep', 5)"
         />
       </div>
       <ProjectGoals/>
@@ -98,16 +98,16 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
       >
         <h3>{{ t('project.documents') }}</h3>
         <QBtn
-          v-if="props.view === 'submitProject'"
+          v-if="view === 'submitProject'"
           :label="t('modify')"
           class="btn-lg"
           color="commission"
           icon="bi-pencil"
-          @click="emit('changeStep', 5)"
+          @click="emit('changeStep', 6)"
         />
       </div>
 
-      <InfoVerifyDocuments v-if="props.view === 'submitProject'"/>
+      <InfoVerifyDocuments v-if="view === 'submitProject'"/>
       <ProcessDocumentList
         :association-id="null"
         process="project"
@@ -115,7 +115,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
     </div>
 
     <div
-      v-if="props.view === 'submitProject'"
+      v-if="view === 'submitProject'"
       class="flex-row-center"
     >
       <QBtn
@@ -124,7 +124,7 @@ const emit = defineEmits(['submitProject', 'changeStep', 'getFile'])
         color="commission"
 
         icon="bi-chevron-left"
-        @click="emit('changeStep', 5)"
+        @click="emit('changeStep', 6)"
       />
       <QBtn
         :label="t('project.submit')"

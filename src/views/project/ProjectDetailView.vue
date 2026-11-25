@@ -9,24 +9,26 @@ import useProject from '@/composables/useProject'
 import {useRoute} from 'vue-router'
 import useUtil from '@/composables/useUtil'
 import ProjectStatusIndicator from '@/components/project/ProjectStatusIndicator.vue'
+import OverdueReviewWarning from '@/components/project/projectList/OverdueReviewWarning.vue'
 import GlobalDefinition from '@/components/global/GlobalDefinition.vue'
 import ProjectExpansionItem from '@/components/project/projectDetail/ProjectExpansionItem.vue'
 import CharterStatusIndicator from '@/components/charter/CharterStatusIndicator.vue'
 import useCharter from '@/composables/useCharter'
-import ProjectCategories from '@/components/project/ProjectCategories.vue'
-import ProjectBudget from '@/components/project/ProjectBudget.vue'
-import ProjectGoals from '@/components/project/ProjectGoals.vue'
+import ProjectCategories from '@/components/project/projectDetail/ProjectCategories.vue'
+import ProjectBudget from '@/components/project/projectDetail/ProjectBudget.vue'
+import ProjectGoals from '@/components/project/projectDetail/ProjectGoals.vue'
 import ProcessDocumentList from '@/components/documents/ProcessDocumentList.vue'
-import ProjectComments from '@/components/project/ProjectComments.vue'
-import type {ProjectListFilters} from '#/project'
+import ProjectComments from '@/components/project/projectDetail/ProjectComments.vue'
+import type {ProjectListFilters, ProjectListItem} from '#/project'
 
 const {notify, loading} = useQuasar()
 const {initAssociationCharterStatus} = useCharter()
 const {t} = useI18n()
 const {catchHTTPError} = useErrors()
-const {openDocument, formatDate, reverseDate, dynamicTitle} = useUtil()
+const {formatDate, reverseDate, dynamicTitle} = useUtil()
 const projectStore = useProjectStore()
 const {
+  isReviewOverdue,
   initProjectBasicInfos,
   initProjectGoals,
   initProjectBudget
@@ -35,10 +37,27 @@ const {CURRENCY} = useUtil()
 const route = useRoute()
 
 const isLoaded = ref<boolean>(false)
+const commentsCount = ref<number>(0)
 
 const showReview = computed<boolean>(() => {
   return ['PROJECT_REVIEW_PROCESSING', 'PROJECT_REVIEW_VALIDATED', 'PROJECT_CANCELED']
     .includes(projectStore.projectStatus)
+})
+
+const projectsByYear = computed<{year: string, projects: ProjectListItem[]}[]>(() => {
+  const groups = new Map<string, ProjectListItem[]>()
+
+  for (const project of projectStore.projects?.results ?? []) {
+    if (!project.commission?.commissionDate) continue
+    const year = formatDate(project.commission.commissionDate).split('-')[0]
+    const projects = groups.get(year)
+    if (projects) projects.push(project)
+    else groups.set(year, [project])
+  }
+
+  return [...groups.entries()]
+    .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
+    .map(([year, projects]) => ({year, projects}))
 })
 
 const projectId = computed<number>(() => {
@@ -90,6 +109,7 @@ async function onGetOtherProjects() {
 
 async function mountPage() {
   loading.show()
+  commentsCount.value = 0
   await onGetData()
   await onGetOtherProjects()
   dynamicTitle.value = projectStore.project?.name
@@ -105,21 +125,6 @@ watch(() => route.params.projectId, async () => {
   await mountPage()
 })
 
-async function onGetProjectPdf() {
-  loading.show()
-  try {
-    const response = await projectStore.getProjectPdf()
-    openDocument(response)
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      notify({
-        type: 'negative',
-        message: await catchHTTPError(error.response)
-      })
-    }
-  }
-  loading.hide()
-}
 </script>
 
 <template>
@@ -130,10 +135,10 @@ async function onGetProjectPdf() {
         :show-draft="true"
       />
       <QBtn
+        :label="t('edit')"
         color="commission"
         disable
         icon="bi-pencil"
-        label="Éditer"
         outline
       />
     </div>
@@ -144,7 +149,7 @@ async function onGetProjectPdf() {
             <div>
               <GlobalDefinition
                 v-if="projectStore.project?.association"
-                title="Association"
+                :title="t('association')"
               >
                 {{
                   `${projectStore.project?.association.name}
@@ -153,64 +158,70 @@ async function onGetProjectPdf() {
               </GlobalDefinition>
               <GlobalDefinition
                 v-else
-                title="Porteur"
+                :title="t('project.applicant')"
               >
                 {{ projectStore.project?.user.firstName + ' ' + projectStore.project?.user.lastName }}
               </GlobalDefinition>
               <GlobalDefinition
                 v-if="projectStore.project?.partnerAssociation"
-                title="Association co-porteuse"
+                :title="t('project.partner-association')"
               >
                 {{ projectStore.project?.partnerAssociation }}
               </GlobalDefinition>
               <GlobalDefinition
                 v-if="projectStore.project?.association"
-                title="Statut de la charte"
+                :title="t('charter.status.title')"
               >
                 <CharterStatusIndicator
                   :charter-status="initAssociationCharterStatus(projectStore.project?.association.charterStatus)"
                 />
               </GlobalDefinition>
-              <GlobalDefinition title="Bilans en retard">
-                {{ projectStore.project?.bearerOverdueReviewCount ?? 0 }}
+              <GlobalDefinition
+                v-if="isReviewOverdue(projectStore.project)"
+                :title="t('project.review')"
+              >
+                <OverdueReviewWarning aria-hidden="true"/>
+                {{ t('project.review-overdue-days', {days: projectStore.project?.reviewOverdueDays}) }}
               </GlobalDefinition>
             </div>
             <div>
-              <GlobalDefinition title="Date de dépôt du projet">
+              <GlobalDefinition :title="t('project.creation-date')">
                 {{ reverseDate(formatDate(projectStore.project?.creationDate)) }}
               </GlobalDefinition>
-              <GlobalDefinition title="Date de dernière modification">
+              <GlobalDefinition :title="t('project.edition-date')">
                 {{ reverseDate(formatDate(projectStore.project?.editionDate)) }}
               </GlobalDefinition>
-              <GlobalDefinition title="Date de début du projet">
+              <GlobalDefinition :title="t('project.planned-start-date')">
                 {{ reverseDate(formatDate(projectStore.project?.plannedStartDate)) }}
               </GlobalDefinition>
-              <GlobalDefinition title="Date de fin du projet">
+              <GlobalDefinition :title="t('project.planned-end-date')">
                 {{ reverseDate(formatDate(projectStore.project?.plannedEndDate)) }}
               </GlobalDefinition>
-              <GlobalDefinition :title="`Catégorie${projectStore.project?.categories.length > 1 ? 's' : ''}`">
+              <GlobalDefinition
+                :title="t('project.category', (projectStore.project?.categories.length + 1))"
+              >
                 <ProjectCategories/>
               </GlobalDefinition>
             </div>
             <div>
-              <GlobalDefinition title="Lieux prévus">
+              <GlobalDefinition :title="t('project.planned-location')">
                 {{ projectStore.project?.plannedLocation }}
               </GlobalDefinition>
             </div>
             <div>
-              <GlobalDefinition title="Commission">
+              <GlobalDefinition :title="t('commission')">
                 {{ projectStore.project?.commission.name }}
               </GlobalDefinition>
             </div>
             <div>
               <table>
-                <caption>Financeurs et montants</caption>
+                <caption>{{ t('commission.funds-and-amounts') }}</caption>
                 <tbody>
                   <tr>
-                    <th>Fonds</th>
-                    <th>Statut</th>
-                    <th>Montant demandé</th>
-                    <th>Montant obtenu</th>
+                    <th>{{ t('commission.funds') }}</th>
+                    <th>{{ t('status') }}</th>
+                    <th>{{ t('project.amount-asked') }}</th>
+                    <th>{{ t('project.amount-earned') }}</th>
                   </tr>
                   <tr
                     v-for="item in projectStore.project?.projectCommissionFunds"
@@ -282,28 +293,36 @@ async function onGetProjectPdf() {
             class="rounded-borders bg-white"
           >
             <ProjectExpansionItem
+              :label="t('project.settings')"
               icon="bi-gear"
-              label="Paramètres du projet"
             >
-              En construction
+              {{ t('under-construction') }}
             </ProjectExpansionItem>
             <ProjectExpansionItem
-              :disable="!projectStore.projects?.results.length"
+              :disable="!projectsByYear.length"
+              :label="t('project.bearer-others')"
               icon="bi-send"
-              label="Autres projets du porteur"
             >
-              <ul>
-                <li
-                  v-for="item in projectStore.projects?.results"
-                  :key="`other-project-${item.id}`"
+              <section class="flex-column projects-by-year">
+                <div
+                  v-for="group in projectsByYear"
+                  :key="group.year"
                 >
-                  <RouterLink :to="{name: 'Project', params: {projectId: item.id}}">{{ item.name }}</RouterLink>
-                </li>
-              </ul>
+                  <h4>{{ group.year }}</h4>
+                  <ul>
+                    <li
+                      v-for="item in group.projects"
+                      :key="`other-project-${item.id}`"
+                    >
+                      <RouterLink :to="{name: 'Project', params: {projectId: item.id}}">{{ item.name }}</RouterLink>
+                    </li>
+                  </ul>
+                </div>
+              </section>
             </ProjectExpansionItem>
             <ProjectExpansionItem
+              :label="t('project.details')"
               icon="bi-clipboard"
-              label="Détails du projet"
             >
               <section class="flex-column">
                 <h4>
@@ -311,15 +330,15 @@ async function onGetProjectPdf() {
                 </h4>
                 <ProjectBudget/>
                 <h4>
-                  Objectifs
+                  {{ t('project.goals-title') }}
                 </h4>
-                <ProjectGoals/>
+                <ProjectGoals rich-text/>
               </section>
             </ProjectExpansionItem>
             <ProjectExpansionItem
               :disable="!showReview"
+              :label="t('project.review-details')"
               icon="bi-person-video3"
-              label="Détails du bilan"
             >
               <div class="flex-column">
                 <div class="grid">
@@ -341,32 +360,42 @@ async function onGetProjectPdf() {
                     {{ projectStore.projectReview?.income + CURRENCY }}
                   </GlobalDefinition>
                 </div>
-
-                <GlobalDefinition :title="t('project.review')">
+                <GlobalDefinition
+                  :title="t('project.review')"
+                  rich-text
+                >
                   {{ projectStore.projectReview?.review }}
                 </GlobalDefinition>
-
-                <GlobalDefinition :title="t('project.impact-students')">
+                <GlobalDefinition
+                  :title="t('project.impact-students')"
+                  rich-text
+                >
                   {{ projectStore.projectReview?.impactStudents }}
                 </GlobalDefinition>
-
-                <GlobalDefinition :title="t('project.description')">
+                <GlobalDefinition
+                  :title="t('project.description')"
+                  rich-text
+                >
                   {{ projectStore.projectReview?.description }}
                 </GlobalDefinition>
-
-                <GlobalDefinition :title="t('project.difficulties')">
+                <GlobalDefinition
+                  :title="t('project.difficulties')"
+                  rich-text
+                >
                   {{ projectStore.projectReview?.difficulties }}
                 </GlobalDefinition>
-
-                <GlobalDefinition :title="t('project.improvements')">
+                <GlobalDefinition
+                  :title="t('project.improvements')"
+                  rich-text
+                >
                   {{ projectStore.projectReview?.improvements }}
                 </GlobalDefinition>
               </div>
             </ProjectExpansionItem>
             <ProjectExpansionItem
               :disable="!projectStore.projectDocuments.length"
+              :label="t('project.documents')"
               icon="bi-file-earmark"
-              label="Documents du projet"
             >
               <ProcessDocumentList
                 v-if="isLoaded"
@@ -375,12 +404,14 @@ async function onGetProjectPdf() {
               />
             </ProjectExpansionItem>
             <ProjectExpansionItem
+              :count="commentsCount"
+              :label="t('comment', 2)"
               icon="bi-chat"
-              label="Commentaires"
             >
               <ProjectComments
                 v-if="isLoaded"
                 :project="projectStore.project?.id"
+                @count-change="commentsCount = $event"
               />
             </ProjectExpansionItem>
           </QList>
@@ -454,5 +485,11 @@ dd > span {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 2rem;
+}
+
+.projects-by-year {
+  h4 {
+    margin-bottom: 0.5rem;
+  }
 }
 </style>

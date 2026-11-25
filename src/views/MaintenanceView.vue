@@ -15,7 +15,7 @@ onMounted(async () => {
   try {
     await axiosPublic.get('/')
     await router.push({name: 'Home'})
-  } catch (error) {
+  } catch {
     return
   }
 })

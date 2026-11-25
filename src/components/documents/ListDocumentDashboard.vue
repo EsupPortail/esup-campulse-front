@@ -20,7 +20,7 @@ async function onDownloadDocument(documentId: number | undefined) {
 
 <template>
   <div
-    v-for="(document, index) in props.documents"
+    v-for="(document, index) in documents"
     :key="index"
     class="document-input-group"
   >

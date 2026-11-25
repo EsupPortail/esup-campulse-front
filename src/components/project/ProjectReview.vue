@@ -15,7 +15,7 @@ const {loading, notify} = useQuasar()
 const {catchHTTPError} = useErrors()
 const {submitProjectReview} = useSubmitReview()
 
-const props = defineProps<{
+defineProps<{
   view: 'submitProjectReview' | 'projectReviewDetail'
 }>()
 
@@ -49,7 +49,7 @@ async function onSubmitProjectReview() {
         <div class="recap-section-title flex-row-space-between">
           <h3>{{ t('project.general-infos') }}</h3>
           <QBtn
-            v-if="props.view === 'submitProjectReview'"
+            v-if="view === 'submitProjectReview'"
             :label="t('modify')"
             class="btn-lg"
             color="commission"
@@ -65,7 +65,7 @@ async function onSubmitProjectReview() {
         <div class="recap-section-title flex-row-space-between">
           <h3>{{ t('project.review') }}</h3>
           <QBtn
-            v-if="props.view === 'submitProjectReview'"
+            v-if="view === 'submitProjectReview'"
             :label="t('modify')"
             class="btn-lg"
             color="commission"
@@ -82,7 +82,7 @@ async function onSubmitProjectReview() {
       <div class="recap-section-title flex-row-space-between">
         <h3>{{ t('project.documents') }}</h3>
         <QBtn
-          v-if="props.view === 'submitProjectReview'"
+          v-if="view === 'submitProjectReview'"
           :label="t('modify')"
           class="btn-lg"
           color="commission"
@@ -91,14 +91,14 @@ async function onSubmitProjectReview() {
         />
       </div>
 
-      <InfoVerifyDocuments v-if="props.view === 'submitProjectReview'"/>
+      <InfoVerifyDocuments v-if="view === 'submitProjectReview'"/>
       <ProcessDocumentList
         :association-id="null"
         process="review"
       />
     </div>
     <div
-      v-if="props.view === 'submitProjectReview'"
+      v-if="view === 'submitProjectReview'"
       class="flex-row-center"
     >
       <QBtn

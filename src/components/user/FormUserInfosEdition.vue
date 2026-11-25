@@ -67,7 +67,7 @@ onMounted(() => {
     <InfoFormRequiredFields/>
     <QInput
       v-model="userToUpdate.firstName"
-      :disable="!!props.user?.isCas"
+      :disable="!!user?.isCas"
       :label="t('forms.first-name') + ' *'"
       :rules="[val => val && val.length > 0 || t('forms.required-first-name')]"
       autocomplete="given-name"
@@ -77,7 +77,7 @@ onMounted(() => {
     />
     <QInput
       v-model="userToUpdate.lastName"
-      :disable="!!props.user?.isCas"
+      :disable="!!user?.isCas"
       :label="t('forms.last-name') + ' *'"
       :rules="[val => val && val.length > 0 || t('forms.required-last-name')]"
       autocomplete="family-name"
@@ -96,7 +96,7 @@ onMounted(() => {
       lazy-rules
     />
     <QExpansionItem
-      v-if="!props.user?.isCas"
+      v-if="!user?.isCas"
       v-model="changeEmail"
       :label="t('forms.modify-email')"
       header-class="text-dashboard"

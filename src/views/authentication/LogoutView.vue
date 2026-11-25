@@ -15,7 +15,7 @@ onMounted(async () => {
   await router.push({name: 'Login'})
   notify({
     type: 'negative',
-    message: t('notifications.negative.automatic-logout')
+    message: t('errors.auth.automatic-logout')
   })
   loading.hide()
 })

@@ -14,14 +14,15 @@ import type {TargetPage} from '#/global'
 import type {ProjectListFilters} from '#/project'
 import ProjectSearchForm from '@/components/project/projectList/ProjectSearchForm.vue'
 import ProjectFundValidationIndicator from '@/components/project/ProjectFundValidationIndicator.vue'
-import CommissionExport from '@/components/commission/CommissionExport.vue'
+import CommissionProjectExport from '@/components/commission/CommissionProjectExport.vue'
+import OverdueReviewWarning from '@/components/project/projectList/OverdueReviewWarning.vue'
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
-const {formatDate} = useUtil()
+const {formatDate, reverseDate} = useUtil()
 const {listRange, changePage, pagination, updateRowsPerPage} = usePagination()
-const {projectStatuses, searchProjectFilters} = useProject()
+const {projectStatuses, searchProjectFilters, clearProjectSearch, isReviewOverdue} = useProject()
 const projectStore = useProjectStore()
 
 const props = defineProps<{
@@ -96,18 +97,6 @@ async function onRequest(props: any) {
   await updateRowsPerPage(props, totalPages.value, onGetProjects)
 }
 
-function onClearSearch() {
-  searchProjectFilters.value.manualIdentifier = null
-  searchProjectFilters.value.name = null
-  searchProjectFilters.value.associationName = null
-  searchProjectFilters.value.userName = null
-  searchProjectFilters.value.editionDate = {from: null, to: null}
-  searchProjectFilters.value.commissionDate = {from: null, to: null}
-  searchProjectFilters.value.funds = []
-  searchProjectFilters.value.projectStatuses = []
-  searchProjectFilters.value.category = null
-}
-
 const columns: QTableProps['columns'] = [
   {
     name: 'id',
@@ -137,7 +126,7 @@ const columns: QTableProps['columns'] = [
   {
     name: 'commissionDate',
     align: 'left',
-    label: t('commission.commission'),
+    label: t('commission'),
     field: row => row.commission?.commissionDate,
     sortable: false,
     format: val => `${val}`
@@ -172,7 +161,7 @@ async function onRowClick(projectId: number) {
   <div class="flex-column">
     <ProjectSearchForm
       :show-commission-field="!commissionId"
-      @clear="onClearSearch"
+      @clear="clearProjectSearch"
       @search="onChangePage('first')"
     />
     <QTable
@@ -247,14 +236,14 @@ async function onRowClick(projectId: number) {
             :props="props"
             headers="lastModifiedDate"
           >
-            {{ formatDate(props.row.editionDate).split('-').reverse().join('/') }}
+            {{ reverseDate(formatDate(props.row.editionDate)) }}
           </QTd>
           <QTd
             key="commissionDate"
             :props="props"
             headers="commissionDate"
           >
-            {{ formatDate(props.row.commission?.commissionDate).split('-').reverse().join('/') }}
+            {{ reverseDate(formatDate(props.row.commission?.commissionDate)) }}
           </QTd>
           <QTd
             key="projectCommissionFunds"
@@ -268,10 +257,13 @@ async function onRowClick(projectId: number) {
             key="status"
             :props="props"
           >
-            <ProjectStatusIndicator
-              :project-status="props.row.projectStatus"
-              :show-draft="false"
-            />
+            <div class="row justify-end items-center no-wrap">
+              <ProjectStatusIndicator
+                :project-status="props.row.projectStatus"
+                :show-draft="false"
+              />
+              <OverdueReviewWarning v-if="isReviewOverdue(props.row)" />
+            </div>
           </QTd>
         </QTr>
       </template>
@@ -327,7 +319,7 @@ async function onRowClick(projectId: number) {
         </div>
       </template>
     </QTable>
-    <CommissionExport
+    <CommissionProjectExport
       v-if="commissionId"
       :commission-id="commissionId"
       :selected="selected"

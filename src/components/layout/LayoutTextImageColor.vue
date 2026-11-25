@@ -12,7 +12,7 @@ const props = defineProps<{
 
 <template>
   <div
-    :class="`image-text-section bg-${props.color}-light`"
+    :class="`image-text-section bg-${color}-light`"
   >
     <div class="container">
       <div>
@@ -24,7 +24,7 @@ const props = defineProps<{
           :src="props?.img"
           alt=""
         />
-        <figcaption v-if="props.copyright">{{ props.copyright }}</figcaption>
+        <figcaption v-if="copyright">{{ copyright }}</figcaption>
       </figure>
     </div>
   </div>

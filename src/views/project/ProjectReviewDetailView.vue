@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ProjectComments from '@/components/project/ProjectComments.vue'
+import ProjectComments from '@/components/project/projectDetail/ProjectComments.vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
