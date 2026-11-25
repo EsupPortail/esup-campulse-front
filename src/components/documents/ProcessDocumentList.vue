@@ -30,7 +30,7 @@ const props = defineProps<{
   associationId?: number | null,
 }>()
 
-const documentGroups = computed<{title: string, documents: ProcessDocument[]}[]>(() => {
+const documentGroups = computed<{ title: string, documents: ProcessDocument[] }[]>(() => {
   if (props.process !== 'manageProject') {
     return [{title: '', documents: processDocuments.value}]
   }
@@ -135,7 +135,6 @@ onMounted(async () => await onGetDocuments())
   gap: 0.5rem;
 
   & + & {
-    border-top: 1px solid #d7d7d7;
     padding-top: 1.5rem;
   }
 }
