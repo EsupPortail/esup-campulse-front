@@ -29,6 +29,7 @@ const commissionFilterFactory = (filters?: Partial<CommissionFilters>): string[]
   if (filters?.submissionDateAfter) factory.push(`submission_date_after=${filters.submissionDateAfter}`)
   if (filters?.submissionDateBefore) factory.push(`submission_date_before=${filters.submissionDateBefore}`)
   if (filters?.withClosedFutureCommissions !== undefined) factory.push(`with_closed_future_commissions=${filters.withClosedFutureCommissions}`)
+  if (filters?.isArchived !== undefined) factory.push(`is_archived=${filters.isArchived}`)
   if (filters?.name) factory.push(`name=${filters.name}`)
   if (filters?.page) factory.push(`page=${filters.page}`)
   if (filters?.pageSize) factory.push(`page_size=${filters.pageSize}`)

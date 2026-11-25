@@ -45,6 +45,7 @@ async function onGetCommissions() {
   loading.show()
   const search = searchCommissionFilters.value
   const filters: Partial<CommissionFilters> = {
+    isArchived: false,
     funds: searchCommissionFilters.value.funds,
     commissionDateAfter: cleanDate(search.commissionDate.from),
     commissionDateBefore: cleanDate(search.commissionDate.to),
