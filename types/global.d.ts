@@ -5,6 +5,10 @@ export interface BaseSelectLabel<TValue extends string | number = string | numbe
 
 export type SelectLabel = BaseSelectLabel<string | number>;
 
+export interface SelectableLabel extends SelectLabel {
+  disable?: boolean;
+}
+
 export interface Error {
   status: number;
   data: {

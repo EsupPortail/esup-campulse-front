@@ -29,10 +29,10 @@ const {
   projectCommissionFunds,
   projectCommissionFundsDetail,
   projectGoals,
-  commissionLabels,
+  commissionOptions,
   commissionFunds,
   funds,
-  fundsLabels,
+  fundOptions,
   associationUserLabels,
   associationOptions,
   canChooseApplicant,
@@ -120,8 +120,8 @@ onBeforeRouteLeave(resetForm)
             <SubmitProjectCommissionStep
               v-model:project-commission="projectCommission"
               v-model:project-commission-funds="projectCommissionFunds"
-              :commission-labels="commissionLabels"
-              :funds-labels="fundsLabels"
+              :commission-options="commissionOptions"
+              :fund-options="fundOptions"
               @submit="submitCommission(3)"
               @back="goToStep(1)"
               @commission-change="onCommissionChange"

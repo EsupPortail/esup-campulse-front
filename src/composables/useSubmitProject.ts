@@ -2,14 +2,14 @@ import {computed, ref, watch} from 'vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import type {ProjectStatus} from '#/project'
+import type {Commission, CommissionFund, Fund} from '#/commission'
 import type {UploadedProcessDocument} from '#/document'
-import type {SelectLabel} from '#/global'
+import type {SelectableLabel, SelectLabel} from '#/global'
 import router from '@/router'
 import useProject from '@/composables/useProject'
 import useUtil from '@/composables/useUtil'
 import useErrors from '@/composables/useError'
 import useDocumentUploads from '@/composables/useDocumentUpload'
-import useCommissions from '@/composables/useCommissionFund'
 import {useProjectStore} from '@/stores/useProjectStore'
 import {useProfileStore} from '@/stores/useProfileStore'
 import {useCommissionStore} from '@/stores/useCommissionStore'
@@ -26,9 +26,8 @@ export default function useSubmitProject() {
   const associationStore = useAssociationStore()
   const {loading, notify} = useQuasar()
   const {catchHTTPError} = useErrors()
-  const {fromDateIsAnterior, CURRENCY} = useUtil()
+  const {fromDateIsAnterior, reverseDate, CURRENCY} = useUtil()
   const {uploadDocuments, createFileLink} = useDocumentUploads()
-  const {selectedCommissionFundLabels} = useCommissions()
   const {
     projectInfos,
     projectBudget,
@@ -80,11 +79,33 @@ export default function useSubmitProject() {
   const correctAudienceAmount = computed<boolean>(() =>
     projectBudget.value.amountStudentsAudience <= projectBudget.value.amountAllAudience)
 
-  const commissionLabels = computed(() => commissionStore.commissionLabels ?? [])
-  const commissionFunds = computed(() => commissionStore.commissionFunds)
-  const funds = computed(() => fundStore.funds)
-  const fundsLabels = computed(() => projectCommission.value === null ? [] :
-    selectedCommissionFundLabels(projectCommission.value, isSite.value))
+  const commissions = ref<Commission[]>([])
+
+  const commissionFunds = ref<CommissionFund[]>([])
+
+  const funds = ref<Fund[]>([])
+
+  const selectableCommissionFunds = computed(() => commissionFunds.value
+    .filter(commissionFund => commissionFund.commission === projectCommission.value)
+    .filter(commissionFund => isSite.value
+      || !funds.value.find(fund => fund.id === commissionFund.fund)?.isSite)
+    .map(commissionFund => ({value: commissionFund.id, fund: commissionFund.fund})))
+
+  const commissionOptions = computed<SelectableLabel[]>(() => commissions.value.map(commission => ({
+    value: commission.id,
+    label: `${commission.name} (${reverseDate(commission.commissionDate)})`,
+    disable: !isSite.value && !commission.funds?.some(fund => !fund.isSite)
+  })))
+
+  const fundOptions = computed<SelectableLabel[]>(() => funds.value.map(fund => {
+    const commissionFund = selectableCommissionFunds.value.find(obj => obj.fund === fund.id)
+    return {
+      value: commissionFund?.value ?? -fund.id,
+      label: fund.acronym,
+      disable: commissionFund === undefined
+    }
+  }))
+
   const associationUserLabels = computed(() => associationStore.associationUserLabels)
 
   const canChooseApplicant = computed<boolean>(() => newProject.value && !newProjectPosted.value)
@@ -133,6 +154,9 @@ export default function useSubmitProject() {
   watch([applicant, associationId], async ([currentApplicant, currentAssociationId]) => {
     if (!canChooseApplicant.value) return
 
+    projectCommission.value = null
+    projectCommissionFunds.value = []
+
     if (currentApplicant !== 'association' && currentAssociationId !== null) {
       associationId.value = null
       return
@@ -153,12 +177,12 @@ export default function useSubmitProject() {
 
   async function loadCommissionData(): Promise<void> {
     await withErrorNotification(async () => {
-      await commissionStore.getCommissions({
-        isOpenToProjects: true,
-        isSite: isSite.value ? undefined : false
-      })
+      await commissionStore.getCommissions({isOpenToProjects: true})
+      commissions.value = [...(commissionStore.commissions?.results ?? [])]
       await fundStore.getFunds()
+      funds.value = [...fundStore.funds]
       await commissionStore.getCommissionFunds()
+      commissionFunds.value = [...commissionStore.commissionFunds]
       if (!newProject.value) {
         await projectStore.getProjectCommissionFunds({
           filter: 'project',
@@ -193,7 +217,7 @@ export default function useSubmitProject() {
     reInitProjectCommissionFunds(isSite.value)
   }
 
-  async function submitApplicant(nextStep: number): Promise<void> {
+  function submitApplicant(nextStep: number): void {
     if (!projectInfos.value.name) return
     if (!applicant.value) return
     if (applicant.value === 'association'
@@ -333,10 +357,10 @@ export default function useSubmitProject() {
     projectCommissionFunds,
     projectCommissionFundsDetail,
     projectGoals,
-    commissionLabels,
+    commissionOptions,
     commissionFunds,
     funds,
-    fundsLabels,
+    fundOptions,
     associationUserLabels,
     associationOptions,
     canChooseApplicant,

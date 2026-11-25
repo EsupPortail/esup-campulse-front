@@ -1,15 +1,15 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import type {SelectLabel} from '#/global'
+import type {SelectableLabel} from '#/global'
 
 const {t} = useI18n()
 
 const projectCommission = defineModel<number | null>('projectCommission', {required: true})
 const projectCommissionFunds = defineModel<number[]>('projectCommissionFunds', {required: true})
 
-const props = defineProps<{
-  commissionLabels: SelectLabel[],
-  fundsLabels: SelectLabel[]
+defineProps<{
+  commissionOptions: SelectableLabel[],
+  fundOptions: SelectableLabel[]
 }>()
 
 const emit = defineEmits<{
@@ -25,7 +25,7 @@ const emit = defineEmits<{
     @submit.prevent="emit('submit')"
   >
     <div
-      v-if="!commissionLabels.length"
+      v-if="!commissionOptions.length"
       class="info-panel info-panel-warning"
     >
       <i
@@ -36,50 +36,52 @@ const emit = defineEmits<{
     </div>
 
     <template v-else>
-      <QSelect
-        v-model="projectCommission"
+      <QField
         :label="t('project.commission-choice') + ' *'"
-        :options="commissionLabels"
+        :model-value="projectCommission"
         :rules="[val => val !== null || t('forms.select-project-commission-date')]"
-        clearable
+        borderless
         color="commission"
-        emit-value
-        filled
-        for="projectCommission"
         lazy-rules
-        map-options
-        @update:model-value="emit('commissionChange')"
       >
+        <QOptionGroup
+          v-model="projectCommission"
+          :aria-label="t('project.commission-choice')"
+          :options="commissionOptions"
+          color="commission"
+          name="projectCommission"
+          role="radiogroup"
+          type="radio"
+          @update:model-value="emit('commissionChange')"
+        />
         <template #hint>
-          <p aria-describedby="projectCommission">
-            {{ t('project.commission-choice-hint') }}
-          </p>
+          <p>{{ t('project.commission-choice-hint') }}</p>
         </template>
-      </QSelect>
+      </QField>
 
-      <QSelect
-        v-model="projectCommissionFunds"
+      <QField
         :label="t('project.commission-funds-choice') + ' *'"
-        :options="props.fundsLabels"
-        :readonly="projectCommission === null"
+        :model-value="projectCommissionFunds"
         :rules="[val => val.length || t('forms.select-project-commission-member')]"
-        clearable
+        borderless
         color="commission"
-        emit-value
-        filled
-        for="projectCommissionFunds"
         lazy-rules
-        map-options
-        multiple
         stack-label
-        use-chips
       >
+        <QOptionGroup
+          v-model="projectCommissionFunds"
+          :aria-label="t('project.commission-funds-choice')"
+          :disable="projectCommission === null"
+          :options="fundOptions"
+          color="commission"
+          name="projectCommissionFunds"
+          role="group"
+          type="checkbox"
+        />
         <template #hint>
-          <p aria-describedby="projectCommissionFunds">
-            {{ t('project.commission-funds-choice-hint') }}
-          </p>
+          <p>{{ t('project.commission-funds-choice-hint') }}</p>
         </template>
-      </QSelect>
+      </QField>
     </template>
 
     <div class="flex-row-center padding-top padding-bottom">
@@ -91,7 +93,7 @@ const emit = defineEmits<{
         @click="emit('back')"
       />
       <QBtn
-        :disable="!props.commissionLabels.length"
+        :disable="!commissionOptions.length"
         :label="t('continue')"
         class="btn-lg"
         color="commission"
@@ -104,4 +106,29 @@ const emit = defineEmits<{
 
 <style lang="scss" scoped>
 @import "@/assets/styles/forms";
+@import "@/assets/_variables.scss";
+
+.q-option-group {
+  :deep(.q-radio__label),
+  :deep(.q-checkbox__label) {
+    font: inherit;
+    color: $textColor1;
+  }
+
+  :deep(.q-radio__inner--truthy ~ .q-radio__label),
+  :deep(.q-checkbox__inner--truthy ~ .q-checkbox__label) {
+    color: $commissionColor;
+  }
+
+  :deep(.q-radio.disabled),
+  :deep(.q-checkbox.disabled) {
+
+    .q-radio__label,
+    .q-checkbox__label,
+    .q-radio__inner,
+    .q-checkbox__inner {
+      color: $textColor2;
+    }
+  }
+}
 </style>
