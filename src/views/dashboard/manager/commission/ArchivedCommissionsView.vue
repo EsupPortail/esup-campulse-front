@@ -33,7 +33,7 @@ async function onGetCommissions() {
   dynamicTitle.value = route.meta.title as string
   const search = searchCommissionFilters.value
   const filters: Partial<CommissionFilters> = {
-    onlyWithActiveProjects: false,
+    isArchived: true,
     funds: search.funds,
     commissionDateAfter: cleanDate(search.commissionDate.from),
     commissionDateBefore: cleanDate(search.commissionDate.to),
