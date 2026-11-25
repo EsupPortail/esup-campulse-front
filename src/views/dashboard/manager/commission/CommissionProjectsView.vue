@@ -42,7 +42,7 @@ async function onGetCommission() {
 
 onMounted(async () => {
   await onGetCommission()
-  dynamicTitle.value = commissionStore.commission?.name
+  dynamicTitle.value = commissionStore.managedCommission?.name
 })
 </script>
 
@@ -52,17 +52,17 @@ onMounted(async () => {
       <div class="container-lg flex-column">
         <dl>
           <GlobalDefinition :title="t('commission.date')">
-            {{ reverseDate(commissionStore.commission?.commissionDate) }}
+            {{ reverseDate(commissionStore.managedCommission?.commissionDate) }}
           </GlobalDefinition>
           <GlobalDefinition :title="t('commission.submission-date')">
-            {{ reverseDate(commissionStore.commission?.submissionDate) }}
+            {{ reverseDate(commissionStore.managedCommission?.submissionDate) }}
           </GlobalDefinition>
           <GlobalDefinition :title="t('edition-date')">
-            {{ reverseDate(formatDate(commissionStore.commission?.editionDate)) }}
+            {{ reverseDate(formatDate(commissionStore.managedCommission?.editionDate)) }}
           </GlobalDefinition>
           <GlobalDefinition :title="t('commission.funds')">
             <QChip
-              v-for="fund in commissionStore.commission?.funds"
+              v-for="fund in commissionStore.managedCommission?.funds"
               :key="`fund-${fund.id}`"
               color="commission"
               outline
@@ -71,16 +71,16 @@ onMounted(async () => {
             </QChip>
           </GlobalDefinition>
           <GlobalDefinition :title="t('commission.submitted-projects-count')">
-            {{ commissionStore.commission?.submittedProjectsCount ?? 0 }}
+            {{ commissionStore.managedCommission?.submittedProjectsCount ?? 0 }}
           </GlobalDefinition>
           <GlobalDefinition :title="t('validation-pending')">
-            {{ commissionStore.commission?.processingProjectsCount ?? 0 }}
+            {{ commissionStore.managedCommission?.processingProjectsCount ?? 0 }}
           </GlobalDefinition>
           <GlobalDefinition :title="t('edition-pending')">
-            {{ commissionStore.commission?.standbyProjectsCount ?? 0 }}
+            {{ commissionStore.managedCommission?.standbyProjectsCount ?? 0 }}
           </GlobalDefinition>
           <GlobalDefinition :title="t('commission.overdue-reviews-count')">
-            {{ commissionStore.commission?.overdueReviewCount ?? 0 }}
+            {{ commissionStore.managedCommission?.overdueReviewCount ?? 0 }}
           </GlobalDefinition>
         </dl>
         <ProjectListTable

@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import type {Commission} from '#/commission'
+import {useI18n} from 'vue-i18n'
+import type {ManagedCommission} from '#/commission'
 import GlobalDefinition from '@/components/global/GlobalDefinition.vue'
 import useUtil from '@/composables/useUtil'
 import GlobalBooleanIcon from '@/components/global/GlobalBooleanIcon.vue'
-import {useI18n} from 'vue-i18n'
 
 const {reverseDate, formatDate} = useUtil()
 const {t} = useI18n()
 
 defineProps<{
-  commission: Commission,
+  commission: ManagedCommission,
   headingLevel: number,
   archived?: boolean,
 }>()

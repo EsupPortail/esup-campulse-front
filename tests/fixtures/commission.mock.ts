@@ -1,4 +1,4 @@
-import type {Commission, Fund} from '#/commission'
+import type {Commission, Fund, ManagedCommission} from '#/commission'
 
 export const _funds: Fund[] = [
   {
@@ -31,11 +31,12 @@ export const _commissions: Commission[] = [
     commissionDate: '1990-01-30',
     editionDate: '1990-01-01',
     isOpenToProjects: false,
+    isArchived: true,
     name: 'Commission du passé',
-    standbyProjectsCount: 0,
-    processingProjectsCount: 0,
-    submittedProjectsCount: 0,
-    overdueReviewCount: 0,
+    room: 'Salle A',
+    building: 'Bâtiment international',
+    address: '1 rue René Descartes, 67000 Strasbourg',
+    scheduledTime: '14:00',
     funds: [_funds[2]]
   },
   {
@@ -44,11 +45,12 @@ export const _commissions: Commission[] = [
     commissionDate: '2099-10-20',
     editionDate: '2099-09-01',
     isOpenToProjects: true,
+    isArchived: false,
     name: 'Commission numéro 1',
-    standbyProjectsCount: 2,
-    processingProjectsCount: 3,
-    submittedProjectsCount: 5,
-    overdueReviewCount: 1,
+    room: 'Salle B',
+    building: 'Bâtiment international',
+    address: '1 rue René Descartes, 67000 Strasbourg',
+    scheduledTime: '09:00',
     funds: [_funds[0], _funds[1], _funds[2]]
   },
   {
@@ -57,11 +59,12 @@ export const _commissions: Commission[] = [
     commissionDate: '2099-10-21',
     editionDate: '2099-09-01',
     isOpenToProjects: true,
+    isArchived: false,
     name: 'Commission de rentrée d\'octobre 2099',
-    standbyProjectsCount: 1,
-    processingProjectsCount: 2,
-    submittedProjectsCount: 4,
-    overdueReviewCount: 0,
+    room: 'Amphithéâtre C',
+    building: 'Campus Esplanade',
+    address: '2 rue du Général de Gaulle, 67000 Strasbourg',
+    scheduledTime: '10:30',
     funds: [_funds[2]]
   },
   {
@@ -70,14 +73,52 @@ export const _commissions: Commission[] = [
     commissionDate: '2099-10-22',
     editionDate: '2099-09-01',
     isOpenToProjects: true,
+    isArchived: false,
     name: 'Une autre commission de rentrée d\'octobre 2099',
-    standbyProjectsCount: 0,
-    processingProjectsCount: 1,
-    submittedProjectsCount: 3,
-    overdueReviewCount: 0,
+    room: 'Salle D',
+    building: 'Campus Esplanade',
+    address: '2 rue du Général de Gaulle, 67000 Strasbourg',
+    scheduledTime: '15:00',
     funds: [_funds[0]]
   }
 ]
+
+type CommissionCounts = Pick<
+  ManagedCommission,
+  'standbyProjectsCount' | 'processingProjectsCount' | 'submittedProjectsCount' | 'overdueReviewCount'
+>
+
+const _commissionCounts: CommissionCounts[] = [
+  {
+    standbyProjectsCount: 0,
+    processingProjectsCount: 0,
+    submittedProjectsCount: 0,
+    overdueReviewCount: 0
+  },
+  {
+    standbyProjectsCount: 2,
+    processingProjectsCount: 3,
+    submittedProjectsCount: 5,
+    overdueReviewCount: 1
+  },
+  {
+    standbyProjectsCount: 1,
+    processingProjectsCount: 2,
+    submittedProjectsCount: 4,
+    overdueReviewCount: 0
+  },
+  {
+    standbyProjectsCount: 0,
+    processingProjectsCount: 1,
+    submittedProjectsCount: 3,
+    overdueReviewCount: 0
+  }
+]
+
+export const _managedCommissions: ManagedCommission[] = _commissions.map((commission, index) => ({
+  ...commission,
+  ..._commissionCounts[index]
+}))
 
 export const _commissionFunds = [
   {

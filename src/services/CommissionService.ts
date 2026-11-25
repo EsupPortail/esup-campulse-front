@@ -7,6 +7,7 @@ import type {
   CommissionFund,
   CreateCommissionFund,
   Fund,
+  ManagedCommission,
   PostCommission
 } from '#/commission'
 import type {AxiosResponse} from 'axios'
@@ -44,12 +45,12 @@ export async function getCommissions(filters?: Partial<CommissionFilters>): Prom
   return (await axiosPublic.get<PaginatedList<Commission>>(urlString)).data
 }
 
-export async function getManagedCommissions(filters?: Partial<CommissionFilters>): Promise<PaginatedList<Commission>> {
+export async function getManagedCommissions(filters?: Partial<CommissionFilters>): Promise<PaginatedList<ManagedCommission>> {
   let urlString = `${modelBaseUrl}/manage`
   const factory = commissionFilterFactory(filters)
   if (factory) urlString += `?${factory.join('&')}`
   const {axiosAuthenticated} = useAxios()
-  return (await axiosAuthenticated.get<PaginatedList<Commission>>(urlString)).data
+  return (await axiosAuthenticated.get<PaginatedList<ManagedCommission>>(urlString)).data
 }
 
 export async function getCommission(commissionId: number): Promise<Commission> {
@@ -57,9 +58,9 @@ export async function getCommission(commissionId: number): Promise<Commission> {
   return (await axiosPublic.get<Commission>(`${modelBaseUrl}/${commissionId}`)).data
 }
 
-export async function getManagedCommission(commissionId: number): Promise<Commission> {
+export async function getManagedCommission(commissionId: number): Promise<ManagedCommission> {
   const {axiosAuthenticated} = useAxios()
-  return (await axiosAuthenticated.get<Commission>(`${modelBaseUrl}/${commissionId}/manage`)).data
+  return (await axiosAuthenticated.get<ManagedCommission>(`${modelBaseUrl}/${commissionId}/manage`)).data
 }
 
 export async function getCommissionFunds(): Promise<CommissionFund[]> {

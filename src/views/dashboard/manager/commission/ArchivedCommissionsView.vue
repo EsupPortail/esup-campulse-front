@@ -78,7 +78,7 @@ onUnmounted(() => {
         @search="onResetCommissionsPage"
       />
       <ProjectCommissionListCard
-        v-for="commission in commissionStore.commissions?.results"
+        v-for="commission in commissionStore.managedCommissions?.results"
         :key="`commission-${commission.id}`"
         :archived="true"
         :commission="commission"
@@ -86,14 +86,14 @@ onUnmounted(() => {
       />
       <div class="flex-row-center">
         <QPagination
-          v-if="commissionStore.commissions?.count > 10"
+          v-if="commissionStore.managedCommissions?.count > 10"
           v-model="commissionPaginationCurrent"
-          :max="commissionStore.commissions?.totalPages"
+          :max="commissionStore.managedCommissions?.totalPages"
           color="commission"
           @update:model-value="onGetCommissions"
         />
       </div>
-      <p v-if="!commissionStore.commissions?.results.length">{{ t('commission.no-archived-commission') }}</p>
+      <p v-if="!commissionStore.managedCommissions?.results.length">{{ t('commission.no-archived-commission') }}</p>
       <div class="flex-row-center">
         <QBtn
           :label="t('commission.on-going')"

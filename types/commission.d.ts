@@ -22,15 +22,24 @@ export interface CommissionBase {
   editionDate: string;
   isOpenToProjects: boolean;
   name: string;
-  standbyProjectsCount: number | null;
-  processingProjectsCount: number | null;
-  submittedProjectsCount: number | null;
-  overdueReviewCount: number | null;
+  isArchived: boolean;
+  room: string;
+  building: string;
+  address: string;
+  scheduledTime: string;
   funds: Fund[];
 }
 
 export interface Commission extends CommissionBase {
   id: number;
+}
+
+export interface ManagedCommission extends CommissionBase {
+  id: number;
+  standbyProjectsCount: number | null;
+  processingProjectsCount: number | null;
+  submittedProjectsCount: number | null;
+  overdueReviewCount: number | null;
 }
 
 export type PostCommission = Pick<
@@ -65,8 +74,8 @@ interface SelectLabelFund {
 }
 
 export interface CommissionStore {
-  commissions: PaginatedList<Commission>;
-  commission: Commission | undefined;
+  commissions: PaginatedList<Commission | ManagedCommission>;
+  commission: Commission | ManagedCommission | undefined;
   commissionFunds: CommissionFund[];
 }
 
@@ -92,9 +101,9 @@ export interface CommissionFilters {
 }
 
 export interface SearchCommissionFilters {
-  name: string; // todo
+  name: string;
   commissionDate: DateRange;
-  submissionDate: DateRange; // todo
-  editionDate: DateRange; // todo
-  funds: number[]; // todo
+  submissionDate: DateRange;
+  editionDate: DateRange;
+  funds: number[];
 }

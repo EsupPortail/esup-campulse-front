@@ -119,16 +119,16 @@ watch(() => dashboardTab.value, async () => {
               />
             </div>
             <ProjectCommissionListCard
-              v-for="commission in commissionStore.commissions?.results"
+              v-for="commission in commissionStore.managedCommissions?.results"
               :key="`commission-${commission.id}`"
               :commission="commission"
               :heading-level="2"
             />
             <div class="flex-row-center">
               <QPagination
-                v-if="commissionStore.commissions?.count > 10"
+                v-if="commissionStore.managedCommissions?.count > 10"
                 v-model="commissionPaginationCurrent"
-                :max="commissionStore.commissions?.totalPages"
+                :max="commissionStore.managedCommissions?.totalPages"
                 color="commission"
                 @update:model-value="onGetCommissions"
               />

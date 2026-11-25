@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
-import type {SelectLabel} from '#/global'
-import type {CommissionFilters, CommissionStore} from '#/commission'
+import type {PaginatedList, SelectLabel} from '#/global'
+import type {CommissionFilters, CommissionStore, ManagedCommission} from '#/commission'
 import * as commissionService from '@/services/CommissionService'
 
 export const useCommissionStore = defineStore('commissionStore', {
@@ -17,7 +17,11 @@ export const useCommissionStore = defineStore('commissionStore', {
         label: commission.name + ' ('
           + commission.commissionDate.split('-').reverse().join('/') + ')'
       }))
-    }
+    },
+    managedCommissions: (state: CommissionStore): PaginatedList<ManagedCommission> | undefined =>
+      state.commissions as PaginatedList<ManagedCommission> | undefined,
+    managedCommission: (state: CommissionStore): ManagedCommission | undefined =>
+      state.commission as ManagedCommission | undefined
   },
 
   actions: {
