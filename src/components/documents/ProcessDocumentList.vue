@@ -72,7 +72,7 @@ async function onGetDocuments() {
     else if (props.process === 'manageProject') processes = ['DOCUMENT_PROJECT', 'DOCUMENT_PROJECT_REVIEW']
     else if (props.process === 'charter') processes = ['CHARTER_ASSOCIATION', 'DOCUMENT_ASSOCIATION']
     await documentStore.getDocuments({processTypes: processes})
-    initProcessDocuments(props.process === 'project', projectStore.projectFunds)
+    initProcessDocuments(['project', 'manageProject'].includes(props.process), projectStore.projectFunds)
     if (props.process === 'project' || props.process === 'review' || props.process === 'manageProject') {
       await projectStore.getProjectDocumentUploads()
       initProjectDocumentUploads()

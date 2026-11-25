@@ -44,7 +44,7 @@ const showReview = computed<boolean>(() => {
     .includes(projectStore.projectStatus)
 })
 
-const projectsByYear = computed<{year: string, projects: ProjectListItem[]}[]>(() => {
+const projectsByYear = computed<{ year: string, projects: ProjectListItem[] }[]>(() => {
   const groups = new Map<string, ProjectListItem[]>()
 
   for (const project of projectStore.projects?.results ?? []) {
@@ -394,7 +394,7 @@ watch(() => route.params.projectId, async () => {
             </ProjectExpansionItem>
             <ProjectExpansionItem
               :disable="!projectStore.projectDocuments.length"
-              :label="t('project.documents')"
+              :label="t('document', 2)"
               icon="bi-file-earmark"
             >
               <ProcessDocumentList
