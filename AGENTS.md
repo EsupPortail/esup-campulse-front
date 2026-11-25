@@ -141,3 +141,4 @@ pnpm lint           # lint
   de point final
 - Body (ligne vide + texte) → seulement si le « pourquoi » n'est pas
   évident
+- Les messages de commit doivent TOUJOURS être en anglais
