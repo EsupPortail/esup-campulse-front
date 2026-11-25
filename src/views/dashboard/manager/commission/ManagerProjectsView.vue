@@ -25,11 +25,11 @@ const commissionStore = useCommissionStore()
 
 const tabs: Tab[] = [
   {
-    label: 'Gestion par projet',
+    label: t('project.manage-by-project'),
     slotName: 'projects'
   },
   {
-    label: 'Gestion par commission',
+    label: t('project.manage-by-commission'),
     slotName: 'commissions'
   }
 ]
@@ -52,12 +52,10 @@ async function onGetCommissions() {
     editionDateBefore: cleanDate(search.editionDate.to),
     submissionDateAfter: cleanDate(search.submissionDate.from),
     submissionDateBefore: cleanDate(search.submissionDate.to),
+    withClosedFutureCommissions: showClosedCommissions.value,
     name: search.name,
     page: commissionPaginationCurrent.value,
     pageSize: 10,
-  }
-  if (!showClosedCommissions.value) {
-    filters.isOpenToProjects = true
   }
   await commissionStore.getManagedCommissions(filters)
   loading.hide()

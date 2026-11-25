@@ -85,6 +85,7 @@ export interface CommissionFilters {
   submissionDateAfter: string;
   submissionDateBefore: string;
   name: string;
+  withClosedFutureCommissions: boolean;
   page: number;
   pageSize: number;
 }

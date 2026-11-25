@@ -800,6 +800,8 @@
   "project.individual-projects": "Projets portés à titre individuel",
   "project.last-modified-date": "Dernière modification",
   "project.manage": "Soumettre et gérer des projets",
+  "project.manage-by-commission": "Gestion par commission",
+  "project.manage-by-project": "Gestion par projet",
   "project.marketing-campaign": "Campagne de communication",
   "project.modify": "Modifier le projet",
   "project.modify-review": "Modifier le bilan",
