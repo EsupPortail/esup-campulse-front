@@ -1,4 +1,4 @@
-import type {Commission, Fund, ManagedCommission} from '#/commission'
+import type {Commission, CommissionFundData, Fund, ManagedCommission} from '#/commission'
 
 export const _funds: Fund[] = [
   {
@@ -24,6 +24,14 @@ export const _funds: Fund[] = [
   }
 ]
 
+export const _commissionFundData: CommissionFundData[] = _funds.map(fund => ({
+  pk: fund.id,
+  name: fund.name,
+  acronym: fund.acronym,
+  isSite: fund.isSite,
+  institutionId: fund.institution
+}))
+
 export const _commissions: Commission[] = [
   {
     id: 4,
@@ -37,7 +45,7 @@ export const _commissions: Commission[] = [
     building: 'Bâtiment international',
     address: '1 rue René Descartes, 67000 Strasbourg',
     scheduledTime: '14:00',
-    funds: [_funds[2]]
+    funds: [_commissionFundData[2]]
   },
   {
     id: 1,
@@ -51,7 +59,7 @@ export const _commissions: Commission[] = [
     building: 'Bâtiment international',
     address: '1 rue René Descartes, 67000 Strasbourg',
     scheduledTime: '09:00',
-    funds: [_funds[0], _funds[1], _funds[2]]
+    funds: [_commissionFundData[0], _commissionFundData[1], _commissionFundData[2]]
   },
   {
     id: 3,
@@ -65,7 +73,7 @@ export const _commissions: Commission[] = [
     building: 'Campus Esplanade',
     address: '2 rue du Général de Gaulle, 67000 Strasbourg',
     scheduledTime: '10:30',
-    funds: [_funds[2]]
+    funds: [_commissionFundData[2]]
   },
   {
     id: 2,
@@ -79,7 +87,7 @@ export const _commissions: Commission[] = [
     building: 'Campus Esplanade',
     address: '2 rue du Général de Gaulle, 67000 Strasbourg',
     scheduledTime: '15:00',
-    funds: [_funds[0]]
+    funds: [_commissionFundData[0]]
   }
 ]
 

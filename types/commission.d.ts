@@ -8,6 +8,14 @@ export interface Fund {
   institution: number;
 }
 
+export interface CommissionFundData {
+  pk: number;
+  name: string;
+  acronym: string;
+  isSite: boolean;
+  institutionId: number;
+}
+
 export interface CommissionFund {
   id: number;
   commission: number;
@@ -27,7 +35,7 @@ export interface CommissionBase {
   building: string;
   address: string;
   scheduledTime: string;
-  funds: Fund[];
+  funds: CommissionFundData[];
 }
 
 export interface Commission extends CommissionBase {
@@ -51,19 +59,13 @@ export interface CreateCommission extends PostCommission {
   funds: number[];
 }
 
-export interface UpdateCommission {
-  id: number;
-  oldName: string;
-  newName: string;
-  oldCommissionDate: string;
-  newCommissionDate: string;
-  oldSubmissionDate: string;
-  newSubmissionDate: string;
+export type UpdateCommission = Pick<
+  ManagedCommission,
+  'id' | 'name' | 'commissionDate' | 'submissionDate' | 'isOpenToProjects'
+  | 'scheduledTime' | 'building' | 'room' | 'address'
+> & {
+  funds: number[];
   datesAreLegal: boolean;
-  oldFunds: number[];
-  newFunds: number[];
-  oldIsOpenToProjects: boolean;
-  newIsOpenToProjects: boolean;
   open: boolean;
 }
 

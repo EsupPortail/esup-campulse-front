@@ -1,22 +1,20 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {computed, ref} from 'vue'
+import {ref} from 'vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import useErrors from '@/composables/useError'
 import {useProjectStore} from '@/stores/useProjectStore'
-import type {UpdateCommission} from '#/commission'
-import useUtil from '@/composables/useUtil'
 
 const props = defineProps<{
-  commission: UpdateCommission
+  commissionId: number,
+  canUpdate: boolean
 }>()
 
 const {t} = useI18n()
 const {notify, loading} = useQuasar()
 const {catchHTTPError} = useErrors()
 const projectStore = useProjectStore()
-const {arraysAreEqual} = useUtil()
 
 const confirmUpdate = ref<boolean>(false)
 const confirmDelete = ref<boolean>(false)
@@ -24,8 +22,7 @@ const confirmDelete = ref<boolean>(false)
 async function onOpenDeleteAlert() {
   loading.show()
   try {
-    const params = {commission: props.commission.id}
-    await projectStore.getProjects(params)
+    await projectStore.getProjects({commissionId: props.commissionId})
     confirmDelete.value = true
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -37,19 +34,10 @@ async function onOpenDeleteAlert() {
   }
   loading.hide()
 }
-
-const canUpdate = computed<boolean>(() => {
-  return props.commission.datesAreLegal && props.commission.newFunds.length > 0 &&
-      (props.commission.newName !== props.commission.oldName
-          || props.commission.newCommissionDate !== props.commission.oldCommissionDate
-          || props.commission.newSubmissionDate !== props.commission.oldSubmissionDate
-          || props.commission.newIsOpenToProjects !== props.commission.oldIsOpenToProjects
-          || !arraysAreEqual(props.commission.oldFunds, props.commission.newFunds))
-})
 </script>
 
 <template>
-  <div class="flex-row padding-bottom">
+  <div class="flex-row padding-top padding-bottom">
     <QBtn
       :disable="!canUpdate"
       :label="t('update')"

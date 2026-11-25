@@ -1,23 +1,21 @@
 <script lang="ts" setup>
 import {onMounted, ref} from 'vue'
-import CommissionDatesList from '@/components/commission/commissionDates/CommissionDatesList.vue'
-import NewCommissionDateForm from '@/components/commission/commissionDates/NewCommissionDateForm.vue'
+import CommissionDateCreateForm from '@/components/commission/commissionDates/CommissionDateCreateForm.vue'
+import CommissionDate from '@/components/commission/commissionDates/CommissionDate.vue'
 import useCommissionDate from '@/composables/useCommissionDate'
+import {useI18n} from 'vue-i18n'
 
+const {t} = useI18n()
 const {
   updateCommissions,
   newCommission,
-  fundsLabels,
   newCommissionDatesAreLegal,
   canSubmitNewCommission,
-  checkCommissionDates,
   loadCommissionDates,
-  onUpdateCommission,
-  onDeleteCommission,
   onAddCommission
 } = useCommissionDate()
 
-const newCommissionForm = ref<InstanceType<typeof NewCommissionDateForm> | null>(null)
+const newCommissionForm = ref<InstanceType<typeof CommissionDateCreateForm> | null>(null)
 
 onMounted(loadCommissionDates)
 
@@ -27,20 +25,35 @@ async function onSubmitNewCommission(): Promise<void> {
 </script>
 
 <template>
-  <CommissionDatesList
-    :commissions="updateCommissions"
-    :funds-labels="fundsLabels"
-    @dates-change="checkCommissionDates"
-    @update-commission-date="onUpdateCommission"
-    @delete-commission-date="onDeleteCommission"
-  />
+  <div class="dashboard-section">
+    <h2>
+      <i
+        aria-hidden="true"
+        class="bi bi-calendar-check"
+      ></i>
+      {{ t('commission.ongoing-or-to-come') }}
+    </h2>
+    <div class="dashboard-section-container">
+      <div class="container">
+        <CommissionDate
+          v-for="(commission, index) in updateCommissions"
+          :key="commission.id"
+          v-model="updateCommissions[index]"
+        />
+      </div>
+    </div>
+  </div>
 
-  <NewCommissionDateForm
+  <CommissionDateCreateForm
     ref="newCommissionForm"
     v-model="newCommission"
-    :funds-labels="fundsLabels"
     :can-submit="canSubmitNewCommission"
     :dates-are-legal="newCommissionDatesAreLegal"
     @submit="onSubmitNewCommission"
   />
 </template>
+
+<style lang="scss" scoped>
+@import "@/assets/styles/dashboard";
+@import "@/assets/styles/forms";
+</style>

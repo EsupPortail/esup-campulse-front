@@ -3,14 +3,14 @@ import {ref} from 'vue'
 import {QForm} from 'quasar'
 import {useI18n} from 'vue-i18n'
 import type {CreateCommission} from '#/commission'
-import type {SelectLabel} from '#/global'
+import {useFundStore} from '@/stores/useFundStore'
 
 const {t} = useI18n()
+const fundStore = useFundStore()
 
 const newCommission = defineModel<CreateCommission>({required: true})
 
 defineProps<{
-  fundsLabels: SelectLabel[],
   canSubmit: boolean,
   datesAreLegal: boolean
 }>()
@@ -85,7 +85,7 @@ defineExpose({resetValidation})
           <QSelect
             v-model="newCommission.funds"
             :label="t('commission.funds')"
-            :options="fundsLabels"
+            :options="fundStore.fundLabels"
             :rules="[val => val && val.length > 0 || t('forms.required-commission-funds')]"
             clearable
             color="commission"
@@ -100,7 +100,7 @@ defineExpose({resetValidation})
             :label="t('commission.is-open-to-projects')"
             color="commission"
           />
-          <div class="flex-btn">
+          <div class="flex-btn padding-top">
             <QBtn
               :disable="!canSubmit"
               :label="t('add')"

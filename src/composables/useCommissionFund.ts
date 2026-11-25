@@ -2,6 +2,7 @@ import type {
   Commission,
   CommissionBase,
   CreateCommission,
+  ManagedCommission,
   PostCommission,
   SearchCommissionFilters,
   SelectLabelFund,
@@ -43,27 +44,36 @@ async function postCommission(commission: CreateCommission) {
   await Promise.all(promises)
 }
 
-async function updateCommission(commission: UpdateCommission) {
+async function updateCommission(commission: UpdateCommission, original: ManagedCommission) {
   const commissionId = commission.id
   let dataToPatch: Partial<CommissionBase> = {}
 
-  if (commission.newName !== commission.oldName)
-    dataToPatch = Object.assign(dataToPatch, {name: commission.newName})
-  if (commission.newCommissionDate !== commission.oldCommissionDate)
-    dataToPatch = Object.assign(dataToPatch, {commissionDate: commission.newCommissionDate})
-  if (commission.newSubmissionDate !== commission.oldSubmissionDate)
-    dataToPatch = Object.assign(dataToPatch, {submissionDate: commission.newSubmissionDate})
-  if (commission.newIsOpenToProjects !== commission.oldIsOpenToProjects)
-    dataToPatch = Object.assign(dataToPatch, {isOpenToProjects: commission.newIsOpenToProjects})
+  if (commission.name !== original.name)
+    dataToPatch = Object.assign(dataToPatch, {name: commission.name})
+  if (commission.commissionDate !== original.commissionDate)
+    dataToPatch = Object.assign(dataToPatch, {commissionDate: commission.commissionDate})
+  if (commission.submissionDate !== original.submissionDate)
+    dataToPatch = Object.assign(dataToPatch, {submissionDate: commission.submissionDate})
+  if (commission.isOpenToProjects !== original.isOpenToProjects)
+    dataToPatch = Object.assign(dataToPatch, {isOpenToProjects: commission.isOpenToProjects})
+  if (commission.scheduledTime !== original.scheduledTime)
+    dataToPatch = Object.assign(dataToPatch, {scheduledTime: commission.scheduledTime})
+  if (commission.building !== original.building)
+    dataToPatch = Object.assign(dataToPatch, {building: commission.building})
+  if (commission.room !== original.room)
+    dataToPatch = Object.assign(dataToPatch, {room: commission.room})
+  if (commission.address !== original.address)
+    dataToPatch = Object.assign(dataToPatch, {address: commission.address})
   if (Object.entries(dataToPatch).length) {
     await commissionService.patchCommission(commissionId, dataToPatch)
   }
 
   const {arraysAreEqual} = useUtil()
-  if (arraysAreEqual(commission.oldFunds, commission.newFunds)) return
+  const originalFunds = original.funds.map(fund => fund.pk)
+  if (arraysAreEqual(originalFunds, commission.funds)) return
 
-  const newFundsToPost = commission.newFunds.filter(x => !commission.oldFunds.includes(x))
-  const oldFundsToDelete = commission.oldFunds.filter(x => !commission.newFunds.includes(x))
+  const newFundsToPost = commission.funds.filter(fund => !originalFunds.includes(fund))
+  const oldFundsToDelete = originalFunds.filter(fund => !commission.funds.includes(fund))
 
   await Promise.all(newFundsToPost.map((fund) =>
     commissionService.postCommissionFund({
