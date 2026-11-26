@@ -130,10 +130,13 @@ watch(() => route.params.projectId, async () => {
 <template>
   <div class="dashboard-section">
     <div class="container">
-      <ProjectStatusIndicator
-        :project-status="projectStore.project?.projectStatus"
-        :show-draft="true"
-      />
+      <div class="row justify-end items-center no-wrap">
+        <ProjectStatusIndicator
+          :project-status="projectStore.project?.projectStatus"
+          :show-draft="true"
+        />
+        <OverdueReviewWarning v-if="isReviewOverdue(projectStore?.project)"/>
+      </div>
       <QBtn
         :label="t('edit')"
         color="commission"
