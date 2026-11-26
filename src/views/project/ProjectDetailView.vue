@@ -183,7 +183,6 @@ watch(() => route.params.projectId, async () => {
                 v-if="isReviewOverdue(projectStore.project)"
                 :title="t('project.review')"
               >
-                <OverdueReviewWarning aria-hidden="true"/>
                 {{ t('project.review-overdue-days', {days: projectStore.project?.reviewOverdueDays}) }}
               </GlobalDefinition>
             </div>

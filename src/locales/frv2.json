@@ -848,7 +848,7 @@
   "project.review": "Bilan",
   "project.review-details": "Détails du bilan",
   "project.review-has-been-submitted": "Votre bilan a été soumis",
-  "project.review-overdue-days": "Bilan à rendre depuis {days} jours",
+  "project.review-overdue-days": "À rendre depuis {days} jours",
   "project.review-return": "Demander des modifications",
   "project.review-validate": "Valider le bilan",
   "project.settings": "Paramètres du projet",
