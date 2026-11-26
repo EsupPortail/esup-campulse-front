@@ -20,6 +20,7 @@ const emit = defineEmits<{
 }>()
 
 const form = ref<InstanceType<typeof QForm> | null>(null)
+const openInfos = ref<boolean>(false)
 
 function resetValidation(): void {
   form.value?.resetValidation()
@@ -95,11 +96,54 @@ defineExpose({resetValidation})
             multiple
             use-chips
           />
-          <QToggle
-            v-model="newCommission.isOpenToProjects"
-            :label="t('commission.is-open-to-projects')"
-            color="commission"
-          />
+          <div>
+            <QToggle
+              v-model="newCommission.isOpenToProjects"
+              :label="t('commission.is-open-to-projects')"
+              color="commission"
+            />
+          </div>
+          <div>
+            <QToggle
+              v-model="openInfos"
+              :label="t('commission.informations')"
+              color="commission"
+            />
+          </div>
+          <div
+            v-if="openInfos"
+            class="flex-column gap-m padding-top"
+          >
+            <QInput
+              v-model="newCommission.scheduledTime"
+              :label="t('commission.scheduled-time')"
+              clearable
+              color="commission"
+              filled
+              type="time"
+            />
+            <QInput
+              v-model="newCommission.building"
+              :label="t('commission.building')"
+              clearable
+              color="commission"
+              filled
+            />
+            <QInput
+              v-model="newCommission.room"
+              :label="t('commission.room')"
+              clearable
+              color="commission"
+              filled
+            />
+            <QInput
+              v-model="newCommission.address"
+              :label="t('commission.address')"
+              clearable
+              color="commission"
+              filled
+            />
+          </div>
           <div class="flex-btn padding-top">
             <QBtn
               :disable="!canSubmit"

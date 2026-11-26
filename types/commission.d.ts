@@ -53,6 +53,7 @@ export interface ManagedCommission extends CommissionBase {
 export type PostCommission = Pick<
   CommissionBase,
   'submissionDate' | 'commissionDate' | 'isOpenToProjects' | 'name'
+  | 'scheduledTime' | 'building' | 'room' | 'address'
 >;
 
 export interface CreateCommission extends PostCommission {

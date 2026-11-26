@@ -126,7 +126,7 @@ const openInfos = ref<boolean>(false)
         </div>
         <div
           v-if="openInfos"
-          class="flex-column padding-top"
+          class="flex-column gap-m padding-top"
         >
           <QInput
             v-model="commission.scheduledTime"

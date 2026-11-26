@@ -16,7 +16,11 @@ function createEmptyCommission(): CreateCommission {
     submissionDate: '',
     funds: [],
     isOpenToProjects: false,
-    name: ''
+    name: '',
+    scheduledTime: '',
+    building: '',
+    room: '',
+    address: ''
   }
 }
 

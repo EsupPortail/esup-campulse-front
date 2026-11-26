@@ -32,7 +32,11 @@ async function postCommission(commission: CreateCommission) {
     commissionDate: commission.commissionDate,
     submissionDate: commission.submissionDate,
     isOpenToProjects: commission.isOpenToProjects,
-    name: commission.name
+    name: commission.name,
+    scheduledTime: commission.scheduledTime,
+    building: commission.building,
+    room: commission.room,
+    address: commission.address
   }
   const newCommission: Commission = await commissionService.postCommission(data)
   const promises = commission.funds.map((fund) =>
