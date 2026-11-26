@@ -7,7 +7,7 @@ import {useCommissionStore} from '@/stores/useCommissionStore'
 import type {CommissionFilters} from '#/commission'
 import {onMounted, onUnmounted} from 'vue'
 import {useI18n} from 'vue-i18n'
-import useCommissionFund from '@/composables/useCommissionFund'
+import useCommissionSearch from '@/composables/useCommissionSearch'
 import useUtil from '@/composables/useUtil'
 import {useRoute} from 'vue-router'
 
@@ -21,7 +21,7 @@ const {
   searchCommissionFilters,
   clearCommissionSearch,
   commissionPaginationCurrent
-} = useCommissionFund()
+} = useCommissionSearch()
 const {dynamicTitle} = useUtil()
 
 function cleanDate(date: string | null): string | null {

@@ -5,7 +5,7 @@ import CommissionDate from '@/components/commission/commissionDates/CommissionDa
 import CommissionSearchForm from '@/components/commission/CommissionSearchForm.vue'
 import GlobalPagination from '@/components/global/GlobalPagination.vue'
 import useCommissionDate from '@/composables/useCommissionDate'
-import useCommissionFund from '@/composables/useCommissionFund'
+import useCommissionSearch from '@/composables/useCommissionSearch'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 import {useI18n} from 'vue-i18n'
 
@@ -23,7 +23,7 @@ const {
   openCommissionSearch,
   clearCommissionSearch,
   commissionPaginationCurrent
-} = useCommissionFund()
+} = useCommissionSearch()
 const commissionStore = useCommissionStore()
 
 const newCommissionForm = ref<InstanceType<typeof CommissionDateCreateForm> | null>(null)

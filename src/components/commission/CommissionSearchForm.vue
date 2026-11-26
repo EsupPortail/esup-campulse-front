@@ -4,9 +4,9 @@ import {onMounted, ref, watch} from 'vue'
 import {useFundStore} from '@/stores/useFundStore'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
-import useCommissionFund from '@/composables/useCommissionFund'
+import useCommissionSearch from '@/composables/useCommissionSearch'
 
-const {openCommissionSearch, searchCommissionFilters} = useCommissionFund()
+const {openCommissionSearch, searchCommissionFilters} = useCommissionSearch()
 const fundStore = useFundStore()
 const {loading} = useQuasar()
 const {t} = useI18n()

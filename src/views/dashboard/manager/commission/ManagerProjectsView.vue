@@ -11,7 +11,7 @@ import type {CommissionFilters} from '#/commission'
 import {useI18n} from 'vue-i18n'
 import CommissionSearchForm from '@/components/commission/CommissionSearchForm.vue'
 import GlobalPagination from '@/components/global/GlobalPagination.vue'
-import useCommissionFund from '@/composables/useCommissionFund'
+import useCommissionSearch from '@/composables/useCommissionSearch'
 
 const {dashboardTab, openProjectSearch, clearProjectSearch} = useProject()
 const {
@@ -19,7 +19,7 @@ const {
   searchCommissionFilters,
   openCommissionSearch,
   commissionPaginationCurrent
-} = useCommissionFund()
+} = useCommissionSearch()
 const {t} = useI18n()
 const {loading} = useQuasar()
 const commissionStore = useCommissionStore()

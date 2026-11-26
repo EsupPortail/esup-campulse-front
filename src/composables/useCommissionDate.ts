@@ -2,8 +2,17 @@ import {computed, ref} from 'vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
-import type {CommissionFilters, CreateCommission, ManagedCommission, UpdateCommission} from '#/commission'
+import type {
+  Commission,
+  CommissionBase,
+  CommissionFilters,
+  CreateCommission,
+  ManagedCommission,
+  PostCommission,
+  UpdateCommission
+} from '#/commission'
 import useCommissionFund from '@/composables/useCommissionFund'
+import useCommissionSearch from '@/composables/useCommissionSearch'
 import useErrors from '@/composables/useError'
 import useUtil from '@/composables/useUtil'
 import * as commissionService from '@/services/CommissionService'
@@ -25,10 +34,53 @@ function createEmptyCommission(): CreateCommission {
   }
 }
 
-function editionDateIsValid(submissionDate: string, editionDate: string, commissionDate: string): boolean {
+export function editionDateIsValid(submissionDate: string, editionDate: string, commissionDate: string): boolean {
   return !!submissionDate && !!editionDate && !!commissionDate
     && editionDate > submissionDate
     && editionDate <= commissionDate
+}
+
+async function createCommission(commission: CreateCommission): Promise<number> {
+  const data: PostCommission = {
+    commissionDate: commission.commissionDate,
+    submissionDate: commission.submissionDate,
+    editionDate: commission.editionDate,
+    isOpenToProjects: commission.isOpenToProjects,
+    name: commission.name,
+    scheduledTime: commission.scheduledTime,
+    building: commission.building,
+    room: commission.room,
+    address: commission.address
+  }
+  const newCommission: Commission = await commissionService.createCommission(data)
+  return newCommission.id
+}
+
+async function updateCommission(commission: UpdateCommission, original: ManagedCommission): Promise<void> {
+  const commissionId = commission.id
+  let dataToPatch: Partial<CommissionBase> = {}
+
+  if (commission.name !== original.name)
+    dataToPatch = Object.assign(dataToPatch, {name: commission.name})
+  if (commission.commissionDate !== original.commissionDate)
+    dataToPatch = Object.assign(dataToPatch, {commissionDate: commission.commissionDate})
+  if (commission.submissionDate !== original.submissionDate)
+    dataToPatch = Object.assign(dataToPatch, {submissionDate: commission.submissionDate})
+  if (commission.editionDate !== original.editionDate)
+    dataToPatch = Object.assign(dataToPatch, {editionDate: commission.editionDate})
+  if (commission.isOpenToProjects !== original.isOpenToProjects)
+    dataToPatch = Object.assign(dataToPatch, {isOpenToProjects: commission.isOpenToProjects})
+  if (commission.scheduledTime !== original.scheduledTime)
+    dataToPatch = Object.assign(dataToPatch, {scheduledTime: commission.scheduledTime})
+  if (commission.building !== original.building)
+    dataToPatch = Object.assign(dataToPatch, {building: commission.building})
+  if (commission.room !== original.room)
+    dataToPatch = Object.assign(dataToPatch, {room: commission.room})
+  if (commission.address !== original.address)
+    dataToPatch = Object.assign(dataToPatch, {address: commission.address})
+  if (Object.entries(dataToPatch).length) {
+    await commissionService.updateCommission(commissionId, dataToPatch)
+  }
 }
 
 // État partagé entre la vue et les composants CommissionDate.
@@ -40,12 +92,8 @@ export default function useCommissionDate() {
   const {loading, notify} = useQuasar()
   const commissionStore = useCommissionStore()
   const fundStore = useFundStore()
-  const {
-    createCommission,
-    updateCommission,
-    searchCommissionFilters,
-    commissionPaginationCurrent
-  } = useCommissionFund()
+  const {createCommissionFunds, syncCommissionFunds} = useCommissionFund()
+  const {searchCommissionFilters, commissionPaginationCurrent} = useCommissionSearch()
   const {catchHTTPError} = useErrors()
   const {arraysAreEqual, fromDateIsAnterior} = useUtil()
 
@@ -193,6 +241,7 @@ export default function useCommissionDate() {
 
     await withLoading(async () => {
       await updateCommission(commission, original)
+      await syncCommissionFunds(commission.id, commission.funds, original.funds.map(fund => fund.pk))
       await loadCommissions()
     }, () => t('notifications.positive.commission-date-modified'))
   }
@@ -206,7 +255,8 @@ export default function useCommissionDate() {
 
   async function onAddCommission(): Promise<boolean> {
     return withLoading(async () => {
-      await createCommission(newCommission.value)
+      const commissionId = await createCommission(newCommission.value)
+      await createCommissionFunds(commissionId, newCommission.value.funds)
       newCommission.value = createEmptyCommission()
       await loadCommissions()
     }, () => t('notifications.positive.new-commission-date'))
