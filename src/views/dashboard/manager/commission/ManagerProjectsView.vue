@@ -10,6 +10,7 @@ import useProject from '@/composables/useProject'
 import type {CommissionFilters} from '#/commission'
 import {useI18n} from 'vue-i18n'
 import CommissionSearchForm from '@/components/commission/CommissionSearchForm.vue'
+import GlobalPagination from '@/components/global/GlobalPagination.vue'
 import useCommissionFund from '@/composables/useCommissionFund'
 
 const {dashboardTab, openProjectSearch, clearProjectSearch} = useProject()
@@ -124,15 +125,12 @@ watch(() => dashboardTab.value, async () => {
               :commission="commission"
               :heading-level="2"
             />
-            <div class="flex-row-center">
-              <QPagination
-                v-if="commissionStore.managedCommissions?.count > 10"
-                v-model="commissionPaginationCurrent"
-                :max="commissionStore.managedCommissions?.totalPages"
-                color="commission"
-                @update:model-value="onGetCommissions"
-              />
-            </div>
+            <GlobalPagination
+              v-model="commissionPaginationCurrent"
+              :count="commissionStore.managedCommissions?.count"
+              :total-pages="commissionStore.managedCommissions?.totalPages"
+              @change="onGetCommissions"
+            />
 
             <div class="flex-row-center">
               <QBtn

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import CommissionSearchForm from '@/components/commission/CommissionSearchForm.vue'
 import ProjectCommissionListCard from '@/components/commission/ProjectCommissionListCard.vue'
+import GlobalPagination from '@/components/global/GlobalPagination.vue'
 import {useQuasar} from 'quasar'
 import {useCommissionStore} from '@/stores/useCommissionStore'
 import type {CommissionFilters} from '#/commission'
@@ -84,15 +85,12 @@ onUnmounted(() => {
         :commission="commission"
         :heading-level="2"
       />
-      <div class="flex-row-center">
-        <QPagination
-          v-if="commissionStore.managedCommissions?.count > 10"
-          v-model="commissionPaginationCurrent"
-          :max="commissionStore.managedCommissions?.totalPages"
-          color="commission"
-          @update:model-value="onGetCommissions"
-        />
-      </div>
+      <GlobalPagination
+        v-model="commissionPaginationCurrent"
+        :count="commissionStore.managedCommissions?.count"
+        :total-pages="commissionStore.managedCommissions?.totalPages"
+        @change="onGetCommissions"
+      />
       <p v-if="!commissionStore.managedCommissions?.results.length">{{ t('commission.no-archived-commission') }}</p>
       <div class="flex-row-center">
         <QBtn

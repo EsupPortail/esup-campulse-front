@@ -27,10 +27,11 @@ const searchCommissionFilters = ref<SearchCommissionFilters>({
   funds: []
 })
 
-async function postCommission(commission: CreateCommission) {
+async function createCommission(commission: CreateCommission) {
   const data: PostCommission = {
     commissionDate: commission.commissionDate,
     submissionDate: commission.submissionDate,
+    editionDate: commission.editionDate,
     isOpenToProjects: commission.isOpenToProjects,
     name: commission.name,
     scheduledTime: commission.scheduledTime,
@@ -38,7 +39,7 @@ async function postCommission(commission: CreateCommission) {
     room: commission.room,
     address: commission.address
   }
-  const newCommission: Commission = await commissionService.postCommission(data)
+  const newCommission: Commission = await commissionService.createCommission(data)
   const promises = commission.funds.map((fund) =>
     commissionService.postCommissionFund({
       commission: newCommission.id,
@@ -58,6 +59,8 @@ async function updateCommission(commission: UpdateCommission, original: ManagedC
     dataToPatch = Object.assign(dataToPatch, {commissionDate: commission.commissionDate})
   if (commission.submissionDate !== original.submissionDate)
     dataToPatch = Object.assign(dataToPatch, {submissionDate: commission.submissionDate})
+  if (commission.editionDate !== original.editionDate)
+    dataToPatch = Object.assign(dataToPatch, {editionDate: commission.editionDate})
   if (commission.isOpenToProjects !== original.isOpenToProjects)
     dataToPatch = Object.assign(dataToPatch, {isOpenToProjects: commission.isOpenToProjects})
   if (commission.scheduledTime !== original.scheduledTime)
@@ -69,7 +72,7 @@ async function updateCommission(commission: UpdateCommission, original: ManagedC
   if (commission.address !== original.address)
     dataToPatch = Object.assign(dataToPatch, {address: commission.address})
   if (Object.entries(dataToPatch).length) {
-    await commissionService.patchCommission(commissionId, dataToPatch)
+    await commissionService.updateCommission(commissionId, dataToPatch)
   }
 
   const {arraysAreEqual} = useUtil()
@@ -143,7 +146,7 @@ export default function useCommissionFund() {
     selectedCommissionFundLabels,
     commissionFundLabels,
     commissionFundLabel,
-    postCommission,
+    createCommission,
     updateCommission,
     openCommissionSearch,
     searchCommissionFilters,

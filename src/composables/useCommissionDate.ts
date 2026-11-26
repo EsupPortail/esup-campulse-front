@@ -2,7 +2,7 @@ import {computed, ref} from 'vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
 import {useI18n} from 'vue-i18n'
-import type {CreateCommission, ManagedCommission, UpdateCommission} from '#/commission'
+import type {CommissionFilters, CreateCommission, ManagedCommission, UpdateCommission} from '#/commission'
 import useCommissionFund from '@/composables/useCommissionFund'
 import useErrors from '@/composables/useError'
 import useUtil from '@/composables/useUtil'
@@ -14,6 +14,7 @@ function createEmptyCommission(): CreateCommission {
   return {
     commissionDate: '',
     submissionDate: '',
+    editionDate: '',
     funds: [],
     isOpenToProjects: false,
     name: '',
@@ -22,6 +23,12 @@ function createEmptyCommission(): CreateCommission {
     room: '',
     address: ''
   }
+}
+
+function editionDateIsValid(submissionDate: string, editionDate: string, commissionDate: string): boolean {
+  return !!submissionDate && !!editionDate && !!commissionDate
+    && editionDate > submissionDate
+    && editionDate <= commissionDate
 }
 
 // État partagé entre la vue et les composants CommissionDate.
@@ -33,7 +40,12 @@ export default function useCommissionDate() {
   const {loading, notify} = useQuasar()
   const commissionStore = useCommissionStore()
   const fundStore = useFundStore()
-  const {postCommission, updateCommission} = useCommissionFund()
+  const {
+    createCommission,
+    updateCommission,
+    searchCommissionFilters,
+    commissionPaginationCurrent
+  } = useCommissionFund()
   const {catchHTTPError} = useErrors()
   const {arraysAreEqual, fromDateIsAnterior} = useUtil()
 
@@ -42,10 +54,17 @@ export default function useCommissionDate() {
     newCommission.value.commissionDate,
     false
   ))
+  const newCommissionEditionDateIsLegal = computed(() => editionDateIsValid(
+    newCommission.value.submissionDate,
+    newCommission.value.editionDate,
+    newCommission.value.commissionDate
+  ))
   const canSubmitNewCommission = computed<boolean>(() => !!newCommission.value.name
     && !!newCommission.value.submissionDate
     && !!newCommission.value.commissionDate
+    && !!newCommission.value.editionDate
     && newCommissionDatesAreLegal.value
+    && newCommissionEditionDateIsLegal.value
     && newCommission.value.funds.length > 0)
 
   function findOriginalCommission(commissionId: number): ManagedCommission | undefined {
@@ -58,6 +77,7 @@ export default function useCommissionDate() {
       name: commission.name,
       commissionDate: commission.commissionDate,
       submissionDate: commission.submissionDate,
+      editionDate: commission.editionDate,
       isOpenToProjects: commission.isOpenToProjects,
       scheduledTime: commission.scheduledTime,
       building: commission.building,
@@ -65,13 +85,40 @@ export default function useCommissionDate() {
       address: commission.address,
       funds: commission.funds.map(fund => fund.pk),
       datesAreLegal: fromDateIsAnterior(commission.submissionDate, commission.commissionDate, true),
+      editionDateIsLegal: editionDateIsValid(
+        commission.submissionDate,
+        commission.editionDate,
+        commission.commissionDate
+      ),
       open: false
+    }
+  }
+
+  function cleanDate(date: string | null): string | null {
+    if (!date) return null
+    return date.replace(/\//g, '-')
+  }
+
+  function commissionsFilters(): Partial<CommissionFilters> {
+    const search = searchCommissionFilters.value
+    return {
+      isArchived: false,
+      funds: search.funds,
+      commissionDateAfter: cleanDate(search.commissionDate.from),
+      commissionDateBefore: cleanDate(search.commissionDate.to),
+      editionDateAfter: cleanDate(search.editionDate.from),
+      editionDateBefore: cleanDate(search.editionDate.to),
+      submissionDateAfter: cleanDate(search.submissionDate.from),
+      submissionDateBefore: cleanDate(search.submissionDate.to),
+      name: search.name,
+      page: commissionPaginationCurrent.value,
+      pageSize: 10
     }
   }
 
   async function loadCommissions(): Promise<void> {
     await fundStore.getFunds()
-    await commissionStore.getManagedCommissions()
+    await commissionStore.getManagedCommissions(commissionsFilters())
     await commissionStore.getCommissionFunds()
     updateCommissions.value = (commissionStore.managedCommissions?.results ?? []).map(toUpdateCommission)
   }
@@ -107,6 +154,7 @@ export default function useCommissionDate() {
     return commission.name !== original.name
       || commission.commissionDate !== original.commissionDate
       || commission.submissionDate !== original.submissionDate
+      || commission.editionDate !== original.editionDate
       || commission.isOpenToProjects !== original.isOpenToProjects
       || commission.scheduledTime !== original.scheduledTime
       || commission.building !== original.building
@@ -116,7 +164,10 @@ export default function useCommissionDate() {
   }
 
   function canUpdateCommission(commission: UpdateCommission): boolean {
-    return commission.datesAreLegal && commission.funds.length > 0 && hasCommissionChanges(commission)
+    return commission.datesAreLegal
+      && commission.editionDateIsLegal
+      && commission.funds.length > 0
+      && hasCommissionChanges(commission)
   }
 
   function checkCommissionDates(commission: UpdateCommission): void {
@@ -124,6 +175,11 @@ export default function useCommissionDate() {
       commission.submissionDate,
       commission.commissionDate,
       true
+    )
+    commission.editionDateIsLegal = editionDateIsValid(
+      commission.submissionDate,
+      commission.editionDate,
+      commission.commissionDate
     )
   }
 
@@ -150,7 +206,7 @@ export default function useCommissionDate() {
 
   async function onAddCommission(): Promise<boolean> {
     return withLoading(async () => {
-      await postCommission(newCommission.value)
+      await createCommission(newCommission.value)
       newCommission.value = createEmptyCommission()
       await loadCommissions()
     }, () => t('notifications.positive.new-commission-date'))
@@ -160,6 +216,7 @@ export default function useCommissionDate() {
     updateCommissions,
     newCommission,
     newCommissionDatesAreLegal,
+    newCommissionEditionDateIsLegal,
     canSubmitNewCommission,
     canUpdateCommission,
     checkCommissionDates,

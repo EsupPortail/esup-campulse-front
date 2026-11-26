@@ -52,7 +52,7 @@ export interface ManagedCommission extends CommissionBase {
 
 export type PostCommission = Pick<
   CommissionBase,
-  'submissionDate' | 'commissionDate' | 'isOpenToProjects' | 'name'
+  'submissionDate' | 'commissionDate' | 'editionDate' | 'isOpenToProjects' | 'name'
   | 'scheduledTime' | 'building' | 'room' | 'address'
 >;
 
@@ -62,11 +62,12 @@ export interface CreateCommission extends PostCommission {
 
 export type UpdateCommission = Pick<
   ManagedCommission,
-  'id' | 'name' | 'commissionDate' | 'submissionDate' | 'isOpenToProjects'
+  'id' | 'name' | 'commissionDate' | 'submissionDate' | 'editionDate' | 'isOpenToProjects'
   | 'scheduledTime' | 'building' | 'room' | 'address'
 > & {
   funds: number[];
   datesAreLegal: boolean;
+  editionDateIsLegal: boolean;
   open: boolean;
 }
 

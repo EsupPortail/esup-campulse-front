@@ -97,6 +97,23 @@ const openInfos = ref<boolean>(false)
           type="date"
           @update:model-value="checkCommissionDates(commission)"
         />
+        <QInput
+          v-model="commission.editionDate"
+          :label="t('commission.edition-date')"
+          :rules="[
+            val => val && val.length > 0 || t('forms.required-commission-edition-date'),
+            () => commission.editionDateIsLegal
+              || t('forms.commission-edition-date-must-be-between-submission-and-commission-dates')
+          ]"
+          clearable
+          color="commission"
+          filled
+          max="2120-01-01"
+          min="1970-01-01"
+          reactive-rules
+          type="date"
+          @update:model-value="checkCommissionDates(commission)"
+        />
         <QSelect
           v-model="commission.funds"
           :label="t('commission.funds')"

@@ -75,7 +75,7 @@ export async function getFunds(): Promise<Fund[]> {
 
 export async function deleteCommission(commissionId: number): Promise<void> {
   const {axiosAuthenticated} = useAxios()
-  await axiosAuthenticated.delete(`${modelBaseUrl}/${commissionId}`)
+  await axiosAuthenticated.delete(`${modelBaseUrl}/${commissionId}/manage`)
 }
 
 export async function getCommissionExport(
@@ -87,14 +87,14 @@ export async function getCommissionExport(
   return await axiosAuthenticated.get(url, {responseType: 'arraybuffer'})
 }
 
-export async function postCommission(commission: PostCommission): Promise<Commission> {
+export async function createCommission(commission: PostCommission): Promise<Commission> {
   const {axiosAuthenticated} = useAxios()
-  return (await axiosAuthenticated.post<Commission>(`${modelBaseUrl}/`, commission)).data
+  return (await axiosAuthenticated.post<Commission>(`${modelBaseUrl}/manage`, commission)).data
 }
 
-export async function patchCommission(commissionId: number, payload: Partial<CommissionBase>): Promise<void> {
+export async function updateCommission(commissionId: number, payload: Partial<CommissionBase>): Promise<void> {
   const {axiosAuthenticated} = useAxios()
-  await axiosAuthenticated.patch(`${modelBaseUrl}/${commissionId}`, payload)
+  await axiosAuthenticated.patch(`${modelBaseUrl}/${commissionId}/manage`, payload)
 }
 
 export async function postCommissionFund(commissionFund: CreateCommissionFund): Promise<void> {

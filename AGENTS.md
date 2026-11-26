@@ -72,6 +72,8 @@ pour supporter cette personnalisation.
   composant si besoin. Pas de CSS global hors fichier de thème.
 - **Composant > ~100 lignes** → factorise en sous-composants ou
   extrais la logique en composable.
+- **HTML sémantique** : éviter les `div` et `span` **si possible**
+  et privilégier l'usage d'éléments porteurs de sens (`section`, `p`...).
 
 ### Nommage
 
