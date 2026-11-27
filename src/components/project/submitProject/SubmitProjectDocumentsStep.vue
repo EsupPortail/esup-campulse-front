@@ -16,10 +16,10 @@ const emit = defineEmits<{
 
 <template>
   <QForm @submit.prevent="emit('submit')">
-    <div class="info-panel info-panel-error">
+    <div class="info-panel info-panel-warning ">
       <i
         aria-hidden="true"
-        class="bi bi-exclamation-lg"
+        class="bi bi-exclamation"
       ></i>
       <p>{{ t('project.sign-charter') }}</p>
     </div>
@@ -47,3 +47,8 @@ const emit = defineEmits<{
     </div>
   </QForm>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/styles/forms.scss';
+@import '@/assets/styles/dashboard.scss';
+</style>
