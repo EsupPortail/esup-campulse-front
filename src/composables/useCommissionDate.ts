@@ -40,23 +40,32 @@ export function editionDateIsValid(submissionDate: string, editionDate: string, 
     && editionDate <= commissionDate
 }
 
-async function createCommission(commission: CreateCommission): Promise<number> {
+export function hasCommissionInfos(commission: UpdateCommission | CreateCommission): boolean {
+  return [commission.scheduledTime, commission.building, commission.room, commission.address]
+    .some(value => !!value)
+}
+
+export async function createCommission(commission: CreateCommission): Promise<number> {
+  const {normalizeTime} = useUtil()
   const data: PostCommission = {
     commissionDate: commission.commissionDate,
     submissionDate: commission.submissionDate,
     editionDate: commission.editionDate,
     isOpenToProjects: commission.isOpenToProjects,
-    name: commission.name,
-    scheduledTime: commission.scheduledTime,
-    building: commission.building,
-    room: commission.room,
-    address: commission.address
+    name: commission.name
   }
+  const scheduledTime = normalizeTime(commission.scheduledTime)
+  if (scheduledTime) data.scheduledTime = scheduledTime
+  if (commission.building) data.building = commission.building
+  if (commission.room) data.room = commission.room
+  if (commission.address) data.address = commission.address
+
   const newCommission: Commission = await commissionService.createCommission(data)
   return newCommission.id
 }
 
 async function updateCommission(commission: UpdateCommission, original: ManagedCommission): Promise<void> {
+  const {normalizeTime} = useUtil()
   const commissionId = commission.id
   let dataToPatch: Partial<CommissionBase> = {}
 
@@ -70,8 +79,9 @@ async function updateCommission(commission: UpdateCommission, original: ManagedC
     dataToPatch = Object.assign(dataToPatch, {editionDate: commission.editionDate})
   if (commission.isOpenToProjects !== original.isOpenToProjects)
     dataToPatch = Object.assign(dataToPatch, {isOpenToProjects: commission.isOpenToProjects})
-  if (commission.scheduledTime !== original.scheduledTime)
-    dataToPatch = Object.assign(dataToPatch, {scheduledTime: commission.scheduledTime})
+  const scheduledTime = normalizeTime(commission.scheduledTime)
+  if (scheduledTime !== normalizeTime(original.scheduledTime))
+    dataToPatch = Object.assign(dataToPatch, {scheduledTime})
   if (commission.building !== original.building)
     dataToPatch = Object.assign(dataToPatch, {building: commission.building})
   if (commission.room !== original.room)
@@ -95,7 +105,7 @@ export default function useCommissionDate() {
   const {createCommissionFunds, syncCommissionFunds} = useCommissionFund()
   const {searchCommissionFilters, commissionPaginationCurrent} = useCommissionSearch()
   const {catchHTTPError} = useErrors()
-  const {arraysAreEqual, fromDateIsAnterior} = useUtil()
+  const {arraysAreEqual, fromDateIsAnterior, normalizeTime} = useUtil()
 
   const newCommissionDatesAreLegal = computed(() => fromDateIsAnterior(
     newCommission.value.submissionDate,
@@ -127,7 +137,7 @@ export default function useCommissionDate() {
       submissionDate: commission.submissionDate,
       editionDate: commission.editionDate,
       isOpenToProjects: commission.isOpenToProjects,
-      scheduledTime: commission.scheduledTime,
+      scheduledTime: normalizeTime(commission.scheduledTime),
       building: commission.building,
       room: commission.room,
       address: commission.address,
@@ -204,7 +214,7 @@ export default function useCommissionDate() {
       || commission.submissionDate !== original.submissionDate
       || commission.editionDate !== original.editionDate
       || commission.isOpenToProjects !== original.isOpenToProjects
-      || commission.scheduledTime !== original.scheduledTime
+      || normalizeTime(commission.scheduledTime) !== normalizeTime(original.scheduledTime)
       || commission.building !== original.building
       || commission.room !== original.room
       || commission.address !== original.address
@@ -269,6 +279,7 @@ export default function useCommissionDate() {
     newCommissionEditionDateIsLegal,
     canSubmitNewCommission,
     canUpdateCommission,
+    hasCommissionInfos,
     checkCommissionDates,
     loadCommissionDates,
     onUpdateCommission,

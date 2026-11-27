@@ -63,7 +63,8 @@ pour supporter cette personnalisation.
 ## Conventions de code
 
 - **TypeScript strict** : pas de `any`. Types explicites sur props,
-  emits et retours de fonctions.
+  emits et retours de fonctions. Pas de création de nouveaux types
+  sans demander l'avis avant.
 - **Composants Vue 3** en `<script setup>`, Composition API uniquement.
   Pas d'Options API.
 - **Quasar-first** : utiliser les composants Quasar existants avant

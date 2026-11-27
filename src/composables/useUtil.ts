@@ -26,6 +26,11 @@ function reverseDate(date: string): string {
   return date.split(/[-/]/).reverse().join('/')
 }
 
+function normalizeTime(time: string): string {
+  if (!time) return ''
+  return time.slice(0, 5)
+}
+
 export default function useUtil() {
   const kebabize = (str: string) => str.replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? '-' : '') + $.toLowerCase())
 
@@ -110,6 +115,7 @@ export default function useUtil() {
 
   return {
     formatDate,
+    normalizeTime,
     arraysAreEqual,
     urlRegex,
     initBreadcrumbs,

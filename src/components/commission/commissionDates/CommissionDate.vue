@@ -10,12 +10,18 @@ import {useFundStore} from '@/stores/useFundStore'
 const {t} = useI18n()
 const {fromDateIsAnterior} = useUtil()
 const fundStore = useFundStore()
-const {canUpdateCommission, checkCommissionDates, onUpdateCommission, onDeleteCommission} = useCommissionDate()
+const {
+  canUpdateCommission,
+  checkCommissionDates,
+  hasCommissionInfos,
+  onUpdateCommission,
+  onDeleteCommission,
+} = useCommissionDate()
 
 const commission = defineModel<UpdateCommission>({required: true})
 
 const canUpdate = computed<boolean>(() => canUpdateCommission(commission.value))
-const openInfos = ref<boolean>(false)
+const openInfos = ref<boolean>(hasCommissionInfos(commission.value))
 </script>
 
 <template>
@@ -137,6 +143,7 @@ const openInfos = ref<boolean>(false)
         <div>
           <QToggle
             v-model="openInfos"
+            :disable="hasCommissionInfos(commission)"
             :label="t('commission.informations')"
             color="commission"
           />
@@ -179,7 +186,7 @@ const openInfos = ref<boolean>(false)
           :can-update="canUpdate"
           :commission-id="commission.id"
           @update-commission-date="onUpdateCommission(commission)"
-          @delete-commission-date="onDeleteCommission"
+          @delete-commission-date="onDeleteCommission(commission.id)"
         />
       </QForm>
     </div>
