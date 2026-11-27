@@ -112,6 +112,8 @@ pour supporter cette personnalisation.
 - Ne crée pas de dépendance sans avertir et justifier.
 - Pas de refactoring « en passant » : si la demande est « fixer un
   bug », ne restructure pas le fichier entier.
+- Ne modifie pas les règles métier pour faire fonctionner le code.
+  Si une règle métier pose problème, avertis-moi.
 
 ## Commandes utiles
 
