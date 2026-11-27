@@ -94,19 +94,6 @@ export default function useUtil() {
     return stringToFilterize.replace(/ /g, '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
   }
 
-  function openDocument(response: AxiosResponse<ArrayBuffer>) {
-    const data = response.data
-    const type = response.headers['content-type']
-    const disposition = response.headers['content-disposition']
-    const blob = new Blob([data])
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = fileName(disposition, type)
-    link.click()
-    URL.revokeObjectURL(url)
-  }
-
   const fileName = (disposition: string | undefined, type: string | undefined): string => {
     const detectedExtension = type ? type.split('/')[1]?.split(';')[0] : 'bin'
     const defaultName = `document.${detectedExtension}`
@@ -115,6 +102,19 @@ export default function useUtil() {
     const match = regex.exec(disposition)
     if (match?.[1]) return decodeURIComponent(match?.[1])
     return defaultName
+  }
+
+  function openDocument(response: AxiosResponse<ArrayBuffer>) {
+    const data = response.data
+    const type = response.headers['content-type'] as string
+    const disposition = response.headers['content-disposition'] as string
+    const blob = new Blob([data])
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = fileName(disposition, type)
+    link.click()
+    URL.revokeObjectURL(url)
   }
 
   return {
