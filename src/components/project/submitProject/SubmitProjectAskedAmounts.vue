@@ -3,8 +3,10 @@ import {useI18n} from 'vue-i18n'
 import type {Fund} from '#/fund'
 import type {CommissionFund} from '#/commission'
 import type {ProjectCommissionFundBase} from '#/project'
+import useUtil from '@/composables/useUtil'
 
 const {t} = useI18n()
+const {isFilledValue} = useUtil()
 
 const projectCommissionFundsDetail = defineModel<ProjectCommissionFundBase[]>(
   'projectCommissionFundsDetail',
@@ -33,8 +35,8 @@ function fundAcronym(commissionFundId: number): string {
       :data-test="fundAcronym(commissionFund.commissionFund) + '-amount-asked-input'"
       :label="fundAcronym(commissionFund.commissionFund) + ' *'"
       :rules="[
-        val => val && val.length > 0 || t('forms.required-project-budget'),
-        val => val > 0 || t('forms.greater-than-zero')
+        val => isFilledValue(val) || t('forms.required-project-budget'),
+        val => Number(val) > 0 || t('forms.greater-than-zero')
       ]"
       :shadow-text="` ${currency}`"
       color="commission"

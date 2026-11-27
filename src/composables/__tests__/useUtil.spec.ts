@@ -1,7 +1,7 @@
 import {describe, expect, it} from 'vitest'
 import useUtil from '@/composables/useUtil'
 
-const {normalizeTime} = useUtil()
+const {isFilledValue, normalizeTime} = useUtil()
 
 describe('normalizeTime', () => {
   it('removes seconds returned by the API', () => {
@@ -12,5 +12,20 @@ describe('normalizeTime', () => {
   it('keeps times without seconds and handles empty values', () => {
     expect(normalizeTime('13:00')).toBe('13:00')
     expect(normalizeTime('')).toBe('')
+  })
+})
+
+describe('isFilledValue', () => {
+  it('accepts numbers, including zero, and non-empty strings', () => {
+    expect(isFilledValue(0)).toBe(true)
+    expect(isFilledValue(42)).toBe(true)
+    expect(isFilledValue('0')).toBe(true)
+    expect(isFilledValue('42')).toBe(true)
+  })
+
+  it('rejects empty values', () => {
+    expect(isFilledValue('')).toBe(false)
+    expect(isFilledValue(null)).toBe(false)
+    expect(isFilledValue(undefined)).toBe(false)
   })
 })

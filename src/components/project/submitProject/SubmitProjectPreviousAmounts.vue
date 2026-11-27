@@ -3,8 +3,10 @@ import {useI18n} from 'vue-i18n'
 import type {Fund} from '#/fund'
 import type {CommissionFund} from '#/commission'
 import type {ProjectBudget, ProjectCommissionFundBase} from '#/project'
+import useUtil from '@/composables/useUtil'
 
 const {t} = useI18n()
+const {isFilledValue} = useUtil()
 
 const projectCommissionFundsDetail = defineModel<ProjectCommissionFundBase[]>(
   'projectCommissionFundsDetail',
@@ -33,7 +35,7 @@ function fundAcronym(commissionFundId: number): string {
       v-model="commissionFund.amountAskedPreviousEdition"
       :data-test="fundAcronym(commissionFund.commissionFund) + '-amount-asked-previous-edition-input'"
       :label="fundAcronym(commissionFund.commissionFund) + ' *'"
-      :rules="[val => val && val.length > 0 || t('forms.required-project-amount-asked-previous')]"
+      :rules="[val => isFilledValue(val) || t('forms.required-project-amount-asked-previous')]"
       :shadow-text="` ${currency}`"
       color="commission"
       filled
@@ -51,7 +53,7 @@ function fundAcronym(commissionFundId: number): string {
       v-model="commissionFund.amountEarnedPreviousEdition"
       :data-test="fundAcronym(commissionFund.commissionFund) + '-amount-earned-previous-edition-input'"
       :label="fundAcronym(commissionFund.commissionFund) + ' *'"
-      :rules="[val => val && val.length > 0 || t('forms.required-project-amount-earned-previous')]"
+      :rules="[val => isFilledValue(val) || t('forms.required-project-amount-earned-previous')]"
       :shadow-text="` ${currency}`"
       color="commission"
       filled
@@ -64,7 +66,7 @@ function fundAcronym(commissionFundId: number): string {
   <QInput
     v-model="projectBudget.budgetPreviousEdition"
     :label="t('project.budget-previous-edition') + ' *'"
-    :rules="[val => val && val.length > 0 || t('forms.required-project-budget-previous')]"
+    :rules="[val => isFilledValue(val) || t('forms.required-project-budget-previous')]"
     :shadow-text="` ${currency}`"
     aria-required="true"
     color="commission"

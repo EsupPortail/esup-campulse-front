@@ -31,6 +31,10 @@ function normalizeTime(time: string): string {
   return time.slice(0, 5)
 }
 
+function isFilledValue(value: string | number | null | undefined): boolean {
+  return value !== '' && value !== null && value !== undefined
+}
+
 export default function useUtil() {
   const kebabize = (str: string) => str.replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? '-' : '') + $.toLowerCase())
 
@@ -116,6 +120,7 @@ export default function useUtil() {
   return {
     formatDate,
     normalizeTime,
+    isFilledValue,
     arraysAreEqual,
     urlRegex,
     initBreadcrumbs,
