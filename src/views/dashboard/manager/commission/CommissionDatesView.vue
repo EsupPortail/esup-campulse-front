@@ -16,6 +16,7 @@ const {
   newCommissionDatesAreLegal,
   newCommissionEditionDateIsLegal,
   canSubmitNewCommission,
+  getOriginalCommission,
   loadCommissionDates: onGetCommissions,
   onAddCommission
 } = useCommissionDate()
@@ -73,6 +74,7 @@ async function onSubmitNewCommission(): Promise<void> {
             v-for="(commission, index) in updateCommissions"
             :key="commission.id"
             v-model="updateCommissions[index]"
+            :original-commission="getOriginalCommission(commission.id)"
           />
         </div>
         <GlobalPagination

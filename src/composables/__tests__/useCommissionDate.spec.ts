@@ -1,12 +1,33 @@
+import {createPinia, setActivePinia} from 'pinia'
+import {computed, nextTick, ref} from 'vue'
 import {beforeEach, describe, expect, it, vi} from 'vitest'
-import type {CreateCommission} from '#/commission'
-import {createCommission, editionDateIsValid, hasCommissionInfos} from '@/composables/useCommissionDate'
+import type {CreateCommission, ManagedCommission, UpdateCommission} from '#/commission'
+import type {PaginatedList} from '#/global'
+import useCommissionDate, {createCommission, editionDateIsValid, hasCommissionInfos} from '@/composables/useCommissionDate'
 import * as commissionService from '@/services/CommissionService'
-import {_commissions} from '~/fixtures/commission.mock'
+import {useCommissionStore} from '@/stores/useCommissionStore'
+import {_commissionFundData, _commissions, _managedCommissions} from '~/fixtures/commission.mock'
 
-vi.mock('@/services/CommissionService', () => ({
-  createCommission: vi.fn()
+vi.mock('vue-i18n', async importOriginal => ({
+  ...await importOriginal<typeof import('vue-i18n')>(),
+  useI18n: () => ({t: (key: string) => key})
 }))
+vi.mock('quasar', () => ({
+  useQuasar: () => ({loading: {show: vi.fn(), hide: vi.fn()}, notify: vi.fn()})
+}))
+vi.mock('@/services/CommissionService', () => ({
+  createCommission: vi.fn(),
+  createCommissionFund: vi.fn(),
+  deleteCommissionFund: vi.fn(),
+  getCommissions: vi.fn(),
+  getManagedCommissions: vi.fn(),
+  getCommissionFunds: vi.fn(),
+  getFunds: vi.fn(),
+  deleteCommission: vi.fn(),
+  updateCommission: vi.fn()
+}))
+
+setActivePinia(createPinia())
 
 const newCommission: CreateCommission = {
   commissionDate: '2026-02-20',
@@ -86,5 +107,82 @@ describe('createCommission', () => {
       room: 'Salle B',
       address: '1 rue René Descartes'
     })
+  })
+})
+
+describe('canUpdateCommission', () => {
+  const original: ManagedCommission = {
+    ...structuredClone(_managedCommissions[1]),
+    editionDate: '2099-10-09',
+    scheduledTime: '09:00:00',
+    building: '',
+    room: '',
+    address: '',
+    funds: [_commissionFundData[0], _commissionFundData[1]]
+  }
+  const editable: UpdateCommission = {
+    id: original.id,
+    name: original.name,
+    commissionDate: original.commissionDate,
+    submissionDate: original.submissionDate,
+    editionDate: original.editionDate,
+    isOpenToProjects: original.isOpenToProjects,
+    scheduledTime: '09:00',
+    building: '',
+    room: '',
+    address: '',
+    funds: [1, 2],
+    datesAreLegal: false,
+    editionDateIsLegal: false,
+    open: false
+  }
+
+  beforeEach(() => {
+    const commissions: PaginatedList<ManagedCommission> = {
+      count: 1,
+      totalPages: 1,
+      currentPage: 1,
+      range: {start: 1, end: 1},
+      next: null,
+      previous: null,
+      results: [original]
+    }
+    useCommissionStore().commissions = commissions
+  })
+
+  it('allows an update when an optional field changes', () => {
+    const {canUpdateCommission} = useCommissionDate()
+
+    expect(canUpdateCommission({...editable, building: 'Esplanade'})).toBe(true)
+    expect(canUpdateCommission({...editable, room: 'Salle B'})).toBe(true)
+    expect(canUpdateCommission({...editable, address: '1 rue René Descartes'})).toBe(true)
+    expect(canUpdateCommission({...editable, scheduledTime: '14:00'})).toBe(true)
+  })
+
+  it('detects a change when the API omits the optional fields', () => {
+    const commissionStore = useCommissionStore()
+    if (!commissionStore.commissions) return
+    commissionStore.commissions.results[0] = {
+      ...original,
+      scheduledTime: undefined as unknown as string,
+      building: undefined as unknown as string,
+      room: undefined as unknown as string,
+      address: undefined as unknown as string
+    }
+    const {canUpdateCommission} = useCommissionDate()
+
+    expect(canUpdateCommission({...editable, building: 'Esplanade'})).toBe(true)
+  })
+
+  it('reacts to an optional field mutation', async () => {
+    const {canUpdateCommission} = useCommissionDate()
+    const model = ref<UpdateCommission>({...editable})
+    const canUpdate = computed(() => canUpdateCommission(model.value))
+
+    expect(canUpdate.value).toBe(false)
+    model.value.building = 'Esplanade'
+    await nextTick()
+
+    expect(canUpdate.value).toBe(true)
   })
 })

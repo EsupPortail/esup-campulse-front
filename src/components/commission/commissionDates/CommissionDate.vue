@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import {computed, ref} from 'vue'
 import {useI18n} from 'vue-i18n'
-import type {UpdateCommission} from '#/commission'
+import type {ManagedCommission, UpdateCommission} from '#/commission'
 import AlertConfirmCommissionDateUpdateOrDelete from '@/components/alert/AlertConfirmCommissionDateUpdateOrDelete.vue'
-import useCommissionDate from '@/composables/useCommissionDate'
+import useCommissionDate, {editionDateIsValid} from '@/composables/useCommissionDate'
 import useUtil from '@/composables/useUtil'
 import {useFundStore} from '@/stores/useFundStore'
 
@@ -18,9 +18,15 @@ const {
   onDeleteCommission,
 } = useCommissionDate()
 
+const props = defineProps<{
+  originalCommission?: ManagedCommission
+}>()
+
 const commission = defineModel<UpdateCommission>({required: true})
 
-const canUpdate = computed<boolean>(() => canUpdateCommission(commission.value))
+const canUpdate = computed<boolean>(() => props.originalCommission
+  ? canUpdateCommission(commission.value, props.originalCommission)
+  : false)
 const openInfos = ref<boolean>(hasCommissionInfos(commission.value))
 </script>
 
@@ -29,7 +35,7 @@ const openInfos = ref<boolean>(hasCommissionInfos(commission.value))
     <div class="document-input variant-space-1">
       <div class="document-input-header">
         <h4>
-          {{ commission.name }}
+          {{ originalCommission?.name }}
         </h4>
 
         <p class="form-state form-state-cape">
@@ -108,7 +114,7 @@ const openInfos = ref<boolean>(hasCommissionInfos(commission.value))
           :label="t('commission.edition-date')"
           :rules="[
             val => val && val.length > 0 || t('forms.required-commission-edition-date'),
-            () => commission.editionDateIsLegal
+            () => editionDateIsValid(commission.submissionDate, commission.editionDate, commission.commissionDate)
               || t('forms.commission-edition-date-must-be-between-submission-and-commission-dates')
           ]"
           clearable

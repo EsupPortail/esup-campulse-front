@@ -205,8 +205,8 @@ export default function useCommissionDate() {
     }
   }
 
-  function hasCommissionChanges(commission: UpdateCommission): boolean {
-    const original = findOriginalCommission(commission.id)
+  function hasCommissionChanges(commission: UpdateCommission, originalCommission?: ManagedCommission): boolean {
+    const original = originalCommission ?? findOriginalCommission(commission.id)
     if (!original) return false
 
     return commission.name !== original.name
@@ -221,11 +221,11 @@ export default function useCommissionDate() {
       || !arraysAreEqual(commission.funds, original.funds.map(fund => fund.pk))
   }
 
-  function canUpdateCommission(commission: UpdateCommission): boolean {
-    return commission.datesAreLegal
-      && commission.editionDateIsLegal
+  function canUpdateCommission(commission: UpdateCommission, originalCommission?: ManagedCommission): boolean {
+    return fromDateIsAnterior(commission.submissionDate, commission.commissionDate, true)
+      && editionDateIsValid(commission.submissionDate, commission.editionDate, commission.commissionDate)
       && commission.funds.length > 0
-      && hasCommissionChanges(commission)
+      && hasCommissionChanges(commission, originalCommission)
   }
 
   function checkCommissionDates(commission: UpdateCommission): void {
@@ -279,6 +279,7 @@ export default function useCommissionDate() {
     newCommissionEditionDateIsLegal,
     canSubmitNewCommission,
     canUpdateCommission,
+    getOriginalCommission: findOriginalCommission,
     hasCommissionInfos,
     checkCommissionDates,
     loadCommissionDates,
