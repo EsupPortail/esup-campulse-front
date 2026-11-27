@@ -1,6 +1,7 @@
 import {computed, ref, watch} from 'vue'
 import axios from 'axios'
 import {useQuasar} from 'quasar'
+import {useI18n} from 'vue-i18n'
 import type {ProjectStatus} from '#/project'
 import type {Commission, CommissionFund, Fund} from '#/commission'
 import type {UploadedProcessDocument} from '#/document'
@@ -24,6 +25,7 @@ export default function useSubmitProject() {
   const commissionStore = useCommissionStore()
   const fundStore = useFundStore()
   const associationStore = useAssociationStore()
+  const {t} = useI18n()
   const {loading, notify} = useQuasar()
   const {catchHTTPError} = useErrors()
   const {fromDateIsAnterior, reverseDate, CURRENCY} = useUtil()
@@ -120,6 +122,11 @@ export default function useSubmitProject() {
       notify({
         type: 'negative',
         message: await catchHTTPError(error.response)
+      })
+    } else {
+      notify({
+        type: 'negative',
+        message: t('notifications.negative.error-500')
       })
     }
   }

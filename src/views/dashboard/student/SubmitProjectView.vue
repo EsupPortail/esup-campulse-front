@@ -7,7 +7,7 @@ import InfoProcessDocuments from '@/components/documents/InfoProcessDocuments.vu
 import ProjectComments from '@/components/project/projectDetail/ProjectComments.vue'
 import ProjectRecap from '@/components/project/ProjectRecap.vue'
 import SubmitProjectApplicantStep from '@/components/project/submitProject/SubmitProjectApplicantStep.vue'
-import SubmitProjectBasicInfosStep from '@/components/project/submitProject/SubmitProjectBasicInfosStep.vue'
+import SubmitProjectInfosStep from '@/components/project/submitProject/SubmitProjectInfosStep.vue'
 import SubmitProjectCommissionStep from '@/components/project/submitProject/SubmitProjectCommissionStep.vue'
 import SubmitProjectBudgetStep from '@/components/project/submitProject/SubmitProjectBudgetStep.vue'
 import SubmitProjectGoalsStep from '@/components/project/submitProject/SubmitProjectGoalsStep.vue'
@@ -102,9 +102,9 @@ onBeforeRouteLeave(resetForm)
             icon="bi-person-check"
           >
             <SubmitProjectApplicantStep
-              v-model:project-infos="projectInfos"
               v-model:applicant="applicant"
               v-model:association-id="associationId"
+              v-model:project-infos="projectInfos"
               :association-options="associationOptions"
               :association-user-labels="associationUserLabels"
               :can-choose-applicant="canChooseApplicant"
@@ -122,8 +122,8 @@ onBeforeRouteLeave(resetForm)
               v-model:project-commission-funds="projectCommissionFunds"
               :commission-options="commissionOptions"
               :fund-options="fundOptions"
-              @submit="submitCommission(3)"
               @back="goToStep(1)"
+              @submit="submitCommission(3)"
               @commission-change="onCommissionChange"
             />
           </QStep>
@@ -133,15 +133,15 @@ onBeforeRouteLeave(resetForm)
             :title="t('project.general-infos')"
             icon="bi-card-text"
           >
-            <SubmitProjectBasicInfosStep
-              v-model:project-infos="projectInfos"
+            <SubmitProjectInfosStep
               v-model:project-category="projectCategory"
-              :project-category-labels="projectStore.projectCategoryLabels"
+              v-model:project-infos="projectInfos"
               :applicant="applicant"
               :dates-are-legal="datesAreLegal"
+              :project-category-labels="projectStore.projectCategoryLabels"
               :user="profileStore.user"
-              @submit="submitBasicInfos(4)"
               @back="goToStep(2)"
+              @submit="submitBasicInfos(4)"
             />
           </QStep>
 
@@ -152,14 +152,14 @@ onBeforeRouteLeave(resetForm)
           >
             <SubmitProjectBudgetStep
               v-model:project-budget="projectBudget"
-              v-model:project-re-edition="projectReEdition"
               v-model:project-commission-funds-detail="projectCommissionFundsDetail"
-              :funds="funds"
+              v-model:project-re-edition="projectReEdition"
               :commission-funds="commissionFunds"
-              :currency="CURRENCY"
               :correct-audience-amount="correctAudienceAmount"
-              @submit="submitBudget(5)"
+              :currency="CURRENCY"
+              :funds="funds"
               @back="submitBudget(3)"
+              @submit="submitBudget(5)"
             />
           </QStep>
 
@@ -170,20 +170,20 @@ onBeforeRouteLeave(resetForm)
           >
             <SubmitProjectGoalsStep
               v-model:project-goals="projectGoals"
-              @submit="submitGoals(6)"
               @back="submitGoals(4)"
+              @submit="submitGoals(6)"
             />
           </QStep>
 
           <QStep
             :name="6"
-            :title="t('project.documents')"
+            :title="t('document', 2)"
             icon="bi-file-earmark"
           >
             <SubmitProjectDocumentsStep
               :association-id="associationId"
-              @submit="submitDocuments(7)"
               @back="submitDocuments(5)"
+              @submit="submitDocuments(7)"
             />
           </QStep>
 

@@ -43,6 +43,7 @@ const emit = defineEmits<{
         borderless
         color="commission"
         lazy-rules
+        stack-label
       >
         <QOptionGroup
           v-model="projectCommission"

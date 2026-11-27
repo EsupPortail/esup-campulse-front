@@ -564,6 +564,32 @@ describe('useProject', () => {
       })
     })
 
+    it('doit patcher les dates quand le projet créé n a pas encore de dates', async () => {
+      projectStore.project = {
+        ...structuredClone(projectFixture),
+        plannedStartDate: null as unknown as string,
+        plannedEndDate: null as unknown as string
+      }
+      projectInfos.value = {
+        ...emptyInfos,
+        name: projectFixture.name,
+        plannedStartDate: '2024-02-10',
+        plannedEndDate: '2024-02-12',
+        plannedLocation: projectFixture.plannedLocation,
+        associationUser: projectFixture.associationUser?.id ?? null,
+        user: projectFixture.user?.id ?? null,
+        association: projectFixture.association?.id ?? null,
+        partnerAssociation: projectFixture.partnerAssociation ?? ''
+      }
+
+      await updateProjectInfos()
+
+      expect(projectService.updateProject).toHaveBeenCalledWith(1, {
+        plannedStartDate: '2024-02-10T00:00:00.000Z',
+        plannedEndDate: '2024-02-12T00:00:00.000Z'
+      })
+    })
+
     it('doit retourner immédiatement si aucune information n a changé', async () => {
       projectInfos.value = {
         name: projectFixture.name,

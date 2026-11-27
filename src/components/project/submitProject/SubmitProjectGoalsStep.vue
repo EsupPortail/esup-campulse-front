@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
 import type {ProjectGoals} from '#/project'
+import GlobalEditor from '@/components/global/GlobalEditor.vue'
 
 const {t} = useI18n()
 
@@ -10,6 +11,9 @@ const emit = defineEmits<{
   submit: [],
   back: []
 }>()
+
+const requiredRichText = (message: string) => (value: string): boolean | string =>
+  value.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim().length > 0 || message
 </script>
 
 <template>
@@ -17,70 +21,52 @@ const emit = defineEmits<{
     class="flex-column"
     @submit.prevent="emit('submit')"
   >
-    <QInput
+    <GlobalEditor
       v-model="projectGoals.goals"
-      :label="t('project.goals') + ' *'"
-      :rules="[val => val && val.length > 0 || t('forms.required-project-goals')]"
-      aria-required="true"
+      :label="t('project.goals')"
+      :rules="[requiredRichText(t('forms.required-project-goals'))]"
       color="commission"
-      filled
-      lazy-rules
-      type="textarea"
+      required
     />
 
-    <QInput
+    <GlobalEditor
       v-model="projectGoals.summary"
-      :label="t('project.summary') + ' *'"
-      :rules="[val => val && val.length > 0 || t('forms.required-project-summary')]"
-      aria-required="true"
+      :label="t('project.summary')"
+      :rules="[requiredRichText(t('forms.required-project-summary'))]"
       color="commission"
-      filled
-      lazy-rules
-      type="textarea"
+      required
     />
 
-    <QInput
+    <GlobalEditor
       v-model="projectGoals.plannedActivities"
-      :label="t('project.planned-activities') + ' *'"
-      :rules="[val => val && val.length > 0 || t('forms.required-project-activities')]"
-      aria-required="true"
+      :label="t('project.planned-activities')"
+      :rules="[requiredRichText(t('forms.required-project-activities'))]"
       color="commission"
-      filled
-      lazy-rules
-      type="textarea"
+      required
     />
 
-    <QInput
+    <GlobalEditor
       v-model="projectGoals.preventionSafety"
-      :label="t('project.prevention-safety') + ' *'"
-      :rules="[val => val && val.length > 0 || t('forms.required-project-safety')]"
-      aria-required="true"
+      :label="t('project.prevention-safety')"
+      :rules="[requiredRichText(t('forms.required-project-safety'))]"
       color="commission"
-      filled
-      lazy-rules
-      type="textarea"
+      required
     />
 
-    <QInput
+    <GlobalEditor
       v-model="projectGoals.marketingCampaign"
-      :label="t('project.marketing-campaign') + ' *'"
-      :rules="[val => val && val.length > 0 || t('forms.required-project-marketing')]"
-      aria-required="true"
+      :label="t('project.marketing-campaign')"
+      :rules="[requiredRichText(t('forms.required-project-marketing'))]"
       color="commission"
-      filled
-      lazy-rules
-      type="textarea"
+      required
     />
 
-    <QInput
+    <GlobalEditor
       v-model="projectGoals.sustainableDevelopment"
-      :label="t('project.sustainable-development') + ' *'"
-      :rules="[val => val && val.length > 0 || t('forms.required-project-sustainable')]"
-      aria-required="true"
+      :label="t('project.sustainable-development')"
+      :rules="[requiredRichText(t('forms.required-project-sustainable'))]"
       color="commission"
-      filled
-      lazy-rules
-      type="textarea"
+      required
     />
 
     <div class="flex-row-center padding-top padding-bottom">

@@ -261,10 +261,10 @@ export default function useProject() {
     if (projectInfos.value.name !== projectStore.project?.name) {
       dataToPatch.name = projectInfos.value.name
     }
-    if (projectInfos.value.plannedStartDate !== projectStore.project?.plannedStartDate.slice(0, 10)) {
+    if (projectInfos.value.plannedStartDate !== (projectStore.project?.plannedStartDate?.slice(0, 10) ?? '')) {
       dataToPatch.plannedStartDate = projectInfos.value.plannedStartDate + 'T00:00:00.000Z'
     }
-    if (projectInfos.value.plannedEndDate !== projectStore.project?.plannedEndDate.slice(0, 10)) {
+    if (projectInfos.value.plannedEndDate !== (projectStore.project?.plannedEndDate?.slice(0, 10) ?? '')) {
       dataToPatch.plannedEndDate = projectInfos.value.plannedEndDate + 'T00:00:00.000Z'
     }
     if (projectInfos.value.plannedLocation !== projectStore.project?.plannedLocation) {
